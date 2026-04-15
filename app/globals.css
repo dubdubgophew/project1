@@ -1,0 +1,178 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 3 7 18;
+    --foreground: 249 250 251;
+    --surface: 17 24 39;
+    --surface-2: 31 41 55;
+    --border: 31 41 55;
+    --brand: 139 92 246;
+  }
+
+  * {
+    @apply border-gray-800;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-gray-950 text-gray-100 selection:bg-violet-600/30 selection:text-violet-200;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm
+           bg-gradient-to-r from-violet-600 to-purple-600 text-white
+           hover:from-violet-500 hover:to-purple-500 transition-all duration-200
+           shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm
+           bg-gray-800 text-gray-100 border border-gray-700
+           hover:bg-gray-700 hover:border-gray-600 transition-all duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm
+           border border-violet-500/50 text-violet-400
+           hover:bg-violet-500/10 hover:border-violet-500 transition-all duration-200;
+  }
+
+  .card {
+    @apply bg-gray-900 border border-gray-800 rounded-2xl p-6
+           shadow-xl shadow-black/20;
+  }
+
+  .card-hover {
+    @apply card hover:border-violet-500/30 hover:shadow-violet-500/10
+           transition-all duration-300;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 bg-clip-text text-transparent;
+  }
+
+  .gradient-border {
+    @apply relative before:absolute before:inset-0 before:rounded-2xl
+           before:bg-gradient-to-r before:from-violet-500 before:to-pink-500
+           before:p-px before:-z-10;
+  }
+
+  .glass {
+    @apply bg-gray-900/60 backdrop-blur-xl border border-gray-800/60;
+  }
+
+  .input {
+    @apply w-full px-4 py-3 rounded-xl bg-gray-800 border border-gray-700 text-gray-100
+           placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-500/50
+           focus:border-violet-500/50 transition-all duration-200 text-sm;
+  }
+
+  .textarea {
+    @apply input resize-none min-h-[140px];
+  }
+
+  .label {
+    @apply block text-sm font-medium text-gray-300 mb-2;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+  }
+
+  .badge-free {
+    @apply badge bg-emerald-500/10 text-emerald-400 border border-emerald-500/20;
+  }
+
+  .badge-pro {
+    @apply badge bg-violet-500/10 text-violet-400 border border-violet-500/20;
+  }
+
+  .badge-unlimited {
+    @apply badge bg-amber-500/10 text-amber-400 border border-amber-500/20;
+  }
+
+  .section {
+    @apply py-20 px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-narrow {
+    @apply max-w-4xl mx-auto;
+  }
+
+  .container-wide {
+    @apply max-w-7xl mx-auto;
+  }
+
+  .glow {
+    @apply shadow-[0_0_60px_-15px] shadow-violet-500/50;
+  }
+}
+
+@layer utilities {
+  .animate-delay-100 { animation-delay: 100ms; }
+  .animate-delay-200 { animation-delay: 200ms; }
+  .animate-delay-300 { animation-delay: 300ms; }
+  .animate-delay-400 { animation-delay: 400ms; }
+  .animate-delay-500 { animation-delay: 500ms; }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #030712;
+}
+::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #4b5563;
+}
+
+/* Skeleton loader */
+.skeleton {
+  background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
+  background-size: 200% 100%;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+@keyframes skeleton-pulse {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Prose dark overrides */
+.prose-dark {
+  --tw-prose-body: #d1d5db;
+  --tw-prose-headings: #f9fafb;
+  --tw-prose-links: #a78bfa;
+  --tw-prose-code: #c4b5fd;
+}
+
+/* AdSense placeholder styling */
+.adsense-container {
+  @apply my-6 flex items-center justify-center;
+  min-height: 90px;
+}
