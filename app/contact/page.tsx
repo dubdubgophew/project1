@@ -36,8 +36,8 @@ export default function ContactPage() {
 
               <div className="space-y-4">
                 {[
-                  { icon: Mail, title: 'Email', value: 'support@toolora.com', link: 'mailto:support@toolora.com', color: 'text-violet-400', bg: 'bg-violet-500/10' },
-                  { icon: MessageSquare, title: 'General', value: 'hello@toolora.com', link: 'mailto:hello@toolora.com', color: 'text-blue-400', bg: 'bg-blue-500/10' },
+                  { icon: Mail, title: 'Email', value: 'support@formly.tools', link: 'mailto:support@formly.tools', color: 'text-violet-400', bg: 'bg-violet-500/10' },
+                  { icon: MessageSquare, title: 'General', value: 'hello@formly.tools', link: 'mailto:hello@formly.tools', color: 'text-blue-400', bg: 'bg-blue-500/10' },
                   { icon: Clock, title: 'Response Time', value: '24-48 hours', link: null, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
                 ].map((item) => (
                   <div key={item.title} className="flex items-center gap-4 p-4 rounded-2xl bg-gray-900 border border-gray-800">

@@ -214,16 +214,16 @@ VALUES
   '<p>Reading lengthy research papers, annual reports, or legal documents takes hours. With AI, you can extract the key insights from any PDF in under 30 seconds — for free.</p>
   <h2>Why PDF Summarization Matters</h2>
   <p>The average professional reads 50+ documents per month. At 20 minutes per document, that''s 16+ hours — two full workdays — lost to reading. AI summarization cuts this to minutes.</p>
-  <h2>How to Use Toolora''s Free PDF Summarizer</h2>
+  <h2>How to Use Formly''s Free PDF Summarizer</h2>
   <ol>
-  <li>Go to <a href="/tools/pdf-summarizer">Toolora PDF Summarizer</a></li>
+  <li>Go to <a href="/tools/pdf-summarizer">Formly PDF Summarizer</a></li>
   <li>Upload your PDF (up to 10 MB, no signup required)</li>
   <li>Choose summary length: Short, Medium, or Detailed</li>
   <li>Click "Summarize PDF" and get results in under 15 seconds</li>
   </ol>
   <h2>What Makes AI Summarization Better Than Manual Reading?</h2>
   <p>Our AI uses LLaMA 3.1 70B — one of the most capable AI models — to extract key arguments, findings, statistics, and conclusions. It understands context, not just keywords.</p>
-  <p>Try it free today at <a href="/tools/pdf-summarizer">toolora.com/tools/pdf-summarizer</a> — no credit card, no signup needed.</p>',
+  <p>Try it free today at <a href="/tools/pdf-summarizer">formly.tools/tools/pdf-summarizer</a> — no credit card, no signup needed.</p>',
   'Learn how to summarize any PDF in seconds using free AI. No signup needed. Powered by LLaMA 3 — extract key insights from research papers, reports & more.',
   ARRAY['pdf', 'ai tools', 'productivity'],
   5,
@@ -233,8 +233,8 @@ VALUES
   'Best Free AI Grammar Checker in 2024 (No Signup Required)',
   'best-free-ai-grammar-checker-2024',
   '<p>Finding a truly free grammar checker that doesn''t require signup, watermarks, or paywalls is hard. We''ve built one — and it''s better than most paid tools.</p>
-  <h2>What Makes Toolora''s Grammar Checker Different?</h2>
-  <p>Most grammar checkers use simple rule-based systems. Toolora uses LLaMA 3.1 70B — a large language model that understands context, meaning, and style — not just grammar rules.</p>
+  <h2>What Makes Formly''s Grammar Checker Different?</h2>
+  <p>Most grammar checkers use simple rule-based systems. Formly uses LLaMA 3.1 70B — a large language model that understands context, meaning, and style — not just grammar rules.</p>
   <h2>Features</h2>
   <ul>
   <li>Grammar and spelling error detection</li>
@@ -244,8 +244,8 @@ VALUES
   <li>No signup required for 5 daily uses</li>
   </ul>
   <h2>How to Use It</h2>
-  <p>Visit <a href="/tools/grammar-checker">Toolora Grammar Checker</a>, paste your text, and click check. You''ll see your corrected text and a list of every error with explanations.</p>
-  <p>Start checking your writing for free at <a href="/tools/grammar-checker">toolora.com/tools/grammar-checker</a>.</p>',
+  <p>Visit <a href="/tools/grammar-checker">Formly Grammar Checker</a>, paste your text, and click check. You''ll see your corrected text and a list of every error with explanations.</p>
+  <p>Start checking your writing for free at <a href="/tools/grammar-checker">formly.tools/tools/grammar-checker</a>.</p>',
   'Best free AI grammar checker with no signup. Fix grammar, spelling and style instantly. Powered by LLaMA 3 — better than Grammarly for basic use.',
   ARRAY['grammar', 'writing', 'tools'],
   6,

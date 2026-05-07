@@ -44,7 +44,7 @@ export default function LoginPage() {
   return (
     <div className="card">
       <h1 className="text-2xl font-bold text-white text-center mb-1">Welcome back</h1>
-      <p className="text-gray-400 text-center text-sm mb-8">Sign in to your Toolora account</p>
+      <p className="text-gray-400 text-center text-sm mb-8">Sign in to your Formly account</p>
 
       {/* Google OAuth */}
       <button

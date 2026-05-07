@@ -28,8 +28,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
               <Zap className="w-4 h-4 text-white" />
             </div>
             <span className="text-lg font-bold">
-              <span className="text-white">tool</span>
-              <span className="gradient-text">ora</span>
+              <span className="text-white">form</span>
+              <span className="gradient-text">ly</span>
             </span>
           </Link>
         </div>

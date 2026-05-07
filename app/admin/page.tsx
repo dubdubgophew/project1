@@ -48,7 +48,7 @@ export default async function AdminPage() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-2xl font-bold text-white">Admin Dashboard</h1>
-            <p className="text-gray-500 text-sm mt-1">CEO Overview · Toolora</p>
+            <p className="text-gray-500 text-sm mt-1">CEO Overview · Formly</p>
           </div>
           <div className="flex gap-3">
             <form action="/api/admin/generate-blog" method="POST">

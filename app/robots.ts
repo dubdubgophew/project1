@@ -9,7 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/admin/', '/api/', '/dashboard/', '/settings/'],
       },
     ],
-    sitemap: 'https://toolora.com/sitemap.xml',
-    host: 'https://toolora.com',
+    sitemap: 'https://formly.tools/sitemap.xml',
+    host: 'https://formly.tools',
   };
 }

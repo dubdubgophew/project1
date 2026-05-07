@@ -66,7 +66,7 @@ export function Hero() {
                 </div>
               ))}
             </div>
-            <span><strong className="text-white">50,000+</strong> professionals trust Toolora</span>
+            <span><strong className="text-white">50,000+</strong> professionals trust Formly</span>
           </div>
           <div className="hidden sm:block w-px h-4 bg-gray-800" />
           <div className="flex items-center gap-1.5 text-gray-400">

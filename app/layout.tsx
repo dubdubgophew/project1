@@ -17,10 +17,10 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://toolora.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://formly.tools'),
   title: {
-    default: 'Toolora — 10 Free AI Tools for Writers, Devs & Professionals',
-    template: '%s | Toolora',
+    default: 'Formly — 10 Free AI Tools for Writers, Devs & Professionals',
+    template: '%s | Formly',
   },
   description:
     'Free AI-powered tools: PDF summarizer, paraphraser, grammar checker, email writer, code explainer, YouTube summarizer, resume builder & more. No signup needed.',
@@ -38,15 +38,15 @@ export const metadata: Metadata = {
     'online ai tools',
     'free ai writing tools',
   ],
-  authors: [{ name: 'Toolora' }],
-  creator: 'Toolora',
-  publisher: 'Toolora',
+  authors: [{ name: 'Formly' }],
+  creator: 'Formly',
+  publisher: 'Formly',
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://toolora.com',
-    siteName: 'Toolora',
-    title: 'Toolora — 10 Free AI Tools for Professionals',
+    url: 'https://formly.tools',
+    siteName: 'Formly',
+    title: 'Formly — 10 Free AI Tools for Professionals',
     description:
       'Free AI tools: PDF summarizer, paraphraser, grammar checker, email writer & more. Try 5 tools free daily — no signup needed.',
     images: [
@@ -54,16 +54,16 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Toolora — AI Tools Suite',
+        alt: 'Formly — AI Tools Suite',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Toolora — 10 Free AI Tools',
+    title: 'Formly — 10 Free AI Tools',
     description: 'AI PDF summarizer, paraphraser, grammar checker & 7 more tools. Free.',
     images: ['/og-image.png'],
-    creator: '@toolora_ai',
+    creator: '@formlytools',
   },
   robots: {
     index: true,
@@ -77,7 +77,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://toolora.com',
+    canonical: 'https://formly.tools',
   },
 };
 
@@ -103,12 +103,12 @@ export default function RootLayout({
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'WebSite',
-              name: 'Toolora',
-              url: 'https://toolora.com',
+              name: 'Formly',
+              url: 'https://formly.tools',
               description: 'Free AI-powered productivity tools for professionals',
               potentialAction: {
                 '@type': 'SearchAction',
-                target: 'https://toolora.com/tools?q={search_term_string}',
+                target: 'https://formly.tools/tools?q={search_term_string}',
                 'query-input': 'required name=search_term_string',
               },
             }),

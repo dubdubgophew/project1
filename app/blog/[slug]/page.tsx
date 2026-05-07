@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
       title: data.title,
       description: data.meta_description,
-      alternates: { canonical: `https://toolora.com/blog/${data.slug}` },
+      alternates: { canonical: `https://formly.tools/blog/${data.slug}` },
       openGraph: {
         title: data.title,
         description: data.meta_description,
@@ -93,7 +93,7 @@ export default async function BlogPostPage({ params }: Props) {
                     {post.read_time} min read
                   </span>
                 )}
-                <span>By Toolora Team</span>
+                <span>By Formly Team</span>
               </div>
 
               {/* Article content */}
@@ -112,7 +112,7 @@ export default async function BlogPostPage({ params }: Props) {
                   No signup needed. 5 free uses per day across all 10 tools.
                 </p>
                 <Link href="/tools" className="btn-primary inline-flex">
-                  Start Using Toolora Free →
+                  Start Using Formly Free →
                 </Link>
               </div>
 
@@ -125,8 +125,8 @@ export default async function BlogPostPage({ params }: Props) {
                     '@type': 'Article',
                     headline: post.title,
                     description: post.meta_description,
-                    author: { '@type': 'Organization', name: 'Toolora' },
-                    publisher: { '@type': 'Organization', name: 'Toolora', url: 'https://toolora.com' },
+                    author: { '@type': 'Organization', name: 'Formly' },
+                    publisher: { '@type': 'Organization', name: 'Formly', url: 'https://formly.tools' },
                     datePublished: post.created_at,
                   }),
                 }}

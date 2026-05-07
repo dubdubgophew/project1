@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 import { createAdminClient } from '@/lib/supabase/server';
 
-const BASE_URL = 'https://toolora.com';
+const BASE_URL = 'https://formly.tools';
 
 const STATIC_ROUTES = [
   { url: '/', priority: 1.0, changeFrequency: 'weekly' as const },

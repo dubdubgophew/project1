@@ -7,7 +7,7 @@ const TESTIMONIALS = [
     country: '🇺🇸 USA',
     avatar: 'SK',
     rating: 5,
-    text: "I use Toolora's paraphraser and grammar checker daily. The AI output quality is incredible — honestly better than Grammarly Pro, and I'm on the free plan!",
+    text: "I use Formly's paraphraser and grammar checker daily. The AI output quality is incredible — honestly better than Grammarly Pro, and I'm on the free plan!",
     tool: 'Paraphraser + Grammar Checker',
   },
   {
@@ -108,7 +108,7 @@ export function Testimonials() {
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'Product',
-              name: 'Toolora AI Tools Suite',
+              name: 'Formly AI Tools Suite',
               description: 'Free AI-powered productivity tools',
               aggregateRating: {
                 '@type': 'AggregateRating',

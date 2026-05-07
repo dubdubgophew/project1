@@ -9,8 +9,8 @@ import { Calendar, Clock, Tag } from 'lucide-react';
 export const metadata: Metadata = {
   title: 'Blog — AI Writing Tips, Productivity Guides & Tool Updates',
   description:
-    'Learn how to use AI tools for writing, coding, and productivity. Tips, tutorials, and updates from the Toolora team.',
-  alternates: { canonical: 'https://toolora.com/blog' },
+    'Learn how to use AI tools for writing, coding, and productivity. Tips, tutorials, and updates from the Formly team.',
+  alternates: { canonical: 'https://formly.tools/blog' },
 };
 
 export const revalidate = 3600; // Revalidate every hour
@@ -49,7 +49,7 @@ const SEED_POSTS: BlogPost[] = [
     id: '3',
     title: 'The Best Free AI Grammar Checkers in 2024 (Compared)',
     slug: 'best-free-ai-grammar-checkers-2024',
-    meta_description: 'We tested 8 free AI grammar checkers. Here\'s which one gives the best output quality — and why Toolora wins.',
+    meta_description: 'We tested 8 free AI grammar checkers. Here\'s which one gives the best output quality — and why Formly wins.',
     tags: ['grammar', 'comparison', 'writing tools'],
     created_at: '2024-01-10',
     read_time: 8,
@@ -108,7 +108,7 @@ export default async function BlogPage() {
           <div className="mb-12">
             <h1 className="text-4xl font-bold text-white mb-4">Blog</h1>
             <p className="text-gray-400 text-lg">
-              AI tool guides, writing tips, productivity hacks, and updates from Toolora.
+              AI tool guides, writing tips, productivity hacks, and updates from Formly.
             </p>
           </div>
 

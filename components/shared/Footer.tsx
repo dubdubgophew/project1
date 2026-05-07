@@ -39,8 +39,8 @@ export function Footer() {
                 <Zap className="w-4 h-4 text-white" />
               </div>
               <span className="text-xl font-bold">
-                <span className="text-white">tool</span>
-                <span className="gradient-text">ora</span>
+                <span className="text-white">form</span>
+                <span className="gradient-text">ly</span>
               </span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
@@ -48,16 +48,16 @@ export function Footer() {
               Free to try — no signup required.
             </p>
             <div className="flex items-center gap-3">
-              <a href="https://twitter.com/toolora_ai" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 transition-colors">
+              <a href="https://twitter.com/formlytools" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 transition-colors">
                 <Twitter className="w-4 h-4" />
               </a>
-              <a href="https://github.com/toolora" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 transition-colors">
+              <a href="https://github.com/formlytools" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 transition-colors">
                 <Github className="w-4 h-4" />
               </a>
-              <a href="https://linkedin.com/company/toolora" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 transition-colors">
+              <a href="https://linkedin.com/company/formlytools" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 transition-colors">
                 <Linkedin className="w-4 h-4" />
               </a>
-              <a href="mailto:hello@toolora.com" className="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 transition-colors">
+              <a href="mailto:hello@formly.tools" className="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 transition-colors">
                 <Mail className="w-4 h-4" />
               </a>
             </div>
@@ -127,7 +127,7 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-gray-500">
-            © {new Date().getFullYear()} Toolora. Built with love in India.
+            © {new Date().getFullYear()} Formly. Built with love in India.
           </p>
           <div className="flex items-center gap-4">
             <span className="text-xs text-gray-600">Powered by Groq AI & LLaMA 3</span>
