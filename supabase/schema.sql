@@ -14,8 +14,6 @@ CREATE TABLE IF NOT EXISTS profiles (
   email TEXT UNIQUE NOT NULL,
   name TEXT,
   plan TEXT NOT NULL DEFAULT 'free' CHECK (plan IN ('free', 'pro', 'unlimited')),
-  stripe_customer_id TEXT UNIQUE,
-  razorpay_customer_id TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
   updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
 );
@@ -65,8 +63,7 @@ CREATE TABLE IF NOT EXISTS subscriptions (
   user_id UUID REFERENCES profiles(id) ON DELETE CASCADE UNIQUE NOT NULL,
   plan TEXT NOT NULL CHECK (plan IN ('pro', 'unlimited')),
   status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'active', 'cancelled', 'expired', 'past_due')),
-  stripe_subscription_id TEXT UNIQUE,
-  razorpay_subscription_id TEXT,
+  dodo_subscription_id TEXT UNIQUE,
   current_period_end TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
   updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
