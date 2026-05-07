@@ -50,14 +50,14 @@ export async function generateWeeklyReport(): Promise<WeeklyReport> {
   ]);
 
   // Count by tool
-  const toolCounts = (toolData ?? []).reduce<Record<string, number>>((acc, row) => {
+  const toolCounts = (toolData ?? []).reduce<Record<string, number>>((acc, row: { tool_name: string }) => {
     acc[row.tool_name] = (acc[row.tool_name] ?? 0) + 1;
     return acc;
   }, {});
-  const topTools = Object.entries(toolCounts)
-    .sort((a, b) => b[1] - a[1])
+  const topTools: { tool: string; count: number }[] = Object.entries(toolCounts)
+    .sort((a, b) => (b[1] as number) - (a[1] as number))
     .slice(0, 5)
-    .map(([tool, count]) => ({ tool, count }));
+    .map(([tool, count]) => ({ tool, count: count as number }));
 
   const pro = proUsers ?? 0;
   const unlim = unlimitedUsers ?? 0;

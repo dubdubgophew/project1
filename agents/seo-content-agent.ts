@@ -57,10 +57,10 @@ export async function generateBlogPost(keyword?: string): Promise<BlogPost | nul
       .select('title')
       .eq('published', true);
 
-    const existingTitles = (existingPosts ?? []).map((p) => p.title.toLowerCase());
+    const existingTitles = (existingPosts ?? []).map((p: { title: string }) => p.title.toLowerCase());
 
     const available = TOOL_KEYWORDS.filter(
-      (kw) => !existingTitles.some((t) => t.includes(kw.split(' ')[0]))
+      (kw) => !existingTitles.some((t: string) => t.includes(kw.split(' ')[0]))
     );
 
     targetKeyword = available[Math.floor(Math.random() * available.length)] ?? TOOL_KEYWORDS[0];
