@@ -3,8 +3,8 @@ import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — Toolora',
-  description: 'Toolora Privacy Policy. We do not store your content. Learn what data we collect and how we protect your privacy.',
+  title: 'Privacy Policy — Formly',
+  description: 'Formly Privacy Policy. We do not store your content. Learn what data we collect and how we protect your privacy.',
 };
 
 export default function PrivacyPage() {
@@ -17,7 +17,7 @@ export default function PrivacyPage() {
           <p className="text-gray-500 text-sm mb-10">Last updated: January 15, 2024</p>
 
           <div className="prose prose-sm max-w-none prose-invert prose-p:text-gray-400 prose-h2:text-white prose-h2:text-xl prose-h2:mt-8 prose-li:text-gray-400">
-            <p>Toolora (&quot;we&quot;, &quot;our&quot;, &quot;us&quot;) is committed to protecting your privacy. This policy explains what information we collect, how we use it, and your rights.</p>
+            <p>Formly (&quot;we&quot;, &quot;our&quot;, &quot;us&quot;) is committed to protecting your privacy. This policy explains what information we collect, how we use it, and your rights.</p>
 
             <h2>1. What We Collect</h2>
             <p><strong className="text-white">Account data:</strong> Email address and name when you create an account. Used only for authentication and account management.</p>
@@ -44,7 +44,7 @@ export default function PrivacyPage() {
             <p>Your account data is stored in Supabase (hosted on AWS in the US/EU). Usage logs are automatically deleted after 90 days. Payment data is stored by Stripe/Razorpay under their respective privacy policies.</p>
 
             <h2>5. Your Rights (GDPR/DPDP)</h2>
-            <p>You have the right to: access your data, correct inaccurate data, delete your account and all associated data, export your data. Email <a href="mailto:privacy@toolora.com" className="text-violet-400">privacy@toolora.com</a> to exercise these rights.</p>
+            <p>You have the right to: access your data, correct inaccurate data, delete your account and all associated data, export your data. Email <a href="mailto:privacy@formly.tools" className="text-violet-400">privacy@formly.tools</a> to exercise these rights.</p>
 
             <h2>6. Cookies</h2>
             <p>We use essential cookies for authentication (session management) and analytics cookies (Google Analytics). No advertising cookies are used.</p>
@@ -58,7 +58,7 @@ export default function PrivacyPage() {
             </ul>
 
             <h2>8. Contact</h2>
-            <p>For privacy concerns: <a href="mailto:privacy@toolora.com" className="text-violet-400">privacy@toolora.com</a>.<br />Toolora, India.</p>
+            <p>For privacy concerns: <a href="mailto:privacy@formly.tools" className="text-violet-400">privacy@formly.tools</a>.<br />Formly, India.</p>
           </div>
         </div>
       </main>

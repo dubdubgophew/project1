@@ -37,8 +37,8 @@ export async function POST(req: NextRequest) {
       keyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
       amount: planConfig.amount,
       currency: 'INR',
-      name: 'Toolora',
-      description: `Toolora ${plan.charAt(0).toUpperCase() + plan.slice(1)} Plan`,
+      name: 'Formly',
+      description: `Formly ${plan.charAt(0).toUpperCase() + plan.slice(1)} Plan`,
       prefill: {
         email: user.email,
       },

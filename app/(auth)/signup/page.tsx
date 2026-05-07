@@ -67,7 +67,7 @@ export default function SignupPage() {
         <h2 className="text-xl font-bold text-white mb-2">Check your email!</h2>
         <p className="text-gray-400 text-sm">
           We sent a confirmation link to <strong className="text-white">{email}</strong>.
-          Click it to activate your account and start using Toolora free.
+          Click it to activate your account and start using Formly free.
         </p>
         <p className="text-xs text-gray-600 mt-4">
           Didn&apos;t receive it? Check your spam folder.

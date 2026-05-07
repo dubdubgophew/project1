@@ -121,7 +121,7 @@ export async function sendWeeklyReport(): Promise<void> {
 <body>
 <div class="container">
   <div class="header">
-    <h1>📊 Toolora Weekly Report</h1>
+    <h1>📊 Formly Weekly Report</h1>
     <p>Week of ${report.weekOf} · CEO Briefing</p>
   </div>
 
@@ -170,18 +170,18 @@ export async function sendWeeklyReport(): Promise<void> {
   <div class="card">
     <h3 style="margin:0 0 8px;color:white">⚡ Quick Actions for This Week</h3>
     <ul style="color:#9ca3af;font-size:14px;padding-left:20px;line-height:1.8">
-      ${report.estimatedMRR < 12000 ? '<li>Share Toolora in 2 online communities (Reddit, Twitter, ProductHunt)</li>' : ''}
+      ${report.estimatedMRR < 12000 ? '<li>Share Formly in 2 online communities (Reddit, Twitter, ProductHunt)</li>' : ''}
       <li>Check Google Search Console for new keyword opportunities</li>
-      <li>Reply to any user support emails (check support@toolora.com)</li>
+      <li>Reply to any user support emails (check support@formly.tools)</li>
       ${report.newUsers < 50 ? '<li>Consider running a limited-time 30% discount promo</li>' : ''}
       <li>Autonomous agents have already generated this week\'s blog content ✅</li>
     </ul>
   </div>
 
   <div class="footer">
-    <p>Toolora · Built in India 🇮🇳 · Autonomous AI-managed platform</p>
+    <p>Formly · Built in India 🇮🇳 · Autonomous AI-managed platform</p>
     <p>This report was auto-generated. No action needed unless flagged above.</p>
-    <p><a href="https://toolora.com/admin" style="color:#7c3aed">View Admin Dashboard →</a></p>
+    <p><a href="https://formly.tools/admin" style="color:#7c3aed">View Admin Dashboard →</a></p>
   </div>
 </div>
 </body>
@@ -191,7 +191,7 @@ export async function sendWeeklyReport(): Promise<void> {
   await resend.emails.send({
     from: process.env.RESEND_FROM_EMAIL!,
     to: adminEmail,
-    subject: `Toolora Weekly: $${report.estimatedMRR} MRR · ${report.totalUsers} Users · ${progressPct}% to target`,
+    subject: `Formly Weekly: $${report.estimatedMRR} MRR · ${report.totalUsers} Users · ${progressPct}% to target`,
     html,
   });
 

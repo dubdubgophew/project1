@@ -14,7 +14,7 @@ const PLANS = [
     icon: Zap,
     priceUSD: 0,
     priceINR: 0,
-    description: 'Perfect for trying Toolora.',
+    description: 'Perfect for trying Formly.',
     features: [
       '5 AI uses per day (no signup)',
       '10 uses/day with free account',
@@ -323,7 +323,7 @@ export default function PricingPage() {
                 },
                 {
                   q: "What's the money-back guarantee?",
-                  a: "If you're not satisfied within 7 days of your first payment, email support@toolora.com for a full refund — no questions asked.",
+                  a: "If you're not satisfied within 7 days of your first payment, email support@formly.tools for a full refund — no questions asked.",
                 },
                 {
                   q: 'Do unused credits roll over?',
@@ -331,7 +331,7 @@ export default function PricingPage() {
                 },
                 {
                   q: 'Is there a student or NGO discount?',
-                  a: 'Yes! Email support@toolora.com with proof of student status or NGO registration for 50% off Pro.',
+                  a: 'Yes! Email support@formly.tools with proof of student status or NGO registration for 50% off Pro.',
                 },
               ].map((faq) => (
                 <div key={faq.q} className="card">
@@ -351,7 +351,7 @@ export default function PricingPage() {
           <div className="mt-16 text-center">
             <p className="text-sm text-gray-600">
               🔒 Payments secured by Stripe & Razorpay · 🛡️ 7-day money-back guarantee ·
-              📧 support@toolora.com · Built in India 🇮🇳
+              📧 support@formly.tools · Built in India 🇮🇳
             </p>
           </div>
         </div>

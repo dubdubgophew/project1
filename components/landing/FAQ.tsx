@@ -5,11 +5,11 @@ import { ChevronDown } from 'lucide-react';
 
 const FAQS = [
   {
-    q: 'Is Toolora really free? What are the limits?',
+    q: 'Is Formly really free? What are the limits?',
     a: 'Yes! You get 5 free AI requests per day across all tools — no credit card, no signup needed. Free accounts (with signup) get 10/day. Pro users get 200/day and Unlimited users get, well, unlimited.',
   },
   {
-    q: 'What AI model powers Toolora?',
+    q: 'What AI model powers Formly?',
     a: "We use Meta's LLaMA 3.1 70B — one of the world's most capable open-source AI models — served via Groq's blazing-fast infrastructure. It's the same quality as ChatGPT GPT-4 for most tasks, completely free.",
   },
   {
@@ -30,11 +30,11 @@ const FAQS = [
   },
   {
     q: 'Is there an API available?',
-    a: "API access is coming soon for Unlimited plan subscribers. You'll be able to integrate Toolora's AI tools into your own applications. Join the waitlist via your dashboard.",
+    a: "API access is coming soon for Unlimited plan subscribers. You'll be able to integrate Formly's AI tools into your own applications. Join the waitlist via your dashboard.",
   },
   {
     q: 'What languages are supported?',
-    a: 'Toolora works best in English, but LLaMA 3.1 supports 8 languages including Spanish, French, German, Italian, Portuguese, Hindi, and Arabic for many tasks.',
+    a: 'Formly works best in English, but LLaMA 3.1 supports 8 languages including Spanish, French, German, Italian, Portuguese, Hindi, and Arabic for many tasks.',
   },
 ];
 

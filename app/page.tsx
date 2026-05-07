@@ -9,10 +9,10 @@ import { Testimonials } from '@/components/landing/Testimonials';
 import { BannerAd } from '@/components/shared/AdSense';
 
 export const metadata: Metadata = {
-  title: 'Toolora — 10 Free AI Tools: PDF Summarizer, Paraphraser, Grammar Checker & More',
+  title: 'Formly — 10 Free AI Tools: PDF Summarizer, Paraphraser, Grammar Checker & More',
   description:
     'Free AI tools online: PDF summarizer, paraphraser, grammar checker, email writer, code explainer, YouTube summarizer, resume builder & more. No signup needed. Powered by LLaMA 3.',
-  alternates: { canonical: 'https://toolora.com' },
+  alternates: { canonical: 'https://formly.tools' },
 };
 
 export default function HomePage() {
@@ -45,7 +45,7 @@ export default function HomePage() {
                 Ready to Supercharge Your Workflow?
               </h2>
               <p className="text-gray-400 mb-8 text-lg">
-                Join 50,000+ professionals who save hours every week with Toolora.
+                Join 50,000+ professionals who save hours every week with Formly.
                 Start free — no credit card required.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

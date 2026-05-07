@@ -70,7 +70,7 @@ export default function SettingsPage() {
         setPlan('free');
         alert('Subscription cancelled. You\'ll keep access until the end of the billing period.');
       } else {
-        alert('Failed to cancel. Please contact support@toolora.com');
+        alert('Failed to cancel. Please contact support@formly.tools');
       }
     } finally {
       setCancelLoading(false);
@@ -155,7 +155,7 @@ export default function SettingsPage() {
           )}
         </div>
         <p className="text-xs text-gray-600">
-          For billing issues, email <a href="mailto:support@toolora.com" className="text-violet-400 hover:underline">support@toolora.com</a>.
+          For billing issues, email <a href="mailto:support@formly.tools" className="text-violet-400 hover:underline">support@formly.tools</a>.
           7-day money-back guarantee.
         </p>
       </div>

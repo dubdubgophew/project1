@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: 'All AI Tools — Free PDF Summarizer, Paraphraser, Grammar Checker & More',
   description:
     'Browse all 10 free AI tools: PDF summarizer, paraphraser, grammar checker, email writer, code explainer, YouTube summarizer, resume builder, contract generator, hashtag generator, bio writer.',
-  alternates: { canonical: 'https://toolora.com/tools' },
+  alternates: { canonical: 'https://formly.tools/tools' },
 };
 
 const TOOLS = [
@@ -161,10 +161,10 @@ export default function ToolsPage() {
 
           {/* SEO content */}
           <div className="mt-16 prose prose-sm max-w-4xl mx-auto text-gray-400">
-            <h2 className="text-2xl font-bold text-white">Why Toolora is Better Than the Alternatives</h2>
+            <h2 className="text-2xl font-bold text-white">Why Formly is Better Than the Alternatives</h2>
             <p>
               Most AI tool platforms charge $20-100/month, show intrusive ads, require signups for basic features,
-              or produce mediocre AI output. Toolora is different: powered by LLaMA 3.1 70B — the same quality as
+              or produce mediocre AI output. Formly is different: powered by LLaMA 3.1 70B — the same quality as
               GPT-4 — and available free for casual users. Our Pro plan at just $9/month gives you 200 daily uses
               and priority processing, making it the most affordable professional AI suite available.
             </p>

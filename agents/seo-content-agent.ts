@@ -101,15 +101,15 @@ Return ONLY valid JSON: {"title": "...", "tags": ["tag1", "tag2", "tag3"]}`,
     const articleResponse = await callAI([
       {
         role: 'system',
-        content: `You are an expert SEO content writer for Toolora (toolora.com), a free AI tools platform.
+        content: `You are an expert SEO content writer for Formly (formly.tools), a free AI tools platform.
 
 Write a comprehensive, helpful blog post following these rules:
 - Target keyword: "${targetKeyword}"
 - Length: 1,200-1,600 words
 - Format: HTML (use <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>, <a> tags)
 - Include the keyword in: first paragraph, one H2, last paragraph
-- Structure: Introduction → Problem → Solution (using Toolora's tools) → Step-by-step guide → Tips → Conclusion with CTA
-- Add internal links to Toolora tools like: <a href="/tools/pdf-summarizer">PDF Summarizer</a>
+- Structure: Introduction → Problem → Solution (using Formly's tools) → Step-by-step guide → Tips → Conclusion with CTA
+- Add internal links to Formly tools like: <a href="/tools/pdf-summarizer">PDF Summarizer</a>
 - Include the main CTA at end: link to /tools
 - Be genuinely helpful — not keyword-stuffed
 - Write in friendly, expert tone

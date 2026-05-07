@@ -17,8 +17,8 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
               <Zap className="w-5 h-5 text-white" />
             </div>
             <span className="text-2xl font-bold">
-              <span className="text-white">tool</span>
-              <span className="gradient-text">ora</span>
+              <span className="text-white">form</span>
+              <span className="gradient-text">ly</span>
             </span>
           </Link>
         </div>
