@@ -2,18 +2,15 @@
   "crons": [
     {
       "path": "/api/cron/reset-usage",
-      "schedule": "0 0 * * *",
-      "description": "Daily maintenance + usage cleanup (midnight UTC)"
+      "schedule": "0 0 * * *"
     },
     {
       "path": "/api/cron/generate-content",
-      "schedule": "0 6 * * 2,5",
-      "description": "SEO content generation — 2 blog posts (Tue & Fri at 6am UTC)"
+      "schedule": "0 6 * * 2,5"
     },
     {
       "path": "/api/cron/weekly-report",
-      "schedule": "0 8 * * 1",
-      "description": "Weekly CEO analytics report (Monday 8am UTC)"
+      "schedule": "0 8 * * 1"
     }
   ],
   "functions": {
