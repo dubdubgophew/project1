@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/server';
-import { stripe, STRIPE_PLANS, createStripeCustomer, createCheckoutSession } from '@/lib/stripe';
+import { STRIPE_PLANS, createStripeCustomer, createCheckoutSession } from '@/lib/stripe';
 import { z } from 'zod';
 
 const schema = z.object({

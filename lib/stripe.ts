@@ -1,27 +1,34 @@
 import Stripe from 'stripe';
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-06-20',
-  typescript: true,
-});
+let _stripe: Stripe | null = null;
+
+export function getStripe(): Stripe {
+  if (!_stripe) {
+    _stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+      apiVersion: '2024-06-20',
+      typescript: true,
+    });
+  }
+  return _stripe;
+}
 
 export const STRIPE_PLANS = {
   pro: {
     priceId: process.env.STRIPE_PRO_PRICE_ID!,
-    amount: 900, // $9.00
+    amount: 900,
     currency: 'usd',
     interval: 'month',
   },
   unlimited: {
     priceId: process.env.STRIPE_UNLIMITED_PRICE_ID!,
-    amount: 1900, // $19.00
+    amount: 1900,
     currency: 'usd',
     interval: 'month',
   },
 } as const;
 
 export async function createStripeCustomer(email: string, name?: string) {
-  return stripe.customers.create({ email, name });
+  return getStripe().customers.create({ email, name });
 }
 
 export async function createCheckoutSession({
@@ -39,7 +46,7 @@ export async function createCheckoutSession({
   userId: string;
   plan: string;
 }) {
-  return stripe.checkout.sessions.create({
+  return getStripe().checkout.sessions.create({
     customer: customerId,
     payment_method_types: ['card'],
     mode: 'subscription',
@@ -55,5 +62,5 @@ export async function createCheckoutSession({
 }
 
 export async function cancelStripeSubscription(subscriptionId: string) {
-  return stripe.subscriptions.cancel(subscriptionId);
+  return getStripe().subscriptions.cancel(subscriptionId);
 }

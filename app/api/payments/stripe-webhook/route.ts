@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { stripe } from '@/lib/stripe';
+import { getStripe } from '@/lib/stripe';
 import { createAdminClient } from '@/lib/supabase/server';
 import type Stripe from 'stripe';
 
@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
 
   let event: Stripe.Event;
   try {
-    event = stripe.webhooks.constructEvent(body, sig!, webhookSecret);
+    event = getStripe().webhooks.constructEvent(body, sig!, webhookSecret);
   } catch (err) {
     console.error('Stripe webhook signature error:', err);
     return NextResponse.json({ error: 'Webhook signature verification failed.' }, { status: 400 });
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
             ? session.subscription
             : session.subscription.id;
 
-          const sub = await stripe.subscriptions.retrieve(subscriptionId);
+          const sub = await getStripe().subscriptions.retrieve(subscriptionId);
           const periodEnd = new Date(sub.current_period_end * 1000).toISOString();
 
           // Update user plan
