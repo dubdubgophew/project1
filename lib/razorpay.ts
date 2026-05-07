@@ -1,22 +1,29 @@
 import Razorpay from 'razorpay';
 import crypto from 'crypto';
 
-export const razorpay = new Razorpay({
-  key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-  key_secret: process.env.RAZORPAY_KEY_SECRET!,
-});
+let _razorpay: Razorpay | null = null;
+
+function getRazorpay(): Razorpay {
+  if (!_razorpay) {
+    _razorpay = new Razorpay({
+      key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+      key_secret: process.env.RAZORPAY_KEY_SECRET!,
+    });
+  }
+  return _razorpay;
+}
 
 export const RAZORPAY_PLANS = {
   pro: {
     planId: process.env.RAZORPAY_PRO_PLAN_ID!,
-    amount: 69900, // ₹699 in paise
+    amount: 69900,
     currency: 'INR',
     interval: 1,
     period: 'monthly',
   },
   unlimited: {
     planId: process.env.RAZORPAY_UNLIMITED_PLAN_ID!,
-    amount: 149900, // ₹1499 in paise
+    amount: 149900,
     currency: 'INR',
     interval: 1,
     period: 'monthly',
@@ -24,7 +31,7 @@ export const RAZORPAY_PLANS = {
 } as const;
 
 export async function createRazorpayOrder(amount: number, currency = 'INR') {
-  return razorpay.orders.create({
+  return getRazorpay().orders.create({
     amount,
     currency,
     receipt: `receipt_${Date.now()}`,
@@ -32,7 +39,7 @@ export async function createRazorpayOrder(amount: number, currency = 'INR') {
 }
 
 export async function createRazorpaySubscription(planId: string, totalCount = 12) {
-  return razorpay.subscriptions.create({
+  return getRazorpay().subscriptions.create({
     plan_id: planId,
     customer_notify: 1,
     total_count: totalCount,

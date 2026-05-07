@@ -7,8 +7,6 @@
 import { createAdminClient } from '@/lib/supabase/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 interface WeeklyReport {
   weekOf: string;
   totalUsers: number;
@@ -92,6 +90,7 @@ export async function generateWeeklyReport(): Promise<WeeklyReport> {
 }
 
 export async function sendWeeklyReport(): Promise<void> {
+  const resend = new Resend(process.env.RESEND_API_KEY);
   const report = await generateWeeklyReport();
   const adminEmail = process.env.ADMIN_EMAIL!;
 
