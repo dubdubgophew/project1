@@ -13,7 +13,6 @@ const PLANS = [
     name: 'Free',
     icon: Zap,
     priceUSD: 0,
-    priceINR: 0,
     description: 'Perfect for trying Formly.',
     features: [
       '5 AI uses per day (no signup)',
@@ -34,7 +33,6 @@ const PLANS = [
     name: 'Pro',
     icon: Star,
     priceUSD: 9,
-    priceINR: 699,
     description: 'For freelancers and power users.',
     features: [
       '200 AI uses per day',
@@ -48,7 +46,6 @@ const PLANS = [
     ],
     notIncluded: ['API access', 'White-label output'],
     cta: 'Start Pro',
-    href: '/signup?plan=pro',
     highlighted: true,
     badge: 'Most Popular',
   },
@@ -57,7 +54,6 @@ const PLANS = [
     name: 'Unlimited',
     icon: Building2,
     priceUSD: 19,
-    priceINR: 1499,
     description: 'For agencies and heavy users.',
     features: [
       'Unlimited AI uses per day',
@@ -72,14 +68,12 @@ const PLANS = [
     ],
     notIncluded: [],
     cta: 'Go Unlimited',
-    href: '/signup?plan=unlimited',
     highlighted: false,
     badge: 'Best Value',
   },
 ];
 
 export default function PricingPage() {
-  const [currency, setCurrency] = useState<'usd' | 'inr'>('usd');
   const [billingLoading, setBillingLoading] = useState<string | null>(null);
 
   async function handleUpgrade(planId: string) {
@@ -98,61 +92,17 @@ export default function PricingPage() {
         return;
       }
 
-      if (currency === 'inr') {
-        // Razorpay flow
-        const res = await fetch('/api/payments/create-razorpay-order', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ plan: planId }),
-        });
-        const data = await res.json();
+      const res = await fetch('/api/payments/create-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan: planId }),
+      });
+      const data = await res.json();
 
-        if (!res.ok) {
-          alert(data.error ?? 'Payment setup failed.');
-          return;
-        }
-
-        // Load Razorpay script
-        const script = document.createElement('script');
-        script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-        document.body.appendChild(script);
-        script.onload = () => {
-          // @ts-ignore
-          const rzp = new window.Razorpay({
-            key: data.keyId,
-            subscription_id: data.subscriptionId,
-            name: data.name,
-            description: data.description,
-            prefill: data.prefill,
-            theme: { color: '#7c3aed' },
-            handler: async (response: { razorpay_payment_id: string; razorpay_subscription_id: string; razorpay_signature: string }) => {
-              const verifyRes = await fetch('/api/payments/razorpay-verify', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...response, plan: planId }),
-              });
-              if (verifyRes.ok) {
-                window.location.href = `/dashboard?upgrade=success&plan=${planId}`;
-              } else {
-                alert('Payment verification failed. Please contact support.');
-              }
-            },
-          });
-          rzp.open();
-        };
+      if (data.url) {
+        window.location.href = data.url;
       } else {
-        // Stripe flow
-        const res = await fetch('/api/payments/create-checkout', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ plan: planId, currency: 'usd' }),
-        });
-        const data = await res.json();
-        if (data.url) {
-          window.location.href = data.url;
-        } else {
-          alert(data.error ?? 'Checkout setup failed.');
-        }
+        alert(data.error ?? 'Checkout setup failed. Please try again.');
       }
     } finally {
       setBillingLoading(null);
@@ -169,28 +119,12 @@ export default function PricingPage() {
             <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
               Simple, Transparent Pricing
             </h1>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-8">
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-4">
               Start free. Upgrade when you need more. Cancel anytime — 7-day money-back guarantee.
             </p>
-            {/* Currency toggle */}
-            <div className="inline-flex items-center gap-1 p-1 rounded-xl bg-gray-800 border border-gray-700">
-              {(['usd', 'inr'] as const).map((c) => (
-                <button
-                  key={c}
-                  onClick={() => setCurrency(c)}
-                  className={`px-6 py-2.5 rounded-lg text-sm font-semibold transition-all ${
-                    currency === c ? 'bg-violet-600 text-white shadow-lg' : 'text-gray-400 hover:text-white'
-                  }`}
-                >
-                  {c === 'usd' ? '🌍 USD' : '🇮🇳 INR'}
-                </button>
-              ))}
-            </div>
-            {currency === 'inr' && (
-              <p className="text-xs text-gray-500 mt-3">
-                INR payments via Razorpay · UPI, cards, net banking accepted
-              </p>
-            )}
+            <p className="text-sm text-gray-600">
+              All prices in USD · Local currency shown at checkout · All taxes included
+            </p>
           </div>
 
           {/* Plans */}
@@ -228,9 +162,7 @@ export default function PricingPage() {
                     <span className="text-5xl font-bold text-white">Free</span>
                   ) : (
                     <div className="flex items-end gap-1">
-                      <span className="text-5xl font-bold text-white">
-                        {currency === 'usd' ? `$${plan.priceUSD}` : `₹${plan.priceINR}`}
-                      </span>
+                      <span className="text-5xl font-bold text-white">${plan.priceUSD}</span>
                       <span className="text-gray-500 mb-2">/mo</span>
                     </div>
                   )}
@@ -238,7 +170,6 @@ export default function PricingPage() {
                 {plan.priceUSD > 0 && (
                   <p className="text-xs text-gray-600 mb-3">
                     Billed monthly · Cancel anytime
-                    {currency === 'usd' && ` · or $${plan.priceUSD * 10}/year (save 2 months)`}
                   </p>
                 )}
 
@@ -265,7 +196,7 @@ export default function PricingPage() {
                   className={`w-full justify-center py-3.5 ${plan.highlighted ? 'btn-primary' : 'btn-secondary'}`}
                 >
                   {billingLoading === plan.id ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <Loader2 className="w-4 h-4 animate-spin mr-2" />
                   ) : null}
                   {plan.cta}
                 </button>
@@ -315,7 +246,7 @@ export default function PricingPage() {
               {[
                 {
                   q: 'What payment methods do you accept?',
-                  a: 'USD: Visa, Mastercard, Amex, Apple Pay, Google Pay via Stripe. INR: UPI, Debit/Credit cards, Net Banking, Wallets via Razorpay.',
+                  a: 'Cards (Visa, Mastercard, Amex), UPI, net banking, Apple Pay, Google Pay, and more — via DodoPayments. Your local currency is shown at checkout. All taxes included.',
                 },
                 {
                   q: 'Can I cancel anytime?',
@@ -350,8 +281,7 @@ export default function PricingPage() {
           {/* Trust signals */}
           <div className="mt-16 text-center">
             <p className="text-sm text-gray-600">
-              🔒 Payments secured by Stripe & Razorpay · 🛡️ 7-day money-back guarantee ·
-              📧 support@formly.tools · Built in India 🇮🇳
+              🔒 Payments secured by DodoPayments · 🌍 All taxes & GST included · 🛡️ 7-day money-back guarantee · Built in India 🇮🇳
             </p>
           </div>
         </div>
