@@ -1,5 +1,5 @@
 -- ============================================================
--- TOOLORA — Supabase Database Schema
+-- FORMLY — Supabase Database Schema
 -- Run this in Supabase Dashboard > SQL Editor
 -- ============================================================
 
