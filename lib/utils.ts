@@ -43,7 +43,8 @@ export function stripMarkdown(text: string): string {
 }
 
 export const PLAN_LIMITS: Record<string, number> = {
-  free: 5,
+  anonymous: 5,
+  free: 10,
   pro: 200,
   unlimited: 999_999,
 };

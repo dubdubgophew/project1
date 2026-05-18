@@ -11,7 +11,7 @@ import { BannerAd } from '@/components/shared/AdSense';
 export const metadata: Metadata = {
   title: 'Formly — 10 Free AI Tools: PDF Summarizer, Paraphraser, Grammar Checker & More',
   description:
-    'Free AI tools online: PDF summarizer, paraphraser, grammar checker, email writer, code explainer, YouTube summarizer, resume builder & more. No signup needed. Powered by LLaMA 3.',
+    'Free AI tools online: PDF summarizer, paraphraser, grammar checker, email writer, code explainer, YouTube summarizer, resume builder & more. No signup needed. Powered by Groq AI.',
   alternates: { canonical: 'https://formly.tools' },
 };
 
