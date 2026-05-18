@@ -2,11 +2,11 @@
 
 import { useState, useMemo } from 'react';
 import { ToolLayout } from '@/components/tools/ToolLayout';
-import { Printer, Plus, Minus } from 'lucide-react';
+import { Download, Loader2, AlertCircle } from 'lucide-react';
 
 // ─── TAX TABLES 2024/2025 ────────────────────────────────────────────────────
 
-type Bracket = [number, number]; // [upper bound, rate]
+type Bracket = [number, number];
 
 function applyBrackets(income: number, brackets: Bracket[]): number {
   let tax = 0, prev = 0;
@@ -45,7 +45,6 @@ const USA_STATES: [string, string, number][] = [
 
 const GB_IT: Bracket[] = [[12570,0],[50270,.20],[125140,.40],[Infinity,.45]];
 const GB_NI: Bracket[] = [[12570,0],[50270,.08],[Infinity,.02]];
-
 const CA_FED: Bracket[] = [[55867,.15],[111733,.205],[154906,.26],[220000,.29],[Infinity,.33]];
 const CA_PROVS: [string, string, number][] = [
   ['AB','Alberta',.10],['BC','British Columbia',.0706],['MB','Manitoba',.108],
@@ -53,7 +52,6 @@ const CA_PROVS: [string, string, number][] = [
   ['NT','Northwest Territories',.059],['NU','Nunavut',.04],['ON','Ontario',.0505],
   ['PE','Prince Edward Island',.098],['QC','Quebec',.14],['SK','Saskatchewan',.105],['YT','Yukon',.064],
 ];
-
 const AU_IT: Bracket[] = [[18200,0],[45000,.19],[120000,.325],[180000,.37],[Infinity,.45]];
 const IN_IT: Bracket[] = [[300000,0],[600000,.05],[900000,.10],[1200000,.15],[1500000,.20],[Infinity,.30]];
 const NZ_IT: Bracket[] = [[14000,.105],[48000,.175],[70000,.30],[180000,.33],[Infinity,.39]];
@@ -75,14 +73,10 @@ interface Calc {
 function calculate(
   country: string, annualGross: number, mult: number,
   filing: string, usState: string, caProv: string,
-  k401: number, health: number, dental: number, hsa: number,
-  otherPost: number
+  k401: number, health: number, dental: number, hsa: number, otherPost: number
 ): Calc {
   const gross = annualGross / mult;
-  const preTaxLines: Line[] = [];
-  const taxLines: Line[] = [];
-  const postTaxLines: Line[] = [];
-  const employerLines: Line[] = [];
+  const preTaxLines: Line[] = [], taxLines: Line[] = [], postTaxLines: Line[] = [], employerLines: Line[] = [];
   let annPre = 0;
 
   if (country === 'US') {
@@ -106,36 +100,30 @@ function calculate(
     employerLines.push({ label: 'Social Security (6.2%)', amount: ss / mult });
     employerLines.push({ label: 'Medicare (1.45%)', amount: annualGross * 0.0145 / mult });
     employerLines.push({ label: 'FUTA (0.6%)', amount: Math.min(annualGross, 7000) * 0.006 / mult });
-
   } else if (country === 'GB') {
     taxLines.push({ label: 'Income Tax (PAYE)', amount: applyBrackets(annualGross, GB_IT) / mult });
     taxLines.push({ label: 'National Insurance (Employee)', amount: applyBrackets(annualGross, GB_NI) / mult });
-    employerLines.push({ label: "Employer NI (13.8%)", amount: Math.max(0, annualGross - 9100) * 0.138 / mult });
-
+    employerLines.push({ label: 'Employer NI (13.8%)', amount: Math.max(0, annualGross - 9100) * 0.138 / mult });
   } else if (country === 'CA') {
     const taxable = Math.max(0, annualGross - 15705);
     const fed = applyBrackets(taxable, CA_FED);
     const provRate = CA_PROVS.find(p => p[0] === caProv)?.[2] ?? 0.1;
-    const prov = taxable * provRate;
     const cpp = Math.max(0, Math.min(annualGross, 73200) - 3500) * 0.0595;
     const ei = Math.min(annualGross, 63200) * 0.0166;
     taxLines.push({ label: 'Federal Income Tax', amount: fed / mult });
-    taxLines.push({ label: `${CA_PROVS.find(p=>p[0]===caProv)?.[1]??'Provincial'} Tax`, amount: prov / mult });
+    taxLines.push({ label: `${CA_PROVS.find(p=>p[0]===caProv)?.[1]??'Provincial'} Tax`, amount: taxable * provRate / mult });
     taxLines.push({ label: 'CPP Contributions (5.95%)', amount: cpp / mult });
     taxLines.push({ label: 'EI Premiums (1.66%)', amount: ei / mult });
     employerLines.push({ label: 'Employer CPP (5.95%)', amount: cpp / mult });
     employerLines.push({ label: 'Employer EI (2.32%)', amount: Math.min(annualGross, 63200) * 0.0232 / mult });
-
   } else if (country === 'AU') {
     const rawIT = applyBrackets(annualGross, AU_IT);
-    const lito = annualGross <= 37500 ? 700 : annualGross <= 45000 ? 700 - (annualGross - 37500) * 0.05
-      : annualGross <= 66667 ? 325 - (annualGross - 45000) * 0.015 : 0;
+    const lito = annualGross <= 37500 ? 700 : annualGross <= 45000 ? 700 - (annualGross-37500)*0.05
+      : annualGross <= 66667 ? 325 - (annualGross-45000)*0.015 : 0;
     const medicare = annualGross > 26000 ? annualGross * 0.02 : 0;
-    const super_ = annualGross * 0.115;
     taxLines.push({ label: 'Income Tax', amount: Math.max(0, rawIT - lito) / mult });
     taxLines.push({ label: 'Medicare Levy (2%)', amount: medicare / mult });
-    employerLines.push({ label: 'Superannuation (11.5%)', amount: super_ / mult, note: 'Employer pays' });
-
+    employerLines.push({ label: 'Superannuation (11.5%)', amount: annualGross * 0.115 / mult, note: 'Employer pays' });
   } else if (country === 'IN') {
     const taxable = Math.max(0, annualGross - 75000);
     const base = applyBrackets(taxable, IN_IT);
@@ -145,27 +133,22 @@ function calculate(
     taxLines.push({ label: 'Income Tax + Health & Edu Cess', amount: (base * 1.04) / mult });
     if (esi > 0) taxLines.push({ label: 'ESI (0.75%)', amount: esi / mult });
     annPre = pf;
-
   } else if (country === 'NZ') {
     taxLines.push({ label: 'PAYE Income Tax', amount: applyBrackets(annualGross, NZ_IT) / mult });
     taxLines.push({ label: 'ACC Earners Levy (1.6%)', amount: Math.min(annualGross, 142283) * 0.016 / mult });
-
   } else if (country === 'IE') {
     const it = applyBrackets(annualGross, IE_IT);
     const prsi = annualGross * 0.04;
-    const usc = annualGross <= 12012 ? 0 : annualGross <= 22920 ? (annualGross - 12012) * 0.02
-      : annualGross <= 70044 ? 10908 * 0.02 + (annualGross - 22920) * 0.04
-      : 10908 * 0.02 + 47124 * 0.04 + (annualGross - 70044) * 0.08;
+    const usc = annualGross <= 12012 ? 0 : annualGross <= 22920 ? (annualGross-12012)*0.02
+      : annualGross <= 70044 ? 10908*0.02+(annualGross-22920)*0.04
+      : 10908*0.02+47124*0.04+(annualGross-70044)*0.08;
     taxLines.push({ label: 'Income Tax (PAYE)', amount: it / mult });
     taxLines.push({ label: 'PRSI (4%)', amount: prsi / mult });
     taxLines.push({ label: 'USC', amount: usc / mult });
-
   } else if (country === 'SG') {
-    const cpfEmp = Math.min(annualGross, 102000) * 0.20;
-    const cpfEmr = Math.min(annualGross, 102000) * 0.17;
     taxLines.push({ label: 'Income Tax', amount: applyBrackets(annualGross, SG_IT) / mult });
-    taxLines.push({ label: 'CPF Employee (20%)', amount: cpfEmp / mult });
-    employerLines.push({ label: 'CPF Employer (17%)', amount: cpfEmr / mult });
+    taxLines.push({ label: 'CPF Employee (20%)', amount: Math.min(annualGross, 102000) * 0.20 / mult });
+    employerLines.push({ label: 'CPF Employer (17%)', amount: Math.min(annualGross, 102000) * 0.17 / mult });
   }
 
   if (otherPost > 0) postTaxLines.push({ label: 'Other Post-Tax Deduction', amount: otherPost });
@@ -181,6 +164,151 @@ function calculate(
     totalWithheld, net: Math.max(0, gross - totalWithheld),
     effectiveRate: gross > 0 ? totalTax / gross : 0,
   };
+}
+
+// ─── PDF GENERATOR ───────────────────────────────────────────────────────────
+
+function esc(s: string) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function buildPaystubHTML(
+  calc: Calc, sym: string,
+  coName: string, coAddr: string, ein: string, country: string,
+  empName: string, empTitle: string, empAddr: string, empId: string,
+  payDate: string, periStart: string, periEnd: string, periodLabel: string
+): string {
+  const fmt = (n: number) => `${sym}${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+  const deductRows = (lines: Line[]) => lines.map(l =>
+    `<tr><td class="lbl">${esc(l.label)}${l.note ? ` <span class="note">(${esc(l.note)})</span>` : ''}</td>
+     <td class="amt ded">-${fmt(l.amount)}</td></tr>`
+  ).join('');
+
+  const empRows = calc.employerLines.map(l =>
+    `<tr><td class="lbl g">${esc(l.label)}${l.note ? ` (${esc(l.note)})` : ''}</td><td class="amt g">${fmt(l.amount)}</td></tr>`
+  ).join('');
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pay Stub — ${esc(empName || 'Employee')}</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,Helvetica,sans-serif;font-size:11px;background:#fff;color:#111}
+.page{max-width:680px;margin:24px auto;border:1px solid #d1d5db}
+.hdr{background:#111827;color:#fff;padding:20px 24px;display:flex;justify-content:space-between;align-items:flex-start}
+.co-name{font-size:16px;font-weight:700}
+.co-detail{color:#9ca3af;font-size:10px;margin-top:3px}
+.pay-label{color:#818cf8;font-weight:700;font-size:13px;text-align:right}
+.pay-meta{color:#9ca3af;font-size:10px;text-align:right;margin-top:3px}
+.emp{padding:12px 24px;background:#f9fafb;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:flex-start}
+.emp-name{font-weight:700;font-size:13px}
+.emp-detail{color:#6b7280;font-size:10px;margin-top:2px}
+.sec{padding:10px 24px;border-top:1px solid #f3f4f6}
+.sec-hdr{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#374151;border-bottom:1px solid #e5e7eb;padding-bottom:5px;margin-bottom:6px;display:flex;justify-content:space-between}
+table{width:100%;border-collapse:collapse}
+td{padding:3px 0;font-size:11px}
+td.lbl{color:#4b5563}
+td.amt{text-align:right;font-weight:500}
+td.ded{color:#dc2626}
+.note{color:#9ca3af;font-size:9px}
+.total-row td{border-top:1px solid #f3f4f6;font-weight:700;padding-top:5px}
+.net{background:#7c3aed;color:#fff;padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
+.net-lbl{font-weight:700;font-size:13px}
+.net-sub{color:#c4b5fd;font-size:10px;margin-top:2px}
+.net-amt{font-size:22px;font-weight:700}
+.empr{padding:10px 24px;background:#f9fafb;border-top:1px solid #e5e7eb}
+.empr-title{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;margin-bottom:5px}
+td.g{color:#6b7280}
+.summary{display:flex;border-top:1px solid #e5e7eb}
+.sum-item{flex:1;padding:10px 24px;text-align:center;border-right:1px solid #f3f4f6}
+.sum-item:last-child{border-right:none}
+.sum-lbl{font-size:10px;color:#6b7280}
+.sum-val{font-size:13px;font-weight:700;margin-top:2px}
+.sum-val.red{color:#dc2626}.sum-val.grn{color:#15803d}
+.footer{padding:8px 24px;border-top:1px solid #f3f4f6;text-align:center;font-size:10px;color:#9ca3af}
+@media print{body{margin:0}.page{border:none;max-width:100%;margin:0}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="hdr">
+    <div>
+      <div class="co-name">${esc(coName || 'Company Name')}</div>
+      ${coAddr ? `<div class="co-detail">${esc(coAddr)}</div>` : ''}
+      ${ein ? `<div class="co-detail">${country === 'US' ? 'EIN' : 'Reg No'}: ${esc(ein)}</div>` : ''}
+    </div>
+    <div>
+      <div class="pay-label">PAY STATEMENT</div>
+      <div class="pay-meta">Pay Date: ${esc(payDate || '—')}</div>
+      ${periStart && periEnd ? `<div class="pay-meta">${esc(periStart)} – ${esc(periEnd)}</div>` : ''}
+      <div class="pay-meta">${esc(periodLabel)}</div>
+    </div>
+  </div>
+
+  <div class="emp">
+    <div>
+      <div class="emp-name">${esc(empName || 'Employee Name')}</div>
+      ${empTitle ? `<div class="emp-detail">${esc(empTitle)}</div>` : ''}
+      ${empAddr ? `<div class="emp-detail">${esc(empAddr)}</div>` : ''}
+    </div>
+    ${empId ? `<div class="emp-detail">ID: ${esc(empId)}</div>` : ''}
+  </div>
+
+  <div class="sec">
+    <div class="sec-hdr"><span>EARNINGS</span><span>AMOUNT</span></div>
+    <table>
+      <tr><td class="lbl">Regular Pay (${esc(periodLabel)})</td><td class="amt">${fmt(calc.gross)}</td></tr>
+      <tr class="total-row"><td class="lbl">Gross Pay</td><td class="amt">${fmt(calc.gross)}</td></tr>
+    </table>
+  </div>
+
+  ${calc.preTaxLines.length > 0 ? `
+  <div class="sec">
+    <div class="sec-hdr"><span>PRE-TAX DEDUCTIONS</span><span>AMOUNT</span></div>
+    <table>
+      ${deductRows(calc.preTaxLines)}
+      <tr class="total-row"><td class="lbl">Taxable Gross</td><td class="amt">${fmt(calc.taxableGross)}</td></tr>
+    </table>
+  </div>` : ''}
+
+  <div class="sec">
+    <div class="sec-hdr"><span>TAXES &amp; WITHHOLDING</span><span>AMOUNT</span></div>
+    <table>${deductRows(calc.taxLines)}</table>
+  </div>
+
+  ${calc.postTaxLines.length > 0 ? `
+  <div class="sec">
+    <div class="sec-hdr"><span>POST-TAX DEDUCTIONS</span><span>AMOUNT</span></div>
+    <table>${deductRows(calc.postTaxLines)}</table>
+  </div>` : ''}
+
+  <div class="net">
+    <div>
+      <div class="net-lbl">NET PAY</div>
+      <div class="net-sub">Effective tax rate: ${(calc.effectiveRate * 100).toFixed(1)}%</div>
+    </div>
+    <div class="net-amt">${fmt(calc.net)}</div>
+  </div>
+
+  ${calc.employerLines.length > 0 ? `
+  <div class="empr">
+    <div class="empr-title">Employer Contributions (not deducted from employee pay)</div>
+    <table>${empRows}</table>
+  </div>` : ''}
+
+  <div class="summary">
+    <div class="sum-item"><div class="sum-lbl">Gross Pay</div><div class="sum-val">${fmt(calc.gross)}</div></div>
+    <div class="sum-item"><div class="sum-lbl">Total Deducted</div><div class="sum-val red">-${fmt(calc.totalWithheld)}</div></div>
+    <div class="sum-item"><div class="sum-lbl">Net Pay</div><div class="sum-val grn">${fmt(calc.net)}</div></div>
+  </div>
+
+  <div class="footer">Generated by Formly · formly.tools · Tax tables 2024/2025</div>
+</div>
+</body>
+</html>`;
 }
 
 // ─── CONFIG ──────────────────────────────────────────────────────────────────
@@ -205,12 +333,10 @@ const PERIODS = [
 ];
 
 const RELATED = [
-  { name: 'Resume Builder',      href: '/tools/resume-builder',      icon: '📋' },
-  { name: 'Contract Generator',  href: '/tools/contract-generator',  icon: '📜' },
-  { name: 'Email Writer',        href: '/tools/email-writer',        icon: '📧' },
+  { name: 'Resume Builder',     href: '/tools/resume-builder',     icon: '📋' },
+  { name: 'Contract Generator', href: '/tools/contract-generator', icon: '📜' },
+  { name: 'Email Writer',       href: '/tools/email-writer',       icon: '📧' },
 ];
-
-// ─── HELPERS ─────────────────────────────────────────────────────────────────
 
 function money(n: number, sym: string) {
   return `${sym}${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -244,15 +370,15 @@ export default function PaystubGeneratorPage() {
   const [grossPay, setGrossPay] = useState('');
   const [payDate, setPayDate]   = useState(today);
   const [periStart, setPeriStart] = useState('');
-  const [periEnd,   setPeriEnd]   = useState('');
+  const [periEnd, setPeriEnd]     = useState('');
 
-  const [coName,    setCoName]    = useState('');
-  const [coAddr,    setCoAddr]    = useState('');
-  const [ein,       setEin]       = useState('');
-  const [empName,   setEmpName]   = useState('');
-  const [empId,     setEmpId]     = useState('');
-  const [empTitle,  setEmpTitle]  = useState('');
-  const [empAddr,   setEmpAddr]   = useState('');
+  const [coName,   setCoName]   = useState('');
+  const [coAddr,   setCoAddr]   = useState('');
+  const [ein,      setEin]      = useState('');
+  const [empName,  setEmpName]  = useState('');
+  const [empId,    setEmpId]    = useState('');
+  const [empTitle, setEmpTitle] = useState('');
+  const [empAddr,  setEmpAddr]  = useState('');
 
   const [filing,    setFiling]    = useState('single');
   const [usState,   setUsState]   = useState('CA');
@@ -262,6 +388,9 @@ export default function PaystubGeneratorPage() {
   const [dental,    setDental]    = useState(0);
   const [hsa,       setHsa]       = useState(0);
   const [otherPost, setOtherPost] = useState(0);
+
+  const [dlLoading, setDlLoading] = useState(false);
+  const [dlError,   setDlError]   = useState('');
 
   const sym  = COUNTRIES.find(c => c.code === country)?.symbol ?? '$';
   const mult = PERIODS.find(p => p.key === period)?.perYear ?? 26;
@@ -274,6 +403,32 @@ export default function PaystubGeneratorPage() {
 
   const periodLabel = PERIODS.find(p => p.key === period)?.label ?? '';
 
+  async function handleDownload() {
+    if (!calc) return;
+    setDlLoading(true);
+    setDlError('');
+    try {
+      const res = await fetch('/api/tools/paystub', { method: 'POST' });
+      const data = await res.json();
+      if (!res.ok) {
+        setDlError(data.error ?? 'Download failed. Please try again.');
+        return;
+      }
+    } catch {
+      setDlError('Network error. Please try again.');
+      return;
+    } finally {
+      setDlLoading(false);
+    }
+
+    const html = buildPaystubHTML(calc, sym, coName, coAddr, ein, country, empName, empTitle, empAddr, empId, payDate, periStart, periEnd, periodLabel);
+    const win = window.open('', '_blank');
+    if (!win) { setDlError('Popup blocked — please allow popups for this site.'); return; }
+    win.document.write(html);
+    win.document.close();
+    setTimeout(() => win.print(), 350);
+  }
+
   return (
     <ToolLayout
       title="Pay Stub Generator"
@@ -284,14 +439,13 @@ export default function PaystubGeneratorPage() {
       <div className="grid lg:grid-cols-[1fr_420px] gap-6">
 
         {/* ── FORM ── */}
-        <div className="space-y-5 print:hidden">
+        <div className="space-y-5">
 
-          {/* Country */}
           <div className="card">
             <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-4">Country / Region</h2>
             <div className="grid grid-cols-4 gap-2">
               {COUNTRIES.map(c => (
-                <button key={c.code} onClick={() => setCountry(c.code)}
+                <button key={c.code} type="button" onClick={() => setCountry(c.code)}
                   className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border text-center transition-all ${
                     country === c.code
                       ? 'bg-violet-500/20 border-violet-500/40 text-violet-300'
@@ -304,15 +458,12 @@ export default function PaystubGeneratorPage() {
             </div>
           </div>
 
-          {/* Pay Details */}
           <div className="card">
             <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-4">Pay Details</h2>
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label className="label text-xs">Gross Pay This Period ({sym})</label>
-                <input type="number" min={0} value={grossPay}
-                  onChange={e => setGrossPay(e.target.value)}
-                  placeholder="e.g. 3500" className="input text-sm" />
+                <input type="number" min={0} value={grossPay} onChange={e => setGrossPay(e.target.value)} placeholder="e.g. 3500" className="input text-sm" />
               </div>
               <div>
                 <label className="label text-xs">Pay Frequency</label>
@@ -328,14 +479,13 @@ export default function PaystubGeneratorPage() {
                 <label className="label text-xs">Period Start</label>
                 <input type="date" value={periStart} onChange={e => setPeriStart(e.target.value)} className="input text-sm" />
               </div>
-              <div>
+              <div className="sm:col-span-2">
                 <label className="label text-xs">Period End</label>
                 <input type="date" value={periEnd} onChange={e => setPeriEnd(e.target.value)} className="input text-sm" />
               </div>
             </div>
           </div>
 
-          {/* US-specific: filing + state */}
           {country === 'US' && (
             <div className="card">
               <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-4">Tax Settings (USA)</h2>
@@ -360,7 +510,6 @@ export default function PaystubGeneratorPage() {
             </div>
           )}
 
-          {/* Canada-specific: province */}
           {country === 'CA' && (
             <div className="card">
               <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-4">Tax Settings (Canada)</h2>
@@ -373,7 +522,6 @@ export default function PaystubGeneratorPage() {
             </div>
           )}
 
-          {/* Deductions (US) */}
           {country === 'US' && (
             <div className="card">
               <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-4">Pre-Tax Deductions</h2>
@@ -386,13 +534,11 @@ export default function PaystubGeneratorPage() {
             </div>
           )}
 
-          {/* Other post-tax */}
           <div className="card">
             <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-4">Post-Tax Deductions (optional)</h2>
             <NumInput label="Other Deductions (per period)" value={otherPost} onChange={setOtherPost} prefix={sym} />
           </div>
 
-          {/* Employer */}
           <div className="card">
             <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-4">Employer Information</h2>
             <div className="space-y-3">
@@ -402,7 +548,6 @@ export default function PaystubGeneratorPage() {
             </div>
           </div>
 
-          {/* Employee */}
           <div className="card">
             <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-4">Employee Information</h2>
             <div className="grid sm:grid-cols-2 gap-3">
@@ -414,39 +559,43 @@ export default function PaystubGeneratorPage() {
           </div>
         </div>
 
-        {/* ── PREVIEW ── */}
-        <div className="lg:sticky lg:top-24 lg:self-start space-y-4 print:w-full">
+        {/* ── LIVE PREVIEW ── */}
+        <div className="lg:sticky lg:top-24 lg:self-start space-y-4">
           {calc ? (
             <>
-              {/* Print button */}
-              <button onClick={() => window.print()}
-                className="btn-primary w-full justify-center print:hidden">
-                <Printer className="w-4 h-4" /> Download / Print PDF
+              <button
+                type="button"
+                onClick={handleDownload}
+                disabled={dlLoading}
+                className="btn-primary w-full justify-center">
+                {dlLoading
+                  ? <><Loader2 className="w-4 h-4 animate-spin" /> Preparing…</>
+                  : <><Download className="w-4 h-4" /> Download / Print PDF</>}
               </button>
 
-              {/* Paystub card */}
-              <div id="paystub" className="bg-white text-gray-900 rounded-2xl overflow-hidden shadow-2xl print:shadow-none print:rounded-none text-xs print:text-sm">
+              {dlError && (
+                <div className="flex items-start gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs">
+                  <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />{dlError}
+                </div>
+              )}
 
-                {/* Header */}
+              <div className="bg-white text-gray-900 rounded-2xl overflow-hidden shadow-2xl text-xs">
                 <div className="bg-gray-900 text-white px-5 py-4">
                   <div className="flex justify-between items-start">
                     <div>
                       <div className="font-bold text-base">{coName || 'Company Name'}</div>
-                      <div className="text-gray-400 text-xs mt-0.5">{coAddr || 'Company Address'}</div>
+                      <div className="text-gray-400 text-xs mt-0.5">{coAddr || ''}</div>
                       {ein && <div className="text-gray-500 text-xs">{country === 'US' ? 'EIN' : 'Reg No'}: {ein}</div>}
                     </div>
                     <div className="text-right">
                       <div className="text-violet-400 font-bold text-sm">PAY STATEMENT</div>
                       <div className="text-gray-400 text-xs mt-0.5">Pay Date: {payDate || '—'}</div>
-                      {periStart && periEnd && (
-                        <div className="text-gray-500 text-xs">{periStart} – {periEnd}</div>
-                      )}
+                      {periStart && periEnd && <div className="text-gray-500 text-xs">{periStart} – {periEnd}</div>}
                       <div className="text-gray-400 text-xs">{periodLabel}</div>
                     </div>
                   </div>
                 </div>
 
-                {/* Employee info */}
                 <div className="px-5 py-3 bg-gray-50 border-b border-gray-200 flex justify-between">
                   <div>
                     <div className="font-semibold text-sm">{empName || 'Employee Name'}</div>
@@ -456,69 +605,55 @@ export default function PaystubGeneratorPage() {
                   {empId && <div className="text-gray-500">ID: {empId}</div>}
                 </div>
 
-                {/* Earnings */}
                 <div className="px-5 py-3">
-                  <div className="flex justify-between font-semibold text-gray-700 border-b border-gray-200 pb-1 mb-2">
-                    <span>EARNINGS</span><span>AMOUNT</span>
+                  <div className="flex justify-between font-semibold text-gray-700 border-b border-gray-200 pb-1 mb-2 text-xs tracking-wider uppercase">
+                    <span>Earnings</span><span>Amount</span>
                   </div>
-                  <div className="flex justify-between py-1">
-                    <span className="text-gray-600">Regular Pay ({periodLabel})</span>
-                    <span className="font-medium">{money(calc.gross, sym)}</span>
-                  </div>
-                  <div className="flex justify-between py-1 border-t border-gray-100 font-semibold">
-                    <span>Gross Pay</span>
-                    <span>{money(calc.gross, sym)}</span>
-                  </div>
+                  <div className="flex justify-between py-1"><span className="text-gray-600">Regular Pay ({periodLabel})</span><span>{money(calc.gross, sym)}</span></div>
+                  <div className="flex justify-between py-1 border-t border-gray-100 font-semibold"><span>Gross Pay</span><span>{money(calc.gross, sym)}</span></div>
                 </div>
 
-                {/* Pre-tax deductions */}
                 {calc.preTaxLines.length > 0 && (
                   <div className="px-5 py-3 border-t border-gray-100">
-                    <div className="flex justify-between font-semibold text-gray-700 border-b border-gray-200 pb-1 mb-2">
-                      <span>PRE-TAX DEDUCTIONS</span><span>AMOUNT</span>
+                    <div className="flex justify-between font-semibold text-gray-700 border-b border-gray-200 pb-1 mb-2 text-xs tracking-wider uppercase">
+                      <span>Pre-Tax Deductions</span><span>Amount</span>
                     </div>
                     {calc.preTaxLines.map((l, i) => (
                       <div key={i} className="flex justify-between py-1 text-gray-600">
-                        <span>{l.label}</span>
-                        <span className="text-red-600">-{money(l.amount, sym)}</span>
+                        <span>{l.label}</span><span className="text-red-600">-{money(l.amount, sym)}</span>
                       </div>
                     ))}
                     <div className="flex justify-between py-1 border-t border-gray-100 text-gray-600">
-                      <span>Taxable Gross</span>
-                      <span className="font-medium">{money(calc.taxableGross, sym)}</span>
+                      <span>Taxable Gross</span><span className="font-medium">{money(calc.taxableGross, sym)}</span>
                     </div>
                   </div>
                 )}
 
-                {/* Taxes */}
                 <div className="px-5 py-3 border-t border-gray-100">
-                  <div className="flex justify-between font-semibold text-gray-700 border-b border-gray-200 pb-1 mb-2">
-                    <span>TAXES & WITHHOLDING</span><span>AMOUNT</span>
+                  <div className="flex justify-between font-semibold text-gray-700 border-b border-gray-200 pb-1 mb-2 text-xs tracking-wider uppercase">
+                    <span>Taxes &amp; Withholding</span><span>Amount</span>
                   </div>
                   {calc.taxLines.map((l, i) => (
                     <div key={i} className="flex justify-between py-1 text-gray-600">
-                      <span>{l.label}{l.note ? <span className="text-gray-400 ml-1">({l.note})</span> : ''}</span>
+                      <span>{l.label}{l.note && <span className="text-gray-400 ml-1 text-xs">({l.note})</span>}</span>
                       <span className="text-red-600">-{money(l.amount, sym)}</span>
                     </div>
                   ))}
                 </div>
 
-                {/* Post-tax */}
                 {calc.postTaxLines.length > 0 && (
                   <div className="px-5 py-3 border-t border-gray-100">
-                    <div className="flex justify-between font-semibold text-gray-700 border-b border-gray-200 pb-1 mb-2">
-                      <span>POST-TAX DEDUCTIONS</span><span>AMOUNT</span>
+                    <div className="flex justify-between font-semibold text-gray-700 border-b border-gray-200 pb-1 mb-2 text-xs tracking-wider uppercase">
+                      <span>Post-Tax Deductions</span><span>Amount</span>
                     </div>
                     {calc.postTaxLines.map((l, i) => (
                       <div key={i} className="flex justify-between py-1 text-gray-600">
-                        <span>{l.label}</span>
-                        <span className="text-red-600">-{money(l.amount, sym)}</span>
+                        <span>{l.label}</span><span className="text-red-600">-{money(l.amount, sym)}</span>
                       </div>
                     ))}
                   </div>
                 )}
 
-                {/* Net Pay */}
                 <div className="px-5 py-4 bg-violet-600 text-white">
                   <div className="flex justify-between items-center">
                     <div>
@@ -529,33 +664,21 @@ export default function PaystubGeneratorPage() {
                   </div>
                 </div>
 
-                {/* Employer contributions */}
                 {calc.employerLines.length > 0 && (
-                  <div className="px-5 py-3 border-t border-gray-200 bg-gray-50">
+                  <div className="px-5 py-3 bg-gray-50 border-t border-gray-200">
                     <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Employer Contributions (not deducted from your pay)</div>
                     {calc.employerLines.map((l, i) => (
                       <div key={i} className="flex justify-between py-0.5 text-gray-500 text-xs">
-                        <span>{l.label}{l.note ? ` (${l.note})` : ''}</span>
-                        <span>{money(l.amount, sym)}</span>
+                        <span>{l.label}{l.note ? ` (${l.note})` : ''}</span><span>{money(l.amount, sym)}</span>
                       </div>
                     ))}
                   </div>
                 )}
 
-                {/* Summary footer */}
                 <div className="px-5 py-3 border-t border-gray-200 bg-gray-50 grid grid-cols-3 gap-2 text-center">
-                  <div>
-                    <div className="text-gray-500 text-xs">Gross Pay</div>
-                    <div className="font-semibold text-sm">{money(calc.gross, sym)}</div>
-                  </div>
-                  <div>
-                    <div className="text-gray-500 text-xs">Total Deducted</div>
-                    <div className="font-semibold text-sm text-red-600">-{money(calc.totalWithheld, sym)}</div>
-                  </div>
-                  <div>
-                    <div className="text-gray-500 text-xs">Net Pay</div>
-                    <div className="font-semibold text-sm text-green-700">{money(calc.net, sym)}</div>
-                  </div>
+                  <div><div className="text-gray-500 text-xs">Gross Pay</div><div className="font-semibold text-sm">{money(calc.gross, sym)}</div></div>
+                  <div><div className="text-gray-500 text-xs">Total Deducted</div><div className="font-semibold text-sm text-red-600">-{money(calc.totalWithheld, sym)}</div></div>
+                  <div><div className="text-gray-500 text-xs">Net Pay</div><div className="font-semibold text-sm text-green-700">{money(calc.net, sym)}</div></div>
                 </div>
 
                 <div className="px-5 py-2 text-center text-gray-400 text-xs border-t border-gray-100">
@@ -572,11 +695,10 @@ export default function PaystubGeneratorPage() {
         </div>
       </div>
 
-      {/* Info note */}
       <div className="card bg-amber-500/5 border-amber-500/20 mt-2">
         <p className="text-xs text-amber-300">
           <strong>2024/2025 Tax Tables.</strong> Calculations use annualized withholding method with standard deductions.
-          State/provincial rates are simplified flat-rate estimates. For payroll compliance, use certified payroll software.
+          State/provincial rates are simplified estimates. For payroll compliance, use certified payroll software.
           This tool is for estimation and reference only.
         </p>
       </div>
