@@ -41,7 +41,7 @@ export function Hero() {
 
         <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-up animate-delay-100">
           Summarize PDFs, rewrite text, check grammar, write emails, explain code,
-          summarize YouTube videos, build resumes & more — powered by advanced AI.
+          generate pay stubs, build resumes & more — powered by Groq AI.
         </p>
 
         {/* CTAs */}
@@ -89,7 +89,7 @@ export function Hero() {
             { emoji: '✅', name: 'Grammar Fix', href: '/tools/grammar-checker', color: 'from-emerald-500/10 to-emerald-600/5 border-emerald-500/20' },
             { emoji: '📧', name: 'Email Writer', href: '/tools/email-writer', color: 'from-amber-500/10 to-amber-600/5 border-amber-500/20' },
             { emoji: '💻', name: 'Code Explainer', href: '/tools/code-explainer', color: 'from-pink-500/10 to-pink-600/5 border-pink-500/20' },
-            { emoji: '▶️', name: 'YouTube AI', href: '/tools/youtube-summarizer', color: 'from-red-500/10 to-red-600/5 border-red-500/20' },
+            { emoji: '🧾', name: 'Pay Stub', href: '/tools/paystub-generator', color: 'from-green-500/10 to-green-600/5 border-green-500/20' },
             { emoji: '📋', name: 'Resume Builder', href: '/tools/resume-builder', color: 'from-teal-500/10 to-teal-600/5 border-teal-500/20' },
             { emoji: '📜', name: 'Contract Gen', href: '/tools/contract-generator', color: 'from-orange-500/10 to-orange-600/5 border-orange-500/20' },
             { emoji: '#️⃣', name: 'Hashtag Gen', href: '/tools/hashtag-generator', color: 'from-cyan-500/10 to-cyan-600/5 border-cyan-500/20' },

@@ -13,7 +13,7 @@ const TOOLS = [
   { name: 'Grammar Checker', href: '/tools/grammar-checker', icon: '✅' },
   { name: 'Email Writer', href: '/tools/email-writer', icon: '📧' },
   { name: 'Code Explainer', href: '/tools/code-explainer', icon: '💻' },
-  { name: 'YouTube Summarizer', href: '/tools/youtube-summarizer', icon: '▶️' },
+  { name: 'Pay Stub Generator', href: '/tools/paystub-generator', icon: '🧾' },
   { name: 'Resume Builder', href: '/tools/resume-builder', icon: '📋' },
   { name: 'Contract Generator', href: '/tools/contract-generator', icon: '📜' },
   { name: 'Hashtag Generator', href: '/tools/hashtag-generator', icon: '#️⃣' },

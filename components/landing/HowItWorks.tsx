@@ -4,7 +4,7 @@ const STEPS = [
   {
     icon: Upload,
     title: 'Paste or Upload',
-    description: 'Enter your text, upload a PDF, paste a YouTube URL, or fill in a simple form — takes 10 seconds.',
+    description: 'Enter your text, upload a PDF, fill in a simple form — takes 10 seconds to get started.',
     color: 'text-violet-400',
     bg: 'bg-violet-500/10',
     border: 'border-violet-500/20',

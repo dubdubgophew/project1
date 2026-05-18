@@ -11,7 +11,7 @@ const STATIC_ROUTES = [
   { url: '/tools/grammar-checker', priority: 0.9, changeFrequency: 'monthly' as const },
   { url: '/tools/email-writer', priority: 0.9, changeFrequency: 'monthly' as const },
   { url: '/tools/code-explainer', priority: 0.9, changeFrequency: 'monthly' as const },
-  { url: '/tools/youtube-summarizer', priority: 0.9, changeFrequency: 'monthly' as const },
+  { url: '/tools/paystub-generator', priority: 0.9, changeFrequency: 'monthly' as const },
   { url: '/tools/resume-builder', priority: 0.9, changeFrequency: 'monthly' as const },
   { url: '/tools/contract-generator', priority: 0.9, changeFrequency: 'monthly' as const },
   { url: '/tools/hashtag-generator', priority: 0.8, changeFrequency: 'monthly' as const },

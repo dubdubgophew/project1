@@ -7,7 +7,7 @@ const TOOLS = [
   { name: 'Grammar Checker', href: '/tools/grammar-checker' },
   { name: 'Email Writer', href: '/tools/email-writer' },
   { name: 'Code Explainer', href: '/tools/code-explainer' },
-  { name: 'YouTube Summarizer', href: '/tools/youtube-summarizer' },
+  { name: 'Pay Stub Generator', href: '/tools/paystub-generator' },
   { name: 'Resume Builder', href: '/tools/resume-builder' },
   { name: 'Contract Generator', href: '/tools/contract-generator' },
   { name: 'Hashtag Generator', href: '/tools/hashtag-generator' },
