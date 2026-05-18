@@ -92,7 +92,7 @@ export function ToolLayout({
                   <li>✓ PDF downloads</li>
                 </ul>
                 <Link href="/pricing" className="btn-primary w-full justify-center text-sm py-2.5">
-                  Start Pro — $9/month
+                  Start Pro — $9.99/month
                 </Link>
               </div>
 

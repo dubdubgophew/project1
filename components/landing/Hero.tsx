@@ -52,7 +52,7 @@ export function Hero() {
           </Link>
           <Link href="/pricing" className="btn-secondary text-base px-8 py-4 group">
             <TrendingUp className="w-5 h-5 text-violet-400" />
-            See Pro Plans from $9/mo
+            See Pro Plans from $9.99/mo
           </Link>
         </div>
 

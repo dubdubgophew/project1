@@ -37,8 +37,8 @@ export default async function AdminPage() {
   const sortedTools = Object.entries(toolCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
 
   // Estimated MRR
-  const proMRR = (proUsers ?? 0) * 9;
-  const unlimMRR = (unlimitedUsers ?? 0) * 19;
+  const proMRR = (proUsers ?? 0) * 9.99;
+  const unlimMRR = (unlimitedUsers ?? 0) * 19.99;
   const totalMRR = proMRR + unlimMRR;
   const mrrINR = totalMRR * 83;
 
@@ -87,11 +87,11 @@ export default async function AdminPage() {
             <h2 className="font-semibold text-white mb-4">Revenue Breakdown</h2>
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
-                <span className="text-gray-400">Pro (${proUsers} × $9)</span>
+                <span className="text-gray-400">Pro ({proUsers} × $9.99)</span>
                 <span className="text-white font-medium">${proMRR}/mo</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-gray-400">Unlimited ({unlimitedUsers} × $19)</span>
+                <span className="text-gray-400">Unlimited ({unlimitedUsers} × $19.99)</span>
                 <span className="text-white font-medium">${unlimMRR}/mo</span>
               </div>
               <div className="border-t border-gray-800 pt-3 flex justify-between">

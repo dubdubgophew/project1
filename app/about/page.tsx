@@ -36,14 +36,14 @@ export default function AboutPage() {
                 color: 'text-amber-400',
                 bg: 'bg-amber-500/10',
                 title: 'Why We Built This',
-                text: 'We were frustrated with tools that charge $30-100/month for basic AI features. Using the latest open-source AI (LLaMA 3.1 70B via Groq), we deliver the same quality at a fraction of the price — $9/month for Pro, or completely free for casual use.',
+                text: 'We were frustrated with tools that charge $30-100/month for basic AI features. Using the latest open-source AI (LLaMA 3.1 70B via Groq), we deliver the same quality at a fraction of the price — $9.99/month for Pro, or completely free for casual use.',
               },
               {
                 icon: Heart,
                 color: 'text-pink-400',
                 bg: 'bg-pink-500/10',
                 title: 'Built in India 🇮🇳',
-                text: 'Formly is proudly built and operated from India. We understand the pain of USD pricing for Indian users — that\'s why we offer INR pricing via Razorpay, with UPI, cards, and net banking support. ₹699/month instead of $9.',
+                text: 'Formly is proudly built and operated from India. We understand the pain of USD pricing for Indian users — that\'s why we use DodoPayments which automatically shows your local currency at checkout — UPI, cards, net banking, and all major wallets supported. All taxes handled automatically.',
               },
               {
                 icon: Shield,

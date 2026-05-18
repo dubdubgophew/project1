@@ -22,7 +22,7 @@ export default function PrivacyPage() {
             <h2>1. What We Collect</h2>
             <p><strong className="text-white">Account data:</strong> Email address and name when you create an account. Used only for authentication and account management.</p>
             <p><strong className="text-white">Usage data:</strong> We log which AI tool was used, the timestamp, and your IP address or user ID — solely for rate limiting (preventing abuse). We do NOT log the content of your requests.</p>
-            <p><strong className="text-white">Payment data:</strong> Handled entirely by Stripe or Razorpay. We never see or store your card details.</p>
+            <p><strong className="text-white">Payment data:</strong> Handled entirely by DodoPayments (our Merchant of Record). We never see or store your card details.</p>
             <p><strong className="text-white">Analytics:</strong> Google Analytics collects anonymized usage data (page views, session duration). No personally identifiable information is sent to Google.</p>
 
             <h2>2. What We Do NOT Collect</h2>
@@ -41,7 +41,7 @@ export default function PrivacyPage() {
             </ul>
 
             <h2>4. Data Storage</h2>
-            <p>Your account data is stored in Supabase (hosted on AWS in the US/EU). Usage logs are automatically deleted after 90 days. Payment data is stored by Stripe/Razorpay under their respective privacy policies.</p>
+            <p>Your account data is stored in Supabase (hosted on AWS in the US/EU). Usage logs are automatically deleted after 90 days. Payment data is stored by DodoPayments under their privacy policy.</p>
 
             <h2>5. Your Rights (GDPR/DPDP)</h2>
             <p>You have the right to: access your data, correct inaccurate data, delete your account and all associated data, export your data. Email <a href="mailto:privacy@formly.tools" className="text-violet-400">privacy@formly.tools</a> to exercise these rights.</p>
@@ -53,7 +53,7 @@ export default function PrivacyPage() {
             <ul>
               <li><strong className="text-white">Groq:</strong> Processes AI requests. Your input is sent to Groq&apos;s API and not stored by us. See <a href="https://groq.com/privacy" className="text-violet-400">Groq Privacy Policy</a>.</li>
               <li><strong className="text-white">Supabase:</strong> Database and authentication.</li>
-              <li><strong className="text-white">Stripe/Razorpay:</strong> Payment processing.</li>
+              <li><strong className="text-white">DodoPayments:</strong> Payment processing. See <a href="https://dodopayments.com/privacy" className="text-violet-400">DodoPayments Privacy Policy</a>.</li>
               <li><strong className="text-white">Vercel:</strong> Hosting and edge functions.</li>
             </ul>
 

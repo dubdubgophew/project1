@@ -165,7 +165,7 @@ export default function ToolsPage() {
             <p>
               Most AI tool platforms charge $20-100/month, show intrusive ads, require signups for basic features,
               or produce mediocre AI output. Formly is different: powered by LLaMA 3.1 70B — the same quality as
-              GPT-4 — and available free for casual users. Our Pro plan at just $9/month gives you 200 daily uses
+              GPT-4 — and available free for casual users. Our Pro plan at just $9.99/month gives you 200 daily uses
               and priority processing, making it the most affordable professional AI suite available.
             </p>
             <h3 className="text-lg font-semibold text-white mt-6">Privacy-First Approach</h3>

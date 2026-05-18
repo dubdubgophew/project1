@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
-import { Check, Zap, Star, Building2, HelpCircle, Loader2 } from 'lucide-react';
+import { Check, Zap, Star, Building2, HelpCircle, Loader2, Flame } from 'lucide-react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 
@@ -32,7 +32,7 @@ const PLANS = [
     id: 'pro',
     name: 'Pro',
     icon: Star,
-    priceUSD: 9,
+    priceUSD: 9.99,
     description: 'For freelancers and power users.',
     features: [
       '200 AI uses per day',
@@ -53,7 +53,7 @@ const PLANS = [
     id: 'unlimited',
     name: 'Unlimited',
     icon: Building2,
-    priceUSD: 19,
+    priceUSD: 19.99,
     description: 'For agencies and heavy users.',
     features: [
       'Unlimited AI uses per day',
@@ -70,6 +70,26 @@ const PLANS = [
     cta: 'Go Unlimited',
     highlighted: false,
     badge: 'Best Value',
+  },
+  {
+    id: 'day_pass',
+    name: 'Day Pass',
+    icon: Flame,
+    priceUSD: 1.99,
+    description: 'Full Pro access for 24 hours. One-time payment.',
+    features: [
+      '200 AI uses for 24 hours',
+      'All 10 AI tools',
+      'Priority processing (2× faster)',
+      'Longer text inputs (10K chars)',
+      'PDF downloads for resumes',
+      'No subscription needed',
+    ],
+    notIncluded: ['Usage analytics dashboard', 'API access'],
+    cta: 'Buy Day Pass',
+    highlighted: false,
+    badge: 'One-Time',
+    oneTime: true,
   },
 ];
 
@@ -128,7 +148,7 @@ export default function PricingPage() {
           </div>
 
           {/* Plans */}
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             {PLANS.map((plan) => (
               <div
                 key={plan.id}
@@ -163,13 +183,17 @@ export default function PricingPage() {
                   ) : (
                     <div className="flex items-end gap-1">
                       <span className="text-5xl font-bold text-white">${plan.priceUSD}</span>
-                      <span className="text-gray-500 mb-2">/mo</span>
+                      <span className="text-gray-500 mb-2">
+                        {(plan as any).oneTime ? ' one-time' : '/mo'}
+                      </span>
                     </div>
                   )}
                 </div>
                 {plan.priceUSD > 0 && (
                   <p className="text-xs text-gray-600 mb-3">
-                    Billed monthly · Cancel anytime
+                    {(plan as any).oneTime
+                      ? '24h Pro access · No subscription'
+                      : 'Billed monthly · 10% off with annual · Cancel anytime'}
                   </p>
                 )}
 
