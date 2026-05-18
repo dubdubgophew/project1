@@ -10,8 +10,17 @@ const TOOLS = [
   { name: 'Pay Stub Generator', href: '/tools/paystub-generator' },
   { name: 'Resume Builder', href: '/tools/resume-builder' },
   { name: 'Contract Generator', href: '/tools/contract-generator' },
-  { name: 'Hashtag Generator', href: '/tools/hashtag-generator' },
-  { name: 'Bio Writer', href: '/tools/bio-writer' },
+  { name: 'Cover Letter', href: '/tools/cover-letter' },
+  { name: 'Code Reviewer', href: '/tools/code-reviewer' },
+  { name: 'Terms Simplifier', href: '/tools/terms-simplifier' },
+  { name: 'JSON Formatter', href: '/tools/json-formatter' },
+  { name: 'Word Counter', href: '/tools/word-counter' },
+  { name: 'Loan Calculator', href: '/tools/loan-calculator' },
+  { name: 'Unit Converter', href: '/tools/unit-converter' },
+  { name: 'Regex Tester', href: '/tools/regex-tester' },
+  { name: 'Diff Checker', href: '/tools/diff-checker' },
+  { name: 'Color Converter', href: '/tools/color-converter' },
+  { name: 'View All Tools →', href: '/tools' },
 ];
 
 const COMPANY = [
@@ -44,7 +53,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
-              10 powerful AI tools for writers, developers, and professionals.
+              26 powerful tools for writers, developers, and professionals.
               Free to try — no signup required.
             </p>
             <div className="flex items-center gap-3">
