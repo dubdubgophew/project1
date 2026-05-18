@@ -21,7 +21,7 @@ export async function callAI(
   } = {}
 ): Promise<string> {
   const {
-    model = 'llama-3.1-70b-versatile',
+    model = 'llama-3.3-70b-versatile',
     maxTokens = 2048,
     temperature = 0.7,
   } = options;
@@ -40,7 +40,7 @@ export async function callAI(
       (error.message.includes('rate_limit') || error.message.includes('429'))
     ) {
       const fallback = await getGroq().chat.completions.create({
-        model: 'llama-3.1-8b-instant',
+        model: 'llama3-8b-8192',
         messages,
         max_tokens: maxTokens,
         temperature,
@@ -56,7 +56,7 @@ export async function streamAI(
   onChunk: (text: string) => void,
   options: { model?: string; maxTokens?: number } = {}
 ): Promise<void> {
-  const { model = 'llama-3.1-70b-versatile', maxTokens = 2048 } = options;
+  const { model = 'llama-3.3-70b-versatile', maxTokens = 2048 } = options;
 
   const stream = await getGroq().chat.completions.create({
     model,

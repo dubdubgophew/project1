@@ -13,7 +13,7 @@ const STEPS = [
   {
     icon: Cpu,
     title: 'AI Processes Instantly',
-    description: "Our LLaMA 3 70B AI analyzes your input and generates high-quality output in under 10 seconds.",
+    description: "Groq AI analyzes your input and generates high-quality output in under 10 seconds.",
     color: 'text-purple-400',
     bg: 'bg-purple-500/10',
     border: 'border-purple-500/20',

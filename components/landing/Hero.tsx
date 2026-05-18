@@ -26,7 +26,7 @@ export function Hero() {
         {/* Trust badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-400 text-sm font-medium mb-8 animate-fade-in">
           <Sparkles className="w-4 h-4" />
-          <span>Powered by LLaMA 3 — World&apos;s most capable free AI</span>
+          <span>Powered by Groq AI — Blazing fast AI inference</span>
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
         </div>
 

@@ -10,7 +10,7 @@ const FAQS = [
   },
   {
     q: 'What AI model powers Formly?',
-    a: "We use Meta's LLaMA 3.1 70B — one of the world's most capable open-source AI models — served via Groq's blazing-fast infrastructure. It's the same quality as ChatGPT GPT-4 for most tasks, completely free.",
+    a: "We use Groq's blazing-fast AI infrastructure — delivering high-quality output comparable to GPT-4 for most tasks, completely free.",
   },
   {
     q: 'Is my data safe? Do you store my content?',

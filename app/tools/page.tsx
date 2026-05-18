@@ -116,7 +116,7 @@ export default function ToolsPage() {
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
               No signup required for first 5 daily uses. Professional quality.
-              Powered by LLaMA 3.1 70B — the world&apos;s best free AI.
+              Powered by Groq AI — fast, accurate, and free.
             </p>
           </div>
 
@@ -164,8 +164,8 @@ export default function ToolsPage() {
             <h2 className="text-2xl font-bold text-white">Why Formly is Better Than the Alternatives</h2>
             <p>
               Most AI tool platforms charge $20-100/month, show intrusive ads, require signups for basic features,
-              or produce mediocre AI output. Formly is different: powered by LLaMA 3.1 70B — the same quality as
-              GPT-4 — and available free for casual users. Our Pro plan at just $9.99/month gives you 200 daily uses
+              or produce mediocre AI output. Formly is different: powered by Groq AI — fast, high-quality output
+              comparable to GPT-4 — and available free for casual users. Our Pro plan at just $9.99/month gives you 200 daily uses
               and priority processing, making it the most affordable professional AI suite available.
             </p>
             <h3 className="text-lg font-semibold text-white mt-6">Privacy-First Approach</h3>

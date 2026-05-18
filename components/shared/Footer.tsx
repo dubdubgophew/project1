@@ -130,7 +130,7 @@ export function Footer() {
             © {new Date().getFullYear()} Formly. Built with love in India.
           </p>
           <div className="flex items-center gap-4">
-            <span className="text-xs text-gray-600">Powered by Groq AI & LLaMA 3</span>
+            <span className="text-xs text-gray-600">Powered by Groq AI</span>
             <span className="w-1 h-1 rounded-full bg-gray-700" />
             <span className="text-xs text-gray-600">
               <span className="text-emerald-500">●</span> All systems operational
