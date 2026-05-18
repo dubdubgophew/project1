@@ -4,16 +4,22 @@ import { createAdminClient } from '@/lib/supabase/server';
 const BASE_URL = 'https://formly.tools';
 
 const STATIC_ROUTES = [
-  { url: '/', priority: 1.0, changeFrequency: 'weekly' as const },
+  // Homepage — highest priority, crawled daily
+  { url: '/', priority: 1.0, changeFrequency: 'daily' as const },
+  // Tools index — high value landing page
   { url: '/tools', priority: 0.9, changeFrequency: 'weekly' as const },
-  { url: '/tools/pdf-summarizer', priority: 0.9, changeFrequency: 'monthly' as const },
-  { url: '/tools/paraphraser', priority: 0.9, changeFrequency: 'monthly' as const },
-  { url: '/tools/grammar-checker', priority: 0.9, changeFrequency: 'monthly' as const },
-  { url: '/tools/email-writer', priority: 0.9, changeFrequency: 'monthly' as const },
-  { url: '/tools/code-explainer', priority: 0.9, changeFrequency: 'monthly' as const },
-  { url: '/tools/paystub-generator', priority: 0.9, changeFrequency: 'monthly' as const },
-  { url: '/tools/resume-builder', priority: 0.9, changeFrequency: 'monthly' as const },
-  { url: '/tools/contract-generator', priority: 0.9, changeFrequency: 'monthly' as const },
+  // High-traffic AI tools — priority 0.8, weekly crawl
+  { url: '/tools/pdf-summarizer', priority: 0.8, changeFrequency: 'weekly' as const },
+  { url: '/tools/paraphraser', priority: 0.8, changeFrequency: 'weekly' as const },
+  { url: '/tools/grammar-checker', priority: 0.8, changeFrequency: 'weekly' as const },
+  { url: '/tools/email-writer', priority: 0.8, changeFrequency: 'weekly' as const },
+  { url: '/tools/code-explainer', priority: 0.8, changeFrequency: 'weekly' as const },
+  { url: '/tools/paystub-generator', priority: 0.8, changeFrequency: 'weekly' as const },
+  { url: '/tools/resume-builder', priority: 0.8, changeFrequency: 'weekly' as const },
+  { url: '/tools/contract-generator', priority: 0.8, changeFrequency: 'weekly' as const },
+  { url: '/tools/cover-letter', priority: 0.8, changeFrequency: 'weekly' as const },
+  { url: '/tools/code-reviewer', priority: 0.8, changeFrequency: 'weekly' as const },
+  // Standard tools — priority 0.8, monthly crawl
   { url: '/tools/hashtag-generator', priority: 0.8, changeFrequency: 'monthly' as const },
   { url: '/tools/bio-writer', priority: 0.8, changeFrequency: 'monthly' as const },
   { url: '/tools/json-formatter', priority: 0.8, changeFrequency: 'monthly' as const },
@@ -29,12 +35,11 @@ const STATIC_ROUTES = [
   { url: '/tools/color-converter', priority: 0.8, changeFrequency: 'monthly' as const },
   { url: '/tools/regex-tester', priority: 0.8, changeFrequency: 'monthly' as const },
   { url: '/tools/diff-checker', priority: 0.8, changeFrequency: 'monthly' as const },
-  { url: '/tools/cover-letter', priority: 0.9, changeFrequency: 'monthly' as const },
-  { url: '/tools/code-reviewer', priority: 0.9, changeFrequency: 'monthly' as const },
   { url: '/tools/terms-simplifier', priority: 0.8, changeFrequency: 'monthly' as const },
-  { url: '/pricing', priority: 0.8, changeFrequency: 'monthly' as const },
+  // Static marketing pages
+  { url: '/pricing', priority: 0.5, changeFrequency: 'monthly' as const },
   { url: '/blog', priority: 0.7, changeFrequency: 'daily' as const },
-  { url: '/about', priority: 0.5, changeFrequency: 'yearly' as const },
+  { url: '/about', priority: 0.5, changeFrequency: 'monthly' as const },
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -61,8 +66,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       blogUrls = posts.map((post) => ({
         url: `${BASE_URL}/blog/${post.slug}`,
         lastModified: post.updated_at ?? now,
-        changeFrequency: 'weekly' as const,
-        priority: 0.6,
+        changeFrequency: 'monthly' as const,
+        priority: 0.7,
       }));
     }
   } catch {

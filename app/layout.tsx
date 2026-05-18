@@ -19,7 +19,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://formly.tools'),
   title: {
-    default: 'Formly — 10 Free AI Tools for Writers, Devs & Professionals',
+    default: 'Formly — 26 Free AI Tools for Writers, Devs & Professionals',
     template: '%s | Formly',
   },
   description:
@@ -47,9 +47,9 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://formly.tools',
     siteName: 'Formly',
-    title: 'Formly — 10 Free AI Tools for Professionals',
+    title: 'Formly — 26 Free AI Tools for Professionals',
     description:
-      'Free AI tools: PDF summarizer, paraphraser, grammar checker, email writer & more. Try 5 tools free daily — no signup needed.',
+      'Free AI tools: PDF summarizer, resume builder, pay stub generator, paraphraser, grammar checker & 21 more. Try free daily — no signup needed.',
     images: [
       {
         url: '/og-image.png',
@@ -61,8 +61,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Formly — 10 Free AI Tools',
-    description: 'AI PDF summarizer, paraphraser, grammar checker & 7 more tools. Free.',
+    title: 'Formly — 26 Free AI Tools',
+    description: 'AI PDF summarizer, resume builder, pay stub generator, paraphraser, grammar checker & 21 more tools. Free.',
     images: ['/og-image.png'],
     creator: '@formlytools',
   },
@@ -102,7 +102,7 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} dark`}>
       <head>
         <AdSenseScript />
-        {/* Schema.org structured data */}
+        {/* Schema.org — WebSite with SiteLinksSearchBox */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -114,9 +114,29 @@ export default function RootLayout({
               description: 'Free AI-powered productivity tools for professionals',
               potentialAction: {
                 '@type': 'SearchAction',
-                target: 'https://formly.tools/tools?q={search_term_string}',
+                target: {
+                  '@type': 'EntryPoint',
+                  urlTemplate: 'https://formly.tools/tools?q={search_term_string}',
+                },
                 'query-input': 'required name=search_term_string',
               },
+            }),
+          }}
+        />
+        {/* Schema.org — Organization */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              name: 'Formly',
+              url: 'https://formly.tools',
+              logo: 'https://formly.tools/favicon.svg',
+              description: 'Free AI-powered tools suite for writers, developers, and professionals — including PDF summarizer, resume builder, pay stub generator, contract generator, JSON formatter, and 20+ more tools.',
+              sameAs: [
+                'https://twitter.com/formlytools',
+              ],
             }),
           }}
         />
