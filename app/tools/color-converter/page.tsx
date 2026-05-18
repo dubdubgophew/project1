@@ -4,7 +4,6 @@ import { useState, useMemo, useCallback } from 'react';
 import { ToolLayout } from '@/components/tools/ToolLayout';
 import { Copy, Check } from 'lucide-react';
 
-export const metadata = undefined;
 
 // ─── Color Math ─────────────────────────────────────────────────────────────
 
