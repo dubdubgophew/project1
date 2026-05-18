@@ -13,7 +13,8 @@ function getWebhookHandler() {
     onSubscriptionActive: async (payload) => {
       const data = (payload as any).data ?? payload;
       const { userId, plan } = data.metadata ?? {};
-      if (!userId || !plan) return;
+      const VALID_PLANS = ['pro', 'unlimited'];
+      if (!userId || !plan || !VALID_PLANS.includes(plan)) return;
 
       const admin = createAdminClient();
       await admin.from('profiles').update({ plan }).eq('id', userId);
