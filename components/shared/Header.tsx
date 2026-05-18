@@ -66,7 +66,7 @@ export function Header() {
                 Tools <ChevronDown className={`w-4 h-4 transition-transform ${toolsOpen ? 'rotate-180' : ''}`} />
               </button>
               {toolsOpen && (
-                <div className="absolute top-full left-0 mt-2 w-52 bg-gray-900 border border-gray-800 rounded-xl shadow-2xl overflow-hidden">
+                <div onMouseDown={(e) => e.preventDefault()} className="absolute top-full left-0 mt-2 w-52 bg-gray-900 border border-gray-800 rounded-xl shadow-2xl overflow-hidden">
                   {TOOLS_NAV.map((tool) => (
                     <Link
                       key={tool.href}
