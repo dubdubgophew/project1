@@ -3,7 +3,6 @@
 import { useState, useMemo } from 'react';
 import { ToolLayout } from '@/components/tools/ToolLayout';
 
-export const metadata = undefined;
 
 const STOPWORDS = new Set([
   'a','an','the','and','or','but','in','on','at','to','for','of','with','by','from',

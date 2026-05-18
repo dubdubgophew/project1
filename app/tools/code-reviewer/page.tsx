@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { ToolLayout } from '@/components/tools/ToolLayout';
 import { Copy, Check, Loader2, AlertCircle, Code2 } from 'lucide-react';
 
-export const metadata = undefined;
 
 const LANGUAGES = [
   'JavaScript', 'TypeScript', 'Python', 'Java', 'C++', 'Go', 'Rust',

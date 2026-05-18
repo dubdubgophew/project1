@@ -3,7 +3,6 @@
 import { useState, useMemo } from 'react';
 import { ToolLayout } from '@/components/tools/ToolLayout';
 
-export const metadata = undefined;
 
 type Category = 'Length' | 'Weight' | 'Temperature' | 'Area' | 'Volume' | 'Speed' | 'Data' | 'Time';
 

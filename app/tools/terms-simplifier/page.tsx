@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { ToolLayout } from '@/components/tools/ToolLayout';
 import { Loader2, AlertCircle, Scale } from 'lucide-react';
 
-export const metadata = undefined;
 
 interface TermsResult {
   tldr?: string[];

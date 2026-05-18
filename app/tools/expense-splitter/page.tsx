@@ -4,7 +4,6 @@ import { useState, useCallback } from 'react';
 import { ToolLayout } from '@/components/tools/ToolLayout';
 import { Plus, Trash2, Calculator } from 'lucide-react';
 
-export const metadata = undefined;
 
 interface Person { id: string; name: string }
 interface Expense { id: string; desc: string; amount: number; paidBy: string; splitBetween: string[] }

@@ -4,10 +4,6 @@ import { useState, useRef } from 'react';
 import { ToolLayout } from '@/components/tools/ToolLayout';
 import { Copy, Check, Loader2, AlertCircle, FileText, Download, Eye, Pencil, Upload, X, Info } from 'lucide-react';
 
-export const metadata = {
-  title: 'PDF to Markdown Converter — Formly',
-  description: 'Convert any PDF to clean, structured Markdown instantly. Perfect for feeding documents into AI tools.',
-};
 
 const RELATED = [
   { name: 'PDF Summarizer', href: '/tools/pdf-summarizer', icon: '📄' },

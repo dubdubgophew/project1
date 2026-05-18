@@ -3,7 +3,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { ToolLayout } from '@/components/tools/ToolLayout';
 
-export const metadata = undefined;
 
 function getZodiac(month: number, day: number): string {
   if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return 'Aries ♈';
