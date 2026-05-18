@@ -50,12 +50,14 @@ export const PLAN_LIMITS: Record<string, number> = {
 
 export const PLAN_PRICES_USD: Record<string, number> = {
   free: 0,
-  pro: 9,
-  unlimited: 19,
+  pro: 9.99,
+  unlimited: 19.99,
+  day_pass: 1.99,
 };
 
 export const PLAN_PRICES_INR: Record<string, number> = {
   free: 0,
-  pro: 699,
-  unlimited: 1499,
+  pro: 849,
+  unlimited: 1699,
+  day_pass: 169,
 };

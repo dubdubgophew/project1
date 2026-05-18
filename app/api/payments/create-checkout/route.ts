@@ -4,7 +4,7 @@ import { createDodoCheckout } from '@/lib/dodopay';
 import { z } from 'zod';
 
 const schema = z.object({
-  plan: z.enum(['pro', 'unlimited']),
+  plan: z.enum(['pro', 'unlimited', 'day_pass']),
 });
 
 export async function POST(req: NextRequest) {

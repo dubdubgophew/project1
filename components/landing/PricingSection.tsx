@@ -2,14 +2,11 @@
 
 import Link from 'next/link';
 import { Check, Zap, Star, Building2 } from 'lucide-react';
-import { useState } from 'react';
-
 const PLANS = [
   {
     name: 'Free',
     icon: Zap,
     priceUSD: 0,
-    priceINR: 0,
     badge: null,
     description: 'Try every tool without a credit card.',
     features: [
@@ -26,8 +23,7 @@ const PLANS = [
   {
     name: 'Pro',
     icon: Star,
-    priceUSD: 9,
-    priceINR: 699,
+    priceUSD: 9.99,
     badge: 'Most Popular',
     description: 'For freelancers and power users.',
     features: [
@@ -46,8 +42,7 @@ const PLANS = [
   {
     name: 'Unlimited',
     icon: Building2,
-    priceUSD: 19,
-    priceINR: 1499,
+    priceUSD: 19.99,
     badge: 'Best Value',
     description: 'For agencies and heavy users.',
     features: [
@@ -67,8 +62,6 @@ const PLANS = [
 ];
 
 export function PricingSection() {
-  const [currency, setCurrency] = useState<'usd' | 'inr'>('usd');
-
   return (
     <section className="section bg-gray-950" id="pricing">
       <div className="container-wide">
@@ -77,25 +70,10 @@ export function PricingSection() {
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
             Simple, Transparent Pricing
           </h2>
-          <p className="text-gray-400 max-w-xl mx-auto mb-8">
+          <p className="text-gray-400 max-w-xl mx-auto mb-2">
             Start free, upgrade when you need more. Cancel anytime — no questions asked.
           </p>
-          {/* Currency toggle */}
-          <div className="inline-flex items-center gap-1 p-1 rounded-xl bg-gray-800 border border-gray-700">
-            {(['usd', 'inr'] as const).map((c) => (
-              <button
-                key={c}
-                onClick={() => setCurrency(c)}
-                className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
-                  currency === c
-                    ? 'bg-violet-600 text-white shadow-lg'
-                    : 'text-gray-400 hover:text-white'
-                }`}
-              >
-                {c === 'usd' ? '$ USD' : '₹ INR'}
-              </button>
-            ))}
-          </div>
+          <p className="text-sm text-gray-600">All prices in USD · Local currency shown at checkout · All taxes included</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
@@ -128,9 +106,7 @@ export function PricingSection() {
                   <span className="text-4xl font-bold text-white">Free</span>
                 ) : (
                   <div className="flex items-end gap-2">
-                    <span className="text-4xl font-bold text-white">
-                      {currency === 'usd' ? `$${plan.priceUSD}` : `₹${plan.priceINR}`}
-                    </span>
+                    <span className="text-4xl font-bold text-white">${plan.priceUSD}</span>
                     <span className="text-gray-500 mb-1">/month</span>
                   </div>
                 )}
@@ -157,7 +133,7 @@ export function PricingSection() {
         </div>
 
         <p className="text-center text-sm text-gray-600 mt-8">
-          All plans include a 7-day money-back guarantee. Secure payment via Stripe & Razorpay.
+          All plans include a 7-day money-back guarantee. Secure payment via DodoPayments · All taxes included.
         </p>
       </div>
     </section>

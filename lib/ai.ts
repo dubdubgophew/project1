@@ -1,9 +1,11 @@
 import Groq from 'groq-sdk';
 
-// Primary: Groq (free tier — 14,400 req/day with LLaMA 3.1 70B)
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY!,
-});
+let _groq: Groq | null = null;
+
+function getGroq(): Groq {
+  if (!_groq) _groq = new Groq({ apiKey: process.env.GROQ_API_KEY! });
+  return _groq;
+}
 
 export type AIMessage = {
   role: 'system' | 'user' | 'assistant';
@@ -25,21 +27,19 @@ export async function callAI(
   } = options;
 
   try {
-    const completion = await groq.chat.completions.create({
+    const completion = await getGroq().chat.completions.create({
       model,
       messages,
       max_tokens: maxTokens,
       temperature,
     });
-
     return completion.choices[0]?.message?.content ?? '';
   } catch (error: unknown) {
-    // Fallback to faster/smaller model on rate limit
     if (
       error instanceof Error &&
       (error.message.includes('rate_limit') || error.message.includes('429'))
     ) {
-      const fallback = await groq.chat.completions.create({
+      const fallback = await getGroq().chat.completions.create({
         model: 'llama-3.1-8b-instant',
         messages,
         max_tokens: maxTokens,
@@ -51,7 +51,6 @@ export async function callAI(
   }
 }
 
-// Streaming version for real-time output
 export async function streamAI(
   messages: AIMessage[],
   onChunk: (text: string) => void,
@@ -59,7 +58,7 @@ export async function streamAI(
 ): Promise<void> {
   const { model = 'llama-3.1-70b-versatile', maxTokens = 2048 } = options;
 
-  const stream = await groq.chat.completions.create({
+  const stream = await getGroq().chat.completions.create({
     model,
     messages,
     max_tokens: maxTokens,

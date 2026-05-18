@@ -15,15 +15,23 @@ export function getDodoClient(): DodoPayments {
 export const DODO_PLANS = {
   pro: {
     productId: process.env.DODO_PRO_PRODUCT_ID!,
-    priceUSD: 9,
+    priceUSD: 9.99,
     name: 'Pro',
+    type: 'subscription' as const,
   },
   unlimited: {
     productId: process.env.DODO_UNLIMITED_PRODUCT_ID!,
-    priceUSD: 19,
+    priceUSD: 19.99,
     name: 'Unlimited',
+    type: 'subscription' as const,
   },
-} as const;
+  day_pass: {
+    productId: process.env.DODO_DAY_PASS_PRODUCT_ID!,
+    priceUSD: 1.99,
+    name: 'Day Pass',
+    type: 'one_time' as const,
+  },
+};
 
 export async function createDodoCheckout({
   plan,
@@ -32,7 +40,7 @@ export async function createDodoCheckout({
   userId,
   returnUrl,
 }: {
-  plan: 'pro' | 'unlimited';
+  plan: 'pro' | 'unlimited' | 'day_pass';
   userEmail: string;
   userName?: string;
   userId: string;

@@ -59,7 +59,7 @@ export async function generateWeeklyReport(): Promise<WeeklyReport> {
 
   const pro = proUsers ?? 0;
   const unlim = unlimitedUsers ?? 0;
-  const mrrUSD = pro * 9 + unlim * 19;
+  const mrrUSD = pro * 9.99 + unlim * 19.99;
   const mrrINR = mrrUSD * 83;
 
   const thisWeekUsage = usageThisWeek ?? 0;

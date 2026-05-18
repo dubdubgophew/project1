@@ -22,7 +22,7 @@ const FAQS = [
   },
   {
     q: 'Do you support Indian payment methods?',
-    a: 'Yes! We accept UPI, Debit/Credit cards, Net Banking, and Wallets via Razorpay. International users can pay via Stripe (all major cards + Apple Pay). Pricing in both USD and INR.',
+    a: 'Yes! We accept UPI, Debit/Credit cards, Net Banking, Apple Pay, Google Pay, and all major wallets — via DodoPayments. Your local currency (USD, EUR, INR, etc.) is shown automatically at checkout. All taxes included.',
   },
   {
     q: 'How accurate are the AI outputs?',
