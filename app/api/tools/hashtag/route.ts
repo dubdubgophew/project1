@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { checkRateLimit } from '@/lib/rate-limit';
+import { logUsage } from '@/lib/rate-limit';
 import { callAI } from '@/lib/ai';
 import { z } from 'zod';
 
@@ -10,10 +10,7 @@ const schema = z.object({
 });
 
 export async function POST(req: NextRequest) {
-  const limit = await checkRateLimit(req, 'hashtag');
-  if (!limit.allowed) {
-    return NextResponse.json({ error: limit.reason }, { status: 429 });
-  }
+  void logUsage(req, 'hashtag');
 
   try {
     const body = await req.json();
@@ -60,7 +57,6 @@ No spaces in hashtags. Use camelCase for multi-word tags.`,
       niche: parsed.niche ?? [],
       branded: parsed.branded ?? [],
       all: parsed.all ?? [...(parsed.popular ?? []), ...(parsed.niche ?? []), ...(parsed.branded ?? [])],
-      remaining: limit.remaining,
     });
   } catch (err) {
     if (err instanceof z.ZodError) {

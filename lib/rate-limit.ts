@@ -2,6 +2,22 @@ import { createAdminClient } from './supabase/server';
 import { getIp } from './utils';
 import { PLAN_LIMITS } from './utils';
 
+export async function logUsage(req: Request, toolName: string): Promise<void> {
+  try {
+    const supabase = createAdminClient();
+    const ip = getIp(req);
+    const token = req.headers.get('authorization')?.replace('Bearer ', '');
+    let userId: string | null = null;
+    if (token) {
+      const { data } = await supabase.auth.getUser(token);
+      if (data.user) userId = data.user.id;
+    }
+    await supabase.from('usage_logs').insert({ user_id: userId, ip, tool_name: toolName });
+  } catch {
+    // Non-fatal — silently ignore all errors
+  }
+}
+
 export type RateLimitResult =
   | { allowed: true; remaining: number; plan: string }
   | { allowed: false; reason: string; remaining: 0 };

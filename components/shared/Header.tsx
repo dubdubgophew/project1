@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { Menu, X, Zap, ChevronDown } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Menu, X, Zap, ChevronDown, Search } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import type { User } from '@supabase/supabase-js';
 
@@ -19,6 +20,8 @@ export function Header() {
   const [toolsOpen, setToolsOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [q, setQ] = useState('');
+  const router = useRouter();
 
   useEffect(() => {
     const supabase = createClient();
@@ -81,7 +84,7 @@ export function Header() {
                       href="/tools"
                       className="block px-4 py-2.5 text-sm text-violet-400 hover:text-violet-300 hover:bg-gray-800 transition-colors font-medium"
                     >
-                      View all 10 tools →
+                      View all tools →
                     </Link>
                   </div>
                 </div>
@@ -94,6 +97,19 @@ export function Header() {
               Blog
             </Link>
           </nav>
+
+          {/* Search */}
+          <form onSubmit={e => { e.preventDefault(); if (q.trim()) { router.push(`/tools?q=${encodeURIComponent(q.trim())}`); setQ(''); } }}>
+            <div className="relative hidden md:block">
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-500" />
+              <input
+                value={q}
+                onChange={e => setQ(e.target.value)}
+                placeholder="Search tools…"
+                className="bg-gray-800/50 border border-gray-700 rounded-lg pl-8 pr-3 py-1.5 text-sm text-gray-300 w-36 focus:w-52 focus:border-violet-500 transition-all duration-200 focus:outline-none placeholder:text-gray-600"
+              />
+            </div>
+          </form>
 
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center gap-3">

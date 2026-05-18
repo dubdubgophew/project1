@@ -1,8 +1,11 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { ToolLayout } from '@/components/tools/ToolLayout';
 import { Download, Loader2, AlertCircle } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
+import type { User } from '@supabase/supabase-js';
+import Link from 'next/link';
 
 // ─── TAX TABLES 2024/2025 ────────────────────────────────────────────────────
 
@@ -196,18 +199,18 @@ function buildPaystubHTML(
 <title>Pay Stub — ${esc(empName || 'Employee')}</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,Helvetica,sans-serif;font-size:11px;background:#fff;color:#111}
-.page{max-width:680px;margin:24px auto;border:1px solid #d1d5db}
-.hdr{background:#111827;color:#fff;padding:20px 24px;display:flex;justify-content:space-between;align-items:flex-start}
-.co-name{font-size:16px;font-weight:700}
+body{font-family:'Calibri',Arial,sans-serif;font-size:11px;background:#fff;color:#111}
+.page{max-width:680px;margin:24px auto;border:1px solid #d1d5db;border-top:4px solid #1a5276}
+.hdr{background:#1a2332;color:#fff;padding:20px 24px;display:flex;justify-content:space-between;align-items:flex-start}
+.co-name{font-size:16px;font-weight:700;color:#fff}
 .co-detail{color:#9ca3af;font-size:10px;margin-top:3px}
-.pay-label{color:#818cf8;font-weight:700;font-size:13px;text-align:right}
+.pay-label{color:#7fb3d3;font-weight:700;font-size:13px;text-align:right}
 .pay-meta{color:#9ca3af;font-size:10px;text-align:right;margin-top:3px}
 .emp{padding:12px 24px;background:#f9fafb;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:flex-start}
-.emp-name{font-weight:700;font-size:13px}
+.emp-name{font-weight:700;font-size:13px;color:#1a2332}
 .emp-detail{color:#6b7280;font-size:10px;margin-top:2px}
 .sec{padding:10px 24px;border-top:1px solid #f3f4f6}
-.sec-hdr{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#374151;border-bottom:1px solid #e5e7eb;padding-bottom:5px;margin-bottom:6px;display:flex;justify-content:space-between}
+.sec-hdr{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#1a2332;border-bottom:1px solid #e5e7eb;padding-bottom:5px;margin-bottom:6px;display:flex;justify-content:space-between}
 table{width:100%;border-collapse:collapse}
 td{padding:3px 0;font-size:11px}
 td.lbl{color:#4b5563}
@@ -215,9 +218,9 @@ td.amt{text-align:right;font-weight:500}
 td.ded{color:#dc2626}
 .note{color:#9ca3af;font-size:9px}
 .total-row td{border-top:1px solid #f3f4f6;font-weight:700;padding-top:5px}
-.net{background:#7c3aed;color:#fff;padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
+.net{background:#1a5276;color:#fff;padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
 .net-lbl{font-weight:700;font-size:13px}
-.net-sub{color:#c4b5fd;font-size:10px;margin-top:2px}
+.net-sub{color:#aed6f1;font-size:10px;margin-top:2px}
 .net-amt{font-size:22px;font-weight:700}
 .empr{padding:10px 24px;background:#f9fafb;border-top:1px solid #e5e7eb}
 .empr-title{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;margin-bottom:5px}
@@ -364,6 +367,11 @@ function NumInput({ label, value, onChange, prefix, min = 0, step = 1 }: {
 // ─── MAIN COMPONENT ──────────────────────────────────────────────────────────
 
 export default function PaystubGeneratorPage() {
+  const [user, setUser] = useState<User | null | undefined>(undefined);
+  useEffect(() => {
+    createClient().auth.getUser().then(({ data }) => setUser(data.user ?? null));
+  }, []);
+
   const today = new Date().toISOString().split('T')[0];
   const [country, setCountry] = useState('US');
   const [period, setPeriod]   = useState('biweekly');
@@ -429,12 +437,115 @@ export default function PaystubGeneratorPage() {
     setTimeout(() => win.print(), 350);
   }
 
+  if (user === undefined) {
+    return (
+      <ToolLayout
+        title="Pay Stub Generator"
+        description="Generate professional pay stubs with accurate 2024/2025 tax calculations for USA, UK, Canada, Australia, India, and more."
+        icon="🧾"
+        relatedTools={RELATED}
+        showAds={false}
+      >
+        <div className="animate-pulse space-y-4">
+          <div className="h-10 bg-gray-800 rounded-xl w-3/4" />
+          <div className="h-32 bg-gray-800 rounded-xl" />
+          <div className="h-32 bg-gray-800 rounded-xl" />
+        </div>
+      </ToolLayout>
+    );
+  }
+
+  if (user === null) {
+    return (
+      <ToolLayout
+        title="Pay Stub Generator"
+        description="Generate professional pay stubs with accurate 2024/2025 tax calculations for USA, UK, Canada, Australia, India, and more."
+        icon="🧾"
+        relatedTools={RELATED}
+        showAds={false}
+      >
+        <div className="space-y-6">
+          <div className="card text-center py-12 px-6">
+            <div className="text-5xl mb-4">🔐</div>
+            <h2 className="text-2xl font-bold text-white mb-2">Sign in to generate pay stubs</h2>
+            <p className="text-gray-400 mb-6">Pay Stub Generator requires a free account. Takes 30 seconds.</p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link href="/login" className="btn-secondary px-8 py-3">Sign In</Link>
+              <Link href="/signup" className="btn-primary px-8 py-3">Create Free Account</Link>
+            </div>
+          </div>
+
+          {/* Blurred preview showing value */}
+          <div className="relative rounded-2xl overflow-hidden">
+            <div className="pointer-events-none select-none blur-sm opacity-60">
+              <div className="bg-white text-gray-900 rounded-2xl overflow-hidden shadow-2xl text-xs">
+                <div className="bg-[#1a2332] text-white px-5 py-4">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <div className="font-bold text-base">Acme Corporation</div>
+                      <div className="text-gray-400 text-xs mt-0.5">123 Business Ave, New York, NY</div>
+                      <div className="text-gray-500 text-xs">EIN: 12-3456789</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-[#7fb3d3] font-bold text-sm">PAY STATEMENT</div>
+                      <div className="text-gray-400 text-xs mt-0.5">Pay Date: 2025-01-15</div>
+                      <div className="text-gray-400 text-xs">Bi-Weekly</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="px-5 py-3 bg-gray-50 border-b border-gray-200 flex justify-between">
+                  <div>
+                    <div className="font-semibold text-sm">Jane Smith</div>
+                    <div className="text-gray-500">Software Engineer</div>
+                  </div>
+                  <div className="text-gray-500">ID: EMP-0042</div>
+                </div>
+                <div className="px-5 py-3">
+                  <div className="flex justify-between font-semibold text-gray-700 border-b border-gray-200 pb-1 mb-2 text-xs tracking-wider uppercase">
+                    <span>Earnings</span><span>Amount</span>
+                  </div>
+                  <div className="flex justify-between py-1"><span className="text-gray-600">Regular Pay (Bi-Weekly)</span><span>$3,846.15</span></div>
+                  <div className="flex justify-between py-1 border-t border-gray-100 font-semibold"><span>Gross Pay</span><span>$3,846.15</span></div>
+                </div>
+                <div className="px-5 py-3 border-t border-gray-100">
+                  <div className="flex justify-between font-semibold text-gray-700 border-b border-gray-200 pb-1 mb-2 text-xs tracking-wider uppercase">
+                    <span>Taxes &amp; Withholding</span><span>Amount</span>
+                  </div>
+                  <div className="flex justify-between py-1 text-gray-600"><span>Federal Income Tax</span><span className="text-red-600">-$476.00</span></div>
+                  <div className="flex justify-between py-1 text-gray-600"><span>California Tax</span><span className="text-red-600">-$213.00</span></div>
+                  <div className="flex justify-between py-1 text-gray-600"><span>Social Security (6.2%)</span><span className="text-red-600">-$238.46</span></div>
+                  <div className="flex justify-between py-1 text-gray-600"><span>Medicare (1.45%)</span><span className="text-red-600">-$55.77</span></div>
+                </div>
+                <div className="px-5 py-4 bg-[#1a5276] text-white">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <div className="font-bold text-sm">NET PAY</div>
+                      <div className="text-[#aed6f1] text-xs">Effective rate: 25.8%</div>
+                    </div>
+                    <div className="text-2xl font-bold">$2,862.92</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center bg-gray-950/40 rounded-2xl">
+              <div className="text-center">
+                <div className="text-4xl mb-2">🔒</div>
+                <p className="text-white font-semibold text-sm">Sign in to unlock</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ToolLayout>
+    );
+  }
+
   return (
     <ToolLayout
       title="Pay Stub Generator"
       description="Generate professional pay stubs with accurate 2024/2025 tax calculations for USA, UK, Canada, Australia, India, and more. Includes all deductions and employer contributions."
       icon="🧾"
       relatedTools={RELATED}
+      showAds={false}
     >
       <div className="grid lg:grid-cols-[1fr_420px] gap-6">
 
@@ -580,7 +691,7 @@ export default function PaystubGeneratorPage() {
               )}
 
               <div className="bg-white text-gray-900 rounded-2xl overflow-hidden shadow-2xl text-xs">
-                <div className="bg-gray-900 text-white px-5 py-4">
+                <div className="bg-[#1a2332] text-white px-5 py-4">
                   <div className="flex justify-between items-start">
                     <div>
                       <div className="font-bold text-base">{coName || 'Company Name'}</div>
@@ -588,7 +699,7 @@ export default function PaystubGeneratorPage() {
                       {ein && <div className="text-gray-500 text-xs">{country === 'US' ? 'EIN' : 'Reg No'}: {ein}</div>}
                     </div>
                     <div className="text-right">
-                      <div className="text-violet-400 font-bold text-sm">PAY STATEMENT</div>
+                      <div className="text-[#7fb3d3] font-bold text-sm">PAY STATEMENT</div>
                       <div className="text-gray-400 text-xs mt-0.5">Pay Date: {payDate || '—'}</div>
                       {periStart && periEnd && <div className="text-gray-500 text-xs">{periStart} – {periEnd}</div>}
                       <div className="text-gray-400 text-xs">{periodLabel}</div>
@@ -654,11 +765,11 @@ export default function PaystubGeneratorPage() {
                   </div>
                 )}
 
-                <div className="px-5 py-4 bg-violet-600 text-white">
+                <div className="px-5 py-4 bg-[#1a5276] text-white">
                   <div className="flex justify-between items-center">
                     <div>
                       <div className="font-bold text-sm">NET PAY</div>
-                      <div className="text-violet-300 text-xs">Effective rate: {(calc.effectiveRate * 100).toFixed(1)}%</div>
+                      <div className="text-[#aed6f1] text-xs">Effective rate: {(calc.effectiveRate * 100).toFixed(1)}%</div>
                     </div>
                     <div className="text-2xl font-bold">{money(calc.net, sym)}</div>
                   </div>

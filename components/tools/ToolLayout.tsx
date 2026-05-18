@@ -11,6 +11,7 @@ interface ToolLayoutProps {
   badge?: string;
   children: React.ReactNode;
   relatedTools?: { name: string; href: string; icon: string }[];
+  showAds?: boolean;
 }
 
 export function ToolLayout({
@@ -20,6 +21,7 @@ export function ToolLayout({
   badge,
   children,
   relatedTools = [],
+  showAds = true,
 }: ToolLayoutProps) {
   return (
     <>
@@ -97,7 +99,7 @@ export function ToolLayout({
               </div>
 
               {/* AdSense — sidebar */}
-              <SidebarAd />
+              {showAds !== false && <SidebarAd />}
 
               {/* Related tools */}
               {relatedTools.length > 0 && (

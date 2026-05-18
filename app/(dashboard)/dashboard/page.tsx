@@ -18,6 +18,22 @@ const TOOLS = [
   { name: 'Contract Generator', href: '/tools/contract-generator', icon: '📜' },
   { name: 'Hashtag Generator', href: '/tools/hashtag-generator', icon: '#️⃣' },
   { name: 'Bio Writer', href: '/tools/bio-writer', icon: '🪪' },
+  { name: 'Cover Letter', href: '/tools/cover-letter', icon: '📝' },
+  { name: 'Code Reviewer', href: '/tools/code-reviewer', icon: '🔎' },
+  { name: 'Terms Simplifier', href: '/tools/terms-simplifier', icon: '⚖️' },
+  { name: 'JSON Formatter', href: '/tools/json-formatter', icon: '{}' },
+  { name: 'Base64 Encoder', href: '/tools/base64', icon: '🔐' },
+  { name: 'Password Generator', href: '/tools/password-generator', icon: '🔑' },
+  { name: 'Word Counter', href: '/tools/word-counter', icon: '📊' },
+  { name: 'Expense Splitter', href: '/tools/expense-splitter', icon: '💰' },
+  { name: 'Loan Calculator', href: '/tools/loan-calculator', icon: '🏦' },
+  { name: 'Unit Converter', href: '/tools/unit-converter', icon: '📐' },
+  { name: 'Age Calculator', href: '/tools/age-calculator', icon: '🎂' },
+  { name: 'Text Case', href: '/tools/text-case', icon: '🔤' },
+  { name: 'Color Converter', href: '/tools/color-converter', icon: '🎨' },
+  { name: 'Regex Tester', href: '/tools/regex-tester', icon: '🔍' },
+  { name: 'Diff Checker', href: '/tools/diff-checker', icon: '↔️' },
+  { name: 'PDF to Markdown', href: '/tools/pdf-to-markdown', icon: '📑' },
 ];
 
 export default async function DashboardPage({ searchParams }: { searchParams: { upgrade?: string } }) {

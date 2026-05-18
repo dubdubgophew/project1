@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { checkRateLimit } from '@/lib/rate-limit';
+import { logUsage } from '@/lib/rate-limit';
 import { callAI } from '@/lib/ai';
 import { z } from 'zod';
 
@@ -8,10 +8,7 @@ const schema = z.object({
 });
 
 export async function POST(req: NextRequest) {
-  const limit = await checkRateLimit(req, 'grammar');
-  if (!limit.allowed) {
-    return NextResponse.json({ error: limit.reason }, { status: 429 });
-  }
+  void logUsage(req, 'grammar');
 
   try {
     const body = await req.json();
@@ -58,7 +55,6 @@ Score 100 = perfect, 0 = many errors. Be accurate and thorough.`,
       corrected: parsed.corrected ?? text,
       score: Math.max(0, Math.min(100, parsed.score ?? 80)),
       issues: Array.isArray(parsed.issues) ? parsed.issues.slice(0, 20) : [],
-      remaining: limit.remaining,
     });
   } catch (err) {
     if (err instanceof z.ZodError) {
