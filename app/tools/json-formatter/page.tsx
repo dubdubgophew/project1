@@ -4,7 +4,6 @@ import { useState, useCallback } from 'react';
 import { ToolLayout } from '@/components/tools/ToolLayout';
 import { Copy, Check, Braces, Minimize2, CheckCircle, XCircle } from 'lucide-react';
 
-export const metadata = undefined; // metadata exported from server components only
 
 function countKeys(obj: unknown): number {
   if (typeof obj !== 'object' || obj === null) return 0;

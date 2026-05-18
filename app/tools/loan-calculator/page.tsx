@@ -3,7 +3,6 @@
 import { useState, useMemo } from 'react';
 import { ToolLayout } from '@/components/tools/ToolLayout';
 
-export const metadata = undefined;
 
 function calcEMI(principal: number, annualRate: number, months: number) {
   if (annualRate === 0) return principal / months;

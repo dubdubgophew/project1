@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { ToolLayout } from '@/components/tools/ToolLayout';
 import { Copy, Check, Loader2, AlertCircle, FileText, Download, Eye, Pencil } from 'lucide-react';
 
-export const metadata = undefined;
 
 const TONES = ['Professional', 'Enthusiastic', 'Concise'];
 

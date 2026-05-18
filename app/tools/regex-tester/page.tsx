@@ -4,7 +4,6 @@ import { useState, useMemo, useCallback } from 'react';
 import { ToolLayout } from '@/components/tools/ToolLayout';
 import { Copy, Check } from 'lucide-react';
 
-export const metadata = undefined;
 
 const QUICK_PATTERNS = [
   { label: 'Email', pattern: '[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}', flags: 'gi' },

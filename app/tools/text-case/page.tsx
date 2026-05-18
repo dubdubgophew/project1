@@ -4,7 +4,6 @@ import { useState, useCallback } from 'react';
 import { ToolLayout } from '@/components/tools/ToolLayout';
 import { Copy, Check } from 'lucide-react';
 
-export const metadata = undefined;
 
 function toTitleCase(str: string): string {
   const minors = new Set(['a','an','the','and','but','or','for','nor','on','at','to','by','in','of','up','as','is']);
