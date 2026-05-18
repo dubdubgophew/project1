@@ -7,7 +7,7 @@ import { BannerAd } from '@/components/shared/AdSense';
 export const metadata: Metadata = {
   title: 'All AI Tools — Free PDF Summarizer, Paraphraser, Grammar Checker & More',
   description:
-    'Browse all 10 free AI tools: PDF summarizer, paraphraser, grammar checker, email writer, code explainer, YouTube summarizer, resume builder, contract generator, hashtag generator, bio writer.',
+    'Browse all 10 free AI tools: PDF summarizer, paraphraser, grammar checker, email writer, code explainer, pay stub generator, resume builder, contract generator, hashtag generator, bio writer.',
   alternates: { canonical: 'https://formly.tools/tools' },
 };
 
@@ -58,13 +58,13 @@ const TOOLS = [
     tags: ['code', 'programming', 'developer'],
   },
   {
-    icon: '▶️',
-    name: 'YouTube Summarizer',
-    description: 'Paste any YouTube URL and get a complete summary with timestamps and key takeaways.',
-    href: '/tools/youtube-summarizer',
-    badge: 'Trending',
-    color: 'from-red-500/10 to-red-600/5 border-red-500/20 hover:border-red-500/40',
-    tags: ['youtube', 'video', 'summarize'],
+    icon: '🧾',
+    name: 'Pay Stub Generator',
+    description: 'Generate professional pay stubs with accurate 2024/2025 tax calculations. USA, UK, Canada, Australia, India & more.',
+    href: '/tools/paystub-generator',
+    badge: 'New',
+    color: 'from-green-500/10 to-green-600/5 border-green-500/20 hover:border-green-500/40',
+    tags: ['payroll', 'tax', 'salary'],
   },
   {
     icon: '📋',

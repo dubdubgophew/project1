@@ -43,8 +43,8 @@ const TESTIMONIALS = [
     country: '🇮🇳 India',
     avatar: 'PS',
     rating: 5,
-    text: "The Hashtag Generator understands context perfectly. My Instagram reach tripled after I started using it. The YouTube Summarizer is great for research too.",
-    tool: 'Hashtag Generator + YouTube Summarizer',
+    text: "The Hashtag Generator understands context perfectly. My Instagram reach tripled after I started using it. The Pay Stub Generator saves me hours every month.",
+    tool: 'Hashtag Generator + Pay Stub Generator',
   },
   {
     name: 'Thomas W.',

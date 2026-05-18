@@ -23,14 +23,15 @@ export const metadata: Metadata = {
     template: '%s | Formly',
   },
   description:
-    'Free AI-powered tools: PDF summarizer, paraphraser, grammar checker, email writer, code explainer, YouTube summarizer, resume builder & more. No signup needed.',
+    'Free AI tools: PDF summarizer, paraphraser, grammar checker, email writer, pay stub generator, resume builder & more. Powered by Groq AI. No signup needed.',
   keywords: [
     'free ai tools',
+    'pay stub generator',
+    'paystub generator free',
     'ai pdf summarizer',
     'ai paraphraser',
     'grammar checker free',
     'ai email writer',
-    'youtube summarizer ai',
     'resume builder ai',
     'ai contract generator',
     'code explainer ai',

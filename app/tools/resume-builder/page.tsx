@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { ToolLayout } from '@/components/tools/ToolLayout';
-import { Copy, Check, Loader2, AlertCircle, FileText, Plus, X } from 'lucide-react';
+import { Copy, Check, Loader2, AlertCircle, FileText, Plus, X, Download, BarChart2 } from 'lucide-react';
 
 const RELATED = [
   { name: 'Grammar Checker', href: '/tools/grammar-checker', icon: '✅' },
@@ -28,6 +28,36 @@ export default function ResumeBuilderPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
+  const [editableOutput, setEditableOutput] = useState('');
+
+  function calcAtsScore(text: string, title: string): { score: number; feedback: string[] } {
+    const feedback: string[] = [];
+    let score = 0;
+    if (/([\w.]+@[\w.]+)|(\+?[\d\s\-()]{7,})/.test(text)) { score += 10; } else { feedback.push('Add contact info (email/phone)'); }
+    if (/SUMMARY|OBJECTIVE/i.test(text)) { score += 15; } else { feedback.push('Add a Professional Summary section'); }
+    if (/SKILLS/i.test(text)) { score += 10; } else { feedback.push('Add a Skills section'); }
+    if (/EXPERIENCE|EMPLOYMENT/i.test(text)) { score += 10; } else { feedback.push('Add a Work Experience section'); }
+    if (/EDUCATION/i.test(text)) { score += 10; } else { feedback.push('Add an Education section'); }
+    const metrics = (text.match(/\d+%|\$[\d,]+|[\d,]+ (users|clients|projects|employees|revenue)/gi) ?? []).length;
+    if (metrics >= 3) { score += 25; } else if (metrics >= 1) { score += 15; feedback.push('Add more measurable achievements (%, $, numbers)'); } else { feedback.push('Add metrics to achievements (increased revenue by 30%, managed 15 staff)'); }
+    const bullets = (text.match(/^[•\-\*]/gm) ?? []).length;
+    if (bullets >= 5) { score += 10; } else { feedback.push('Use bullet points for experience entries'); }
+    const titleWords = title.toLowerCase().split(/\s+/);
+    const matches = titleWords.filter(w => w.length > 3 && text.toLowerCase().includes(w)).length;
+    if (matches >= 2) { score += 10; } else { feedback.push(`Include keywords from your target role: "${title}"`); }
+    return { score: Math.min(100, score), feedback };
+  }
+
+  function handleDownloadPDF() {
+    const content = editableOutput || output;
+    const win = window.open('', '_blank');
+    if (!win) return;
+    win.document.write(`<!DOCTYPE html><html><head><title>Resume - ${name}</title>
+      <style>body{font-family:Arial,sans-serif;max-width:800px;margin:40px auto;padding:0 40px;font-size:13px;line-height:1.6;color:#111}pre{white-space:pre-wrap;font-family:inherit;margin:0}@media print{body{margin:0}}</style>
+      </head><body><pre>${content.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</pre></body></html>`);
+    win.document.close();
+    setTimeout(() => { win.print(); }, 300);
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -43,7 +73,7 @@ export default function ResumeBuilderPage() {
       });
       const data = await res.json();
       if (!res.ok) setError(data.error ?? 'Something went wrong.');
-      else setOutput(data.resume);
+      else { setOutput(data.resume); setEditableOutput(data.resume); }
     } catch {
       setError('Network error. Please try again.');
     } finally {
@@ -227,21 +257,55 @@ export default function ResumeBuilderPage() {
         </button>
       </form>
 
-      {output && (
-        <div className="card">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-white">Your Resume</h2>
-            <button
-              onClick={() => { navigator.clipboard.writeText(output); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800 transition-all"
-            >
-              {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-              {copied ? 'Copied!' : 'Copy'}
-            </button>
-          </div>
-          <pre className="text-gray-300 text-xs leading-relaxed whitespace-pre-wrap font-mono overflow-x-auto">{output}</pre>
-        </div>
-      )}
+      {output && (() => {
+        const ats = calcAtsScore(editableOutput || output, jobTitle);
+        const scoreColor = ats.score >= 80 ? 'text-emerald-400' : ats.score >= 60 ? 'text-amber-400' : 'text-red-400';
+        const barColor = ats.score >= 80 ? 'bg-emerald-500' : ats.score >= 60 ? 'bg-amber-500' : 'bg-red-500';
+        return (
+          <>
+            {/* ATS Score */}
+            <div className="card">
+              <div className="flex items-center gap-3 mb-3">
+                <BarChart2 className="w-5 h-5 text-violet-400" />
+                <h2 className="font-semibold text-white">ATS Score</h2>
+                <span className={`text-2xl font-bold ${scoreColor}`}>{ats.score}/100</span>
+              </div>
+              <div className="h-2 bg-gray-800 rounded-full mb-3">
+                <div className={`h-full rounded-full ${barColor} transition-all`} style={{ width: `${ats.score}%` }} />
+              </div>
+              {ats.feedback.length > 0 && (
+                <ul className="text-xs text-gray-400 space-y-1">
+                  {ats.feedback.map((f, i) => <li key={i} className="flex items-start gap-2"><span className="text-amber-400 shrink-0">→</span>{f}</li>)}
+                </ul>
+              )}
+              {ats.score >= 80 && <p className="text-xs text-emerald-400 mt-2">Excellent! This resume is well-optimised for ATS systems.</p>}
+            </div>
+
+            {/* Editable resume + download */}
+            <div className="card">
+              <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+                <h2 className="font-semibold text-white">Your Resume</h2>
+                <div className="flex gap-2">
+                  <button onClick={handleDownloadPDF} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-violet-600 hover:bg-violet-500 text-white transition-all">
+                    <Download className="w-4 h-4" /> Download PDF
+                  </button>
+                  <button onClick={() => { navigator.clipboard.writeText(editableOutput || output); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800 transition-all">
+                    {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                    {copied ? 'Copied!' : 'Copy'}
+                  </button>
+                </div>
+              </div>
+              <p className="text-xs text-gray-500 mb-3">Edit directly below, then download as PDF.</p>
+              <textarea
+                value={editableOutput || output}
+                onChange={e => setEditableOutput(e.target.value)}
+                className="w-full bg-gray-800/50 border border-gray-700 rounded-xl p-4 text-gray-300 text-xs leading-relaxed font-mono resize-y min-h-[500px] focus:outline-none focus:border-violet-500"
+              />
+            </div>
+          </>
+        );
+      })()}
     </ToolLayout>
   );
 }
