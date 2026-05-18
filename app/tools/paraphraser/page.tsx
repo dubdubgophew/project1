@@ -147,7 +147,7 @@ export default function ParaphraserPage() {
       <div className="card bg-gray-900/50">
         <h2 className="text-lg font-semibold text-white mb-3">About the AI Paraphraser</h2>
         <p className="text-sm text-gray-400 leading-relaxed">
-          Our AI paraphraser uses LLaMA 3.1 70B to rewrite your text while preserving the original meaning.
+          Our AI paraphraser uses Groq AI to rewrite your text while preserving the original meaning.
           Perfect for avoiding plagiarism, improving readability, adapting content for different audiences,
           or simply getting a fresh perspective on your writing. Supports text up to 2,000 characters free
           (10,000 for Pro users).

@@ -213,7 +213,7 @@ export default function PDFSummarizerPage() {
           <li>Copy or download the summary</li>
         </ol>
         <p className="text-sm text-gray-500 mt-4">
-          Powered by LLaMA 3.1 70B — extracts key insights, main arguments, and important data points.
+          Powered by Groq AI — extracts key insights, main arguments, and important data points.
           Better than manual reading for quick comprehension.
         </p>
       </div>

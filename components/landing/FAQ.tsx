@@ -26,7 +26,7 @@ const FAQS = [
   },
   {
     q: 'How accurate are the AI outputs?',
-    a: 'LLaMA 3.1 70B produces excellent output for most tasks. For grammar checking, paraphrasing, summarization, and email writing, quality is comparable to premium tools like Grammarly or Jasper — at a fraction of the price.',
+    a: 'Groq AI produces excellent output for most tasks. For grammar checking, paraphrasing, summarization, and email writing, quality is comparable to premium tools like Grammarly or Jasper — at a fraction of the price.',
   },
   {
     q: 'Is there an API available?',
@@ -34,7 +34,7 @@ const FAQS = [
   },
   {
     q: 'What languages are supported?',
-    a: 'Formly works best in English, but LLaMA 3.1 supports 8 languages including Spanish, French, German, Italian, Portuguese, Hindi, and Arabic for many tasks.',
+    a: 'Formly works best in English but also supports Spanish, French, German, Italian, Portuguese, Hindi, and Arabic for most tasks.',
   },
 ];
 

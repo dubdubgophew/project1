@@ -36,7 +36,7 @@ export default function AboutPage() {
                 color: 'text-amber-400',
                 bg: 'bg-amber-500/10',
                 title: 'Why We Built This',
-                text: 'We were frustrated with tools that charge $30-100/month for basic AI features. Using the latest open-source AI (LLaMA 3.1 70B via Groq), we deliver the same quality at a fraction of the price — $9.99/month for Pro, or completely free for casual use.',
+                text: "We were frustrated with tools that charge $30-100/month for basic AI features. Using Groq's blazing-fast AI infrastructure, we deliver premium quality at a fraction of the price — $9.99/month for Pro, or completely free for casual use.",
               },
               {
                 icon: Heart,
