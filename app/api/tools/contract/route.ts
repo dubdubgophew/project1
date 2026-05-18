@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { checkRateLimit } from '@/lib/rate-limit';
+import { logUsage } from '@/lib/rate-limit';
 import { callAI } from '@/lib/ai';
 import { z } from 'zod';
 
@@ -15,10 +15,7 @@ const schema = z.object({
 });
 
 export async function POST(req: NextRequest) {
-  const limit = await checkRateLimit(req, 'contract');
-  if (!limit.allowed) {
-    return NextResponse.json({ error: limit.reason }, { status: 429 });
-  }
+  void logUsage(req, 'contract');
 
   try {
     const body = await req.json();
@@ -68,7 +65,7 @@ ADDITIONAL TERMS: ${data.additionalTerms || 'Standard terms apply'}`,
       },
     ], { temperature: 0.2, maxTokens: 3000 });
 
-    return NextResponse.json({ contract, remaining: limit.remaining });
+    return NextResponse.json({ contract });
   } catch (err) {
     if (err instanceof z.ZodError) {
       return NextResponse.json({ error: err.errors[0].message }, { status: 400 });

@@ -1,8 +1,11 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { ToolLayout } from '@/components/tools/ToolLayout';
 import { Download, Loader2, AlertCircle } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
+import type { User } from '@supabase/supabase-js';
+import Link from 'next/link';
 
 // ─── TAX TABLES 2024/2025 ────────────────────────────────────────────────────
 
@@ -196,18 +199,18 @@ function buildPaystubHTML(
 <title>Pay Stub — ${esc(empName || 'Employee')}</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,Helvetica,sans-serif;font-size:11px;background:#fff;color:#111}
-.page{max-width:680px;margin:24px auto;border:1px solid #d1d5db}
-.hdr{background:#111827;color:#fff;padding:20px 24px;display:flex;justify-content:space-between;align-items:flex-start}
-.co-name{font-size:16px;font-weight:700}
+body{font-family:'Calibri',Arial,sans-serif;font-size:11px;background:#fff;color:#111}
+.page{max-width:680px;margin:24px auto;border:1px solid #d1d5db;border-top:4px solid #1a5276}
+.hdr{background:#1a2332;color:#fff;padding:20px 24px;display:flex;justify-content:space-between;align-items:flex-start}
+.co-name{font-size:16px;font-weight:700;color:#fff}
 .co-detail{color:#9ca3af;font-size:10px;margin-top:3px}
-.pay-label{color:#818cf8;font-weight:700;font-size:13px;text-align:right}
+.pay-label{color:#7fb3d3;font-weight:700;font-size:13px;text-align:right}
 .pay-meta{color:#9ca3af;font-size:10px;text-align:right;margin-top:3px}
 .emp{padding:12px 24px;background:#f9fafb;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:flex-start}
-.emp-name{font-weight:700;font-size:13px}
+.emp-name{font-weight:700;font-size:13px;color:#1a2332}
 .emp-detail{color:#6b7280;font-size:10px;margin-top:2px}
 .sec{padding:10px 24px;border-top:1px solid #f3f4f6}
-.sec-hdr{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#374151;border-bottom:1px solid #e5e7eb;padding-bottom:5px;margin-bottom:6px;display:flex;justify-content:space-between}
+.sec-hdr{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#1a2332;border-bottom:1px solid #e5e7eb;padding-bottom:5px;margin-bottom:6px;display:flex;justify-content:space-between}
 table{width:100%;border-collapse:collapse}
 td{padding:3px 0;font-size:11px}
 td.lbl{color:#4b5563}
@@ -215,9 +218,9 @@ td.amt{text-align:right;font-weight:500}
 td.ded{color:#dc2626}
 .note{color:#9ca3af;font-size:9px}
 .total-row td{border-top:1px solid #f3f4f6;font-weight:700;padding-top:5px}
-.net{background:#7c3aed;color:#fff;padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
+.net{background:#1a5276;color:#fff;padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
 .net-lbl{font-weight:700;font-size:13px}
-.net-sub{color:#c4b5fd;font-size:10px;margin-top:2px}
+.net-sub{color:#aed6f1;font-size:10px;margin-top:2px}
 .net-amt{font-size:22px;font-weight:700}
 .empr{padding:10px 24px;background:#f9fafb;border-top:1px solid #e5e7eb}
 .empr-title{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;margin-bottom:5px}
@@ -364,6 +367,11 @@ function NumInput({ label, value, onChange, prefix, min = 0, step = 1 }: {
 // ─── MAIN COMPONENT ──────────────────────────────────────────────────────────
 
 export default function PaystubGeneratorPage() {
+  const [user, setUser] = useState<User | null | undefined>(undefined);
+  useEffect(() => {
+    createClient().auth.getUser().then(({ data }) => setUser(data.user ?? null));
+  }, []);
+
   const today = new Date().toISOString().split('T')[0];
   const [country, setCountry] = useState('US');
   const [period, setPeriod]   = useState('biweekly');

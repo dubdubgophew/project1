@@ -1,16 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { checkRateLimit } from '@/lib/rate-limit';
+import { logUsage } from '@/lib/rate-limit';
 import { callAI } from '@/lib/ai';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
 
 export async function POST(req: NextRequest) {
-  // Rate limiting
-  const limit = await checkRateLimit(req, 'pdf-summarize');
-  if (!limit.allowed) {
-    return NextResponse.json({ error: limit.reason }, { status: 429 });
-  }
+  void logUsage(req, 'pdf-summarize');
 
   try {
     const formData = await req.formData();
@@ -80,7 +76,7 @@ Be accurate, concise, and informative.`,
       },
     ], { maxTokens: 1500, temperature: 0.3 });
 
-    return NextResponse.json({ summary, remaining: limit.remaining });
+    return NextResponse.json({ summary });
   } catch (err) {
     console.error('PDF summarize error:', err);
     return NextResponse.json(

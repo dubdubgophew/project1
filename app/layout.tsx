@@ -80,6 +80,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://formly.tools',
   },
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
 };
 
 export const viewport: Viewport = {

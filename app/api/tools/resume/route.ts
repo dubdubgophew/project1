@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { checkRateLimit } from '@/lib/rate-limit';
+import { logUsage } from '@/lib/rate-limit';
 import { callAI } from '@/lib/ai';
 import { z } from 'zod';
 
@@ -27,10 +27,7 @@ const schema = z.object({
 });
 
 export async function POST(req: NextRequest) {
-  const limit = await checkRateLimit(req, 'resume');
-  if (!limit.allowed) {
-    return NextResponse.json({ error: limit.reason }, { status: 429 });
-  }
+  void logUsage(req, 'resume');
 
   try {
     const body = await req.json();
@@ -102,7 +99,7 @@ ${educationText || 'Not provided'}`,
       },
     ], { temperature: 0.4, maxTokens: 2000 });
 
-    return NextResponse.json({ resume, remaining: limit.remaining });
+    return NextResponse.json({ resume });
   } catch (err) {
     if (err instanceof z.ZodError) {
       return NextResponse.json({ error: err.errors[0].message }, { status: 400 });
