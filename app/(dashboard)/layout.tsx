@@ -16,6 +16,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     .single();
 
   const plan = profile?.plan ?? 'free';
+  const planLabel = plan === 'day_pass' ? 'Day Pass' : plan.charAt(0).toUpperCase() + plan.slice(1);
 
   return (
     <div className="min-h-screen bg-gray-950 flex">
@@ -52,7 +53,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
         {/* Plan badge + logout */}
         <div className="p-4 border-t border-gray-800 space-y-3">
-          {plan === 'free' && (
+          {(plan === 'free' || plan === 'day_pass') && (
             <Link href="/pricing" className="block w-full text-center py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-violet-600 to-purple-600 text-white hover:from-violet-500 hover:to-purple-500 transition-all">
               Upgrade to Pro →
             </Link>
@@ -63,7 +64,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-white truncate">{profile?.name ?? 'User'}</p>
-              <p className="text-xs text-gray-500 capitalize">{plan} plan</p>
+              <p className="text-xs text-gray-500">{planLabel} Plan</p>
             </div>
           </div>
           <form action="/api/auth/signout" method="POST">

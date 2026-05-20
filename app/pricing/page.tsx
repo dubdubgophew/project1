@@ -234,29 +234,32 @@ export default function PricingPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-800">
-                  <th className="text-left py-3 pr-4 text-gray-400 font-medium w-1/2">Feature</th>
-                  <th className="text-center py-3 px-4 text-gray-400 font-medium">Free</th>
-                  <th className="text-center py-3 px-4 text-violet-400 font-semibold">Pro</th>
-                  <th className="text-center py-3 px-4 text-amber-400 font-medium">Unlimited</th>
+                  <th className="text-left py-3 pr-4 text-gray-400 font-medium w-2/5">Feature</th>
+                  <th className="text-center py-3 px-2 text-gray-400 font-medium">Free</th>
+                  <th className="text-center py-3 px-2 text-orange-400 font-medium">Day Pass</th>
+                  <th className="text-center py-3 px-2 text-violet-400 font-semibold">Pro</th>
+                  <th className="text-center py-3 px-2 text-amber-400 font-medium">Unlimited</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-800/50">
                 {[
-                  ['Daily AI uses', '5 (10 with account)', '200', 'Unlimited'],
-                  ['All 10 AI tools', '✓', '✓', '✓'],
-                  ['Max input length', '2,000 chars', '10,000 chars', '50,000 chars'],
-                  ['Processing speed', 'Standard', 'Priority (2×)', 'Fastest (3×)'],
-                  ['PDF downloads', '✗', '✓', '✓'],
-                  ['Usage dashboard', '✗', '✓', '✓'],
-                  ['White-label output', '✗', '✗', '✓'],
-                  ['API access', '✗', '✗', 'Coming soon'],
-                  ['Support', 'Community', 'Email (48h)', 'Priority (24h)'],
-                ].map(([feature, free, pro, unlim]) => (
+                  ['AI uses', '5–10/day', '200 (24h)', '200/day', 'Unlimited'],
+                  ['All 26 AI tools', '✓', '✓', '✓', '✓'],
+                  ['Max input length', '2,000 chars', '10,000 chars', '10,000 chars', '50,000 chars'],
+                  ['Processing speed', 'Standard', 'Priority (2×)', 'Priority (2×)', 'Fastest (3×)'],
+                  ['PDF downloads', '✗', '✓', '✓', '✓'],
+                  ['Usage dashboard', '✗', '✗', '✓', '✓'],
+                  ['White-label output', '✗', '✗', '✗', '✓'],
+                  ['API access', '✗', '✗', '✗', 'Coming soon'],
+                  ['Support', 'Community', 'Community', 'Email (48h)', 'Priority (24h)'],
+                  ['Billing', 'Free', '$1.99 once', '$9.99/mo', '$19.99/mo'],
+                ].map(([feature, free, dayPass, pro, unlim]) => (
                   <tr key={feature}>
                     <td className="py-3 pr-4 text-gray-400">{feature}</td>
-                    <td className="text-center py-3 px-4 text-gray-500">{free}</td>
-                    <td className="text-center py-3 px-4 text-gray-300">{pro}</td>
-                    <td className="text-center py-3 px-4 text-gray-300">{unlim}</td>
+                    <td className="text-center py-3 px-2 text-gray-500">{free}</td>
+                    <td className="text-center py-3 px-2 text-gray-300">{dayPass}</td>
+                    <td className="text-center py-3 px-2 text-gray-300">{pro}</td>
+                    <td className="text-center py-3 px-2 text-gray-300">{unlim}</td>
                   </tr>
                 ))}
               </tbody>
