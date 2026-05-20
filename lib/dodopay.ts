@@ -93,3 +93,29 @@ export async function cancelDodoSubscription(subscriptionId: string) {
     { status: 'cancelled' } as Parameters<typeof client.subscriptions.update>[1]
   );
 }
+
+export async function createDodoRefund(paymentId: string, reason?: string): Promise<void> {
+  const client = getDodoClient();
+
+  // Try SDK method (dodopayments v2.28+)
+  if (typeof (client as any).refunds?.create === 'function') {
+    await (client as any).refunds.create({ payment_id: paymentId, reason: reason ?? 'customer_requested' });
+    return;
+  }
+
+  // Fallback: direct REST call
+  const env = process.env.DODO_PAYMENTS_ENVIRONMENT ?? 'live_mode';
+  const base = env === 'test_mode' ? 'https://test.dodopayments.com' : 'https://live.dodopayments.com';
+  const res = await fetch(`${base}/refunds`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${process.env.DODO_PAYMENTS_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ payment_id: paymentId, reason: reason ?? 'customer_requested' }),
+  });
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    throw new Error(`DodoPayments refund failed (${res.status}): ${body}`);
+  }
+}
