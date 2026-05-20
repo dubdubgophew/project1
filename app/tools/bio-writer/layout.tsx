@@ -1,58 +1,25 @@
 import type { Metadata } from 'next';
+import { ToolSchemas } from '@/components/shared/ToolSchemas';
 
 export const metadata: Metadata = {
-  title: 'Bio Writer — Free Professional Bio Generator | Formly',
-  description: 'Generate a professional bio for LinkedIn, Instagram, Twitter, or your website for free. AI bio writer with multiple styles — no signup required.',
-  keywords: [
-    'bio generator',
-    'professional bio writer',
-    'instagram bio generator',
-    'linkedin bio generator',
-    'twitter bio generator',
-    'free bio writer online',
-    'ai bio creator',
-    'short bio generator',
-    'personal bio writer',
-    'website bio generator',
-  ],
-  openGraph: {
-    title: 'Bio Writer — Free Professional Bio Generator | Formly',
-    description: 'Create a professional bio for LinkedIn, Instagram, or your website with AI. Free, no signup, multiple styles.',
-    url: 'https://formly.tools/tools/bio-writer',
-    type: 'website',
-    siteName: 'Formly',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Bio Writer — Free Professional Bio Generator | Formly',
-    description: 'Create a professional bio for LinkedIn, Instagram, or your website with AI. Free, no signup.',
-  },
+  title: 'Free AI Bio Writer — Professional Bio Generator for Any Platform | Formly',
+  description: 'Generate a professional bio instantly with AI. Works for LinkedIn, Twitter, Instagram, website about pages, speaker bios and more. Multiple tones and lengths. Free, no signup.',
+  keywords: ["bio generator", "professional bio writer", "instagram bio generator", "linkedin bio generator", "ai bio writer free", "personal bio generator", "twitter bio generator", "about me generator", "professional bio examples", "speaker bio generator"],
+  openGraph: { title: 'Free AI Bio Writer | Formly', description: 'Write a professional bio in seconds. LinkedIn, Twitter, Instagram & speaker bios. Multiple tones. Free.', url: 'https://formly.tools/tools/bio-writer', type: 'website', siteName: 'Formly' },
+  twitter: { card: 'summary_large_image', title: 'Free AI Bio Writer | Formly', description: 'Free AI bio writer — professional bios for LinkedIn, Instagram, Twitter. Multiple tones, no signup.' },
   alternates: { canonical: 'https://formly.tools/tools/bio-writer' },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'WebApplication',
-            name: 'Bio Writer',
-            description: 'Generate a professional bio for LinkedIn, Instagram, Twitter, or your website with AI.',
-            url: 'https://formly.tools/tools/bio-writer',
-            applicationCategory: 'UtilitiesApplication',
-            operatingSystem: 'Any',
-            offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            provider: { '@type': 'Organization', name: 'Formly', url: 'https://formly.tools' },
-            featureList: [
-              'AI-generated professional bios',
-              'Platform-specific styles for LinkedIn, Instagram, Twitter',
-              'Customizable tone and length',
-            ],
-          }),
-        }}
+      <ToolSchemas
+        name="AI Bio Writer"
+        description="Generate a professional bio instantly with AI. Works for LinkedIn, Twitter, Instagram, website about pages, speaker bios and more. Multiple tones and lengths. Free, no signup."
+        url="https://formly.tools/tools/bio-writer"
+        category="UtilitiesApplication"
+        features={['Bios for LinkedIn, Instagram, Twitter, website', 'Multiple tones (professional, casual, creative)', 'Short (150 chars) and long (300 words) versions', 'Edit and customize output', 'No signup required']}
+        faqs={[{ q: 'What platforms does the bio generator support?', a: 'Formly's bio writer creates bios optimized for LinkedIn, Twitter/X, Instagram, website About pages, speaker profiles, and general professional bios.' }, { q: 'How long should a professional bio be?', a: 'Twitter bios are limited to 160 characters. LinkedIn summaries work best at 3-5 sentences (50-100 words). Website about pages can be longer (150-300 words). Formly generates the right length for each platform.' }, { q: 'Can I write a bio in third person?', a: 'Yes — the bio writer can generate both first-person (I am...) and third-person (John is...) bios depending on your preference.' }, { q: 'Is it free?', a: 'Yes — free to generate bios up to 5 times/day without an account.' }]}
       />
       {children}
     </>

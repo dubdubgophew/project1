@@ -11,6 +11,10 @@
     {
       "path": "/api/cron/weekly-report",
       "schedule": "0 8 * * 1"
+    },
+    {
+      "path": "/api/seo/indexnow",
+      "schedule": "0 4 * * 0"
     }
   ],
   "functions": {
@@ -20,8 +24,14 @@
     "app/api/tools/youtube-summarize/route.ts": {
       "maxDuration": 60
     },
+    "app/api/tools/pdf-to-markdown/route.ts": {
+      "maxDuration": 60
+    },
     "app/api/cron/generate-content/route.ts": {
       "maxDuration": 300
+    },
+    "app/api/seo/indexnow/route.ts": {
+      "maxDuration": 30
     }
   }
 }

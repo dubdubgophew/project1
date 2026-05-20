@@ -1,58 +1,25 @@
 import type { Metadata } from 'next';
+import { ToolSchemas } from '@/components/shared/ToolSchemas';
 
 export const metadata: Metadata = {
-  title: 'Password Generator — Free Strong Password Maker | Formly',
-  description: 'Generate strong, secure, and random passwords instantly for free. Customizable password generator with length, symbols, and strength options — no signup required.',
-  keywords: [
-    'password generator',
-    'strong password generator',
-    'random password maker',
-    'secure password generator',
-    'free password generator online',
-    'complex password creator',
-    'password strength generator',
-    'random secure password',
-    'online password maker',
-    'best password generator',
-  ],
-  openGraph: {
-    title: 'Password Generator — Free Strong Password Maker | Formly',
-    description: 'Generate strong, secure, random passwords instantly. Free, no signup. Customizable length, symbols, and complexity.',
-    url: 'https://formly.tools/tools/password-generator',
-    type: 'website',
-    siteName: 'Formly',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Password Generator — Free Strong Password Maker | Formly',
-    description: 'Generate strong, secure, random passwords instantly. Free, no signup required.',
-  },
+  title: 'Free Strong Password Generator — Secure Random Passwords | Formly',
+  description: 'Generate cryptographically secure passwords instantly. Customize length, character sets, and generate up to 50 passwords at once. Entropy and crack time shown. Free.',
+  keywords: ["password generator", "strong password generator", "random password generator", "secure password maker", "free password generator", "password creator online", "complex password generator", "bulk password generator", "password with symbols generator", "cryptographic password generator"],
+  openGraph: { title: 'Free Strong Password Generator | Formly', description: 'Generate cryptographically secure passwords. Entropy score, crack time, bulk generation. Free.', url: 'https://formly.tools/tools/password-generator', type: 'website', siteName: 'Formly' },
+  twitter: { card: 'summary_large_image', title: 'Free Strong Password Generator | Formly', description: 'Free password generator — strong, random, secure. Entropy score and crack time shown.' },
   alternates: { canonical: 'https://formly.tools/tools/password-generator' },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'WebApplication',
-            name: 'Password Generator',
-            description: 'Generate strong, secure, and random passwords instantly for free with customizable options.',
-            url: 'https://formly.tools/tools/password-generator',
-            applicationCategory: 'SecurityApplication',
-            operatingSystem: 'Any',
-            offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            provider: { '@type': 'Organization', name: 'Formly', url: 'https://formly.tools' },
-            featureList: [
-              'Cryptographically strong random passwords',
-              'Customizable length and character sets',
-              'Password strength indicator',
-            ],
-          }),
-        }}
+      <ToolSchemas
+        name="Strong Password Generator"
+        description="Generate cryptographically secure passwords instantly. Customize length, character sets, and generate up to 50 passwords at once. Entropy and crack time shown. Free."
+        url="https://formly.tools/tools/password-generator"
+        category="SecurityApplication"
+        features={['Cryptographically secure random generation', 'Customizable length and character sets', 'Entropy and crack time display', 'Bulk generation (up to 50 passwords)', 'Copy to clipboard instantly']}
+        faqs={[{ q: 'Are generated passwords truly random?', a: 'Yes — Formly uses the browser's cryptographically secure random number generator (window.crypto), the same standard used by security professionals and password managers.' }, { q: 'What makes a password strong?', a: 'A strong password has: 12+ characters, a mix of uppercase and lowercase letters, numbers, and symbols, no dictionary words, and is unique to each account. Our generator creates passwords meeting all these criteria.' }, { q: 'What is entropy?', a: 'Password entropy measures how unpredictable a password is in bits. Higher entropy = harder to crack. A 128-bit entropy password would take longer than the age of the universe to brute-force.' }, { q: 'Should I store generated passwords in a browser?', a: 'For maximum security, store passwords in a dedicated password manager (Bitwarden, 1Password, etc.) rather than your browser, which can be compromised by extensions.' }]}
       />
       {children}
     </>
