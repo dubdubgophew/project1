@@ -3,6 +3,7 @@ import { createClient, createAdminClient } from '@/lib/supabase/server';
 import { createDodoRefund, cancelDodoSubscription } from '@/lib/dodopay';
 
 const REFUND_WINDOW_DAYS = 7;
+const REFUNDABLE_PLANS = ['pro', 'unlimited'];
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,7 +15,7 @@ export async function POST(req: NextRequest) {
 
     const { data: profile } = await admin
       .from('profiles')
-      .select('plan')
+      .select('plan, refund_count')
       .eq('id', user.id)
       .single();
 
@@ -26,8 +27,25 @@ export async function POST(req: NextRequest) {
 
     const plan = profile?.plan ?? 'free';
 
-    if (plan === 'free' || !sub) {
-      return NextResponse.json({ error: 'No active paid subscription found.' }, { status: 400 });
+    // Pro / Unlimited only — day pass and free are not refundable
+    if (!REFUNDABLE_PLANS.includes(plan)) {
+      return NextResponse.json({
+        error: plan === 'day_pass'
+          ? 'Day Pass purchases are non-refundable (one-time, low-cost access). Contact support@formly.tools if you have an issue.'
+          : 'No active paid subscription found.',
+      }, { status: 400 });
+    }
+
+    if (!sub) {
+      return NextResponse.json({ error: 'No subscription record found. Contact support@formly.tools.' }, { status: 400 });
+    }
+
+    // One refund per account lifetime
+    const refundCount = (profile as any)?.refund_count ?? 0;
+    if (refundCount >= 1) {
+      return NextResponse.json({
+        error: 'Refunds are available once per account. You have already used your refund. Contact support@formly.tools for further assistance.',
+      }, { status: 400 });
     }
 
     if (sub.status === 'refunded') {
@@ -38,10 +56,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'A refund request is already pending. Our team will process it within 24–48 hours.' }, { status: 400 });
     }
 
-    // Check 7-day window from when the row was created
+    // 7-day window
     const purchasedAt = new Date(sub.created_at ?? Date.now());
     const daysSince = (Date.now() - purchasedAt.getTime()) / (1000 * 60 * 60 * 24);
-
     if (daysSince > REFUND_WINDOW_DAYS) {
       return NextResponse.json({
         error: `Refund window has passed. Refunds are available within ${REFUND_WINDOW_DAYS} days of purchase (purchased ${Math.floor(daysSince)} days ago). Contact support@formly.tools for assistance.`,
@@ -49,12 +66,12 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json().catch(() => ({}));
-    const reason: string = body.reason?.trim() || 'Customer requested refund';
+    const rawReason: string = body.reason ?? '';
+    // Sanitize: strip tags, cap length
+    const reason = rawReason.replace(/<[^>]*>/g, '').slice(0, 500).trim() || 'Customer requested refund';
 
     let refundSucceeded = false;
     let manualReason = '';
-
-    // Attempt automatic refund via DodoPayments
     const paymentId: string | null = sub.dodo_payment_id ?? null;
 
     if (paymentId) {
@@ -69,20 +86,22 @@ export async function POST(req: NextRequest) {
       manualReason = 'No payment ID on record — will be processed manually.';
     }
 
-    // Cancel DodoPayments subscription if applicable (non-day_pass)
-    if (sub.dodo_subscription_id && plan !== 'day_pass') {
+    if (sub.dodo_subscription_id) {
       await cancelDodoSubscription(sub.dodo_subscription_id).catch(err =>
         console.error('[Refund] Cancel subscription error:', err)
       );
     }
 
-    // Always downgrade the profile and mark subscription
-    await admin.from('profiles').update({ plan: 'free' }).eq('id', user.id);
-    await admin.from('subscriptions').update({
-      status: refundSucceeded ? 'refunded' : 'refund_requested',
-    }).eq('user_id', user.id);
+    // Downgrade plan + mark subscription + increment refund_count
+    await admin.from('profiles')
+      .update({ plan: 'free', refund_count: (refundCount + 1) })
+      .eq('id', user.id);
 
-    console.log(`[Refund] user=${user.id} plan=${plan} payment=${paymentId} auto=${refundSucceeded} reason="${reason}"`);
+    await admin.from('subscriptions')
+      .update({ status: refundSucceeded ? 'refunded' : 'refund_requested' })
+      .eq('user_id', user.id);
+
+    console.log(`[Refund] user=${user.id} email=${user.email} plan=${plan} payment=${paymentId} auto=${refundSucceeded}`);
 
     if (!refundSucceeded) {
       return NextResponse.json({
@@ -95,14 +114,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       success: true,
       manual: false,
-      message: 'Refund processed. You\'ll receive the amount within 5–7 business days depending on your bank.',
+      message: "Refund processed. You'll receive the amount within 5–7 business days.",
     });
 
   } catch (err) {
     console.error('[Refund] Unexpected error:', err);
-    return NextResponse.json(
-      { error: 'Refund request failed. Please contact support@formly.tools.' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Refund request failed. Please contact support@formly.tools.' }, { status: 500 });
   }
 }

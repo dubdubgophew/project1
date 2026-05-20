@@ -77,7 +77,7 @@ export default function SettingsPage() {
   const purchasedAt = sub?.created_at ? new Date(sub.created_at) : null;
   const daysSince = purchasedAt ? (Date.now() - purchasedAt.getTime()) / (1000 * 60 * 60 * 24) : 999;
   const isRefundEligible =
-    plan !== 'free' &&
+    (plan === 'pro' || plan === 'unlimited') &&
     sub !== null &&
     sub.status !== 'refunded' &&
     sub.status !== 'refund_requested' &&
@@ -222,15 +222,21 @@ export default function SettingsPage() {
             </button>
           ) : null}
         </div>
-        <p className="text-xs text-gray-600">
+        {plan === 'day_pass' && (
+          <p className="text-xs text-amber-400/80 mt-3">
+            Day Pass purchases are non-refundable (one-time, low-cost access). Contact{' '}
+            <a href="mailto:support@formly.tools" className="hover:underline">support@formly.tools</a> if you have an issue.
+          </p>
+        )}
+        <p className="text-xs text-gray-600 mt-3">
           For billing issues, email{' '}
           <a href="mailto:support@formly.tools" className="text-violet-400 hover:underline">support@formly.tools</a>.
-          7-day money-back guarantee on all plans.
+          {(plan === 'pro' || plan === 'unlimited') && ' 7-day money-back guarantee.'}
         </p>
       </div>
 
-      {/* Refund */}
-      {plan !== 'free' && (
+      {/* Refund — pro/unlimited only */}
+      {(plan === 'pro' || plan === 'unlimited') && (
         <div className="card mb-6">
           <h2 className="text-lg font-semibold text-white mb-1 flex items-center gap-2">
             <RefreshCw className="w-5 h-5 text-violet-400" />
