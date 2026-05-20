@@ -288,7 +288,7 @@ const TOOLS: Tool[] = [
   },
 ];
 
-const ALL_CATEGORIES = ['All', ...Array.from(new Set(TOOLS.map(t => t.category)))];
+const ALL_CATEGORIES = ['All', 'Payroll & Legal', 'AI Writing', 'AI Documents', 'Developer', 'Finance', 'Utilities'];
 
 function ToolsContent() {
   const searchParams = useSearchParams();
