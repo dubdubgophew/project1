@@ -13,7 +13,7 @@
       "schedule": "0 8 * * 1"
     },
     {
-      "path": "/api/seo/indexnow",
+      "path": "/api/cron/indexnow",
       "schedule": "0 4 * * 0"
     }
   ],
@@ -30,7 +30,7 @@
     "app/api/cron/generate-content/route.ts": {
       "maxDuration": 300
     },
-    "app/api/seo/indexnow/route.ts": {
+    "app/api/cron/indexnow/route.ts": {
       "maxDuration": 30
     }
   }
