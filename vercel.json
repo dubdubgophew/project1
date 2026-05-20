@@ -14,7 +14,11 @@
     },
     {
       "path": "/api/cron/indexnow",
-      "schedule": "0 4 * * 0"
+      "schedule": "0 4,16 * * *"
+    },
+    {
+      "path": "/api/cron/sitemap-ping",
+      "schedule": "0 6 * * *"
     }
   ],
   "functions": {
@@ -31,6 +35,9 @@
       "maxDuration": 300
     },
     "app/api/cron/indexnow/route.ts": {
+      "maxDuration": 30
+    },
+    "app/api/cron/sitemap-ping/route.ts": {
       "maxDuration": 30
     }
   }
