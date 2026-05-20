@@ -161,7 +161,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
           <div>
             <div className="flex items-center gap-2 mb-1">
               <Crown className="w-4 h-4 text-amber-400" />
-              <span className="text-sm font-semibold text-white capitalize">{plan} Plan</span>
+              <span className="text-sm font-semibold text-white">
+                {plan === 'day_pass' ? 'Day Pass' : plan.charAt(0).toUpperCase() + plan.slice(1)} Plan
+              </span>
             </div>
             <p className="text-sm text-gray-400">
               {plan === 'free' && 'Upgrade to Pro for 200 uses/day and priority processing.'}
