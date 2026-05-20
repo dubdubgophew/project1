@@ -19,6 +19,48 @@ type Tool = {
 };
 
 const TOOLS: Tool[] = [
+  // Pinned top 3
+  {
+    icon: '🧾',
+    name: 'Pay Stub Generator',
+    description: 'Generate professional pay stubs with accurate 2024/2025 tax calculations. USA, UK, Canada, Australia, India & more.',
+    href: '/tools/paystub-generator',
+    badge: 'New',
+    color: 'from-green-500/10 to-green-600/5 border-green-500/20 hover:border-green-500/40',
+    tags: ['payroll', 'tax', 'salary'],
+    category: 'Payroll & Legal',
+  },
+  {
+    icon: '📋',
+    name: 'Resume Builder',
+    description: 'Build an ATS-optimized resume with AI. Stand out from hundreds of other applicants.',
+    href: '/tools/resume-builder',
+    badge: null,
+    color: 'from-teal-500/10 to-teal-600/5 border-teal-500/20 hover:border-teal-500/40',
+    tags: ['resume', 'cv', 'job'],
+    category: 'AI Writing',
+  },
+  {
+    icon: '📜',
+    name: 'Contract Generator',
+    description: 'Generate freelance contracts, NDAs, service agreements in minutes. Professional & legally sound.',
+    href: '/tools/contract-generator',
+    badge: null,
+    color: 'from-orange-500/10 to-orange-600/5 border-orange-500/20 hover:border-orange-500/40',
+    tags: ['legal', 'contract', 'nda'],
+    category: 'Payroll & Legal',
+  },
+  // Payroll & Legal (remaining)
+  {
+    icon: '⚖️',
+    name: 'Terms Simplifier',
+    description: 'Paste any Terms of Service or Privacy Policy and get a plain-English summary with red flags.',
+    href: '/tools/terms-simplifier',
+    badge: 'New',
+    color: 'from-yellow-500/10 to-yellow-600/5 border-yellow-500/20 hover:border-yellow-500/40',
+    tags: ['legal', 'privacy', 'terms'],
+    category: 'Payroll & Legal',
+  },
   // AI Writing
   {
     icon: '📄',
@@ -61,16 +103,6 @@ const TOOLS: Tool[] = [
     category: 'AI Writing',
   },
   {
-    icon: '📋',
-    name: 'Resume Builder',
-    description: 'Build an ATS-optimized resume with AI. Stand out from hundreds of other applicants.',
-    href: '/tools/resume-builder',
-    badge: null,
-    color: 'from-teal-500/10 to-teal-600/5 border-teal-500/20 hover:border-teal-500/40',
-    tags: ['resume', 'cv', 'job'],
-    category: 'AI Writing',
-  },
-  {
     icon: '#️⃣',
     name: 'Hashtag Generator',
     description: 'Generate viral hashtags for Instagram, Twitter, LinkedIn, and TikTok based on your topic.',
@@ -110,37 +142,6 @@ const TOOLS: Tool[] = [
     color: 'from-rose-500/10 to-rose-600/5 border-rose-500/20 hover:border-rose-500/40',
     tags: ['pdf', 'markdown', 'convert'],
     category: 'AI Documents',
-  },
-  // Payroll & Legal
-  {
-    icon: '🧾',
-    name: 'Pay Stub Generator',
-    description: 'Generate professional pay stubs with accurate 2024/2025 tax calculations. USA, UK, Canada, Australia, India & more.',
-    href: '/tools/paystub-generator',
-    badge: 'New',
-    color: 'from-green-500/10 to-green-600/5 border-green-500/20 hover:border-green-500/40',
-    tags: ['payroll', 'tax', 'salary'],
-    category: 'Payroll & Legal',
-  },
-  {
-    icon: '📜',
-    name: 'Contract Generator',
-    description: 'Generate freelance contracts, NDAs, service agreements in minutes. Professional & legally sound.',
-    href: '/tools/contract-generator',
-    badge: null,
-    color: 'from-orange-500/10 to-orange-600/5 border-orange-500/20 hover:border-orange-500/40',
-    tags: ['legal', 'contract', 'nda'],
-    category: 'Payroll & Legal',
-  },
-  {
-    icon: '⚖️',
-    name: 'Terms Simplifier',
-    description: 'Paste any Terms of Service or Privacy Policy and get a plain-English summary with red flags.',
-    href: '/tools/terms-simplifier',
-    badge: 'New',
-    color: 'from-yellow-500/10 to-yellow-600/5 border-yellow-500/20 hover:border-yellow-500/40',
-    tags: ['legal', 'privacy', 'terms'],
-    category: 'Payroll & Legal',
   },
   // Developer
   {
@@ -213,6 +214,27 @@ const TOOLS: Tool[] = [
     tags: ['diff', 'compare', 'developer'],
     category: 'Developer',
   },
+  // Finance
+  {
+    icon: '💰',
+    name: 'Expense Splitter',
+    description: 'Split group expenses fairly. Track who paid what and get a simplified debt settlement plan.',
+    href: '/tools/expense-splitter',
+    badge: 'New',
+    color: 'from-green-500/10 to-emerald-600/5 border-green-500/20 hover:border-green-500/40',
+    tags: ['expense', 'split', 'finance'],
+    category: 'Finance',
+  },
+  {
+    icon: '🏦',
+    name: 'Loan Calculator',
+    description: 'Calculate monthly EMI, total interest, and full amortization schedule for any loan.',
+    href: '/tools/loan-calculator',
+    badge: 'New',
+    color: 'from-violet-500/10 to-purple-600/5 border-violet-500/20 hover:border-violet-500/40',
+    tags: ['loan', 'emi', 'finance'],
+    category: 'Finance',
+  },
   // Utilities
   {
     icon: '🔑',
@@ -263,27 +285,6 @@ const TOOLS: Tool[] = [
     color: 'from-teal-500/10 to-cyan-600/5 border-teal-500/20 hover:border-teal-500/40',
     tags: ['text', 'case', 'format'],
     category: 'Utilities',
-  },
-  // Finance
-  {
-    icon: '💰',
-    name: 'Expense Splitter',
-    description: 'Split group expenses fairly. Track who paid what and get a simplified debt settlement plan.',
-    href: '/tools/expense-splitter',
-    badge: 'New',
-    color: 'from-green-500/10 to-emerald-600/5 border-green-500/20 hover:border-green-500/40',
-    tags: ['expense', 'split', 'finance'],
-    category: 'Finance',
-  },
-  {
-    icon: '🏦',
-    name: 'Loan Calculator',
-    description: 'Calculate monthly EMI, total interest, and full amortization schedule for any loan.',
-    href: '/tools/loan-calculator',
-    badge: 'New',
-    color: 'from-violet-500/10 to-purple-600/5 border-violet-500/20 hover:border-violet-500/40',
-    tags: ['loan', 'emi', 'finance'],
-    category: 'Finance',
   },
 ];
 
