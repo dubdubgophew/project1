@@ -1,58 +1,25 @@
 import type { Metadata } from 'next';
+import { ToolSchemas } from '@/components/shared/ToolSchemas';
 
 export const metadata: Metadata = {
-  title: 'Expense Splitter — Free Bill Splitter Calculator | Formly',
-  description: 'Split bills and expenses fairly among friends or groups online for free. Instant expense splitter with tip and unequal split options — no signup required.',
-  keywords: [
-    'expense splitter',
-    'bill splitter calculator',
-    'split expenses online',
-    'split bill free',
-    'group expense calculator',
-    'share bill calculator',
-    'trip expense splitter',
-    'restaurant bill splitter',
-    'fair expense split tool',
-    'online bill divider',
-  ],
-  openGraph: {
-    title: 'Expense Splitter — Free Bill Splitter Calculator | Formly',
-    description: 'Split bills and expenses fairly among groups instantly. Free, no signup. Supports tip and unequal splits.',
-    url: 'https://formly.tools/tools/expense-splitter',
-    type: 'website',
-    siteName: 'Formly',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Expense Splitter — Free Bill Splitter Calculator | Formly',
-    description: 'Split bills and expenses fairly among groups instantly. Free, no signup required.',
-  },
+  title: 'Free Expense Splitter & Bill Calculator — Split Bills Fairly | Formly',
+  description: 'Split bills and expenses fairly between friends. Automatic debt simplification shows who owes whom. Great for trips, roommates and group dinners. Free, no signup needed.',
+  keywords: ["expense splitter", "bill splitter calculator", "split expenses online", "group expense calculator", "roommate expense splitter", "trip expense calculator", "splitwise alternative", "split bill calculator free", "who owes whom calculator", "group bill splitter"],
+  openGraph: { title: 'Free Expense Splitter | Formly', description: 'Split bills between friends fairly. Auto debt simplification — who owes whom. Free Splitwise alternative.', url: 'https://formly.tools/tools/expense-splitter', type: 'website', siteName: 'Formly' },
+  twitter: { card: 'summary_large_image', title: 'Free Expense Splitter | Formly', description: 'Free expense splitter — split bills, auto debt simplification, no signup. Splitwise alternative.' },
   alternates: { canonical: 'https://formly.tools/tools/expense-splitter' },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'WebApplication',
-            name: 'Expense Splitter',
-            description: 'Split bills and expenses fairly among friends or groups online for free with tip and unequal split options.',
-            url: 'https://formly.tools/tools/expense-splitter',
-            applicationCategory: 'FinanceApplication',
-            operatingSystem: 'Any',
-            offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            provider: { '@type': 'Organization', name: 'Formly', url: 'https://formly.tools' },
-            featureList: [
-              'Equal and unequal expense splitting',
-              'Tip calculation and distribution',
-              'Multiple currency support',
-            ],
-          }),
-        }}
+      <ToolSchemas
+        name="Expense Splitter"
+        description="Split bills and expenses fairly between friends. Automatic debt simplification shows who owes whom. Great for trips, roommates and group dinners. Free, no signup needed."
+        url="https://formly.tools/tools/expense-splitter"
+        category="FinanceApplication"
+        features={['Add multiple people and expenses', 'Automatic debt simplification algorithm', 'Per-person total calculation', 'Settlement summary', 'Free Splitwise alternative']}
+        faqs={[{ q: 'How does the debt simplification work?', a: 'The expense splitter uses a debt simplification algorithm to minimize the number of transactions needed to settle all debts. Instead of multiple back-and-forth payments, it calculates the optimal set of transfers.' }, { q: 'Is this a free alternative to Splitwise?', a: 'Yes — Formly's expense splitter offers core bill-splitting functionality for free with no account required. It's perfect for trips, group dinners, and shared household expenses.' }, { q: 'Can I split expenses unevenly?', a: 'Currently the splitter divides shared expenses equally. For unequal splits, you can add separate expense entries for each person's share.' }, { q: 'Is my expense data saved?', a: 'No — all calculations happen in your browser and nothing is stored on our servers. Your financial data stays private.' }]}
       />
       {children}
     </>

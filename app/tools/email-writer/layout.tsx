@@ -1,58 +1,25 @@
 import type { Metadata } from 'next';
+import { ToolSchemas } from '@/components/shared/ToolSchemas';
 
 export const metadata: Metadata = {
-  title: 'AI Email Writer — Free Professional Email Generator | Formly',
-  description: 'Write professional emails in seconds with AI. Free email writer for business, follow-ups, cold outreach, and more — no signup required.',
-  keywords: [
-    'ai email writer',
-    'email generator',
-    'professional email writer free',
-    'email writing tool',
-    'business email generator',
-    'cold email writer',
-    'free email writer online',
-    'ai email composer',
-    'email template generator',
-    'automated email writer',
-  ],
-  openGraph: {
-    title: 'AI Email Writer — Free Professional Email Generator | Formly',
-    description: 'Generate professional emails in seconds with AI. Free, no signup. Perfect for business, outreach & follow-ups.',
-    url: 'https://formly.tools/tools/email-writer',
-    type: 'website',
-    siteName: 'Formly',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'AI Email Writer — Free Email Generator | Formly',
-    description: 'Generate professional emails in seconds with AI. Free, no signup required.',
-  },
+  title: 'Free AI Email Writer — Write Professional Emails in Seconds | Formly',
+  description: 'Generate professional emails instantly with AI. Cold emails, follow-ups, apology emails, job applications & more. Free, customizable tone. No signup needed.',
+  keywords: ["ai email writer", "email generator free", "professional email writer", "write email with ai", "cold email generator", "business email writer", "email template generator ai", "free email writer online", "ai email composer", "email drafter free"],
+  openGraph: { title: 'Free AI Email Writer | Formly', description: 'Write professional emails in seconds with AI. Cold emails, follow-ups, job applications & more. Free.', url: 'https://formly.tools/tools/email-writer', type: 'website', siteName: 'Formly' },
+  twitter: { card: 'summary_large_image', title: 'Free AI Email Writer | Formly', description: 'AI email writer — generate professional emails instantly. Free, no signup.' },
   alternates: { canonical: 'https://formly.tools/tools/email-writer' },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'WebApplication',
-            name: 'AI Email Writer',
-            description: 'Write professional emails in seconds with AI for business, follow-ups, cold outreach, and more.',
-            url: 'https://formly.tools/tools/email-writer',
-            applicationCategory: 'BusinessApplication',
-            operatingSystem: 'Any',
-            offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            provider: { '@type': 'Organization', name: 'Formly', url: 'https://formly.tools' },
-            featureList: [
-              'AI-generated professional emails',
-              'Multiple email tones and styles',
-              'Business and cold outreach templates',
-            ],
-          }),
-        }}
+      <ToolSchemas
+        name="AI Email Writer"
+        description="Generate professional emails instantly with AI. Cold emails, follow-ups, apology emails, job applications & more. Free, customizable tone. No signup needed."
+        url="https://formly.tools/tools/email-writer"
+        category="BusinessApplication"
+        features={['Multiple email types (cold, follow-up, apology, job application)', 'Customizable tone (formal, friendly, assertive)', 'Subject line suggestions', 'No signup required', 'Instant AI generation']}
+        faqs={[{ q: 'What types of emails can it write?', a: 'Formly's AI email writer handles cold sales emails, follow-up emails, job application emails, apology emails, meeting requests, invoice follow-ups, thank you notes, and more.' }, { q: 'Can I customize the tone of the email?', a: 'Yes — choose from formal, friendly, concise, or assertive tones. You can also specify the context and key points to include.' }, { q: 'Is the email writer free?', a: 'Yes — free to use up to 5 times per day without signing up. Sign up for a free account to get 10 emails/day.' }, { q: 'Will the AI email sound robotic?', a: 'No — Formly uses advanced AI that writes natural, context-aware emails that sound human. You can always edit the output before sending.' }]}
       />
       {children}
     </>

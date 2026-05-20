@@ -1,58 +1,25 @@
 import type { Metadata } from 'next';
+import { ToolSchemas } from '@/components/shared/ToolSchemas';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service Simplifier — Free TOS Explainer | Formly',
-  description: 'Simplify and understand terms of service and privacy policies instantly. Free AI tool that explains legal jargon in plain English — no signup required.',
-  keywords: [
-    'terms of service summarizer',
-    'privacy policy explainer',
-    'tos simplifier',
-    'terms of service explainer',
-    'privacy policy summarizer',
-    'legal jargon simplifier',
-    'tos reader free',
-    'understand privacy policy',
-    'ai terms explainer',
-    'simplify legal text',
-  ],
-  openGraph: {
-    title: 'Terms of Service Simplifier — Free TOS Explainer | Formly',
-    description: 'Understand any terms of service or privacy policy in plain English with AI. Free, no signup required.',
-    url: 'https://formly.tools/tools/terms-simplifier',
-    type: 'website',
-    siteName: 'Formly',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Terms of Service Simplifier — Free TOS Explainer | Formly',
-    description: 'Understand any terms of service or privacy policy in plain English with AI. Free, no signup.',
-  },
+  title: 'Free Terms of Service Simplifier — Plain English T&C Explainer | Formly',
+  description: 'Understand any Terms of Service or Privacy Policy in seconds. AI breaks it down into plain English with red flags, privacy score, and what the company can do with your data.',
+  keywords: ["terms of service summarizer", "privacy policy explainer", "tos simplifier", "terms and conditions summarizer", "privacy policy summarizer free", "what does tos mean", "terms of service explained", "terms checker ai", "privacy policy analyser", "tos reader free"],
+  openGraph: { title: 'Free Terms of Service Simplifier | Formly', description: 'Understand any T&C or privacy policy in plain English. Red flags, privacy score, data rights. Free.', url: 'https://formly.tools/tools/terms-simplifier', type: 'website', siteName: 'Formly' },
+  twitter: { card: 'summary_large_image', title: 'Free Terms of Service Simplifier | Formly', description: 'Free T&C simplifier — plain English, privacy score, red flags detected. No signup.' },
   alternates: { canonical: 'https://formly.tools/tools/terms-simplifier' },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'WebApplication',
-            name: 'Terms of Service Simplifier',
-            description: 'Simplify and understand terms of service and privacy policies instantly with AI in plain English.',
-            url: 'https://formly.tools/tools/terms-simplifier',
-            applicationCategory: 'UtilitiesApplication',
-            operatingSystem: 'Any',
-            offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            provider: { '@type': 'Organization', name: 'Formly', url: 'https://formly.tools' },
-            featureList: [
-              'Converts legal jargon to plain English',
-              'Summarizes key clauses and policies',
-              'Highlights important terms and conditions',
-            ],
-          }),
-        }}
+      <ToolSchemas
+        name="Terms of Service Simplifier"
+        description="Understand any Terms of Service or Privacy Policy in seconds. AI breaks it down into plain English with red flags, privacy score, and what the company can do with your data."
+        url="https://formly.tools/tools/terms-simplifier"
+        category="UtilitiesApplication"
+        features={['Plain English summary of T&C', 'Privacy score (1-10)', 'Red flag detection', 'What the company can/cannot do', 'Your rights explained']}
+        faqs={[{ q: 'How does the Terms Simplifier work?', a: 'Paste the Terms of Service or Privacy Policy text, and the AI analyzes it to extract: a plain-English summary, what the company is allowed to do with your data, your rights, concerning clauses (red flags), and a privacy score from 1-10.' }, { q: 'What is the privacy score?', a: 'The privacy score (1-10) reflects how privacy-friendly the terms are. 1 = extremely invasive, 10 = very privacy-friendly. It's based on data collection practices, third-party sharing, data retention policies, and user rights.' }, { q: 'What are red flags?', a: 'Red flags are concerning clauses that could harm users — like 'we can sell your data to third parties', 'you waive your right to class action lawsuits', 'we can change terms without notice', etc.' }, { q: 'Is it free?', a: 'Yes — free to use 5 times/day without an account.' }]}
       />
       {children}
     </>

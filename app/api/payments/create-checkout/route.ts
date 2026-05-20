@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
 
     const origin = req.headers.get('origin') ?? process.env.NEXT_PUBLIC_SITE_URL!;
 
-    const session = await createDodoCheckout({
+    const checkoutUrl = await createDodoCheckout({
       plan,
       userEmail: user.email!,
       userName: user.user_metadata?.name,
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       returnUrl: `${origin}/dashboard?upgrade=success&plan=${plan}`,
     });
 
-    return NextResponse.json({ url: (session as any).checkout_url ?? (session as any).url });
+    return NextResponse.json({ url: checkoutUrl });
   } catch (err) {
     if (err instanceof z.ZodError) {
       return NextResponse.json({ error: err.errors[0].message }, { status: 400 });

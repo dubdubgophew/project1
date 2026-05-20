@@ -1,58 +1,25 @@
 import type { Metadata } from 'next';
+import { ToolSchemas } from '@/components/shared/ToolSchemas';
 
 export const metadata: Metadata = {
-  title: 'Paraphrasing Tool — Free Online Rewriter | Formly',
-  description: 'Paraphrase and reword any text online for free. AI-powered paraphrasing tool for essays, articles, and content — no signup needed.',
-  keywords: [
-    'paraphrasing tool',
-    'paraphrase online free',
-    'reword text online',
-    'text rewriter',
-    'ai paraphraser',
-    'sentence rephraser',
-    'free paraphrase tool',
-    'online paraphrasing',
-    'rephrase text free',
-    'essay paraphraser',
-  ],
-  openGraph: {
-    title: 'Paraphrasing Tool — Free Online Rewriter | Formly',
-    description: 'Reword and paraphrase any text instantly with AI. Free, no signup. Perfect for essays, articles, and content.',
-    url: 'https://formly.tools/tools/paraphraser',
-    type: 'website',
-    siteName: 'Formly',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Paraphrasing Tool — Free Online Rewriter | Formly',
-    description: 'Reword and paraphrase any text instantly with AI. Free, no signup required.',
-  },
+  title: 'Free AI Paraphrasing Tool — Reword Any Text Online | Formly',
+  description: 'Paraphrase any text instantly with AI. Rewrite sentences, paragraphs or essays in multiple tones — academic, fluent, simple. Free, no signup needed.',
+  keywords: ["paraphrasing tool", "paraphrase online free", "reword text online", "ai paraphraser", "sentence rewriter free", "text paraphraser", "essay rewriter", "paraphrase tool academic", "rewrite paragraph ai", "best free paraphraser"],
+  openGraph: { title: 'Free AI Paraphrasing Tool | Formly', description: 'Rewrite any text in seconds with AI. Multiple tones: academic, fluent, simple. Free, no signup.', url: 'https://formly.tools/tools/paraphraser', type: 'website', siteName: 'Formly' },
+  twitter: { card: 'summary_large_image', title: 'Free AI Paraphrasing Tool | Formly', description: 'AI paraphrasing tool — reword any text free. Academic, fluent & simple modes.' },
   alternates: { canonical: 'https://formly.tools/tools/paraphraser' },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'WebApplication',
-            name: 'AI Paraphraser',
-            description: 'Paraphrase and reword any text online for free with AI-powered technology.',
-            url: 'https://formly.tools/tools/paraphraser',
-            applicationCategory: 'UtilitiesApplication',
-            operatingSystem: 'Any',
-            offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            provider: { '@type': 'Organization', name: 'Formly', url: 'https://formly.tools' },
-            featureList: [
-              'AI-powered text paraphrasing',
-              'Multiple rewriting styles',
-              'Preserves original meaning',
-            ],
-          }),
-        }}
+      <ToolSchemas
+        name="AI Paraphrasing Tool"
+        description="Paraphrase any text instantly with AI. Rewrite sentences, paragraphs or essays in multiple tones — academic, fluent, simple. Free, no signup needed."
+        url="https://formly.tools/tools/paraphraser"
+        category="UtilitiesApplication"
+        features={['Multiple rewriting tones (Academic, Fluent, Simple, Creative)', 'Preserves original meaning', 'Supports paragraphs and essays', 'No signup required', 'Instant AI-powered rewriting']}
+        faqs={[{ q: 'What is an AI paraphrasing tool?', a: 'An AI paraphrasing tool rewrites text while preserving the original meaning. Formly's paraphraser uses advanced AI to rephrase sentences, paragraphs, or entire essays in different tones — academic, fluent, creative, or simple.' }, { q: 'Is the paraphrasing tool free to use?', a: 'Yes — you can paraphrase up to 5 times per day for free without signing up. Create a free account for 10 uses/day, or go Pro for unlimited paraphrasing.' }, { q: 'Can I use it for academic writing?', a: 'Yes — the Academic mode rephrases text in a formal, scholarly tone while maintaining technical accuracy. Always verify AI-paraphrased content before submitting academic work.' }, { q: 'How is it different from just using a thesaurus?', a: 'Unlike a thesaurus, our AI rewrites entire sentence structures, not just individual words, producing naturally readable output that doesn't sound robotic or awkward.' }]}
       />
       {children}
     </>

@@ -1,58 +1,25 @@
 import type { Metadata } from 'next';
+import { ToolSchemas } from '@/components/shared/ToolSchemas';
 
 export const metadata: Metadata = {
-  title: 'Color Code Converter — Free HEX to RGB & CSS Tool | Formly',
-  description: 'Convert color codes between HEX, RGB, HSL, and more online for free. Instant color format converter for designers and developers — no signup required.',
-  keywords: [
-    'color code converter',
-    'hex to rgb converter',
-    'color format converter',
-    'rgb to hex online',
-    'hsl color converter',
-    'css color converter',
-    'color picker online free',
-    'hex color to rgb free',
-    'color code tool',
-    'web color converter',
-  ],
-  openGraph: {
-    title: 'Color Code Converter — Free HEX, RGB & HSL Tool | Formly',
-    description: 'Convert between HEX, RGB, HSL, and other color formats instantly. Free, no signup. Perfect for designers and developers.',
-    url: 'https://formly.tools/tools/color-converter',
-    type: 'website',
-    siteName: 'Formly',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Color Code Converter — Free HEX, RGB & HSL Tool | Formly',
-    description: 'Convert between HEX, RGB, HSL, and other color formats instantly. Free, no signup.',
-  },
+  title: 'Free Color Code Converter — HEX to RGB, HSL, CMYK Online | Formly',
+  description: 'Convert colors between HEX, RGB, HSL, HSV, and CMYK instantly. See color harmonies (complementary, triadic, split), tints and shades. Free online color converter.',
+  keywords: ["color converter", "hex to rgb converter", "color code converter", "hex to hsl", "rgb to hex converter", "cmyk to rgb", "color format converter", "color picker converter", "css color converter", "pantone to hex converter"],
+  openGraph: { title: 'Free Color Code Converter | Formly', description: 'Convert HEX, RGB, HSL, HSV, CMYK. Color harmonies, tints and shades. Free online color tool.', url: 'https://formly.tools/tools/color-converter', type: 'website', siteName: 'Formly' },
+  twitter: { card: 'summary_large_image', title: 'Free Color Code Converter | Formly', description: 'Free color converter — HEX, RGB, HSL, HSV, CMYK. Color harmonies & shades. No signup.' },
   alternates: { canonical: 'https://formly.tools/tools/color-converter' },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'WebApplication',
-            name: 'Color Code Converter',
-            description: 'Convert color codes between HEX, RGB, HSL, and more online for free for designers and developers.',
-            url: 'https://formly.tools/tools/color-converter',
-            applicationCategory: 'DeveloperApplication',
-            operatingSystem: 'Any',
-            offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            provider: { '@type': 'Organization', name: 'Formly', url: 'https://formly.tools' },
-            featureList: [
-              'HEX to RGB and RGB to HEX conversion',
-              'HSL, HSV, and CMYK color formats',
-              'Visual color picker with preview',
-            ],
-          }),
-        }}
+      <ToolSchemas
+        name="Color Code Converter"
+        description="Convert colors between HEX, RGB, HSL, HSV, and CMYK instantly. See color harmonies (complementary, triadic, split), tints and shades. Free online color converter."
+        url="https://formly.tools/tools/color-converter"
+        category="DeveloperApplication"
+        features={['Convert between HEX, RGB, HSL, HSV, CMYK', 'Color harmony generator (complementary, triadic, split)', 'Tints and shades palette', 'CSS color string output', 'Real-time color preview']}
+        faqs={[{ q: 'How do I convert HEX to RGB?', a: 'Enter the HEX code (e.g. #7c3aed) and the converter instantly shows the RGB values (124, 58, 237). You can also do the reverse — enter RGB values to get the HEX code.' }, { q: 'What is the difference between HSL and HSV?', a: 'HSL (Hue, Saturation, Lightness) and HSV (Hue, Saturation, Value/Brightness) are both cylindrical color models. HSL is used in CSS; HSV is common in design software. Both represent colors differently — 50% lightness in HSL ≠ 50% value in HSV.' }, { q: 'What are color harmonies?', a: 'Color harmonies are combinations of colors that look visually pleasing together. Complementary colors are opposite on the color wheel. Triadic uses three evenly spaced colors. Split-complementary uses the two colors adjacent to the complementary.' }, { q: 'Can I use this for CSS?', a: 'Yes — the output includes ready-to-copy CSS color strings: hex (#7c3aed), rgb(124, 58, 237), and hsl(263, 60%, 58%).' }]}
       />
       {children}
     </>

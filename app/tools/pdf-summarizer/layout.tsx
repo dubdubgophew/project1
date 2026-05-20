@@ -1,58 +1,31 @@
 import type { Metadata } from 'next';
+import { ToolSchemas } from '@/components/shared/ToolSchemas';
 
 export const metadata: Metadata = {
-  title: 'PDF Summarizer — Free Online AI Tool | Formly',
-  description: 'Summarize any PDF online for free with AI. Get instant, accurate summaries of research papers, reports, and documents — no signup required.',
-  keywords: [
-    'pdf summarizer',
-    'summarize pdf online free',
-    'ai pdf summarizer',
-    'pdf summary tool',
-    'online pdf summarizer',
-    'summarize document free',
-    'ai document summarizer',
-    'free pdf reader summarizer',
-    'extract key points from pdf',
-    'pdf text summarizer',
-  ],
-  openGraph: {
-    title: 'PDF Summarizer — Free AI Tool | Formly',
-    description: 'Instantly summarize any PDF with AI. Free, no signup. Get key insights from research papers, reports & more.',
-    url: 'https://formly.tools/tools/pdf-summarizer',
-    type: 'website',
-    siteName: 'Formly',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'PDF Summarizer — Free AI Tool | Formly',
-    description: 'Instantly summarize any PDF with AI. Free, no signup required.',
-  },
+  title: 'Free AI PDF Summarizer — Summarize Any PDF Online | Formly',
+  description: 'Summarize any PDF instantly with AI. Get key points from research papers, reports, contracts & ebooks in seconds. Free, no signup required. Powered by Groq AI.',
+  keywords: ['pdf summarizer', 'summarize pdf online free', 'ai pdf summarizer', 'pdf summary tool', 'summarize document ai', 'pdf text extractor', 'research paper summarizer', 'free pdf reader ai', 'extract key points pdf', 'pdf summarizer no signup'],
+  openGraph: { title: 'Free AI PDF Summarizer | Formly', description: 'Summarize any PDF instantly with AI. Free, no signup. Key insights from any document in seconds.', url: 'https://formly.tools/tools/pdf-summarizer', type: 'website', siteName: 'Formly' },
+  twitter: { card: 'summary_large_image', title: 'Free AI PDF Summarizer | Formly', description: 'Summarize any PDF with AI in seconds. Free, no signup required.' },
   alternates: { canonical: 'https://formly.tools/tools/pdf-summarizer' },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'WebApplication',
-            name: 'PDF Summarizer',
-            description: 'Summarize any PDF online for free with AI. Get instant, accurate summaries of research papers, reports, and documents.',
-            url: 'https://formly.tools/tools/pdf-summarizer',
-            applicationCategory: 'UtilitiesApplication',
-            operatingSystem: 'Any',
-            offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            provider: { '@type': 'Organization', name: 'Formly', url: 'https://formly.tools' },
-            featureList: [
-              'AI-powered PDF summarization',
-              'Extracts key points and insights',
-              'Supports research papers and reports',
-            ],
-          }),
-        }}
+      <ToolSchemas
+        name="PDF Summarizer"
+        description="AI-powered PDF summarizer that extracts key points from any document in seconds. Free, no signup required."
+        url="https://formly.tools/tools/pdf-summarizer"
+        category="UtilitiesApplication"
+        features={['AI-powered summarization', 'Supports any PDF up to 10MB', 'Short, medium or detailed summaries', 'No signup required', 'Research paper & report summarizer']}
+        faqs={[
+          { q: 'How does the free PDF summarizer work?', a: 'Upload your PDF and our AI (powered by Groq) extracts the text and generates a structured summary with key points, important findings, and main conclusions — in under 30 seconds.' },
+          { q: 'Is there a file size limit for PDF summarization?', a: 'Yes, the free PDF summarizer supports files up to 10MB. For larger documents, try splitting the PDF into sections first.' },
+          { q: 'Do I need to create an account to summarize a PDF?', a: 'No, you can summarize up to 5 PDFs per day completely free without creating an account. Sign up free for 10/day or upgrade to Pro for unlimited summarizations.' },
+          { q: 'Can it summarize research papers and academic PDFs?', a: 'Yes — the AI is especially good at research papers, scientific reports, legal documents, and business reports. It preserves key statistics, findings, and citations.' },
+          { q: 'Is my PDF data kept private?', a: 'Your PDF is processed temporarily and never stored. Files are deleted immediately after summarization. We do not retain any document content.' },
+        ]}
       />
       {children}
     </>
