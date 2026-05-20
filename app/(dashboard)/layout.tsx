@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { createClient } from '@/lib/supabase/server';
+import { createClient, createAdminClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { Zap, LayoutDashboard, Settings, LogOut, ExternalLink } from 'lucide-react';
 
@@ -9,7 +9,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   if (!user) redirect('/login');
 
-  const { data: profile } = await supabase
+  const { data: profile } = await createAdminClient()
     .from('profiles')
     .select('name, plan, usage_count')
     .eq('id', user.id)
