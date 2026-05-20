@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { submitToIndexNow, allToolUrls } from '@/lib/indexnow';
+import { pingSitemaps } from '@/lib/indexnow';
 
 export const runtime = 'nodejs';
 
@@ -11,12 +11,11 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const urls = allToolUrls();
-    const results = await submitToIndexNow(urls);
-    console.log('[IndexNow] Results:', JSON.stringify(results));
-    return NextResponse.json({ ok: true, urls: urls.length, results });
+    const results = await pingSitemaps();
+    console.log('[SitemapPing] Results:', JSON.stringify(results));
+    return NextResponse.json({ ok: true, results });
   } catch (err) {
-    console.error('[IndexNow] Error:', err);
+    console.error('[SitemapPing] Error:', err);
     return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 }
