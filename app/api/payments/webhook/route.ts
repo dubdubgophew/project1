@@ -23,6 +23,7 @@ function getWebhookHandler() {
         plan,
         status: 'active',
         dodo_subscription_id: data.subscription_id,
+        dodo_payment_id: data.payment_id ?? null,
         current_period_end: data.next_billing_date ?? null,
       }, { onConflict: 'user_id' });
 
@@ -90,6 +91,7 @@ function getWebhookHandler() {
           user_id: userId,
           plan: 'day_pass',
           status: 'active',
+          dodo_payment_id: data.payment_id ?? null,
           current_period_end: expiresAt,
         }, { onConflict: 'user_id' });
         console.log(`[Webhook] Day Pass activated for user ${userId} — expires ${expiresAt}`);
