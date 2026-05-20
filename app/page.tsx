@@ -9,9 +9,9 @@ import { Testimonials } from '@/components/landing/Testimonials';
 import { BannerAd } from '@/components/shared/AdSense';
 
 export const metadata: Metadata = {
-  title: 'Formly — 10 Free AI Tools: PDF Summarizer, Paraphraser, Grammar Checker & More',
+  title: 'Formly — 26 Free AI Tools: PDF Summarizer, Resume Builder, Pay Stub Generator & More',
   description:
-    'Free AI tools online: PDF summarizer, paraphraser, grammar checker, email writer, code explainer, YouTube summarizer, resume builder & more. No signup needed. Powered by Groq AI.',
+    'Free AI tools online: PDF summarizer, resume builder, pay stub generator, contract generator, paraphraser, grammar checker, JSON formatter, EMI calculator & 18 more. No signup needed. Powered by Groq AI.',
   alternates: { canonical: 'https://formly.tools' },
 };
 
@@ -50,7 +50,7 @@ export default function HomePage() {
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a href="/tools" className="btn-primary text-base px-8 py-4">
-                  Try All 10 Tools Free →
+                  Try All 26 Tools Free →
                 </a>
                 <a href="/pricing" className="btn-outline text-base px-8 py-4">
                   View Pro Plans

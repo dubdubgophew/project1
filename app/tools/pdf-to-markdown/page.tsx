@@ -11,21 +11,6 @@ const RELATED = [
   { name: 'Resume Builder', href: '/tools/resume-builder', icon: '📋' },
 ];
 
-async function extractTextFromPDF(file: File): Promise<string> {
-  const arrayBuffer = await file.arrayBuffer();
-  const bytes = new Uint8Array(arrayBuffer);
-  let text = '';
-  for (let i = 0; i < bytes.length - 1; i++) {
-    const b = bytes[i];
-    if (b >= 32 && b <= 126) text += String.fromCharCode(b);
-    else if (b === 10 || b === 13) text += '\n';
-  }
-  return text
-    .replace(/[^\x20-\x7E\n]/g, ' ')
-    .replace(/ {3,}/g, '  ')
-    .replace(/\n{4,}/g, '\n\n')
-    .trim();
-}
 
 function simpleMarkdownToHtml(md: string): string {
   const lines = md.split('\n');
@@ -95,16 +80,11 @@ export default function PdfToMarkdownPage() {
     setError('');
     setMarkdown('');
     try {
-      const text = await extractTextFromPDF(file);
-      if (text.length < 50) {
-        setError('Could not extract readable text from this PDF. The file may be scanned or image-based.');
-        setLoading(false);
-        return;
-      }
+      const formData = new FormData();
+      formData.append('file', file);
       const res = await fetch('/api/tools/pdf-to-markdown', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: text.slice(0, 50000), filename: file.name }),
+        body: formData,
       });
       const data = await res.json();
       if (!res.ok) setError(data.error ?? 'Something went wrong.');

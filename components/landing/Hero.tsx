@@ -32,7 +32,7 @@ export function Hero() {
 
         {/* Headline */}
         <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-6 animate-fade-up">
-          <span className="text-white">10 AI Tools,</span>
+          <span className="text-white">26 Free Tools,</span>
           <br />
           <span className="gradient-text">Completely Free</span>
           <br />
@@ -40,14 +40,14 @@ export function Hero() {
         </h1>
 
         <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-up animate-delay-100">
-          Summarize PDFs, rewrite text, check grammar, write emails, explain code,
-          generate pay stubs, build resumes & more — powered by Groq AI.
+          Summarize PDFs, build resumes, generate pay stubs, write contracts, format JSON,
+          calculate EMIs, split expenses & 20 more tools — powered by Groq AI. No signup needed.
         </p>
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-fade-up animate-delay-200">
           <Link href="/tools" className="btn-primary text-base px-8 py-4 shadow-2xl shadow-violet-500/30 hover:shadow-violet-500/50 group">
-            Try All Tools Free
+            Try All 26 Tools Free
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </Link>
           <Link href="/pricing" className="btn-secondary text-base px-8 py-4 group">
