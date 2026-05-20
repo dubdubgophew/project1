@@ -20,11 +20,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         category="FinanceApplication"
         features={['Supports 8 countries with 2025 tax tables', 'All 50 US states supported', 'Employer & employee contributions', 'Professional PDF download', 'Live preview before download']}
         faqs={[
-          { q: 'Is the pay stub generator free to use?', a: 'Yes — creating and previewing pay stubs is completely free. Downloading requires a free account. The generator supports USA (all 50 states), UK, Canada, India, Australia, New Zealand, Ireland, and Singapore.' },
-          { q: 'Are the tax calculations accurate for 2025?', a: 'Yes, tax tables are updated for 2025 including federal, state/provincial taxes, Social Security, Medicare, National Insurance, CPP/EI, and other jurisdiction-specific deductions.' },
-          { q: 'Can I use generated pay stubs for official purposes?', a: 'Formly pay stubs are for record-keeping and reference purposes. For official verification (bank loans, visa applications), check with the receiving institution about their requirements.' },
-          { q: 'Does the pay stub generator support Indian pay slips?', a: 'Yes — the generator supports Indian payroll including basic salary, HRA, special allowance, PF (12% employer + 12% employee), professional tax, and TDS based on income slabs.' },
-          { q: 'What format is the pay stub downloaded in?', a: 'Pay stubs are downloaded as print-ready PDFs with a professional layout including company details, employee information, earnings breakdown, deductions, and net pay.' },
+          { q: "Is the pay stub generator free to use?", a: "Yes — creating and previewing pay stubs is completely free. Downloading requires a free account. The generator supports USA (all 50 states), UK, Canada, India, Australia, New Zealand, Ireland, and Singapore." },
+          { q: "Are the tax calculations accurate for 2025?", a: "Yes, tax tables are updated for 2025 including federal, state/provincial taxes, Social Security, Medicare, National Insurance, CPP/EI, and other jurisdiction-specific deductions." },
+          { q: "Can I use generated pay stubs for official purposes?", a: "Formly pay stubs are for record-keeping and reference purposes. For official verification (bank loans, visa applications), check with the receiving institution about their requirements." },
+          { q: "Does the pay stub generator support Indian pay slips?", a: "Yes — the generator supports Indian payroll including basic salary, HRA, special allowance, PF (12% employer + 12% employee), professional tax, and TDS based on income slabs." },
+          { q: "What format is the pay stub downloaded in?", a: "Pay stubs are downloaded as print-ready PDFs with a professional layout including company details, employee information, earnings breakdown, deductions, and net pay." },
         ]}
       />
       {children}
