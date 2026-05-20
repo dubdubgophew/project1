@@ -1,17 +1,18 @@
 'use client';
 
 import Link from 'next/link';
-import { Check, Zap, Star, Building2 } from 'lucide-react';
+import { Check, Zap, Star, Building2, Flame } from 'lucide-react';
 const PLANS = [
   {
     name: 'Free',
     icon: Zap,
     priceUSD: 0,
+    priceSuffix: '',
     badge: null,
     description: 'Try every tool without a credit card.',
     features: [
       '5 AI requests per day',
-      'All 10 AI tools',
+      'All 26 AI tools',
       'No signup required',
       'Standard processing speed',
       'Copy & download output',
@@ -21,14 +22,34 @@ const PLANS = [
     highlighted: false,
   },
   {
+    name: 'Day Pass',
+    icon: Flame,
+    priceUSD: 1.99,
+    priceSuffix: ' one-time',
+    badge: 'No Subscription',
+    description: 'Full Pro access for 24 hours.',
+    features: [
+      '200 AI requests for 24 hours',
+      'All 26 AI tools',
+      'Priority processing speed',
+      'Longer text inputs (10K chars)',
+      'PDF downloads',
+      'No recurring charges',
+    ],
+    cta: 'Buy Day Pass',
+    href: '/pricing',
+    highlighted: false,
+  },
+  {
     name: 'Pro',
     icon: Star,
     priceUSD: 9.99,
+    priceSuffix: '/month',
     badge: 'Most Popular',
     description: 'For freelancers and power users.',
     features: [
       '200 AI requests per day',
-      'All 10 AI tools',
+      'All 26 AI tools',
       'Priority processing speed',
       'Longer text inputs (10K chars)',
       'PDF download for resumes',
@@ -43,11 +64,12 @@ const PLANS = [
     name: 'Unlimited',
     icon: Building2,
     priceUSD: 19.99,
+    priceSuffix: '/month',
     badge: 'Best Value',
     description: 'For agencies and heavy users.',
     features: [
       'Unlimited AI requests',
-      'All 10 AI tools',
+      'All 26 AI tools',
       'Fastest processing priority',
       'Max text length (50K chars)',
       'API access (coming soon)',
@@ -76,7 +98,7 @@ export function PricingSection() {
           <p className="text-sm text-gray-600">All prices in USD · Local currency shown at checkout · All taxes included</p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {PLANS.map((plan) => (
             <div
               key={plan.name}
@@ -107,7 +129,7 @@ export function PricingSection() {
                 ) : (
                   <div className="flex items-end gap-2">
                     <span className="text-4xl font-bold text-white">${plan.priceUSD}</span>
-                    <span className="text-gray-500 mb-1">/month</span>
+                    <span className="text-gray-500 mb-1">{plan.priceSuffix}</span>
                   </div>
                 )}
               </div>

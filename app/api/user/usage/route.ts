@@ -25,11 +25,29 @@ export async function GET() {
       .eq('id', user.id)
       .single();
 
-    const plan = profile?.plan ?? 'free';
+    let plan = profile?.plan ?? 'free';
+    let expiresAt: string | null = null;
+
+    // Check day_pass expiry
+    if (plan === 'day_pass') {
+      const { data: sub } = await admin
+        .from('subscriptions')
+        .select('current_period_end')
+        .eq('user_id', user.id)
+        .single();
+
+      if (!sub?.current_period_end || new Date(sub.current_period_end) <= new Date()) {
+        admin.from('profiles').update({ plan: 'free' }).eq('id', user.id);
+        plan = 'free';
+      } else {
+        expiresAt = sub.current_period_end;
+      }
+    }
+
     const limit = PLAN_LIMITS[plan] ?? PLAN_LIMITS.free;
 
     if (plan === 'unlimited') {
-      return NextResponse.json({ plan, limit: null, used: null, remaining: null, resets_at: null });
+      return NextResponse.json({ plan, limit: null, used: null, remaining: null, resets_at: null, expires_at: null });
     }
 
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
@@ -45,7 +63,8 @@ export async function GET() {
       limit,
       used,
       remaining: Math.max(0, limit - used),
-      resets_at: nextMidnightUTC(),
+      resets_at: plan === 'day_pass' ? expiresAt : nextMidnightUTC(),
+      expires_at: expiresAt,
     });
   } catch {
     return NextResponse.json({ error: 'Failed to fetch usage' }, { status: 500 });

@@ -16,7 +16,24 @@ async function resolveUser(): Promise<{ userId: string | null; plan: string }> {
       .select('plan')
       .eq('id', user.id)
       .single();
-    return { userId: user.id, plan: profile?.plan ?? 'free' };
+
+    const plan = profile?.plan ?? 'free';
+
+    if (plan === 'day_pass') {
+      const { data: sub } = await admin
+        .from('subscriptions')
+        .select('current_period_end')
+        .eq('user_id', user.id)
+        .single();
+
+      if (!sub?.current_period_end || new Date(sub.current_period_end) <= new Date()) {
+        // Expired — downgrade to free in background
+        admin.from('profiles').update({ plan: 'free' }).eq('id', user.id);
+        return { userId: user.id, plan: 'free' };
+      }
+    }
+
+    return { userId: user.id, plan };
   } catch {
     return { userId: null, plan: 'anonymous' };
   }
@@ -81,7 +98,11 @@ export async function checkRateLimit(
       const reason = userId
         ? plan === 'free'
           ? `Daily limit reached (${limit}/day on Free plan). Upgrade to Pro for 200 uses/day.`
-          : `Daily limit reached (${limit}/day on Pro plan). Upgrade to Unlimited for unlimited uses.`
+          : plan === 'day_pass'
+            ? `Day Pass limit reached (${limit} uses in 24h). Purchase another Day Pass or upgrade to Pro.`
+            : plan === 'pro'
+              ? `Daily limit reached (${limit}/day on Pro plan). Upgrade to Unlimited for unlimited uses.`
+              : `Daily limit reached.`
         : `Daily limit reached (${limit}/day without account). Sign up free for 10 uses/day.`;
       return { allowed: false, reason, remaining: 0, plan, limit };
     }

@@ -85,10 +85,10 @@ function getWebhookHandler() {
       if (plan === 'day_pass' && userId) {
         const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
         const admin = createAdminClient();
-        await admin.from('profiles').update({ plan: 'pro' }).eq('id', userId);
+        await admin.from('profiles').update({ plan: 'day_pass' }).eq('id', userId);
         await admin.from('subscriptions').upsert({
           user_id: userId,
-          plan: 'pro',
+          plan: 'day_pass',
           status: 'active',
           current_period_end: expiresAt,
         }, { onConflict: 'user_id' });
