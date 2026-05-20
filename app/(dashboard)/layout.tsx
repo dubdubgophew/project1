@@ -6,8 +6,6 @@ import { SidebarUser } from '@/components/dashboard/SidebarUser';
 
 export const dynamic = 'force-dynamic';
 
-export const dynamic = 'force-dynamic';
-
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
