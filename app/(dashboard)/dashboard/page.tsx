@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { TrendingUp, Zap, ArrowUpRight, Crown, BarChart2 } from 'lucide-react';
 import type { Metadata } from 'next';
+import { PLAN_LIMITS } from '@/lib/utils';
 
 export const metadata: Metadata = { title: 'Dashboard' };
 
@@ -48,7 +49,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
   const { data: subscription } = await admin.from('subscriptions').select('*').eq('user_id', user.id).single();
 
   const plan = profile?.plan ?? 'free';
-  const planLimit = plan === 'unlimited' ? 999999 : plan === 'pro' ? 200 : 10;
+  const planLimit = plan === 'unlimited' ? 999999 : (PLAN_LIMITS[plan] ?? PLAN_LIMITS.free);
 
   // Usage in last 24h
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
@@ -84,7 +85,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
         <div className="mb-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-3">
           <Crown className="w-5 h-5 text-emerald-400" />
           <p className="text-emerald-300 font-medium">
-            Welcome to {plan.charAt(0).toUpperCase() + plan.slice(1)}! Your account has been upgraded.
+            {plan === 'day_pass' ? 'Day Pass activated! You have 200 uses for the next 24 hours.' : `Welcome to ${plan.charAt(0).toUpperCase() + plan.slice(1)}! Your account has been upgraded.`}
           </p>
         </div>
       )}
@@ -160,20 +161,27 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
           <div>
             <div className="flex items-center gap-2 mb-1">
               <Crown className="w-4 h-4 text-amber-400" />
-              <span className="text-sm font-semibold text-white capitalize">{plan} Plan</span>
+              <span className="text-sm font-semibold text-white">
+                {plan === 'day_pass' ? 'Day Pass' : plan.charAt(0).toUpperCase() + plan.slice(1)} Plan
+              </span>
             </div>
             <p className="text-sm text-gray-400">
               {plan === 'free' && 'Upgrade to Pro for 200 uses/day and priority processing.'}
-              {plan === 'pro' && `Renews ${subscription?.current_period_end ? new Date(subscription.current_period_end).toLocaleDateString() : 'monthly'}.`}
-              {plan === 'unlimited' && `Unlimited uses. Renews ${subscription?.current_period_end ? new Date(subscription.current_period_end).toLocaleDateString() : 'monthly'}.`}
+              {plan === 'day_pass' && (
+                subscription?.current_period_end
+                  ? `Day Pass active · Expires ${new Date(subscription.current_period_end).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}`
+                  : 'Day Pass active · 200 uses for 24 hours'
+              )}
+              {plan === 'pro' && `Pro Plan · Renews ${subscription?.current_period_end ? new Date(subscription.current_period_end).toLocaleDateString() : 'monthly'}.`}
+              {plan === 'unlimited' && `Unlimited uses · Renews ${subscription?.current_period_end ? new Date(subscription.current_period_end).toLocaleDateString() : 'monthly'}.`}
             </p>
           </div>
-          {plan === 'free' && (
+          {(plan === 'free' || plan === 'day_pass') && (
             <Link href="/pricing" className="btn-primary py-2 px-5 text-sm">
-              Upgrade to Pro →
+              {plan === 'day_pass' ? 'Upgrade to Pro →' : 'Upgrade to Pro →'}
             </Link>
           )}
-          {plan !== 'free' && (
+          {plan !== 'free' && plan !== 'day_pass' && (
             <Link href="/settings" className="btn-secondary py-2 px-4 text-sm">
               Manage Subscription
             </Link>

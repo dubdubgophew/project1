@@ -1,0 +1,381 @@
+/**
+ * SEO Blog Topics for Formly Daily Agent
+ * 50+ topics covering AI tools, developer tools, finance, legal, and productivity.
+ * Priority 5 = highest SEO value / search volume.
+ */
+
+export interface BlogTopic {
+  slug: string;
+  title: string;
+  keywords: string[];
+  category: 'ai-tools' | 'developer-tools' | 'finance' | 'legal' | 'productivity' | 'tutorials';
+  priority: 1 | 2 | 3 | 4 | 5;
+}
+
+export const BLOG_TOPICS: BlogTopic[] = [
+  // AI Tools — high volume
+  {
+    slug: 'best-free-ai-writing-tools-2026',
+    title: 'Best Free AI Writing Tools in 2026 (Tested & Ranked)',
+    keywords: ['free ai writing tools', 'ai writing assistant free', 'best ai writing tool'],
+    category: 'ai-tools',
+    priority: 5,
+  },
+  {
+    slug: 'ai-paraphrasing-tool-vs-manual-rewriting',
+    title: 'AI Paraphrasing Tool vs Manual Rewriting: Which Saves More Time?',
+    keywords: ['ai paraphrasing tool', 'paraphrase online free', 'best paraphraser'],
+    category: 'ai-tools',
+    priority: 5,
+  },
+  {
+    slug: 'free-grammar-checker-better-than-grammarly',
+    title: 'Free Grammar Checker That Beats Grammarly (2026 Comparison)',
+    keywords: ['free grammar checker', 'grammar checker online', 'grammarly alternative free'],
+    category: 'ai-tools',
+    priority: 5,
+  },
+  {
+    slug: 'ai-email-writer-guide',
+    title: 'How to Write Professional Emails 10x Faster with AI',
+    keywords: ['ai email writer', 'email writer free', 'write professional email ai'],
+    category: 'ai-tools',
+    priority: 4,
+  },
+  {
+    slug: 'pdf-summarizer-research-papers',
+    title: 'How to Summarize Research Papers and PDFs with AI in 60 Seconds',
+    keywords: ['pdf summarizer', 'summarize research paper ai', 'ai pdf reader'],
+    category: 'ai-tools',
+    priority: 5,
+  },
+  {
+    slug: 'youtube-summarizer-save-time',
+    title: 'YouTube Summarizer: Get Video Key Points Without Watching',
+    keywords: ['youtube summarizer', 'summarize youtube video', 'youtube transcript ai'],
+    category: 'ai-tools',
+    priority: 4,
+  },
+  {
+    slug: 'ai-bio-writer-linkedin',
+    title: 'Write a Standout LinkedIn Bio in 30 Seconds with AI',
+    keywords: ['ai bio writer', 'professional bio generator', 'linkedin bio ai'],
+    category: 'ai-tools',
+    priority: 4,
+  },
+  {
+    slug: 'ai-hashtag-generator-instagram',
+    title: 'AI Hashtag Generator for Instagram: Get 30 Perfect Tags Instantly',
+    keywords: ['ai hashtag generator', 'instagram hashtag generator', 'hashtag generator free'],
+    category: 'ai-tools',
+    priority: 4,
+  },
+  {
+    slug: 'chatgpt-alternatives-free-2026',
+    title: '7 Free ChatGPT Alternatives That Actually Work in 2026',
+    keywords: ['chatgpt alternatives free', 'free ai chatbot', 'chatgpt free alternative'],
+    category: 'ai-tools',
+    priority: 5,
+  },
+  {
+    slug: 'ai-tools-for-students',
+    title: 'Best Free AI Tools for Students in 2026 (No Subscription Needed)',
+    keywords: ['ai tools for students', 'free ai tools students', 'ai homework help free'],
+    category: 'ai-tools',
+    priority: 5,
+  },
+  {
+    slug: 'ai-cover-letter-generator',
+    title: 'How to Write a Cover Letter with AI That Gets Interviews',
+    keywords: ['ai cover letter generator', 'cover letter writer ai free', 'cover letter generator'],
+    category: 'ai-tools',
+    priority: 4,
+  },
+  {
+    slug: 'ai-tools-for-freelancers',
+    title: '10 AI Tools Every Freelancer Should Be Using in 2026',
+    keywords: ['ai tools for freelancers', 'freelancer productivity tools', 'ai freelance tools'],
+    category: 'ai-tools',
+    priority: 4,
+  },
+  // Developer Tools
+  {
+    slug: 'json-formatter-guide',
+    title: 'JSON Formatter & Validator: The Developer\'s Complete Guide',
+    keywords: ['json formatter', 'json validator online', 'format json online'],
+    category: 'developer-tools',
+    priority: 5,
+  },
+  {
+    slug: 'code-explainer-ai-beginners',
+    title: 'AI Code Explainer: Understand Any Code Block Instantly',
+    keywords: ['ai code explainer', 'explain code ai', 'code to english ai'],
+    category: 'developer-tools',
+    priority: 4,
+  },
+  {
+    slug: 'ai-code-reviewer-best-practices',
+    title: 'Automated Code Review with AI: Catch Bugs Before They Ship',
+    keywords: ['ai code reviewer', 'automated code review', 'code review ai tool'],
+    category: 'developer-tools',
+    priority: 4,
+  },
+  {
+    slug: 'base64-encoder-decoder-guide',
+    title: 'Base64 Encoder & Decoder: What It Is and When to Use It',
+    keywords: ['base64 encoder', 'base64 decode online', 'base64 encoder decoder'],
+    category: 'developer-tools',
+    priority: 3,
+  },
+  {
+    slug: 'diff-checker-code-comparison',
+    title: 'Online Diff Checker: Compare Code, Text and Files Side by Side',
+    keywords: ['diff checker online', 'text diff tool', 'code comparison tool'],
+    category: 'developer-tools',
+    priority: 3,
+  },
+  {
+    slug: 'regex-tester-tutorial',
+    title: 'Regex Tester & Debugger: Master Regular Expressions Easily',
+    keywords: ['regex tester online', 'regex debugger', 'test regex online'],
+    category: 'developer-tools',
+    priority: 3,
+  },
+  {
+    slug: 'pdf-to-markdown-converter',
+    title: 'PDF to Markdown Converter: Better Input for AI and LLMs',
+    keywords: ['pdf to markdown', 'convert pdf to markdown', 'pdf markdown converter'],
+    category: 'developer-tools',
+    priority: 4,
+  },
+  {
+    slug: 'best-free-developer-tools-online-2026',
+    title: 'Best Free Online Developer Tools in 2026 (No Install Needed)',
+    keywords: ['free developer tools online', 'online dev tools', 'web developer utilities'],
+    category: 'developer-tools',
+    priority: 5,
+  },
+  // Finance
+  {
+    slug: 'emi-calculator-loan-guide',
+    title: 'EMI Calculator: How to Calculate Loan Repayments Accurately',
+    keywords: ['emi calculator', 'loan emi calculator', 'calculate emi online'],
+    category: 'finance',
+    priority: 5,
+  },
+  {
+    slug: 'pay-stub-generator-guide',
+    title: 'Free Pay Stub Generator: Create Professional Payroll Documents',
+    keywords: ['pay stub generator', 'paystub generator free', 'create pay stub online'],
+    category: 'finance',
+    priority: 5,
+  },
+  {
+    slug: 'how-to-read-pay-stub',
+    title: 'How to Read Your Pay Stub: Every Line Item Explained',
+    keywords: ['how to read pay stub', 'pay stub explained', 'paycheck stub guide'],
+    category: 'finance',
+    priority: 4,
+  },
+  {
+    slug: 'expense-splitter-group-trips',
+    title: 'Expense Splitter for Group Trips: End Bill-Splitting Arguments Forever',
+    keywords: ['expense splitter', 'split expenses app', 'bill splitter online'],
+    category: 'finance',
+    priority: 4,
+  },
+  {
+    slug: 'loan-calculator-vs-bank-estimate',
+    title: 'Loan Calculator: Why Online Tools Are More Accurate Than Bank Estimates',
+    keywords: ['loan calculator', 'loan interest calculator', 'personal loan calculator'],
+    category: 'finance',
+    priority: 4,
+  },
+  {
+    slug: 'age-calculator-uses',
+    title: 'Online Age Calculator: Beyond Birthdays — Legal, Financial & Medical Uses',
+    keywords: ['age calculator', 'calculate age online', 'age calculator years months days'],
+    category: 'finance',
+    priority: 3,
+  },
+  {
+    slug: 'unit-converter-guide',
+    title: 'Universal Unit Converter: The Quickest Way to Convert Any Measurement',
+    keywords: ['unit converter', 'online unit converter', 'measurement converter'],
+    category: 'finance',
+    priority: 3,
+  },
+  // Legal
+  {
+    slug: 'nda-template-guide',
+    title: 'Free NDA Template: How to Write a Non-Disclosure Agreement',
+    keywords: ['nda template', 'non disclosure agreement template', 'free nda generator'],
+    category: 'legal',
+    priority: 5,
+  },
+  {
+    slug: 'freelance-contract-must-have-clauses',
+    title: 'Freelance Contract Template: 10 Clauses You Must Include',
+    keywords: ['freelance contract template', 'freelance agreement', 'contractor agreement template'],
+    category: 'legal',
+    priority: 5,
+  },
+  {
+    slug: 'service-agreement-vs-nda',
+    title: 'Service Agreement vs NDA: Which Contract Do You Actually Need?',
+    keywords: ['service agreement vs nda', 'nda vs contract', 'which contract do i need'],
+    category: 'legal',
+    priority: 4,
+  },
+  {
+    slug: 'ai-contract-generator-legal',
+    title: 'AI Contract Generator: Create Legal Agreements in Minutes',
+    keywords: ['ai contract generator', 'contract generator online', 'ai legal document generator'],
+    category: 'legal',
+    priority: 5,
+  },
+  {
+    slug: 'terms-of-service-simplifier',
+    title: 'Terms of Service Simplified: Understand What You\'re Agreeing To',
+    keywords: ['terms of service simplifier', 'terms simplifier', 'understand tos ai'],
+    category: 'legal',
+    priority: 3,
+  },
+  // Productivity
+  {
+    slug: 'ai-tools-save-time-at-work',
+    title: 'How to Save 3 Hours Daily Using Free AI Tools at Work',
+    keywords: ['ai tools save time', 'productivity ai tools', 'ai work tools free'],
+    category: 'productivity',
+    priority: 5,
+  },
+  {
+    slug: 'ai-resume-builder-ats-2026',
+    title: 'AI Resume Builder: Create an ATS-Optimized Resume That Gets Noticed',
+    keywords: ['ai resume builder', 'ats resume builder free', 'resume builder ai 2026'],
+    category: 'productivity',
+    priority: 5,
+  },
+  {
+    slug: 'word-counter-writing-goals',
+    title: 'Word Counter Tool: How to Hit Writing Goals and Improve Your Metrics',
+    keywords: ['word counter', 'word count tool', 'character counter online'],
+    category: 'productivity',
+    priority: 3,
+  },
+  {
+    slug: 'password-generator-security-guide',
+    title: 'Strong Password Generator: Why Random Passwords Matter More Than Ever',
+    keywords: ['password generator', 'strong password generator', 'random password creator'],
+    category: 'productivity',
+    priority: 4,
+  },
+  {
+    slug: 'text-case-converter-productivity',
+    title: 'Text Case Converter: The Tiny Tool That Saves Developers Hours',
+    keywords: ['text case converter', 'case converter online', 'change text case'],
+    category: 'productivity',
+    priority: 2,
+  },
+  {
+    slug: 'color-converter-hex-rgb',
+    title: 'Color Converter: HEX, RGB, HSL — A Designer\'s Quick Reference',
+    keywords: ['color converter', 'hex to rgb converter', 'color code converter'],
+    category: 'productivity',
+    priority: 2,
+  },
+  {
+    slug: 'ai-productivity-stack-2026',
+    title: 'The Ultimate Free AI Productivity Stack for 2026',
+    keywords: ['ai productivity stack', 'best free ai tools 2026', 'free ai productivity'],
+    category: 'productivity',
+    priority: 5,
+  },
+  // Tutorials
+  {
+    slug: 'how-to-paraphrase-without-plagiarism',
+    title: 'How to Paraphrase Without Plagiarism: A Step-by-Step Guide',
+    keywords: ['how to paraphrase', 'paraphrase without plagiarism', 'paraphrasing guide'],
+    category: 'tutorials',
+    priority: 4,
+  },
+  {
+    slug: 'how-to-summarize-long-documents',
+    title: 'How to Summarize Long Documents Using AI: A Practical Guide',
+    keywords: ['summarize documents ai', 'ai document summarizer', 'how to summarize text'],
+    category: 'tutorials',
+    priority: 4,
+  },
+  {
+    slug: 'improve-email-writing-tips',
+    title: '8 Tips to Write Professional Emails Faster (With AI Examples)',
+    keywords: ['improve email writing', 'professional email tips', 'email writing guide'],
+    category: 'tutorials',
+    priority: 3,
+  },
+  {
+    slug: 'how-to-use-ai-for-content-creation',
+    title: 'How to Use AI for Content Creation Without Losing Your Voice',
+    keywords: ['ai for content creation', 'ai content writing', 'ai writing tips'],
+    category: 'tutorials',
+    priority: 4,
+  },
+  {
+    slug: 'groq-ai-fastest-llm-explained',
+    title: 'Groq AI Explained: Why It\'s the Fastest LLM Inference Engine',
+    keywords: ['groq ai', 'groq llm', 'fastest ai inference', 'groq api'],
+    category: 'tutorials',
+    priority: 4,
+  },
+  {
+    slug: 'llama-3-best-use-cases',
+    title: 'Llama 3 Best Use Cases: What This Open-Source AI Does Better Than GPT-4',
+    keywords: ['llama 3 use cases', 'llama 3 vs gpt4', 'open source llm uses'],
+    category: 'tutorials',
+    priority: 4,
+  },
+  {
+    slug: 'how-to-format-json-for-apis',
+    title: 'How to Format and Validate JSON for REST APIs (With Examples)',
+    keywords: ['format json api', 'json api tutorial', 'json validation guide'],
+    category: 'tutorials',
+    priority: 3,
+  },
+  {
+    slug: 'ai-tools-for-content-marketers',
+    title: 'AI Tools for Content Marketers: Create More, Stress Less',
+    keywords: ['ai tools content marketing', 'ai content marketer', 'content marketing ai'],
+    category: 'tutorials',
+    priority: 4,
+  },
+  {
+    slug: 'build-ats-resume-step-by-step',
+    title: 'Build an ATS Resume Step by Step: What Recruiters Actually See',
+    keywords: ['ats resume guide', 'how to build ats resume', 'ats optimization resume'],
+    category: 'tutorials',
+    priority: 5,
+  },
+  {
+    slug: 'how-to-write-youtube-summary',
+    title: 'How to Write a YouTube Video Summary That Ranks on Google',
+    keywords: ['youtube video summary', 'youtube summary for seo', 'summarize youtube for blog'],
+    category: 'tutorials',
+    priority: 3,
+  },
+  {
+    slug: 'ai-tools-for-small-business',
+    title: 'Best Free AI Tools for Small Business Owners in 2026',
+    keywords: ['ai tools small business', 'free business ai tools', 'ai for entrepreneurs'],
+    category: 'tutorials',
+    priority: 5,
+  },
+  {
+    slug: 'convert-pdf-to-text-online',
+    title: 'Convert PDF to Text Online: Best Free Methods Compared',
+    keywords: ['convert pdf to text', 'pdf to text online free', 'extract text from pdf'],
+    category: 'tutorials',
+    priority: 4,
+  },
+];
+
+export default BLOG_TOPICS;

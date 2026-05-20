@@ -1,7 +1,46 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
+// Known malicious/scanner bot patterns
+const BAD_UA_PATTERNS = [
+  /sqlmap/i, /nikto/i, /nessus/i, /openvas/i, /masscan/i,
+  /zgrab/i, /nuclei/i, /acunetix/i, /nmap/i, /burpsuite/i,
+  /python-requests\/[01]\./i,
+];
+
+// Suspicious path patterns
+const SUSPICIOUS_PATH_PATTERNS = [
+  /\.\./,           // path traversal
+  /%2e%2e/i,        // encoded path traversal
+  /%00/,            // null byte
+  /\.(php|asp|aspx|jsp|cgi|env|git|svn|htaccess|htpasswd)$/i,
+  /wp-(admin|login|content|includes)/i,
+  /\/etc\/(passwd|shadow|hosts)/i,
+  /<script/i,       // XSS in path
+  /union.*select/i, // SQLi in path
+];
+
 export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // Block suspicious paths
+  const fullUrl = request.url;
+  if (SUSPICIOUS_PATH_PATTERNS.some(p => p.test(pathname) || p.test(fullUrl))) {
+    return new NextResponse('Forbidden', { status: 403 });
+  }
+
+  // Block known bad bots/scanners
+  const ua = request.headers.get('user-agent') ?? '';
+  if (BAD_UA_PATTERNS.some(p => p.test(ua))) {
+    return new NextResponse('Forbidden', { status: 403 });
+  }
+
+  // Block oversized query strings (potential injection/DoS)
+  const search = request.nextUrl.search;
+  if (search.length > 2000) {
+    return new NextResponse('Request Too Large', { status: 414 });
+  }
+
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
@@ -28,8 +67,6 @@ export async function middleware(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  const { pathname } = request.nextUrl;
 
   // Protected dashboard routes
   if (pathname.startsWith('/dashboard') || pathname.startsWith('/settings')) {

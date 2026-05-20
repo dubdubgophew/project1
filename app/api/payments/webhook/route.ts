@@ -23,6 +23,7 @@ function getWebhookHandler() {
         plan,
         status: 'active',
         dodo_subscription_id: data.subscription_id,
+        dodo_payment_id: data.payment_id ?? null,
         current_period_end: data.next_billing_date ?? null,
       }, { onConflict: 'user_id' });
 
@@ -85,11 +86,12 @@ function getWebhookHandler() {
       if (plan === 'day_pass' && userId) {
         const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
         const admin = createAdminClient();
-        await admin.from('profiles').update({ plan: 'pro' }).eq('id', userId);
+        await admin.from('profiles').update({ plan: 'day_pass' }).eq('id', userId);
         await admin.from('subscriptions').upsert({
           user_id: userId,
-          plan: 'pro',
+          plan: 'day_pass',
           status: 'active',
+          dodo_payment_id: data.payment_id ?? null,
           current_period_end: expiresAt,
         }, { onConflict: 'user_id' });
         console.log(`[Webhook] Day Pass activated for user ${userId} — expires ${expiresAt}`);
