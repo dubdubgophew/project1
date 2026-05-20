@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { ToolLayout } from '@/components/tools/ToolLayout';
+import { UsageBanner } from '@/components/shared/UsageBanner';
 import { Download, Loader2, AlertCircle } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import type { User } from '@supabase/supabase-js';
@@ -366,10 +367,22 @@ function NumInput({ label, value, onChange, prefix, min = 0, step = 1 }: {
 
 // ─── MAIN COMPONENT ──────────────────────────────────────────────────────────
 
+interface UsageState { remaining: number; limit: number; plan: string; }
+
 export default function PaystubGeneratorPage() {
   const [user, setUser] = useState<User | null | undefined>(undefined);
+  const [usage, setUsage] = useState<UsageState | null>(null);
+
   useEffect(() => {
     createClient().auth.getUser().then(({ data }) => setUser(data.user ?? null));
+    fetch('/api/user/usage')
+      .then(r => r.json())
+      .then(d => {
+        if (d.remaining !== null && d.remaining !== undefined) {
+          setUsage({ remaining: d.remaining, limit: d.limit, plan: d.plan });
+        }
+      })
+      .catch(() => {});
   }, []);
 
   const today = new Date().toISOString().split('T')[0];
@@ -420,7 +433,13 @@ export default function PaystubGeneratorPage() {
       const data = await res.json();
       if (!res.ok) {
         setDlError(data.error ?? 'Download failed. Please try again.');
+        if (data.remaining !== undefined && data.limit !== undefined) {
+          setUsage({ remaining: 0, limit: data.limit, plan: data.plan ?? 'anonymous' });
+        }
         return;
+      }
+      if (data.remaining !== undefined && data.limit !== undefined) {
+        setUsage({ remaining: data.remaining, limit: data.limit, plan: data.plan ?? 'anonymous' });
       }
     } catch {
       setDlError('Network error. Please try again.');
@@ -445,6 +464,7 @@ export default function PaystubGeneratorPage() {
         icon="🧾"
         relatedTools={RELATED}
         showAds={false}
+        rateLimited={true}
       >
         <div className="animate-pulse space-y-4">
           <div className="h-10 bg-gray-800 rounded-xl w-3/4" />
@@ -463,6 +483,7 @@ export default function PaystubGeneratorPage() {
         icon="🧾"
         relatedTools={RELATED}
         showAds={false}
+        rateLimited={true}
       >
         <div className="space-y-6">
           <div className="card text-center py-12 px-6">
@@ -539,6 +560,8 @@ export default function PaystubGeneratorPage() {
     );
   }
 
+  const limitExhausted = usage !== null && usage.remaining === 0;
+
   return (
     <ToolLayout
       title="Pay Stub Generator"
@@ -546,7 +569,9 @@ export default function PaystubGeneratorPage() {
       icon="🧾"
       relatedTools={RELATED}
       showAds={false}
+      rateLimited={true}
     >
+      {usage && <UsageBanner remaining={usage.remaining} limit={usage.limit} plan={usage.plan} />}
       <div className="grid lg:grid-cols-[1fr_420px] gap-6">
 
         {/* ── FORM ── */}
@@ -677,11 +702,13 @@ export default function PaystubGeneratorPage() {
               <button
                 type="button"
                 onClick={handleDownload}
-                disabled={dlLoading}
-                className="btn-primary w-full justify-center">
+                disabled={dlLoading || limitExhausted}
+                className="btn-primary w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed">
                 {dlLoading
                   ? <><Loader2 className="w-4 h-4 animate-spin" /> Preparing…</>
-                  : <><Download className="w-4 h-4" /> Download / Print PDF</>}
+                  : limitExhausted
+                    ? 'Daily limit reached'
+                    : <><Download className="w-4 h-4" /> Download / Print PDF</>}
               </button>
 
               {dlError && (

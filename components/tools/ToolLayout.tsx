@@ -2,7 +2,7 @@ import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
 import { SidebarAd } from '@/components/shared/AdSense';
 import Link from 'next/link';
-import { ArrowLeft, Lock, Zap } from 'lucide-react';
+import { ArrowLeft, Lock, Zap, Infinity } from 'lucide-react';
 
 interface ToolLayoutProps {
   title: string;
@@ -12,6 +12,8 @@ interface ToolLayoutProps {
   children: React.ReactNode;
   relatedTools?: { name: string; href: string; icon: string }[];
   showAds?: boolean;
+  /** true = paystub-style per-plan daily limits; false (default) = free & unlimited */
+  rateLimited?: boolean;
 }
 
 export function ToolLayout({
@@ -22,6 +24,7 @@ export function ToolLayout({
   children,
   relatedTools = [],
   showAds = true,
+  rateLimited = false,
 }: ToolLayoutProps) {
   return (
     <>
@@ -61,22 +64,44 @@ export function ToolLayout({
             <div className="space-y-6">
               {children}
 
-              {/* Free tier notice */}
-              <div className="flex items-start gap-3 p-4 rounded-xl bg-amber-500/5 border border-amber-500/15">
-                <Zap className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                <div className="text-sm">
-                  <span className="text-amber-300 font-medium">Free tier: </span>
-                  <span className="text-gray-400">5 uses/day without signup · </span>
-                  <Link href="/signup" className="text-violet-400 hover:text-violet-300 transition-colors">
-                    Sign up free
-                  </Link>
-                  <span className="text-gray-400"> for 10/day · </span>
-                  <Link href="/pricing" className="text-violet-400 hover:text-violet-300 transition-colors">
-                    Go Pro
-                  </Link>
-                  <span className="text-gray-400"> for 200+/day</span>
+              {/* Usage notice — different for unlimited vs rate-limited tools */}
+              {rateLimited ? (
+                <div className="flex items-start gap-3 p-4 rounded-xl bg-amber-500/5 border border-amber-500/15">
+                  <Zap className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                  <div className="text-sm">
+                    <span className="text-amber-300 font-medium">Daily limits: </span>
+                    <span className="text-gray-400">5/day without account · </span>
+                    <Link href="/signup" className="text-violet-400 hover:text-violet-300 transition-colors">
+                      Free account
+                    </Link>
+                    <span className="text-gray-400"> = 10/day · </span>
+                    <Link href="/pricing" className="text-violet-400 hover:text-violet-300 transition-colors">
+                      Pro
+                    </Link>
+                    <span className="text-gray-400"> = 200/day · </span>
+                    <Link href="/pricing" className="text-violet-400 hover:text-violet-300 transition-colors">
+                      Unlimited
+                    </Link>
+                    <span className="text-gray-400"> = no cap</span>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="flex items-start gap-3 p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/15">
+                  <Infinity className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <div className="text-sm">
+                    <span className="text-emerald-300 font-medium">Free & unlimited — </span>
+                    <span className="text-gray-400">no account needed. </span>
+                    <Link href="/signup" className="text-violet-400 hover:text-violet-300 transition-colors">
+                      Sign up
+                    </Link>
+                    <span className="text-gray-400"> to save history · </span>
+                    <Link href="/pricing" className="text-violet-400 hover:text-violet-300 transition-colors">
+                      Go Pro
+                    </Link>
+                    <span className="text-gray-400"> for advanced features</span>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Sidebar */}
@@ -88,10 +113,10 @@ export function ToolLayout({
                   <h3 className="text-sm font-semibold text-white">Upgrade to Pro</h3>
                 </div>
                 <ul className="text-sm text-gray-400 space-y-1.5 mb-4">
-                  <li>✓ 200 uses per day</li>
-                  <li>✓ Longer text inputs</li>
-                  <li>✓ Priority processing</li>
-                  <li>✓ PDF downloads</li>
+                  <li>✓ 200 paystub downloads/day</li>
+                  <li>✓ Priority AI processing</li>
+                  <li>✓ Usage history & analytics</li>
+                  <li>✓ Early access to new tools</li>
                 </ul>
                 <Link href="/pricing" className="btn-primary w-full justify-center text-sm py-2.5">
                   Start Pro — $9.99/month
