@@ -1,69 +1,66 @@
-import { createAdminClient } from './supabase/server';
-import { getIp } from './utils';
-import { PLAN_LIMITS } from './utils';
+import { createClient, createAdminClient } from './supabase/server';
+import { getIp, PLAN_LIMITS } from './utils';
 
-export async function logUsage(req: Request, toolName: string): Promise<void> {
+export type RateLimitResult =
+  | { allowed: true; remaining: number; plan: string; limit: number }
+  | { allowed: false; reason: string; remaining: 0; plan: string; limit: number };
+
+async function resolveUser(): Promise<{ userId: string | null; plan: string }> {
   try {
-    const supabase = createAdminClient();
-    const ip = getIp(req);
-    const token = req.headers.get('authorization')?.replace('Bearer ', '');
-    let userId: string | null = null;
-    if (token) {
-      const { data } = await supabase.auth.getUser(token);
-      if (data.user) userId = data.user.id;
-    }
-    await supabase.from('usage_logs').insert({ user_id: userId, ip, tool_name: toolName });
+    const { data: { user } } = await createClient().auth.getUser();
+    if (!user) return { userId: null, plan: 'anonymous' };
+
+    const admin = createAdminClient();
+    const { data: profile } = await admin
+      .from('profiles')
+      .select('plan')
+      .eq('id', user.id)
+      .single();
+    return { userId: user.id, plan: profile?.plan ?? 'free' };
   } catch {
-    // Non-fatal — silently ignore all errors
+    return { userId: null, plan: 'anonymous' };
   }
 }
 
-export type RateLimitResult =
-  | { allowed: true; remaining: number; plan: string }
-  | { allowed: false; reason: string; remaining: 0 };
+export async function logUsage(req: Request, toolName: string): Promise<void> {
+  try {
+    const { userId } = await resolveUser();
+    const admin = createAdminClient();
+    const ip = getIp(req);
+    await admin.from('usage_logs').insert({ user_id: userId, ip, tool_name: toolName });
+  } catch {
+    // Non-fatal — never block a request for logging failures
+  }
+}
 
 export async function checkRateLimit(
   req: Request,
   toolName: string
 ): Promise<RateLimitResult> {
   try {
-    const supabase = createAdminClient();
+    const { userId, plan } = await resolveUser();
+    const admin = createAdminClient();
     const ip = getIp(req);
 
-    const token = req.headers.get('authorization')?.replace('Bearer ', '');
-    let userId: string | null = null;
-    let plan = 'anonymous';
-
-    if (token) {
-      const { data } = await supabase.auth.getUser(token);
-      if (data.user) {
-        userId = data.user.id;
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('plan')
-          .eq('id', userId)
-          .single();
-        plan = profile?.plan ?? 'free';
-      }
-    }
-
     const limit = userId
-      ? PLAN_LIMITS[plan] ?? PLAN_LIMITS.free
+      ? (PLAN_LIMITS[plan] ?? PLAN_LIMITS.free)
       : PLAN_LIMITS.anonymous;
 
+    // Unlimited plan — always allow, just log
     if (plan === 'unlimited') {
-      await recordUsage(supabase, userId, ip, toolName);
-      return { allowed: true, remaining: 999_999, plan };
+      await recordUsage(admin, userId, ip, toolName);
+      return { allowed: true, remaining: 999_999, plan, limit: 999_999 };
     }
 
+    // Count usage in the last 24 hours
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
     const query = userId
-      ? supabase
+      ? admin
           .from('usage_logs')
           .select('id', { count: 'exact', head: true })
           .eq('user_id', userId)
           .gte('created_at', since)
-      : supabase
+      : admin
           .from('usage_logs')
           .select('id', { count: 'exact', head: true })
           .eq('ip', ip)
@@ -72,10 +69,10 @@ export async function checkRateLimit(
 
     const { count, error: countError } = await query;
 
-    // If DB check fails, allow the request rather than blocking everyone
+    // DB failure → allow rather than block
     if (countError) {
-      await recordUsage(supabase, userId, ip, toolName);
-      return { allowed: true, remaining: limit, plan };
+      await recordUsage(admin, userId, ip, toolName);
+      return { allowed: true, remaining: limit, plan, limit };
     }
 
     const usedCount = count ?? 0;
@@ -83,17 +80,16 @@ export async function checkRateLimit(
     if (usedCount >= limit) {
       const reason = userId
         ? plan === 'free'
-          ? 'Daily limit reached (10/day on free plan). Upgrade to Pro for 200 uses/day.'
-          : 'Daily limit reached. Upgrade to Unlimited for unlimited uses.'
-        : 'Daily limit reached (5/day without account). Sign up free for 10 uses/day.';
-      return { allowed: false, reason, remaining: 0 };
+          ? `Daily limit reached (${limit}/day on Free plan). Upgrade to Pro for 200 uses/day.`
+          : `Daily limit reached (${limit}/day on Pro plan). Upgrade to Unlimited for unlimited uses.`
+        : `Daily limit reached (${limit}/day without account). Sign up free for 10 uses/day.`;
+      return { allowed: false, reason, remaining: 0, plan, limit };
     }
 
-    await recordUsage(supabase, userId, ip, toolName);
-    return { allowed: true, remaining: limit - usedCount - 1, plan };
+    await recordUsage(admin, userId, ip, toolName);
+    return { allowed: true, remaining: limit - usedCount - 1, plan, limit };
   } catch {
-    // On any unexpected error, allow rather than block
-    return { allowed: true, remaining: 1, plan: 'anonymous' };
+    return { allowed: true, remaining: 1, plan: 'anonymous', limit: 5 };
   }
 }
 
@@ -105,12 +101,8 @@ async function recordUsage(
   toolName: string
 ) {
   try {
-    await supabase.from('usage_logs').insert({
-      user_id: userId,
-      ip,
-      tool_name: toolName,
-    });
+    await supabase.from('usage_logs').insert({ user_id: userId, ip, tool_name: toolName });
   } catch {
-    // Non-fatal — don't block the request if logging fails
+    // Non-fatal
   }
 }
