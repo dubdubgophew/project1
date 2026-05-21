@@ -101,66 +101,60 @@ export default function QRCodePage() {
     canvas.height = size;
 
     if (style === 'artistic' && photoUrl) {
-      // ── Artistic: image IS the QR code ──────────────────────────────────
+      // ── Artistic: colored circles drawn over full-quality image ──────────
+      // photoBlend repurposed as dot radius factor (0.4→small gaps, 0.9→large dots)
       const img = new window.Image();
       img.onload = () => {
-        // Draw image as full background
+        // 1. Full-color image background — untouched in light areas
         ctx.drawImage(img, 0, 0, size, size);
         const imgData = ctx.getImageData(0, 0, size, size);
 
-        // Overlay QR pattern
+        // 2. Draw dark data modules as colored circles sampled from image
+        //    dotR mapped from slider: photoBlend 0.4→r=0.36*m, 0.9→r=0.48*m
+        const dotR = moduleSize * (0.36 + (photoBlend - 0.4) * 0.24);
         for (let row = 0; row < qSize; row++) {
           for (let col = 0; col < qSize; col++) {
-            const dark = data[row * qSize + col] === 1;
-            const x = Math.floor(col * moduleSize);
-            const y = Math.floor(row * moduleSize);
-            const w = Math.ceil(moduleSize);
-            const h = Math.ceil(moduleSize);
-            const finder = isFinderPattern(row, col, qSize);
-
-            if (dark) {
-              // Darken pixels in this module
-              for (let py = y; py < y + h && py < size; py++) {
-                for (let px = x; px < x + w && px < size; px++) {
-                  const i = (py * size + px) * 4;
-                  if (finder) {
-                    imgData.data[i] = 10;
-                    imgData.data[i + 1] = 10;
-                    imgData.data[i + 2] = 10;
-                    imgData.data[i + 3] = 255;
-                  } else {
-                    imgData.data[i] = Math.floor(imgData.data[i] * (1 - photoBlend));
-                    imgData.data[i + 1] = Math.floor(imgData.data[i + 1] * (1 - photoBlend));
-                    imgData.data[i + 2] = Math.floor(imgData.data[i + 2] * (1 - photoBlend));
-                    imgData.data[i + 3] = 255;
-                  }
-                }
-              }
-            } else if (finder) {
-              // Lighten finder light areas
-              for (let py = y; py < y + h && py < size; py++) {
-                for (let px = x; px < x + w && px < size; px++) {
-                  const i = (py * size + px) * 4;
-                  imgData.data[i] = 245;
-                  imgData.data[i + 1] = 245;
-                  imgData.data[i + 2] = 245;
-                  imgData.data[i + 3] = 255;
-                }
-              }
-            } else {
-              // Brighten light modules so image shows through clearly
-              for (let py = y; py < y + h && py < size; py++) {
-                for (let px = x; px < x + w && px < size; px++) {
-                  const i = (py * size + px) * 4;
-                  imgData.data[i] = Math.min(255, imgData.data[i] + 40);
-                  imgData.data[i + 1] = Math.min(255, imgData.data[i + 1] + 40);
-                  imgData.data[i + 2] = Math.min(255, imgData.data[i + 2] + 40);
-                }
-              }
-            }
+            if (!data[row * qSize + col] || isFinderPattern(row, col, qSize)) continue;
+            const cx = col * moduleSize + moduleSize / 2;
+            const cy = row * moduleSize + moduleSize / 2;
+            // Sample image pixel at circle center for hue
+            const px = Math.min(Math.floor(cx), size - 1);
+            const py = Math.min(Math.floor(cy), size - 1);
+            const i = (py * size + px) * 4;
+            // Darken sampled color to ~12% luminance so dot reads as dark
+            const r = Math.floor(imgData.data[i] * 0.12);
+            const g = Math.floor(imgData.data[i + 1] * 0.12);
+            const b = Math.floor(imgData.data[i + 2] * 0.12);
+            ctx.fillStyle = `rgb(${r},${g},${b})`;
+            ctx.beginPath();
+            ctx.arc(cx, cy, dotR, 0, Math.PI * 2);
+            ctx.fill();
           }
         }
-        ctx.putImageData(imgData, 0, 0);
+
+        // 3. Styled finder patterns — rounded square borders over image
+        const fm = moduleSize;
+        const cornerRadius = fm * 0.3;
+        for (const [fr, fc] of [[0, 0], [0, qSize - 7], [qSize - 7, 0]] as [number, number][]) {
+          const fx = fc * fm;
+          const fy = fr * fm;
+          // Outer dark rounded square
+          ctx.fillStyle = 'rgba(8,8,8,0.96)';
+          ctx.beginPath();
+          ctx.roundRect(fx, fy, 7 * fm, 7 * fm, cornerRadius * 1.5);
+          ctx.fill();
+          // White ring
+          ctx.fillStyle = 'rgba(255,255,255,0.97)';
+          ctx.beginPath();
+          ctx.roundRect(fx + fm, fy + fm, 5 * fm, 5 * fm, cornerRadius);
+          ctx.fill();
+          // Inner dark square
+          ctx.fillStyle = 'rgba(8,8,8,0.96)';
+          ctx.beginPath();
+          ctx.roundRect(fx + 2 * fm, fy + 2 * fm, 3 * fm, 3 * fm, cornerRadius * 0.6);
+          ctx.fill();
+        }
+
         drawLogoOverlay(ctx, size);
       };
       img.src = photoUrl;
@@ -338,7 +332,7 @@ export default function QRCodePage() {
               {style === 'artistic' && photoUrl && (
                 <div className="mt-3">
                   <label className="text-xs text-gray-500 block mb-1">
-                    Blend strength: {Math.round(photoBlend * 100)}%
+                    Dot size: {Math.round((0.36 + (photoBlend - 0.4) * 0.24) * 100)}% of cell
                   </label>
                   <input
                     type="range" min="0.4" max="0.9" step="0.05"
@@ -347,7 +341,7 @@ export default function QRCodePage() {
                     className="w-full accent-violet-500"
                   />
                   <div className="flex justify-between text-xs text-gray-600 mt-0.5">
-                    <span>More image visible</span><span>More scannable</span>
+                    <span>Smaller dots</span><span>Larger dots</span>
                   </div>
                 </div>
               )}
