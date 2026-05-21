@@ -17,7 +17,7 @@ const PLANS = [
     features: [
       '5 AI uses per day (no signup)',
       '10 uses/day with free account',
-      'All 10 AI tools',
+      'All 26 AI tools',
       'Copy & download output',
       'Standard AI speed',
       'Community support',
@@ -36,7 +36,7 @@ const PLANS = [
     description: 'For freelancers and power users.',
     features: [
       '200 AI uses per day',
-      'All 10 AI tools',
+      'All 26 AI tools',
       'Priority processing (2× faster)',
       'Longer text inputs (10K chars)',
       'PDF downloads for resumes',
@@ -57,7 +57,7 @@ const PLANS = [
     description: 'For agencies and heavy users.',
     features: [
       'Unlimited AI uses per day',
-      'All 10 AI tools',
+      'All 26 AI tools',
       'Fastest processing priority',
       'Max text length (50K chars)',
       'All Pro features included',
@@ -79,7 +79,7 @@ const PLANS = [
     description: 'Full Pro access for 24 hours. One-time payment.',
     features: [
       '200 AI uses for 24 hours',
-      'All 10 AI tools',
+      'All 26 AI tools',
       'Priority processing (2× faster)',
       'Longer text inputs (10K chars)',
       'PDF downloads for resumes',
@@ -289,7 +289,15 @@ export default function PricingPage() {
                 },
                 {
                   q: 'Is there a student or NGO discount?',
-                  a: 'Yes! Email support@formly.tools with proof of student status or NGO registration for 50% off Pro.',
+                  a: 'Yes — 50% off the Pro or Unlimited monthly plan. Email support@formly.tools with proof of student status (college ID or .edu email) or NGO registration. Discounts apply to subscriptions only and are not available on the Day Pass, which is already a low-cost one-time purchase.',
+                },
+                {
+                  q: 'Can I upgrade or downgrade my plan?',
+                  a: 'Yes. You can upgrade at any time and the new plan takes effect immediately. Downgrading takes effect at the end of your current billing period. Your data and history are always preserved.',
+                },
+                {
+                  q: 'What happens to my access when I cancel?',
+                  a: 'Nothing changes immediately. You keep full access to all features until the end of your paid billing period. After that, your account switches to the Free plan automatically. There are no cancellation fees.',
                 },
               ].map((faq) => (
                 <div key={faq.q} className="card">

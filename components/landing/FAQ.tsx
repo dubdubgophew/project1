@@ -54,7 +54,7 @@ const FAQS = [
   },
   {
     q: 'Can I export documents as PDF from Formly?',
-    a: 'Yes. Tools like the resume builder, pay stub generator, and contract generator let you download your finished document as a polished PDF. The PDF export is available on both free and Pro plans.',
+    a: 'Yes. The resume builder, pay stub generator, and contract generator all let you download a polished PDF. PDF export is available on Day Pass, Pro, and Unlimited plans. Free plan users can copy and paste the output.',
   },
   {
     q: 'Does Formly work with all browsers?',
@@ -67,6 +67,10 @@ const FAQS = [
   {
     q: 'How does Formly protect my data?',
     a: 'Formly does not store the content you submit to any tool. Your text, documents, and form inputs are processed in real time and never saved to our servers. Account data (email, usage counts) is stored securely using Supabase with encrypted connections. We do not sell user data to third parties.',
+  },
+  {
+    q: 'Is there a student or NGO discount?',
+    a: 'Yes — 50% off Pro or Unlimited monthly subscriptions. Email support@formly.tools with proof of student status (college ID or .edu email) or NGO registration. The discount applies to subscriptions only and is not available on the Day Pass, which is already a low-cost one-time purchase at $1.99.',
   },
 ];
 
