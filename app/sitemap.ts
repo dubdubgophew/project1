@@ -38,6 +38,7 @@ const STATIC_ROUTES = [
   { url: '/tools/diff-checker', priority: 0.8, changeFrequency: 'monthly' as const },
   { url: '/tools/terms-simplifier', priority: 0.8, changeFrequency: 'monthly' as const },
   { url: '/tools/qr-code', priority: 0.8, changeFrequency: 'monthly' as const },
+  { url: '/tools/digital-signature', priority: 0.9, changeFrequency: 'monthly' as const },
   // Static marketing pages
   { url: '/pricing', priority: 0.5, changeFrequency: 'monthly' as const },
   { url: '/blog', priority: 0.7, changeFrequency: 'daily' as const },

@@ -296,6 +296,16 @@ const TOOLS: Tool[] = [
     tags: ['qr code', 'generator', 'image', 'barcode'],
     category: 'Utilities',
   },
+  {
+    icon: '✍️',
+    name: 'Digital Signature',
+    description: 'Create professional e-signatures by drawing, typing, or uploading. Place on documents, save locally, download PNG. Free.',
+    href: '/tools/digital-signature',
+    badge: 'New',
+    color: 'from-blue-500/10 to-indigo-600/5 border-blue-500/20 hover:border-blue-500/40',
+    tags: ['digital signature', 'e-signature', 'sign document', 'electronic signature', 'esign'],
+    category: 'Payroll & Legal',
+  },
 ];
 
 const ALL_CATEGORIES = ['All', 'Payroll & Legal', 'AI Writing', 'AI Documents', 'Developer', 'Finance', 'Utilities'];

@@ -83,6 +83,14 @@ const POPULAR_TOOLS = [
     category: 'Developer',
     pinned: false,
   },
+  {
+    icon: '✍️',
+    name: 'Digital Signature',
+    href: '/tools/digital-signature',
+    desc: 'Draw, type, or upload signatures. Place on documents. Free — beats DocuSign.',
+    category: 'Legal',
+    pinned: true,
+  },
 ];
 
 export function PopularTools() {
@@ -93,7 +101,7 @@ export function PopularTools() {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
           <div>
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-2">
-              Top 10 Most Used Tools
+              Most Popular Tools
             </h2>
             <p className="text-gray-400 text-base">
               Used by 50,000+ professionals every day
@@ -103,7 +111,7 @@ export function PopularTools() {
             href="/tools"
             className="text-sm text-violet-400 hover:text-violet-300 font-medium transition-colors whitespace-nowrap self-start sm:self-auto"
           >
-            View all 27 tools →
+            View all 28 tools →
           </Link>
         </div>
 
@@ -160,7 +168,7 @@ export function PopularTools() {
             href="/tools"
             className="text-sm text-violet-400 hover:text-violet-300 font-medium transition-colors"
           >
-            View all 27 tools →
+            View all 28 tools →
           </Link>
         </div>
       </div>

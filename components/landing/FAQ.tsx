@@ -38,7 +38,7 @@ const FAQS = [
   },
   {
     q: 'What tools does Formly offer for free?',
-    a: 'Formly offers 27 free AI-powered and utility tools, including a PDF summarizer, paraphraser, grammar checker, AI email writer, pay stub generator, resume builder, contract generator, JSON formatter, base64 encoder, regex tester, diff checker, PDF-to-Markdown converter, expense splitter, loan/EMI calculator, word counter, QR code generator, and more. All tools are accessible without an account.',
+    a: 'Formly offers 28 free AI-powered and utility tools, including a PDF summarizer, paraphraser, grammar checker, AI email writer, pay stub generator, resume builder, contract generator, JSON formatter, base64 encoder, regex tester, diff checker, PDF-to-Markdown converter, expense splitter, loan/EMI calculator, word counter, QR code generator, digital signature creator, and more. All tools are accessible without an account.',
   },
   {
     q: 'Can I use Formly tools without creating an account?',
