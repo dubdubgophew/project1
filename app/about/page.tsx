@@ -30,7 +30,7 @@ export default function AboutPage() {
                 color: 'text-violet-400',
                 bg: 'bg-violet-500/10',
                 title: 'Our Mission',
-                text: 'Formly was built to democratize AI tools. The best writing assistants, grammar checkers, and AI utilities were locked behind expensive paywalls. We changed that — 26 professional-grade AI tools, free to try, forever.',
+                text: 'Formly was built to democratize AI tools. The best writing assistants, grammar checkers, and AI utilities were locked behind expensive paywalls. We changed that — 27 professional-grade AI tools, free to try, forever.',
               },
               {
                 icon: Zap,
@@ -69,7 +69,7 @@ export default function AboutPage() {
           <div className="mt-12 p-8 rounded-2xl bg-gradient-to-br from-violet-600/10 to-purple-600/5 border border-violet-500/20 text-center">
             <h2 className="text-xl font-bold text-white mb-2">Join 50,000+ Users</h2>
             <p className="text-gray-400 text-sm mb-4">Start using Formly free — no credit card required.</p>
-            <a href="/tools" className="btn-primary inline-flex">Try All 26 Tools Free →</a>
+            <a href="/tools" className="btn-primary inline-flex">Try All 27 Tools Free →</a>
           </div>
 
           <BannerAd className="mt-12" />

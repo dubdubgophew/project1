@@ -51,7 +51,7 @@ export default function HomePage() {
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a href="/tools" className="btn-primary text-base px-8 py-4">
-                  Try All 26 Tools Free →
+                  Try All 27 Tools Free →
                 </a>
                 <a href="/pricing" className="btn-outline text-base px-8 py-4">
                   View Pro Plans
