@@ -286,6 +286,16 @@ const TOOLS: Tool[] = [
     tags: ['text', 'case', 'format'],
     category: 'Utilities',
   },
+  {
+    icon: '📷',
+    name: 'QR Code Generator',
+    description: 'Generate artistic QR codes with photo overlays, custom colors, logos, and multiple styles. Free & instant.',
+    href: '/tools/qr-code',
+    badge: 'New',
+    color: 'from-violet-500/10 to-purple-600/5 border-violet-500/20 hover:border-violet-500/40',
+    tags: ['qr code', 'generator', 'image', 'barcode'],
+    category: 'Utilities',
+  },
 ];
 
 const ALL_CATEGORIES = ['All', 'Payroll & Legal', 'AI Writing', 'AI Documents', 'Developer', 'Finance', 'Utilities'];
