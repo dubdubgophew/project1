@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
+import { BannerAd } from '@/components/shared/AdSense';
 import { BLOG_POSTS } from '@/lib/blog-content';
 
 export const metadata: Metadata = {
@@ -86,6 +87,8 @@ export default function BlogPage() {
               );
             })}
           </div>
+
+          <BannerAd className="mt-10" />
 
           {/* JSON-LD ItemList */}
           <script
