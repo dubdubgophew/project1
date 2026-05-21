@@ -37,7 +37,11 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState('');
+  const [subStatus, setSubStatus] = useState<string | null>(null);
   const [cancelLoading, setCancelLoading] = useState(false);
+  const [cancelledUntil, setCancelledUntil] = useState<string | null>(null);
+  const [reactivateLoading, setReactivateLoading] = useState(false);
+  const [reactivateResult, setReactivateResult] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [refundLoading, setRefundLoading] = useState(false);
   const [refundReason, setRefundReason] = useState('');
   const [refundResult, setRefundResult] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
@@ -69,6 +73,10 @@ export default function SettingsPage() {
         .single();
 
       setSub(subData ?? null);
+      setSubStatus(subData?.status ?? null);
+      if (subData?.status === 'pending_cancellation' && subData.current_period_end) {
+        setCancelledUntil(subData.current_period_end);
+      }
       setLoading(false);
     }
     load();
@@ -101,18 +109,44 @@ export default function SettingsPage() {
   }
 
   async function handleCancelSubscription() {
-    if (!confirm("Are you sure you want to cancel? You'll keep access until the end of the billing period.")) return;
+    if (!confirm("Are you sure? You'll keep full access until the end of your billing period. No further charges.")) return;
     setCancelLoading(true);
+    setReactivateResult(null);
     try {
       const res = await fetch('/api/payments/cancel-subscription', { method: 'POST' });
+      const data = await res.json();
       if (res.ok) {
-        setPlan('free');
-        alert("Subscription cancelled. You'll keep access until the end of the billing period.");
+        setSubStatus('pending_cancellation');
+        setCancelledUntil(data.accessUntil ?? null);
       } else {
-        alert('Failed to cancel. Please contact support@formly.tools');
+        setError(data.error ?? 'Failed to cancel. Please contact support@formly.tools');
       }
+    } catch {
+      setError('Network error. Please contact support@formly.tools');
     } finally {
       setCancelLoading(false);
+    }
+  }
+
+  async function handleReactivate() {
+    setReactivateLoading(true);
+    setReactivateResult(null);
+    try {
+      const res = await fetch('/api/payments/reactivate-subscription', { method: 'POST' });
+      const data = await res.json();
+      if (res.ok && !data.resubscribe) {
+        setSubStatus('active');
+        setCancelledUntil(null);
+        setReactivateResult({ type: 'success', message: 'Your subscription has been reactivated.' });
+      } else if (data.resubscribe) {
+        window.location.href = '/pricing';
+      } else {
+        setReactivateResult({ type: 'error', message: data.error ?? 'Could not reactivate. Please contact support@formly.tools' });
+      }
+    } catch {
+      setReactivateResult({ type: 'error', message: 'Network error. Please contact support@formly.tools' });
+    } finally {
+      setReactivateLoading(false);
     }
   }
 
@@ -192,6 +226,26 @@ export default function SettingsPage() {
           <CreditCard className="w-5 h-5 text-violet-400" />
           Subscription
         </h2>
+        {reactivateResult && (
+          <div className={`flex items-start gap-2 p-3 rounded-xl mb-4 text-sm border ${
+            reactivateResult.type === 'success'
+              ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-300'
+              : 'bg-red-500/10 border-red-500/20 text-red-400'
+          }`}>
+            {reactivateResult.type === 'success'
+              ? <Check className="w-4 h-4 shrink-0 mt-0.5" />
+              : <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />}
+            {reactivateResult.message}
+          </div>
+        )}
+
+        {subStatus === 'pending_cancellation' && cancelledUntil && (
+          <div className="flex items-start gap-2 p-3 rounded-xl mb-4 text-sm border bg-amber-500/10 border-amber-500/20 text-amber-300">
+            <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+            Cancels on {new Date(cancelledUntil).toLocaleDateString(undefined, { dateStyle: 'long' })}. You keep full access until then.
+          </div>
+        )}
+
         <div className="flex items-center justify-between flex-wrap gap-4 mb-4">
           <div>
             <p className="text-sm font-medium text-white">{PLAN_LABEL[plan] ?? plan} Plan</p>
@@ -201,7 +255,7 @@ export default function SettingsPage() {
                 Expires {new Date(sub.current_period_end).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}
               </p>
             )}
-            {plan !== 'free' && plan !== 'day_pass' && sub?.current_period_end && (
+            {plan !== 'free' && plan !== 'day_pass' && sub?.current_period_end && subStatus !== 'pending_cancellation' && (
               <p className="text-xs text-gray-600 mt-1">
                 Renews {new Date(sub.current_period_end).toLocaleDateString()}
               </p>
@@ -211,14 +265,23 @@ export default function SettingsPage() {
             <Link href="/pricing" className="btn-primary py-2 px-4 text-sm">
               Upgrade Plan
             </Link>
-          ) : plan !== 'day_pass' ? (
+          ) : plan !== 'day_pass' && subStatus !== 'pending_cancellation' ? (
             <button
               onClick={handleCancelSubscription}
               disabled={cancelLoading}
               className="btn-secondary py-2 px-4 text-sm text-red-400 border-red-400/20 hover:bg-red-400/10"
             >
-              {cancelLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+              {cancelLoading ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : null}
               Cancel Subscription
+            </button>
+          ) : plan !== 'day_pass' && subStatus === 'pending_cancellation' ? (
+            <button
+              onClick={handleReactivate}
+              disabled={reactivateLoading}
+              className="btn-primary py-2 px-4 text-sm"
+            >
+              {reactivateLoading ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : <RefreshCw className="w-4 h-4 mr-1" />}
+              Reactivate
             </button>
           ) : null}
         </div>

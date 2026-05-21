@@ -19,16 +19,22 @@ async function resolveUser(): Promise<{ userId: string | null; plan: string }> {
 
     const plan = profile?.plan ?? 'free';
 
-    if (plan === 'day_pass') {
+    if (plan === 'day_pass' || plan === 'pro' || plan === 'unlimited') {
       const { data: sub } = await admin
         .from('subscriptions')
-        .select('current_period_end')
+        .select('status, current_period_end')
         .eq('user_id', user.id)
         .single();
 
-      if (!sub?.current_period_end || new Date(sub.current_period_end) <= new Date()) {
-        // Expired — downgrade to free in background
+      if (plan === 'day_pass') {
+        if (!sub?.current_period_end || new Date(sub.current_period_end) <= new Date()) {
+          admin.from('profiles').update({ plan: 'free' }).eq('id', user.id);
+          return { userId: user.id, plan: 'free' };
+        }
+      } else if (sub?.status === 'pending_cancellation' && sub.current_period_end && new Date(sub.current_period_end) <= new Date()) {
+        // Billing period ended — lazily finalise the cancellation
         admin.from('profiles').update({ plan: 'free' }).eq('id', user.id);
+        admin.from('subscriptions').update({ status: 'cancelled' }).eq('user_id', user.id);
         return { userId: user.id, plan: 'free' };
       }
     }
