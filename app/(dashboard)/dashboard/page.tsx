@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { TrendingUp, Zap, ArrowUpRight, Crown, BarChart2 } from 'lucide-react';
 import type { Metadata } from 'next';
 import { PLAN_LIMITS } from '@/lib/utils';
+import { BannerAd } from '@/components/shared/AdSense';
 
 export const metadata: Metadata = { title: 'Dashboard' };
 
@@ -188,6 +189,8 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
           )}
         </div>
       </div>
+
+      <BannerAd className="mb-8" />
 
       {/* Quick access to tools */}
       <div>

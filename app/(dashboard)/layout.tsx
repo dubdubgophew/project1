@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { Zap, LayoutDashboard, Settings, ExternalLink } from 'lucide-react';
 import { SidebarUser } from '@/components/dashboard/SidebarUser';
+import { SidebarAd } from '@/components/shared/AdSense';
 
 export const dynamic = 'force-dynamic';
 
@@ -44,6 +45,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
             Settings
           </Link>
         </nav>
+
+        {/* Ad — hidden automatically for paid users */}
+        <div className="px-3 pb-3">
+          <SidebarAd />
+        </div>
 
         {/* User info + sign out — client component for live plan data */}
         <SidebarUser />
