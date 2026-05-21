@@ -91,6 +91,14 @@ const POPULAR_TOOLS = [
     category: 'Legal',
     pinned: true,
   },
+  {
+    icon: '📷',
+    name: 'QR Code Generator',
+    href: '/tools/qr-code',
+    desc: 'Artistic QR codes with photo overlays, custom colors, logos & gradients.',
+    category: 'Utilities',
+    pinned: true,
+  },
 ];
 
 export function PopularTools() {
