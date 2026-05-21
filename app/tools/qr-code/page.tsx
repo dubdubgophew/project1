@@ -80,6 +80,7 @@ export default function QRCodePage() {
   const [gradientEnd, setGradientEnd] = useState('#ec4899');
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const logoImgRef = useRef<HTMLImageElement | null>(null);
   const [photoBlend, setPhotoBlend] = useState(0.65);
   const [size] = useState(400);
   const [error, setError] = useState('');
@@ -193,21 +194,32 @@ export default function QRCodePage() {
   }, [text, style, errorLevel, fgColor, bgColor, useGradient, gradientEnd, photoUrl, logoUrl, photoBlend, size]);
 
   function drawLogoOverlay(ctx: CanvasRenderingContext2D, sz: number) {
-    if (!logoUrl) return;
-    const logo = new window.Image();
-    logo.onload = () => {
-      const lSize = sz * 0.2;
-      const lX = (sz - lSize) / 2;
-      const lY = (sz - lSize) / 2;
-      // White padding
-      ctx.fillStyle = '#ffffff';
-      ctx.beginPath();
-      ctx.roundRect(lX - 8, lY - 8, lSize + 16, lSize + 16, 12);
-      ctx.fill();
-      ctx.drawImage(logo, lX, lY, lSize, lSize);
-    };
-    logo.src = logoUrl;
+    const logo = logoImgRef.current;
+    if (!logo) return;
+    // Cap logo at 18% of canvas — keeps it inside H error correction's 30% capacity
+    const lSize = sz * 0.18;
+    const lX = (sz - lSize) / 2;
+    const lY = (sz - lSize) / 2;
+    const pad = 8;
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.roundRect(lX - pad, lY - pad, lSize + pad * 2, lSize + pad * 2, 10);
+    ctx.fill();
+    ctx.drawImage(logo, lX, lY, lSize, lSize);
   }
+
+  // Pre-load logo so drawLogoOverlay can draw synchronously
+  useEffect(() => {
+    if (!logoUrl) { logoImgRef.current = null; return; }
+    const img = new window.Image();
+    img.onload = () => { logoImgRef.current = img; render(); };
+    img.src = logoUrl;
+  }, [logoUrl]); // render intentionally excluded — called manually after load
+
+  // Force H error correction when logo is present (logo covers ~20% of QR area)
+  useEffect(() => {
+    if (logoUrl && errorLevel !== 'H') setErrorLevel('H');
+  }, [logoUrl]);
 
   useEffect(() => { render(); }, [render]);
 
