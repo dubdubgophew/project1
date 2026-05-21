@@ -17,7 +17,7 @@ const PLANS = [
     features: [
       '5 AI uses per day (no signup)',
       '10 uses/day with free account',
-      'All 26 AI tools',
+      'All 27 AI tools',
       'Copy & download output',
       'Standard AI speed',
       'Community support',
@@ -36,7 +36,7 @@ const PLANS = [
     description: 'For freelancers and power users.',
     features: [
       '200 AI uses per day',
-      'All 26 AI tools',
+      'All 27 AI tools',
       'Priority processing (2× faster)',
       'Longer text inputs (10K chars)',
       'PDF downloads for resumes',
@@ -57,7 +57,7 @@ const PLANS = [
     description: 'For agencies and heavy users.',
     features: [
       'Unlimited AI uses per day',
-      'All 26 AI tools',
+      'All 27 AI tools',
       'Fastest processing priority',
       'Max text length (50K chars)',
       'All Pro features included',
@@ -79,7 +79,7 @@ const PLANS = [
     description: 'Full Pro access for 24 hours. One-time payment.',
     features: [
       '200 AI uses for 24 hours',
-      'All 26 AI tools',
+      'All 27 AI tools',
       'Priority processing (2× faster)',
       'Longer text inputs (10K chars)',
       'PDF downloads for resumes',
@@ -244,7 +244,7 @@ export default function PricingPage() {
               <tbody className="divide-y divide-gray-800/50">
                 {[
                   ['AI uses', '5–10/day', '200 (24h)', '200/day', 'Unlimited'],
-                  ['All 26 AI tools', '✓', '✓', '✓', '✓'],
+                  ['All 27 AI tools', '✓', '✓', '✓', '✓'],
                   ['Max input length', '2,000 chars', '10,000 chars', '10,000 chars', '50,000 chars'],
                   ['Processing speed', 'Standard', 'Priority (2×)', 'Priority (2×)', 'Fastest (3×)'],
                   ['PDF downloads', '✗', '✓', '✓', '✓'],

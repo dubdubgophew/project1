@@ -12,7 +12,7 @@ const PLANS = [
     description: 'Try every tool without a credit card.',
     features: [
       '5 AI requests per day',
-      'All 26 AI tools',
+      'All 27 AI tools',
       'No signup required',
       'Standard processing speed',
       'Copy & download output',
@@ -30,7 +30,7 @@ const PLANS = [
     description: 'Full Pro access for 24 hours.',
     features: [
       '200 AI requests for 24 hours',
-      'All 26 AI tools',
+      'All 27 AI tools',
       'Priority processing speed',
       'Longer text inputs (10K chars)',
       'PDF downloads',
@@ -49,7 +49,7 @@ const PLANS = [
     description: 'For freelancers and power users.',
     features: [
       '200 AI requests per day',
-      'All 26 AI tools',
+      'All 27 AI tools',
       'Priority processing speed',
       'Longer text inputs (10K chars)',
       'PDF download for resumes',
@@ -69,7 +69,7 @@ const PLANS = [
     description: 'For agencies and heavy users.',
     features: [
       'Unlimited AI requests',
-      'All 26 AI tools',
+      'All 27 AI tools',
       'Fastest processing priority',
       'Max text length (50K chars)',
       'API access (coming soon)',

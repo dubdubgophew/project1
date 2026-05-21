@@ -1,5 +1,5 @@
 /**
- * Static blog content for all 26 Formly tool guides.
+ * Static blog content for all 27 Formly tool guides.
  * Used by /blog (index) and /blog/[slug] (detail) pages.
  * GEO/SEO optimized for LLM citation and organic search.
  */
@@ -1672,6 +1672,73 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         q: 'Can I edit the generated bio?',
         a: 'Yes. The output is editable — add your personal touch before publishing.',
+      },
+    ],
+  },
+
+  {
+    slug: 'qr-code-generator',
+    title: 'Free Artistic QR Code Generator: Create QR Codes with Your Photo',
+    category: 'productivity',
+    toolSlug: 'qr-code',
+    toolName: 'QR Code Generator',
+    readingTime: 5,
+    publishedAt: '2026-05-21',
+    updatedAt: '2026-05-21',
+    metaDescription:
+      'Generate artistic QR codes with photo overlays, custom colors, gradients, and logos — free. No signup needed. Download as PNG instantly.',
+    intro:
+      'QR codes have evolved far beyond black-and-white squares. Modern QR generators let you blend your own photo or brand image directly into the code, apply custom colors and gradients, and add a logo — all while keeping the code fully scannable. The Formly QR Code Generator does all of this client-side, with no uploads, no sign-in required, and instant PNG download.',
+    sections: [
+      {
+        heading: 'What Makes an Artistic QR Code',
+        body: 'A standard QR code encodes data in a grid of black and white modules. Artistic QR codes replace those modules with image pixels — dark modules darken the underlying photo while light modules brighten it. The finder patterns (the three corner squares used for alignment) are kept solid black so scanners can always locate the code. The result is a QR code that visually resembles your chosen image while remaining machine-readable.',
+      },
+      {
+        heading: 'Four QR Code Styles',
+        body: 'Classic: standard square black-and-white QR code. Rounded: modules have rounded corners for a softer look. Dots: each module is a circle, giving a modern minimal feel. Artistic: your uploaded photo is blended into the QR matrix. The blend strength slider lets you balance aesthetic appeal against scan reliability — higher blend = more photo visible, lower blend = more contrast for easier scanning.',
+      },
+      {
+        heading: 'Error Correction and Scan Reliability',
+        body: 'QR codes support four error correction levels: L (7%), M (15%), Q (25%), H (30%). Higher levels allow up to 30% of the code to be obscured or damaged while still scanning correctly. For artistic QR codes, use H (high) correction so the photo overlay doesn\'t break scannability. For plain QR codes with logos, M or Q is usually sufficient. The generator defaults to H for artistic mode.',
+      },
+      {
+        heading: 'Adding a Logo to Your QR Code',
+        body: 'The logo overlay feature places your image in the center of the QR code with a white padded background. Keep logos under 20–25% of the total QR area to preserve scannability — the white padding visually separates the logo from surrounding modules. Logos work best with high error correction (H or Q) since they obscure the center of the code.',
+      },
+      {
+        heading: 'Use Cases for Custom QR Codes',
+        body: 'Restaurant menus — blend the QR with a food photo or restaurant interior. Business cards — style the QR with brand colors and a logo. Product packaging — match the QR code color to your label design. Event posters — overlay the QR on event imagery. Social media links — create a branded QR for your Instagram or website. Retail stores — a QR that looks like your storefront photo drives more scans than a plain black square.',
+      },
+      {
+        heading: 'Color Options and Gradients',
+        body: 'Choose from six preset color schemes (Midnight, Sunset, Forest, Ocean, Classic, Neon) or set custom foreground and background colors. Enable gradient mode to apply a two-tone gradient across the QR modules — the gradient sweeps diagonally, giving a modern look that stands out on print materials. All color combinations are previewed in real time.',
+      },
+      {
+        heading: 'Technical Details',
+        body: 'The generator runs entirely in your browser using the HTML5 Canvas API — no data is sent to any server. QR matrix generation uses Reed-Solomon error correction per the QR Code specification (ISO 18004). The canvas output is 400×400 pixels, suitable for web, print up to A5 size, and social media sharing. Download is a lossless PNG file.',
+      },
+    ],
+    faqs: [
+      {
+        q: 'Will artistic QR codes actually scan?',
+        a: 'Yes, when using High (H) error correction. The finder patterns (corner squares) are always kept solid for reliable alignment detection. Test the downloaded QR with your phone camera before publishing.',
+      },
+      {
+        q: 'What image formats work for photo overlay?',
+        a: 'JPEG, PNG, and WebP are supported. Images are processed client-side — nothing is uploaded to any server.',
+      },
+      {
+        q: 'Can I use this for commercial purposes?',
+        a: 'Yes. Generated QR codes are yours to use for any purpose — personal, commercial, or otherwise.',
+      },
+      {
+        q: 'What resolution is the downloaded PNG?',
+        a: '400×400 pixels. This is suitable for web use and print up to about A5 size. For large-format print, scale up in a vector editor.',
+      },
+      {
+        q: 'Is it free?',
+        a: 'Yes. The QR code generator is completely free with no signup required.',
       },
     ],
   },
