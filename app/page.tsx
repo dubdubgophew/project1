@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
 import { Hero } from '@/components/landing/Hero';
+import { PopularTools } from '@/components/landing/PopularTools';
 import { HowItWorks } from '@/components/landing/HowItWorks';
 import { PricingSection } from '@/components/landing/PricingSection';
 import { FAQ } from '@/components/landing/FAQ';
@@ -9,9 +10,9 @@ import { Testimonials } from '@/components/landing/Testimonials';
 import { BannerAd } from '@/components/shared/AdSense';
 
 export const metadata: Metadata = {
-  title: 'Formly — 26 Free AI Tools: PDF Summarizer, Resume Builder, Pay Stub Generator & More',
+  title: 'Formly — 26 Free AI Tools: Pay Stub Generator, Resume Builder, Contract Generator & More',
   description:
-    'Free AI tools online: PDF summarizer, resume builder, pay stub generator, contract generator, paraphraser, grammar checker, JSON formatter, EMI calculator & 18 more. No signup needed. Powered by Groq AI.',
+    'Free AI tools online: pay stub generator, resume builder, contract generator, PDF summarizer, paraphraser, grammar checker & 20 more. No signup needed. Used by 50,000+ professionals.',
   alternates: { canonical: 'https://formly.tools' },
 };
 
@@ -21,8 +22,8 @@ export default function HomePage() {
       <Header />
       <main>
         <Hero />
+        <PopularTools />
 
-        {/* Natural AdSense placement — between sections, not intrusive */}
         <div className="max-w-4xl mx-auto px-4">
           <BannerAd />
         </div>
