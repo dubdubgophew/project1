@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { createAdminClient } from '@/lib/supabase/server';
+import { BLOG_POSTS } from '@/lib/blog-content';
 
 const BASE_URL = 'https://formly.tools';
 
@@ -52,8 +53,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route.priority,
   }));
 
-  // Fetch published blog posts
-  let blogUrls: MetadataRoute.Sitemap = [];
+  // Static tool guide blog posts (always present)
+  const guideUrls: MetadataRoute.Sitemap = BLOG_POSTS.map((post) => ({
+    url: `${BASE_URL}/blog/${post.slug}`,
+    lastModified: post.updatedAt,
+    changeFrequency: 'monthly' as const,
+    priority: 0.75,
+  }));
+
+  // Dynamic blog posts from Supabase (if configured)
+  let dbBlogUrls: MetadataRoute.Sitemap = [];
   try {
     const supabase = createAdminClient();
     const { data: posts } = await supabase
@@ -63,16 +72,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .order('created_at', { ascending: false });
 
     if (posts) {
-      blogUrls = posts.map((post) => ({
-        url: `${BASE_URL}/blog/${post.slug}`,
-        lastModified: post.updated_at ?? now,
-        changeFrequency: 'monthly' as const,
-        priority: 0.7,
-      }));
+      const guideSlugs = new Set(BLOG_POSTS.map(p => p.slug));
+      dbBlogUrls = posts
+        .filter(p => !guideSlugs.has(p.slug))
+        .map((post) => ({
+          url: `${BASE_URL}/blog/${post.slug}`,
+          lastModified: post.updated_at ?? now,
+          changeFrequency: 'monthly' as const,
+          priority: 0.7,
+        }));
     }
   } catch {
-    // Supabase not configured — skip blog URLs
+    // Supabase not configured — skip DB blog URLs
   }
 
-  return [...staticUrls, ...blogUrls];
+  return [...staticUrls, ...guideUrls, ...dbBlogUrls];
 }

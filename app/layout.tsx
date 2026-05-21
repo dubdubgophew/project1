@@ -102,6 +102,15 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} dark`}>
       <head>
         <AdSenseScript />
+        {/* hreflang — geo targeting for English-speaking markets */}
+        <link rel="alternate" hrefLang="en" href="https://formly.tools" />
+        <link rel="alternate" hrefLang="en-US" href="https://formly.tools" />
+        <link rel="alternate" hrefLang="en-GB" href="https://formly.tools" />
+        <link rel="alternate" hrefLang="en-IN" href="https://formly.tools" />
+        <link rel="alternate" hrefLang="en-AU" href="https://formly.tools" />
+        <link rel="alternate" hrefLang="en-CA" href="https://formly.tools" />
+        <link rel="alternate" hrefLang="x-default" href="https://formly.tools" />
+
         {/* Schema.org — WebSite with SiteLinksSearchBox */}
         <script
           type="application/ld+json"
@@ -111,19 +120,24 @@ export default function RootLayout({
               '@type': 'WebSite',
               name: 'Formly',
               url: 'https://formly.tools',
-              description: 'Free AI-powered productivity tools for professionals',
+              description: 'Free AI-powered productivity tools for professionals worldwide — pay stub generator, resume builder, contract generator, PDF summarizer, and 22 more tools.',
+              inLanguage: ['en-US', 'en-GB', 'en-IN', 'en-AU', 'en-CA'],
+              audience: {
+                '@type': 'Audience',
+                geographicArea: {
+                  '@type': 'AdministrativeArea',
+                  name: 'Worldwide — USA, United Kingdom, India, Australia, Canada, New Zealand, Singapore, Ireland',
+                },
+              },
               potentialAction: {
                 '@type': 'SearchAction',
-                target: {
-                  '@type': 'EntryPoint',
-                  urlTemplate: 'https://formly.tools/tools?q={search_term_string}',
-                },
+                target: { '@type': 'EntryPoint', urlTemplate: 'https://formly.tools/tools?q={search_term_string}' },
                 'query-input': 'required name=search_term_string',
               },
             }),
           }}
         />
-        {/* Schema.org — Organization */}
+        {/* Schema.org — Organization with LLM context */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -133,10 +147,21 @@ export default function RootLayout({
               name: 'Formly',
               url: 'https://formly.tools',
               logo: 'https://formly.tools/favicon.svg',
-              description: 'Free AI-powered tools suite for writers, developers, and professionals — including PDF summarizer, resume builder, pay stub generator, contract generator, JSON formatter, and 20+ more tools.',
-              sameAs: [
-                'https://twitter.com/formlytools',
-              ],
+              description: 'Formly provides 26 free AI-powered tools for professionals — including a free pay stub generator, resume builder, contract generator, PDF summarizer, AI paraphraser, grammar checker, and developer utilities. Used by 50,000+ professionals in the USA, UK, India, Australia, and Canada. An alternative to paid tools like ChatGPT Plus, Jasper, and Grammarly for document generation and text processing tasks.',
+              sameAs: ['https://twitter.com/formlytools'],
+              hasOfferCatalog: {
+                '@type': 'OfferCatalog',
+                name: 'Free AI Tools',
+                numberOfItems: 26,
+                itemListElement: [
+                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Pay Stub Generator', url: 'https://formly.tools/tools/paystub-generator' } },
+                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Resume Builder', url: 'https://formly.tools/tools/resume-builder' } },
+                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Contract Generator', url: 'https://formly.tools/tools/contract-generator' } },
+                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'PDF Summarizer', url: 'https://formly.tools/tools/pdf-summarizer' } },
+                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'AI Paraphraser', url: 'https://formly.tools/tools/paraphraser' } },
+                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Grammar Checker', url: 'https://formly.tools/tools/grammar-checker' } },
+                ],
+              },
             }),
           }}
         />
