@@ -1,9 +1,32 @@
 'use client';
 
 import Script from 'next/script';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { createClient } from '@/lib/supabase/client';
 
 const ADSENSE_CLIENT = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+
+const FREE_PLANS = new Set(['free', null, undefined]);
+
+/** Returns true only for anonymous visitors and free-plan users. null while loading. */
+function useShowAds(): boolean | null {
+  const [show, setShow] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(async ({ data: { user } }) => {
+      if (!user) { setShow(true); return; }
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('plan')
+        .eq('id', user.id)
+        .single();
+      setShow(FREE_PLANS.has(profile?.plan ?? null));
+    });
+  }, []);
+
+  return show;
+}
 
 export function AdSenseScript() {
   if (!ADSENSE_CLIENT) return null;
@@ -24,24 +47,22 @@ interface AdUnitProps {
   className?: string;
 }
 
-/**
- * AdSense ad unit — integrated naturally in content, NOT spam-style.
- * Wrapped in a "Sponsored" label for transparency.
- */
 export function AdUnit({ slot, format = 'auto', responsive = true, className = '' }: AdUnitProps) {
   const adRef = useRef<HTMLDivElement>(null);
+  const showAds = useShowAds();
 
   useEffect(() => {
-    if (!ADSENSE_CLIENT) return;
+    if (!ADSENSE_CLIENT || !showAds) return;
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
     } catch {
       // AdSense not loaded yet
     }
-  }, []);
+  }, [showAds]);
 
-  if (!ADSENSE_CLIENT) return null;
+  // Hide while loading or for paid users — no flash
+  if (!ADSENSE_CLIENT || !showAds) return null;
 
   return (
     <div ref={adRef} className={`adsense-container ${className}`}>
@@ -60,24 +81,12 @@ export function AdUnit({ slot, format = 'auto', responsive = true, className = '
   );
 }
 
-/** Banner ad — shown between tool sections */
+/** Banner ad — hidden for pro/unlimited/day_pass users */
 export function BannerAd({ className }: { className?: string }) {
-  return (
-    <AdUnit
-      slot="1234567890"
-      format="horizontal"
-      className={className}
-    />
-  );
+  return <AdUnit slot="1234567890" format="horizontal" className={className} />;
 }
 
-/** Sidebar ad */
+/** Sidebar ad — hidden for pro/unlimited/day_pass users */
 export function SidebarAd({ className }: { className?: string }) {
-  return (
-    <AdUnit
-      slot="0987654321"
-      format="rectangle"
-      className={className}
-    />
-  );
+  return <AdUnit slot="0987654321" format="rectangle" className={className} />;
 }
