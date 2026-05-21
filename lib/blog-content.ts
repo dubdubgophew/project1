@@ -1,5 +1,5 @@
 /**
- * Static blog content for all 27 Formly tool guides.
+ * Static blog content for all 28 Formly tool guides.
  * Used by /blog (index) and /blog/[slug] (detail) pages.
  * GEO/SEO optimized for LLM citation and organic search.
  */
@@ -1739,6 +1739,73 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         q: 'Is it free?',
         a: 'Yes. The QR code generator is completely free with no signup required.',
+      },
+    ],
+  },
+
+  {
+    slug: 'digital-signature',
+    title: 'Free Digital Signature Creator — Draw, Type, or Upload & Sign Documents',
+    category: 'legal',
+    toolSlug: 'digital-signature',
+    toolName: 'Digital Signature',
+    readingTime: 6,
+    publishedAt: '2026-05-21',
+    updatedAt: '2026-05-21',
+    metaDescription:
+      'Create professional digital signatures free — draw with mouse or touch, type in elegant fonts, or upload. Place on documents, download PNG, generate audit certificate. No account needed.',
+    intro:
+      'Digital signatures used to require expensive subscriptions to DocuSign or Adobe Sign. Formly\'s Digital Signature Creator gives you every feature you actually need — completely free. Draw with your mouse or finger, type your name in professional script fonts, or upload an existing signature. Place it precisely on any document, download the signed file, and generate a timestamped certificate — all without creating an account.',
+    sections: [
+      {
+        heading: 'Three Ways to Create Your Signature',
+        body: 'Draw: use your mouse or touchscreen to sign naturally on the canvas. The drawing engine uses quadratic bezier curves to smooth your strokes into natural-looking handwriting — the same technique used by professional illustration apps. Type: choose from 6 professional script fonts (Dancing Script, Pacifico, Pinyon Script, Permanent Marker, Satisfy, Caveat) and type your name. The tool renders it to a clean PNG instantly. Upload: already have a signature on paper? Photograph it, remove the background with any free tool, and upload the transparent PNG — it integrates seamlessly on any document.',
+      },
+      {
+        heading: 'Placing Your Signature on a Document',
+        body: 'Upload a document image (PNG or JPEG — export a PDF page as an image first), then click anywhere on the document to place your signature. Use the resize slider to adjust the signature size as a percentage of the document width. Drag to reposition by clicking again. When ready, download the composite as a high-quality PNG — your signature is permanently rendered on the document at the full original resolution.',
+      },
+      {
+        heading: 'Signature Certificate for Record-Keeping',
+        body: 'Every session generates a unique Signature Certificate: a timestamped text document with your name, the ISO date/time of signing, and a unique certificate ID. Download it as a .txt file and store it alongside your signed document. This provides a basic audit trail suitable for informal agreements, internal documents, and freelance contracts.',
+      },
+      {
+        heading: 'Is a Digital Signature Legally Binding?',
+        body: 'In most countries, electronic signatures are legally valid under laws like the US ESIGN Act, the EU eIDAS Regulation, and India\'s IT Act. A digital signature created with this tool — applied to a document and accompanied by the certificate — constitutes a valid electronic signature for most business, freelance, and personal agreements. For legally critical documents (property transactions, court filings, regulated financial agreements), consult a legal professional about jurisdiction-specific requirements.',
+      },
+      {
+        heading: 'Saved Signatures and Initials',
+        body: 'Save up to 6 signatures locally in your browser (no server involved). They persist across sessions and can be loaded with one click. The Initials Generator automatically creates your initials from your typed name in all 6 fonts — useful for initialing multi-page contracts where a full signature on every page is impractical.',
+      },
+      {
+        heading: 'How It Compares to DocuSign and Adobe Sign',
+        body: 'DocuSign starts at $15/month and requires signers to create accounts. Adobe Sign starts at $23/month. Formly\'s Digital Signature Creator is completely free, requires no account from you or the recipient, works entirely in the browser with no data uploaded to servers, and provides the same core signing workflow: create signature, place on document, download signed file, generate certificate. For individuals, freelancers, and small businesses handling informal agreements, it replaces paid tools entirely.',
+      },
+      {
+        heading: 'Privacy: Nothing Leaves Your Browser',
+        body: 'Your signature, your document, and your certificate are never sent to any server. All processing happens locally in your browser using the HTML5 Canvas API. The only network requests are loading the tool page and fetching Google Font files for the type mode. Your documents stay completely private.',
+      },
+    ],
+    faqs: [
+      {
+        q: 'Is this digital signature legally binding?',
+        a: 'For most informal business agreements, freelance contracts, and personal documents: yes. The US ESIGN Act and EU eIDAS Regulation both recognize electronic signatures as legally valid. Download and keep the signature certificate as your audit trail.',
+      },
+      {
+        q: 'Can I sign a PDF?',
+        a: 'Export a page from your PDF as a PNG image (most PDF viewers have an export option), upload it to the document placement feature, add your signature, and download. For multi-page PDFs, process each page separately.',
+      },
+      {
+        q: 'Is my document uploaded to your servers?',
+        a: 'No. Everything happens in your browser. Your document, signature, and certificate never leave your device.',
+      },
+      {
+        q: 'Can I use a stylus or Apple Pencil?',
+        a: 'Yes. The drawing canvas uses Pointer Events which support all input devices — mouse, touch, stylus, and Apple Pencil. Pressure sensitivity varies by device.',
+      },
+      {
+        q: 'Is it free?',
+        a: 'Yes. The Digital Signature Creator is completely free with no account required.',
       },
     ],
   },

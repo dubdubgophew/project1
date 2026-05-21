@@ -37,6 +37,7 @@ const TOOLS = [
   { name: 'Diff Checker', href: '/tools/diff-checker', icon: '↔️' },
   { name: 'PDF to Markdown', href: '/tools/pdf-to-markdown', icon: '📑' },
   { name: 'QR Code Generator', href: '/tools/qr-code', icon: '📷' },
+  { name: 'Digital Signature', href: '/tools/digital-signature', icon: '✍️' },
 ];
 
 export default async function DashboardPage({ searchParams }: { searchParams: { upgrade?: string } }) {
