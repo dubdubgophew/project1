@@ -200,11 +200,6 @@ export default function DigitalSignaturePage() {
     pointsRef.current.push(pos);
     const pts = pointsRef.current;
 
-    ctx.strokeStyle = color;
-    ctx.lineWidth = strokeWidth;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-
     if (pts.length >= 3) {
       const prev = pts[pts.length - 3];
       const mid1 = pts[pts.length - 2];
@@ -464,7 +459,7 @@ export default function DigitalSignaturePage() {
             value={signerName}
             onChange={e => setSignerName(e.target.value)}
             placeholder="e.g. Jane Smith"
-            className="input-field w-full"
+            className="input w-full"
           />
           <p className="text-xs text-gray-500 mt-1">
             Used for certificate, saved signature labels, and initials generator.
@@ -498,25 +493,35 @@ export default function DigitalSignaturePage() {
           {/* ── DRAW MODE ── */}
           {mode === 'draw' && (
             <div className="space-y-4">
-              {/* Canvas */}
-              <div className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-inner">
+              {/* Canvas with baseline guide */}
+              <div className={`relative bg-white rounded-xl overflow-hidden border-2 transition-all duration-150 ${
+                isDrawing ? 'border-violet-400 shadow-lg shadow-violet-500/20' : 'border-gray-200'
+              }`}>
                 <canvas
                   ref={canvasRef}
                   width={600}
                   height={200}
-                  className="block w-full touch-none cursor-crosshair"
+                  className="block w-full touch-none cursor-crosshair select-none"
                   style={{ height: 'auto', maxHeight: 200 }}
                   onPointerDown={startDraw}
                   onPointerMove={doDraw}
                   onPointerUp={endDraw}
                   onPointerLeave={endDraw}
                 />
+                {/* Baseline guide — CSS only, not drawn on canvas so it won't appear in download */}
+                <div className="absolute inset-x-6 pointer-events-none" style={{ bottom: '22%', height: 1, background: '#d1d5db' }} />
+                {/* Sign-here prompt, fades away once drawing starts */}
+                {!hasDrawing && (
+                  <div className="absolute inset-0 flex flex-col items-end justify-end pb-10 pr-8 pointer-events-none">
+                    <span className="text-gray-300 text-xs tracking-wide">✒ Sign here</span>
+                  </div>
+                )}
+                {isDrawing && (
+                  <div className="absolute top-2 right-3 pointer-events-none">
+                    <span className="text-violet-400 text-[10px] font-semibold tracking-wider uppercase opacity-80">● Recording</span>
+                  </div>
+                )}
               </div>
-              {!hasDrawing && (
-                <p className="text-center text-gray-500 text-sm -mt-2">
-                  Draw your signature above
-                </p>
-              )}
 
               {/* Color picker */}
               <div>
@@ -589,7 +594,7 @@ export default function DigitalSignaturePage() {
                   value={typeText}
                   onChange={e => setTypeText(e.target.value)}
                   placeholder="Your name…"
-                  className="input-field w-full"
+                  className="input w-full"
                 />
               </div>
 
@@ -664,19 +669,18 @@ export default function DigitalSignaturePage() {
               </label>
 
               {/* Type canvas preview */}
-              <div className="relative">
-                <div className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-inner">
-                  <canvas
-                    ref={typeCanvasRef}
-                    width={600}
-                    height={200}
-                    className="block w-full"
-                    style={{ height: 'auto', maxHeight: 200 }}
-                  />
-                </div>
+              <div className="relative bg-white rounded-xl overflow-hidden border-2 border-gray-200">
+                <canvas
+                  ref={typeCanvasRef}
+                  width={600}
+                  height={200}
+                  className="block w-full"
+                  style={{ height: 'auto', maxHeight: 200 }}
+                />
+                <div className="absolute inset-x-6 pointer-events-none" style={{ bottom: '22%', height: 1, background: '#d1d5db' }} />
                 {!typeText && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <p className="text-gray-400 text-sm">Signature preview will appear here</p>
+                    <p className="text-gray-300 text-sm">Type your name above to preview</p>
                   </div>
                 )}
               </div>
