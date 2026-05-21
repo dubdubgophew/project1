@@ -41,6 +41,7 @@ const STATIC_ROUTES = [
   { url: '/tools/digital-signature', priority: 0.9, changeFrequency: 'monthly' as const },
   // Static marketing pages
   { url: '/pricing', priority: 0.5, changeFrequency: 'monthly' as const },
+  { url: '/news', priority: 0.9, changeFrequency: 'hourly' as const },
   { url: '/blog', priority: 0.7, changeFrequency: 'daily' as const },
   { url: '/about', priority: 0.5, changeFrequency: 'monthly' as const },
 ];

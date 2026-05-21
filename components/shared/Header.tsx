@@ -96,6 +96,10 @@ export function Header() {
             <Link href="/blog" className="px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-gray-800/60 transition-all">
               Blog
             </Link>
+            <Link href="/news" className="px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-gray-800/60 transition-all flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              Trending
+            </Link>
           </nav>
 
           {/* Search */}
@@ -162,6 +166,10 @@ export function Header() {
             </Link>
             <Link href="/blog" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-gray-800 transition-colors">
               Blog
+            </Link>
+            <Link href="/news" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-gray-800 transition-colors flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              Trending
             </Link>
             <div className="pt-3 flex flex-col gap-2 border-t border-gray-800 mt-2">
               {user ? (
