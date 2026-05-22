@@ -556,9 +556,9 @@ export function TrendingFeed({
     const next = page + 1; setPage(next);
     const scrollY = window.scrollY;
     await fetchPage({ country, category, q, page: next, append: true });
-    // restore position so the page doesn't jump after appending items
-    requestAnimationFrame(() => window.scrollTo({ top: scrollY, behavior: 'instant' as ScrollBehavior }));
     setLoadingMore(false);
+    // double-rAF: wait for React re-render + browser paint before restoring position
+    requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, scrollY)));
   };
 
   const handleRefresh = () => {
@@ -573,18 +573,23 @@ export function TrendingFeed({
     setCountry(c); setCategory(ca); setQ(sq); setSearchInput(sq);
   }, [searchParams]);
 
-  // Scroll to shared card — runs once after initial items render, never on load-more
-  const didScrollRef = useRef(false);
+  // Scroll to shared card — runs once on mount, retries until element is in DOM
   useEffect(() => {
-    if (didScrollRef.current || items.length === 0) return;
     const hash = window.location.hash;
     if (!hash.startsWith('#news-')) return;
-    const el = document.getElementById(hash.slice(1));
-    if (!el) return;
-    didScrollRef.current = true;
-    // instant jump — no smooth scroll so distant cards land immediately
-    el.scrollIntoView({ block: 'center' });
-  }, [items]);
+    const id = hash.slice(1);
+    let attempts = 0;
+    const tryScroll = () => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ block: 'start' });
+      } else if (attempts++ < 8) {
+        setTimeout(tryScroll, 150);
+      }
+    };
+    // small delay to let React hydration finish painting
+    setTimeout(tryScroll, 150);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Interleave promos and newsletter into the flat item list
   function buildFeedItems(news: TrendingNews[]): ('newsletter' | { promo: number } | TrendingNews)[] {
