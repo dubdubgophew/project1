@@ -20,6 +20,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         category="UtilitiesApplication"
         features={['Grammar, spelling and punctuation corrections', 'Style and clarity suggestions', 'Formal and casual modes', 'Instant AI feedback', 'No signup required']}
         faqs={[{ q: "Is this grammar checker completely free?", a: "Yes — Formly's grammar checker is free with up to 5 checks per day without an account. Sign up free for 10/day. No credit card required." }, { q: "What types of errors does it catch?", a: "The AI catches grammar errors, spelling mistakes, punctuation issues, run-on sentences, passive voice, subject-verb disagreement, and style/clarity suggestions." }, { q: "How does it compare to Grammarly?", a: "Formly's grammar checker is completely free with no word limits or premium paywalls for basic corrections. It's ideal for quick checks on emails, essays, and professional writing." }, { q: "Does it work for non-native English speakers?", a: "Yes — it's especially useful for ESL writers. The AI explains corrections in simple terms and suggests natural-sounding alternatives." }]}
+        steps={[
+          { name: 'Paste or type your text', text: 'Enter any text — email, essay, document, or message — into the input area.' },
+          { name: 'Click Check Grammar', text: 'Click the Check Grammar button. AI analyzes your text for grammar, spelling, punctuation, and style errors.' },
+          { name: 'Review corrections', text: 'See the corrected text with improvements highlighted. Copy the result or download it.' },
+        ]}
       />
       {children}
     </>
