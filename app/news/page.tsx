@@ -19,15 +19,15 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
 
   let title = "What's Trending Right Now — Formly";
   let description =
-    "Discover today's top trending topics from 10 countries, summarized by AI. Updated every 3 hours.";
+    "Discover today's top trending topics from 10 countries, summarized by AI. Updated daily.";
 
   if (country && country !== 'all' && country in COUNTRY_MAP) {
     const countryData = COUNTRY_MAP[country as keyof typeof COUNTRY_MAP];
     title = `Trending in ${countryData.name} Right Now — Formly`;
-    description = `Top 5 trending topics in ${countryData.name} today. AI-summarized news, updated every 3 hours.`;
+    description = `Top 5 trending topics in ${countryData.name} today. AI-summarized news, updated daily.`;
   } else if (category && category !== 'all') {
     title = `Trending ${category} News Right Now — Formly`;
-    description = `What's trending in ${category} today across 10 countries. AI-powered news summaries updated every 3 hours.`;
+    description = `What's trending in ${category} today across 10 countries. AI-powered news summaries updated daily.`;
   }
 
   return {
@@ -104,7 +104,7 @@ export default async function NewsPage({ searchParams }: PageProps) {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: "What's Trending Right Now",
-    description: 'Top 5 trending topics from 10 countries, AI-summarized every 3 hours.',
+    description: 'Top 5 trending topics from 10 countries, AI-summarized daily.',
     numberOfItems: items.length,
     itemListElement: items.map((item, i) => ({
       '@type': 'ListItem',
@@ -142,7 +142,7 @@ export default async function NewsPage({ searchParams }: PageProps) {
               Right Now
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              Updated every 3 hours &middot; 50 topics &middot; 10 countries
+              Updated daily &middot; 50 topics &middot; 10 countries
             </p>
           </div>
 

@@ -53,7 +53,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
-              26 powerful tools for writers, developers, and professionals.
+              28 powerful tools for writers, developers, and professionals.
               Free to try — no signup required.
             </p>
             <div className="flex items-center gap-3">

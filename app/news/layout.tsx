@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: "What's Trending Right Now — Formly Trending News",
   description:
-    "Discover today's top trending topics from 10 countries — United States, India, UK, Canada, Australia, Germany, France, Brazil, Japan, and Indonesia. Updated every 3 hours by AI.",
+    "Discover today's top trending topics from 10 countries — United States, India, UK, Canada, Australia, Germany, France, Brazil, Japan, and Indonesia. Updated daily by AI.",
   keywords: [
     'trending news',
     "what's trending today",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "What's Trending Right Now — Formly",
     description:
-      'Top 5 trending topics from 10 countries, summarized by AI. Updated every 3 hours.',
+      'Top 5 trending topics from 10 countries, summarized by AI. Updated daily.',
     type: 'website',
     url: 'https://formly.tools/news',
     siteName: 'Formly',
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: "What's Trending Right Now — Formly",
-    description: 'Top trending topics from 10 countries, AI-summarized every 3 hours.',
+    description: 'Top trending topics from 10 countries, AI-summarized daily.',
   },
 };
 
