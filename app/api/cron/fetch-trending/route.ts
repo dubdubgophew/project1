@@ -20,13 +20,13 @@ const COUNTRY_FEEDS: Record<string, { url: string; name: string }> = {
   US: { url: 'https://feeds.npr.org/1001/rss.xml',                           name: 'NPR News' },
   IN: { url: 'https://timesofindia.indiatimes.com/rssfeedstopstories.cms',   name: 'Times of India' },
   GB: { url: 'https://feeds.bbci.co.uk/news/rss.xml',                        name: 'BBC News' },
-  CA: { url: 'https://www.cbc.ca/cmlink/rss-topstories',                     name: 'CBC News' },
+  CA: { url: 'https://globalnews.ca/feed/',                                   name: 'Global News' },
   AU: { url: 'https://www.abc.net.au/news/feed/51120/rss.xml',               name: 'ABC Australia' },
-  DE: { url: 'https://rss.dw.com/rdf/rss-en-all',                            name: 'Deutsche Welle' },
+  DE: { url: 'https://feeds.feedburner.com/euronews/en/news/',               name: 'Euronews' },
   FR: { url: 'https://www.france24.com/en/rss',                              name: 'France 24' },
-  BR: { url: 'https://www.reuters.com/world/americas/rss.xml',               name: 'Reuters Americas' },
+  BR: { url: 'https://feeds.feedburner.com/euronews/en/news/latin-america',  name: 'Euronews Americas' },
   JP: { url: 'https://www.japantimes.co.jp/feed/',                           name: 'Japan Times' },
-  ID: { url: 'https://www.thejakartapost.com/feed/',                         name: 'Jakarta Post' },
+  ID: { url: 'https://www.antaranews.com/rss/terkini.xml',                   name: 'Antara News' },
 };
 
 interface AISummaryItem {
