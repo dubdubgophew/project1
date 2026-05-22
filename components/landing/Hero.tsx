@@ -32,7 +32,7 @@ export function Hero() {
 
         {/* Headline */}
         <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-6 animate-fade-up">
-          <span className="text-white">26 Free Tools,</span>
+          <span className="text-white">28 Free Tools,</span>
           <br />
           <span className="gradient-text">Completely Free</span>
           <br />

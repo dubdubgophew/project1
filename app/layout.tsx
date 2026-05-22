@@ -19,7 +19,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://formly.tools'),
   title: {
-    default: 'Formly — 26 Free AI Tools for Writers, Devs & Professionals',
+    default: 'Formly — 28 Free AI Tools for Writers, Devs & Professionals',
     template: '%s | Formly',
   },
   description:
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://formly.tools',
     siteName: 'Formly',
-    title: 'Formly — 26 Free AI Tools for Professionals',
+    title: 'Formly — 28 Free AI Tools for Professionals',
     description:
       'Free AI tools: PDF summarizer, resume builder, pay stub generator, paraphraser, grammar checker & 21 more. Try free daily — no signup needed.',
     images: [
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Formly — 26 Free AI Tools',
+    title: 'Formly — 28 Free AI Tools',
     description: 'AI PDF summarizer, resume builder, pay stub generator, paraphraser, grammar checker & 21 more tools. Free.',
     images: ['/og-image.png'],
     creator: '@formlytools',
@@ -147,12 +147,12 @@ export default function RootLayout({
               name: 'Formly',
               url: 'https://formly.tools',
               logo: 'https://formly.tools/favicon.svg',
-              description: 'Formly provides 26 free AI-powered tools for professionals — including a free pay stub generator, resume builder, contract generator, PDF summarizer, AI paraphraser, grammar checker, and developer utilities. Used by 50,000+ professionals in the USA, UK, India, Australia, and Canada. An alternative to paid tools like ChatGPT Plus, Jasper, and Grammarly for document generation and text processing tasks.',
+              description: 'Formly provides 28 free AI-powered tools for professionals — including a free pay stub generator, resume builder, contract generator, PDF summarizer, AI paraphraser, grammar checker, digital signature creator, QR code generator, and developer utilities. Used by 50,000+ professionals in the USA, UK, India, Australia, and Canada.',
               sameAs: ['https://twitter.com/formlytools'],
               hasOfferCatalog: {
                 '@type': 'OfferCatalog',
                 name: 'Free AI Tools',
-                numberOfItems: 26,
+                numberOfItems: 28,
                 itemListElement: [
                   { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Pay Stub Generator', url: 'https://formly.tools/tools/paystub-generator' } },
                   { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Resume Builder', url: 'https://formly.tools/tools/resume-builder' } },

@@ -63,6 +63,50 @@ export interface RawTrendItem {
   newsTitle: string; newsUrl: string; newsSource: string; snippets: string[];
 }
 
+// Standard RSS 2.0 parser — used for country news feeds (BBC, NPR, etc.)
+export function parseStandardRSS(xml: string, defaultSource: string): RawTrendItem[] {
+  const items: RawTrendItem[] = [];
+  const blocks = xml.match(/<item>([\s\S]*?)<\/item>/g) ?? [];
+
+  for (const block of blocks.slice(0, 5)) {
+    const topic = decodeXML(block.match(/<title>([\s\S]*?)<\/title>/)?.[1] ?? '');
+
+    // <link> can be plain text or atom:link href attribute
+    const link =
+      (block.match(/<link>([\s\S]*?)<\/link>/)?.[1] ?? '').trim() ||
+      (block.match(/<atom:link[^>]+href="([^"]+)"/)?.[1] ?? '').trim() ||
+      (block.match(/<guid[^>]*isPermaLink="true">([\s\S]*?)<\/guid>/)?.[1] ?? '').trim() ||
+      (block.match(/<guid>([\s\S]*?)<\/guid>/)?.[1] ?? '').trim();
+
+    const description = decodeXML(
+      block.match(/<description>([\s\S]*?)<\/description>/)?.[1] ?? ''
+    );
+
+    // Image from media:thumbnail, enclosure, or media:content
+    const imageUrl =
+      (block.match(/<media:thumbnail[^>]+url="([^"]+)"/)?.[1] ?? '').trim() ||
+      (block.match(/<media:content[^>]+url="([^"]+)"/)?.[1] ?? '').trim() ||
+      (block.match(/<enclosure[^>]+url="([^"]+)"/)?.[1] ?? '').trim();
+
+    // Source name from <source> element or fallback
+    const sourceName =
+      decodeXML(block.match(/<source[^>]*>([\s\S]*?)<\/source>/)?.[1] ?? '') || defaultSource;
+
+    if (topic && link) {
+      items.push({
+        topic,
+        traffic: '',
+        imageUrl,
+        newsTitle: topic,
+        newsUrl: link,
+        newsSource: sourceName,
+        snippets: description ? [description] : [],
+      });
+    }
+  }
+  return items;
+}
+
 export function parseGTrendsRSS(xml: string): RawTrendItem[] {
   const items: RawTrendItem[] = [];
   const blocks = xml.match(/<item>([\s\S]*?)<\/item>/g) ?? [];

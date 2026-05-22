@@ -10,9 +10,9 @@ import { Testimonials } from '@/components/landing/Testimonials';
 import { BannerAd } from '@/components/shared/AdSense';
 
 export const metadata: Metadata = {
-  title: 'Formly — 26 Free AI Tools: Pay Stub Generator, Resume Builder, Contract Generator & More',
+  title: 'Formly — 28 Free AI Tools: Pay Stub Generator, Resume Builder, Contract Generator & More',
   description:
-    'Free AI tools online: pay stub generator, resume builder, contract generator, PDF summarizer, paraphraser, grammar checker & 20 more. No signup needed. Used by 50,000+ professionals.',
+    'Free AI tools online: pay stub generator, resume builder, contract generator, PDF summarizer, paraphraser, grammar checker & 22 more. No signup needed. Used by 50,000+ professionals.',
   alternates: { canonical: 'https://formly.tools' },
 };
 

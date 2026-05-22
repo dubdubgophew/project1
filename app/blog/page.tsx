@@ -98,7 +98,7 @@ export default function BlogPage() {
                 '@context': 'https://schema.org',
                 '@type': 'ItemList',
                 name: 'Formly AI Tool Guides',
-                description: 'Complete guides for 26 free AI tools covering pay stubs, resumes, contracts, writing, coding, and more.',
+                description: 'Complete guides for 28 free AI tools covering pay stubs, resumes, contracts, writing, coding, and more.',
                 numberOfItems: BLOG_POSTS.length,
                 itemListElement: ordered.map((post, i) => ({
                   '@type': 'ListItem',
