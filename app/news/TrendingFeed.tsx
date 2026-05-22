@@ -580,7 +580,7 @@ export function TrendingFeed({
   useEffect(() => {
     if (!initialId) return;
     const el = document.getElementById(`news-${initialId}`);
-    if (el) el.scrollIntoView({ block: 'start' });
+    if (el) el.scrollIntoView({ block: 'start', behavior: 'instant' });
   }, [initialId]);
 
   // Interleave promos and newsletter into the flat item list
