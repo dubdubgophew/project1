@@ -23,8 +23,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           { q: "Is the pay stub generator free to use?", a: "Yes — creating and previewing pay stubs is completely free. Downloading requires a free account. The generator supports USA (all 50 states), UK, Canada, India, Australia, New Zealand, Ireland, and Singapore." },
           { q: "Are the tax calculations accurate for 2025?", a: "Yes, tax tables are updated for 2025 including federal, state/provincial taxes, Social Security, Medicare, National Insurance, CPP/EI, and other jurisdiction-specific deductions." },
           { q: "Can I use generated pay stubs for official purposes?", a: "Formly pay stubs are for record-keeping and reference purposes. For official verification (bank loans, visa applications), check with the receiving institution about their requirements." },
-          { q: "Does the pay stub generator support Indian pay slips?", a: "Yes — the generator supports Indian payroll including basic salary, HRA, special allowance, PF (12% employer + 12% employee), professional tax, and TDS based on income slabs." },
+          { q: "Does the pay stub generator support Indian pay slips?", a: "Yes — the generator supports Indian payroll including Provident Fund (12% employer + 12% employee), ESI (0.75%), and income tax under the new tax regime with standard deductions." },
           { q: "What format is the pay stub downloaded in?", a: "Pay stubs are downloaded as print-ready PDFs with a professional layout including company details, employee information, earnings breakdown, deductions, and net pay." },
+          { q: "How is Formly's pay stub generator different from paid services?", a: "Formly is completely free — unlike StubCreator ($4.99/stub) or ThePayStubs ($8.99/stub). Formly also supports 8 countries vs USA-only on most competitors, and includes live preview before downloading." },
+          { q: "Can I generate pay stubs for contractors and freelancers?", a: "Yes — simply enter the contractor's name, your company name, and the payment amount. The generator works for both employees and independent contractors." },
+        ]}
+        steps={[
+          { name: 'Select your country', text: 'Choose your country from USA, UK, Canada, India, Australia, New Zealand, Ireland, or Singapore to load the correct 2025 tax tables.' },
+          { name: 'Enter pay details', text: 'Enter the gross pay amount and select your pay frequency (weekly, bi-weekly, semi-monthly, monthly, or annual).' },
+          { name: 'Add employer and employee info', text: 'Enter company name, address, EIN/tax number, employee name, job title, and employee ID for a professional-looking stub.' },
+          { name: 'Configure deductions (US only)', text: 'Optionally add 401(k) percentage, health insurance, dental, and HSA contributions to see pre-tax deduction impact.' },
+          { name: 'Preview and download', text: 'See a live pay stub preview on screen. Click Download / Print PDF to open a print-ready PDF — save or print directly from your browser.' },
         ]}
       />
       {children}
