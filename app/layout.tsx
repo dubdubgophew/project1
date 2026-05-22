@@ -103,6 +103,8 @@ export default function RootLayout({
       <head>
         <AdSenseScript />
         <meta name="monetag" content="701dad6c34191d949e21404ca1901f4f" />
+        {/* Monetag ads */}
+        <script src="https://quge5.com/88/tag.min.js" data-zone="242055" async data-cfasync="false" />
         {/* hreflang — geo targeting for English-speaking markets */}
         <link rel="alternate" hrefLang="en" href="https://formly.tools" />
         <link rel="alternate" hrefLang="en-US" href="https://formly.tools" />
