@@ -554,7 +554,10 @@ export function TrendingFeed({
   const handleLoadMore = async () => {
     setLoadingMore(true);
     const next = page + 1; setPage(next);
+    const scrollY = window.scrollY;
     await fetchPage({ country, category, q, page: next, append: true });
+    // restore position so the page doesn't jump after appending items
+    requestAnimationFrame(() => window.scrollTo({ top: scrollY, behavior: 'instant' as ScrollBehavior }));
     setLoadingMore(false);
   };
 
@@ -570,14 +573,17 @@ export function TrendingFeed({
     setCountry(c); setCategory(ca); setQ(sq); setSearchInput(sq);
   }, [searchParams]);
 
-  // Scroll to shared card when landing via hash link
+  // Scroll to shared card — runs once after initial items render, never on load-more
+  const didScrollRef = useRef(false);
   useEffect(() => {
+    if (didScrollRef.current || items.length === 0) return;
     const hash = window.location.hash;
     if (!hash.startsWith('#news-')) return;
     const el = document.getElementById(hash.slice(1));
-    if (el) {
-      setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
-    }
+    if (!el) return;
+    didScrollRef.current = true;
+    // instant jump — no smooth scroll so distant cards land immediately
+    el.scrollIntoView({ block: 'center' });
   }, [items]);
 
   // Interleave promos and newsletter into the flat item list
