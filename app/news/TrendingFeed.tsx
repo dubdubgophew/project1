@@ -16,6 +16,7 @@ interface Props {
   initialCountry: string;
   initialCategory: string;
   initialQ: string;
+  initialId: string | null;
   lastUpdated: string | null;
 }
 
@@ -116,7 +117,7 @@ function ShareDropdown({ item, onClose }: { item: TrendingNews; onClose: () => v
   const ref = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
 
-  const shareUrl = `https://www.formly.tools/news#news-${item.id}`;
+  const shareUrl = `https://www.formly.tools/news?id=${item.id}`;
   const shareText = `${item.topic} — via Formly News`;
 
   useEffect(() => {
@@ -210,7 +211,8 @@ function NewsCard({ item }: { item: TrendingNews }) {
   const keywords = getSeoKeywords(item.topic, item.category, item.country_name);
 
   useEffect(() => {
-    if (window.location.hash === `#news-${item.id}`) {
+    const id = new URLSearchParams(window.location.search).get('id');
+    if (id === item.id) {
       setHighlighted(true);
       setTimeout(() => setHighlighted(false), 2000);
     }
@@ -480,6 +482,7 @@ export function TrendingFeed({
   initialCountry,
   initialCategory,
   initialQ,
+  initialId,
   lastUpdated: initialLastUpdated,
 }: Props) {
   const router       = useRouter();
@@ -573,23 +576,12 @@ export function TrendingFeed({
     setCountry(c); setCategory(ca); setQ(sq); setSearchInput(sq);
   }, [searchParams]);
 
-  // Scroll to shared card — runs once on mount, retries until element is in DOM
+  // Scroll to deep-linked card — element is guaranteed in SSR HTML so this is reliable
   useEffect(() => {
-    const hash = window.location.hash;
-    if (!hash.startsWith('#news-')) return;
-    const id = hash.slice(1);
-    let attempts = 0;
-    const tryScroll = () => {
-      const el = document.getElementById(id);
-      if (el) {
-        el.scrollIntoView({ block: 'start' });
-      } else if (attempts++ < 8) {
-        setTimeout(tryScroll, 150);
-      }
-    };
-    // small delay to let React hydration finish painting
-    setTimeout(tryScroll, 150);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    if (!initialId) return;
+    const el = document.getElementById(`news-${initialId}`);
+    if (el) el.scrollIntoView({ block: 'start' });
+  }, [initialId]);
 
   // Interleave promos and newsletter into the flat item list
   function buildFeedItems(news: TrendingNews[]): ('newsletter' | { promo: number } | TrendingNews)[] {
