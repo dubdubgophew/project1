@@ -116,7 +116,7 @@ function ShareDropdown({ item, onClose }: { item: TrendingNews; onClose: () => v
   const ref = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
 
-  const shareUrl = item.source_url;
+  const shareUrl = `https://www.formly.tools/news?id=${item.id}`;
   const shareText = `${item.topic} — via Formly News`;
 
   useEffect(() => {
@@ -401,7 +401,7 @@ function NewsletterCard() {
 
 function EzoicAd({ id }: { id: number }) {
   return (
-    <div className="col-span-full">
+    <div className="w-full">
       {/* Ezoic ad placeholder — replace with: <div id={`ezoic-pub-ad-placeholder-${id}`} /> */}
       <div className="w-full h-[90px] bg-gray-900/40 border border-dashed border-gray-800 rounded-xl flex items-center justify-center">
         <span className="text-xs text-gray-700">
@@ -644,14 +644,14 @@ export function TrendingFeed({
 
       {/* ── Loading skeleton ── */}
       {loading && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="flex flex-col gap-5 max-w-2xl mx-auto">
           {Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} />)}
         </div>
       )}
 
       {/* ── Feed grid ── */}
       {!loading && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="flex flex-col gap-5 max-w-2xl mx-auto">
           {items.length === 0 ? (
             <EmptyState onRefresh={handleRefresh} />
           ) : (

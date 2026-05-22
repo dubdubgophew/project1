@@ -128,7 +128,7 @@ export default async function NewsPage({ searchParams }: PageProps) {
       <Header />
       <main className="min-h-screen bg-gray-950 pt-24 pb-20">
         {/* Hero */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
             <div className="flex items-center justify-center gap-2 mb-4">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
