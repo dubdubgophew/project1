@@ -12,34 +12,69 @@ export default function robots(): MetadataRoute.Robots {
       // Googlebot: explicit allow for key SEO paths
       {
         userAgent: 'Googlebot',
-        allow: ['/', '/tools/', '/blog/', '/pricing', '/about'],
+        allow: ['/', '/tools/', '/blog/', '/pricing', '/about', '/news', '/ai-news'],
         disallow: ['/admin/', '/api/', '/dashboard/', '/settings/'],
       },
       // Bingbot
       {
         userAgent: 'Bingbot',
-        allow: ['/', '/tools/', '/blog/', '/pricing', '/about'],
+        allow: ['/', '/tools/', '/blog/', '/pricing', '/about', '/news', '/ai-news'],
         disallow: ['/admin/', '/api/', '/dashboard/', '/settings/'],
       },
       // Allow AI training crawlers (GPTBot, Claude, etc.) — boosts GEO
       {
         userAgent: 'GPTBot',
-        allow: ['/', '/tools/', '/blog/'],
+        allow: ['/', '/tools/', '/blog/', '/news', '/ai-news'],
+        disallow: ['/admin/', '/api/', '/dashboard/'],
+      },
+      {
+        userAgent: 'OAI-SearchBot',
+        allow: ['/', '/tools/', '/blog/', '/news', '/ai-news'],
         disallow: ['/admin/', '/api/', '/dashboard/'],
       },
       {
         userAgent: 'ClaudeBot',
-        allow: ['/', '/tools/', '/blog/'],
+        allow: ['/', '/tools/', '/blog/', '/news', '/ai-news'],
         disallow: ['/admin/', '/api/', '/dashboard/'],
       },
       {
         userAgent: 'anthropic-ai',
-        allow: ['/', '/tools/', '/blog/'],
+        allow: ['/', '/tools/', '/blog/', '/news', '/ai-news'],
         disallow: ['/admin/', '/api/', '/dashboard/'],
       },
       {
         userAgent: 'PerplexityBot',
-        allow: ['/', '/tools/', '/blog/'],
+        allow: ['/', '/tools/', '/blog/', '/news', '/ai-news'],
+        disallow: ['/admin/', '/api/', '/dashboard/'],
+      },
+      {
+        userAgent: 'YouBot',
+        allow: ['/', '/tools/', '/blog/', '/news', '/ai-news'],
+        disallow: ['/admin/', '/api/', '/dashboard/'],
+      },
+      {
+        userAgent: 'Applebot',
+        allow: ['/', '/tools/', '/blog/', '/news', '/ai-news'],
+        disallow: ['/admin/', '/api/', '/dashboard/'],
+      },
+      {
+        userAgent: 'Bytespider',
+        allow: ['/', '/tools/', '/blog/', '/news', '/ai-news'],
+        disallow: ['/admin/', '/api/', '/dashboard/'],
+      },
+      {
+        userAgent: 'DuckDuckBot',
+        allow: ['/', '/tools/', '/blog/', '/news', '/ai-news'],
+        disallow: ['/admin/', '/api/', '/dashboard/'],
+      },
+      {
+        userAgent: 'cohere-ai',
+        allow: ['/', '/tools/', '/blog/', '/news', '/ai-news'],
+        disallow: ['/admin/', '/api/', '/dashboard/'],
+      },
+      {
+        userAgent: 'Meta-ExternalAgent',
+        allow: ['/', '/tools/', '/blog/', '/news', '/ai-news'],
         disallow: ['/admin/', '/api/', '/dashboard/'],
       },
     ],
