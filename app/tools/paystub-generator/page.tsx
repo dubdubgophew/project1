@@ -170,37 +170,18 @@ function calculate(
   };
 }
 
-// ─── PDF GENERATOR ───────────────────────────────────────────────────────────
+// ─── TEMPLATES ───────────────────────────────────────────────────────────────
 
-function esc(s: string) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+const TEMPLATES = [
+  { id: 'classic',   name: 'Classic',   headerBg: '#1a2332', accent: '#1a5276' },
+  { id: 'modern',    name: 'Modern',    headerBg: '#7c3aed', accent: '#6d28d9' },
+  { id: 'executive', name: 'Executive', headerBg: '#111827', accent: '#b45309' },
+  { id: 'minimal',   name: 'Minimal',   headerBg: '#f3f4f6', accent: '#374151' },
+  { id: 'corporate', name: 'Corporate', headerBg: '#14532d', accent: '#166534' },
+];
 
-function buildPaystubHTML(
-  calc: Calc, sym: string,
-  coName: string, coAddr: string, ein: string, country: string,
-  empName: string, empTitle: string, empAddr: string, empId: string,
-  payDate: string, periStart: string, periEnd: string, periodLabel: string
-): string {
-  const fmt = (n: number) => `${sym}${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-
-  const deductRows = (lines: Line[]) => lines.map(l =>
-    `<tr><td class="lbl">${esc(l.label)}${l.note ? ` <span class="note">(${esc(l.note)})</span>` : ''}</td>
-     <td class="amt ded">-${fmt(l.amount)}</td></tr>`
-  ).join('');
-
-  const empRows = calc.employerLines.map(l =>
-    `<tr><td class="lbl g">${esc(l.label)}${l.note ? ` (${esc(l.note)})` : ''}</td><td class="amt g">${fmt(l.amount)}</td></tr>`
-  ).join('');
-
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Pay Stub — ${esc(empName || 'Employee')}</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Calibri',Arial,sans-serif;font-size:11px;background:#fff;color:#111}
+const TEMPLATE_CSS: Record<string, string> = {
+  classic: `body{font-family:'Calibri',Arial,sans-serif;font-size:11px;background:#fff;color:#111}
 .page{max-width:680px;margin:24px auto;border:1px solid #d1d5db;border-top:4px solid #1a5276}
 .hdr{background:#1a2332;color:#fff;padding:20px 24px;display:flex;justify-content:space-between;align-items:flex-start}
 .co-name{font-size:16px;font-weight:700;color:#fff}
@@ -233,7 +214,216 @@ td.g{color:#6b7280}
 .sum-val{font-size:13px;font-weight:700;margin-top:2px}
 .sum-val.red{color:#dc2626}.sum-val.grn{color:#15803d}
 .footer{padding:8px 24px;border-top:1px solid #f3f4f6;text-align:center;font-size:10px;color:#9ca3af}
-@media print{body{margin:0}.page{border:none;max-width:100%;margin:0}}
+@media print{body{margin:0}.page{border:none;max-width:100%;margin:0}}`,
+
+  modern: `body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;font-size:11px;background:#fff;color:#111}
+.page{max-width:680px;margin:24px auto;border:1px solid #e9d5ff;border-top:4px solid #7c3aed}
+.hdr{background:#7c3aed;color:#fff;padding:20px 24px;display:flex;justify-content:space-between;align-items:flex-start}
+.co-name{font-size:16px;font-weight:700;color:#fff}
+.co-detail{color:#ddd6fe;font-size:10px;margin-top:3px}
+.pay-label{color:#e9d5ff;font-weight:700;font-size:13px;text-align:right}
+.pay-meta{color:#ddd6fe;font-size:10px;text-align:right;margin-top:3px}
+.emp{padding:12px 24px;background:#faf5ff;border-bottom:1px solid #e9d5ff;display:flex;justify-content:space-between;align-items:flex-start}
+.emp-name{font-weight:700;font-size:13px;color:#5b21b6}
+.emp-detail{color:#6b7280;font-size:10px;margin-top:2px}
+.sec{padding:10px 24px;border-top:1px solid #f3f4f6}
+.sec-hdr{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#7c3aed;border-bottom:1px solid #ede9fe;padding-bottom:5px;margin-bottom:6px;display:flex;justify-content:space-between}
+table{width:100%;border-collapse:collapse}
+td{padding:3px 0;font-size:11px}
+td.lbl{color:#4b5563}
+td.amt{text-align:right;font-weight:500}
+td.ded{color:#dc2626}
+.note{color:#9ca3af;font-size:9px}
+.total-row td{border-top:1px solid #ede9fe;font-weight:700;padding-top:5px}
+.net{background:#6d28d9;color:#fff;padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
+.net-lbl{font-weight:700;font-size:13px}
+.net-sub{color:#ddd6fe;font-size:10px;margin-top:2px}
+.net-amt{font-size:22px;font-weight:700}
+.empr{padding:10px 24px;background:#faf5ff;border-top:1px solid #e9d5ff}
+.empr-title{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#7c3aed;margin-bottom:5px}
+td.g{color:#6b7280}
+.summary{display:flex;border-top:1px solid #e9d5ff}
+.sum-item{flex:1;padding:10px 24px;text-align:center;border-right:1px solid #ede9fe}
+.sum-item:last-child{border-right:none}
+.sum-lbl{font-size:10px;color:#6b7280}
+.sum-val{font-size:13px;font-weight:700;margin-top:2px}
+.sum-val.red{color:#dc2626}.sum-val.grn{color:#15803d}
+.footer{padding:8px 24px;border-top:1px solid #ede9fe;text-align:center;font-size:10px;color:#9ca3af}
+@media print{body{margin:0}.page{border:none;max-width:100%;margin:0}}`,
+
+  executive: `body{font-family:Georgia,'Times New Roman',serif;font-size:11px;background:#fff;color:#111}
+.page{max-width:680px;margin:24px auto;border:1px solid #d6d3d1;border-top:4px solid #b45309}
+.hdr{background:#111827;color:#fff;padding:22px 26px;display:flex;justify-content:space-between;align-items:flex-start}
+.co-name{font-size:16px;font-weight:700;color:#fbbf24;letter-spacing:.5px}
+.co-detail{color:#9ca3af;font-size:10px;margin-top:3px}
+.pay-label{color:#fcd34d;font-weight:700;font-size:13px;text-align:right;letter-spacing:.5px}
+.pay-meta{color:#9ca3af;font-size:10px;text-align:right;margin-top:3px}
+.emp{padding:12px 26px;background:#fffbeb;border-bottom:1px solid #fde68a;display:flex;justify-content:space-between;align-items:flex-start}
+.emp-name{font-weight:700;font-size:13px;color:#111827}
+.emp-detail{color:#6b7280;font-size:10px;margin-top:2px}
+.sec{padding:10px 26px;border-top:1px solid #f3f4f6}
+.sec-hdr{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#92400e;border-bottom:1px solid #fde68a;padding-bottom:5px;margin-bottom:6px;display:flex;justify-content:space-between}
+table{width:100%;border-collapse:collapse}
+td{padding:3px 0;font-size:11px}
+td.lbl{color:#4b5563}
+td.amt{text-align:right;font-weight:600}
+td.ded{color:#dc2626}
+.note{color:#9ca3af;font-size:9px}
+.total-row td{border-top:1px solid #fde68a;font-weight:700;padding-top:5px}
+.net{background:#111827;color:#fff;padding:16px 26px;display:flex;justify-content:space-between;align-items:center;border-top:3px solid #b45309}
+.net-lbl{font-weight:700;font-size:13px;color:#fbbf24}
+.net-sub{color:#9ca3af;font-size:10px;margin-top:2px}
+.net-amt{font-size:22px;font-weight:700;color:#fcd34d}
+.empr{padding:10px 26px;background:#fffbeb;border-top:1px solid #fde68a}
+.empr-title{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#92400e;margin-bottom:5px}
+td.g{color:#6b7280}
+.summary{display:flex;border-top:1px solid #fde68a}
+.sum-item{flex:1;padding:10px 24px;text-align:center;border-right:1px solid #fef3c7}
+.sum-item:last-child{border-right:none}
+.sum-lbl{font-size:10px;color:#6b7280}
+.sum-val{font-size:13px;font-weight:700;margin-top:2px}
+.sum-val.red{color:#dc2626}.sum-val.grn{color:#15803d}
+.footer{padding:8px 24px;border-top:1px solid #fef3c7;text-align:center;font-size:10px;color:#9ca3af}
+@media print{body{margin:0}.page{border:none;max-width:100%;margin:0}}`,
+
+  minimal: `body{font-family:Arial,Helvetica,sans-serif;font-size:11px;background:#fff;color:#111}
+.page{max-width:680px;margin:24px auto;border:1.5px solid #111}
+.hdr{background:#fff;color:#111;padding:20px 24px;display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1.5px solid #111}
+.co-name{font-size:16px;font-weight:700;color:#111;text-transform:uppercase;letter-spacing:1px}
+.co-detail{color:#6b7280;font-size:10px;margin-top:3px}
+.pay-label{color:#111;font-weight:700;font-size:13px;text-align:right;text-transform:uppercase;letter-spacing:.5px}
+.pay-meta{color:#6b7280;font-size:10px;text-align:right;margin-top:3px}
+.emp{padding:12px 24px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:flex-start}
+.emp-name{font-weight:700;font-size:13px;color:#111}
+.emp-detail{color:#6b7280;font-size:10px;margin-top:2px}
+.sec{padding:10px 24px;border-top:1px solid #e5e7eb}
+.sec-hdr{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#111;border-bottom:1px solid #111;padding-bottom:4px;margin-bottom:6px;display:flex;justify-content:space-between}
+table{width:100%;border-collapse:collapse}
+td{padding:3px 0;font-size:11px}
+td.lbl{color:#374151}
+td.amt{text-align:right;font-weight:500}
+td.ded{color:#374151}
+.note{color:#9ca3af;font-size:9px}
+.total-row td{border-top:1px solid #d1d5db;font-weight:700;padding-top:5px}
+.net{background:#111;color:#fff;padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
+.net-lbl{font-weight:700;font-size:13px}
+.net-sub{color:#d1d5db;font-size:10px;margin-top:2px}
+.net-amt{font-size:22px;font-weight:700}
+.empr{padding:10px 24px;background:#f9fafb;border-top:1px solid #e5e7eb}
+.empr-title{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#374151;margin-bottom:5px}
+td.g{color:#6b7280}
+.summary{display:flex;border-top:1px solid #e5e7eb}
+.sum-item{flex:1;padding:10px 24px;text-align:center;border-right:1px solid #e5e7eb}
+.sum-item:last-child{border-right:none}
+.sum-lbl{font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}
+.sum-val{font-size:13px;font-weight:700;margin-top:2px}
+.sum-val.red{color:#374151}.sum-val.grn{color:#111;text-decoration:underline}
+.footer{padding:8px 24px;border-top:1px solid #e5e7eb;text-align:center;font-size:10px;color:#9ca3af}
+@media print{body{margin:0}.page{border:none;max-width:100%;margin:0}}`,
+
+  corporate: `body{font-family:'Calibri',Arial,sans-serif;font-size:11px;background:#fff;color:#111}
+.page{max-width:680px;margin:24px auto;border:1px solid #bbf7d0;border-top:4px solid #166534}
+.hdr{background:#14532d;color:#fff;padding:20px 24px;display:flex;justify-content:space-between;align-items:flex-start}
+.co-name{font-size:16px;font-weight:700;color:#fff}
+.co-detail{color:#86efac;font-size:10px;margin-top:3px}
+.pay-label{color:#bbf7d0;font-weight:700;font-size:13px;text-align:right}
+.pay-meta{color:#86efac;font-size:10px;text-align:right;margin-top:3px}
+.emp{padding:12px 24px;background:#f0fdf4;border-bottom:1px solid #bbf7d0;display:flex;justify-content:space-between;align-items:flex-start}
+.emp-name{font-weight:700;font-size:13px;color:#14532d}
+.emp-detail{color:#6b7280;font-size:10px;margin-top:2px}
+.sec{padding:10px 24px;border-top:1px solid #f0fdf4}
+.sec-hdr{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#166534;border-bottom:1px solid #bbf7d0;padding-bottom:5px;margin-bottom:6px;display:flex;justify-content:space-between}
+table{width:100%;border-collapse:collapse}
+td{padding:3px 0;font-size:11px}
+td.lbl{color:#4b5563}
+td.amt{text-align:right;font-weight:500}
+td.ded{color:#dc2626}
+.note{color:#9ca3af;font-size:9px}
+.total-row td{border-top:1px solid #d1fae5;font-weight:700;padding-top:5px}
+.net{background:#166534;color:#fff;padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
+.net-lbl{font-weight:700;font-size:13px}
+.net-sub{color:#bbf7d0;font-size:10px;margin-top:2px}
+.net-amt{font-size:22px;font-weight:700}
+.empr{padding:10px 24px;background:#f0fdf4;border-top:1px solid #bbf7d0}
+.empr-title{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#166534;margin-bottom:5px}
+td.g{color:#6b7280}
+.summary{display:flex;border-top:1px solid #bbf7d0}
+.sum-item{flex:1;padding:10px 24px;text-align:center;border-right:1px solid #d1fae5}
+.sum-item:last-child{border-right:none}
+.sum-lbl{font-size:10px;color:#6b7280}
+.sum-val{font-size:13px;font-weight:700;margin-top:2px}
+.sum-val.red{color:#dc2626}.sum-val.grn{color:#166534}
+.footer{padding:8px 24px;border-top:1px solid #d1fae5;text-align:center;font-size:10px;color:#9ca3af}
+@media print{body{margin:0}.page{border:none;max-width:100%;margin:0}}`,
+};
+
+function TemplatePicker({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  return (
+    <div className="card">
+      <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-3">Template</h2>
+      <div className="grid grid-cols-5 gap-2">
+        {TEMPLATES.map(t => (
+          <button
+            key={t.id}
+            type="button"
+            onClick={() => onChange(t.id)}
+            className={`flex flex-col items-center gap-2 p-2.5 rounded-xl border transition-all ${
+              value === t.id
+                ? 'border-violet-500 bg-violet-500/10'
+                : 'border-gray-700 hover:border-gray-600'
+            }`}
+          >
+            <div className="w-full rounded overflow-hidden" style={{ background: '#fff', border: '1px solid #e5e7eb' }}>
+              <div className="w-full h-3.5" style={{ background: t.headerBg }} />
+              <div className="px-1 py-1 space-y-0.5">
+                <div className="h-1 rounded" style={{ background: t.accent, width: '55%' }} />
+                <div className="h-0.5 rounded bg-gray-200 w-full" />
+                <div className="h-0.5 rounded bg-gray-200 w-4/5" />
+                <div className="h-0.5 rounded bg-gray-200 w-3/5" />
+              </div>
+            </div>
+            <span className="text-[10px] font-medium text-gray-300">{t.name}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── PDF GENERATOR ───────────────────────────────────────────────────────────
+
+function esc(s: string) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function buildPaystubHTML(
+  calc: Calc, sym: string,
+  coName: string, coAddr: string, ein: string, country: string,
+  empName: string, empTitle: string, empAddr: string, empId: string,
+  payDate: string, periStart: string, periEnd: string, periodLabel: string,
+  template: string = 'classic'
+): string {
+  const css = TEMPLATE_CSS[template] ?? TEMPLATE_CSS.classic;
+
+  const fmt = (n: number) => `${sym}${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+  const deductRows = (lines: Line[]) => lines.map(l =>
+    `<tr><td class="lbl">${esc(l.label)}${l.note ? ` <span class="note">(${esc(l.note)})</span>` : ''}</td>
+     <td class="amt ded">-${fmt(l.amount)}</td></tr>`
+  ).join('');
+
+  const empRows = calc.employerLines.map(l =>
+    `<tr><td class="lbl g">${esc(l.label)}${l.note ? ` (${esc(l.note)})` : ''}</td><td class="amt g">${fmt(l.amount)}</td></tr>`
+  ).join('');
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pay Stub — ${esc(empName || 'Employee')}</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+${css}
 </style>
 </head>
 <body>
@@ -386,6 +576,7 @@ export default function PaystubGeneratorPage() {
   }, []);
 
   const today = new Date().toISOString().split('T')[0];
+  const [template, setTemplate] = useState('classic');
   const [country, setCountry] = useState('US');
   const [period, setPeriod]   = useState('biweekly');
   const [grossPay, setGrossPay] = useState('');
@@ -448,7 +639,7 @@ export default function PaystubGeneratorPage() {
       setDlLoading(false);
     }
 
-    const html = buildPaystubHTML(calc, sym, coName, coAddr, ein, country, empName, empTitle, empAddr, empId, payDate, periStart, periEnd, periodLabel);
+    const html = buildPaystubHTML(calc, sym, coName, coAddr, ein, country, empName, empTitle, empAddr, empId, payDate, periStart, periEnd, periodLabel, template);
     const win = window.open('', '_blank');
     if (!win) { setDlError('Popup blocked — please allow popups for this site.'); return; }
     win.document.write(html);
@@ -576,6 +767,8 @@ export default function PaystubGeneratorPage() {
 
         {/* ── FORM ── */}
         <div className="space-y-5">
+
+          <TemplatePicker value={template} onChange={setTemplate} />
 
           <div className="card">
             <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-4">Country / Region</h2>
@@ -717,19 +910,23 @@ export default function PaystubGeneratorPage() {
                 </div>
               )}
 
+              {(() => {
+                const pt = TEMPLATES.find(t => t.id === template) ?? TEMPLATES[0];
+                const isMinimal = template === 'minimal';
+                return (
               <div className="bg-white text-gray-900 rounded-2xl overflow-hidden shadow-2xl text-xs">
-                <div className="bg-[#1a2332] text-white px-5 py-4">
+                <div className="px-5 py-4" style={{ background: pt.headerBg, color: isMinimal ? '#111' : '#fff' }}>
                   <div className="flex justify-between items-start">
                     <div>
                       <div className="font-bold text-base">{coName || 'Company Name'}</div>
-                      <div className="text-gray-400 text-xs mt-0.5">{coAddr || ''}</div>
-                      {ein && <div className="text-gray-500 text-xs">{country === 'US' ? 'EIN' : 'Reg No'}: {ein}</div>}
+                      <div className="text-xs mt-0.5" style={{ color: isMinimal ? '#6b7280' : '#9ca3af' }}>{coAddr || ''}</div>
+                      {ein && <div className="text-xs" style={{ color: isMinimal ? '#6b7280' : '#9ca3af' }}>{country === 'US' ? 'EIN' : 'Reg No'}: {ein}</div>}
                     </div>
                     <div className="text-right">
-                      <div className="text-[#7fb3d3] font-bold text-sm">PAY STATEMENT</div>
-                      <div className="text-gray-400 text-xs mt-0.5">Pay Date: {payDate || '—'}</div>
-                      {periStart && periEnd && <div className="text-gray-500 text-xs">{periStart} – {periEnd}</div>}
-                      <div className="text-gray-400 text-xs">{periodLabel}</div>
+                      <div className="font-bold text-sm" style={{ color: isMinimal ? '#374151' : pt.accent === '#6d28d9' ? '#ddd6fe' : pt.accent === '#b45309' ? '#fbbf24' : pt.accent === '#166534' ? '#bbf7d0' : '#7fb3d3' }}>PAY STATEMENT</div>
+                      <div className="text-xs mt-0.5" style={{ color: isMinimal ? '#6b7280' : '#9ca3af' }}>Pay Date: {payDate || '—'}</div>
+                      {periStart && periEnd && <div className="text-xs" style={{ color: isMinimal ? '#6b7280' : '#9ca3af' }}>{periStart} – {periEnd}</div>}
+                      <div className="text-xs" style={{ color: isMinimal ? '#6b7280' : '#9ca3af' }}>{periodLabel}</div>
                     </div>
                   </div>
                 </div>
@@ -792,11 +989,11 @@ export default function PaystubGeneratorPage() {
                   </div>
                 )}
 
-                <div className="px-5 py-4 bg-[#1a5276] text-white">
+                <div className="px-5 py-4 text-white" style={{ background: pt.accent }}>
                   <div className="flex justify-between items-center">
                     <div>
                       <div className="font-bold text-sm">NET PAY</div>
-                      <div className="text-[#aed6f1] text-xs">Effective rate: {(calc.effectiveRate * 100).toFixed(1)}%</div>
+                      <div className="text-xs opacity-80">Effective rate: {(calc.effectiveRate * 100).toFixed(1)}%</div>
                     </div>
                     <div className="text-2xl font-bold">{money(calc.net, sym)}</div>
                   </div>
@@ -823,6 +1020,8 @@ export default function PaystubGeneratorPage() {
                   Generated by Formly · formly.tools · Tax tables 2024/2025
                 </div>
               </div>
+                );
+              })()}
             </>
           ) : (
             <div className="card border-dashed border-gray-700 text-center py-16">

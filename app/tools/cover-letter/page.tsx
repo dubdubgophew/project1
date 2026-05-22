@@ -93,7 +93,7 @@ export default function CoverLetterPage() {
       const res = await fetch('/api/tools/cover-letter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ jobTitle, companyName, yourName, background, skills, jobDescription, tone }),
+        body: JSON.stringify({ jobTitle, company: companyName, yourName, yourBackground: background, keySkills: skills, jobDescription, tone }),
       });
       const data = await res.json();
       if (!res.ok) setError(data.error ?? 'Something went wrong.');
