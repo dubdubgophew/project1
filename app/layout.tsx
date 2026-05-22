@@ -102,6 +102,7 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} dark`}>
       <head>
         <AdSenseScript />
+        <meta name="monetag" content="701dad6c34191d949e21404ca1901f4f" />
         {/* hreflang — geo targeting for English-speaking markets */}
         <link rel="alternate" hrefLang="en" href="https://formly.tools" />
         <link rel="alternate" hrefLang="en-US" href="https://formly.tools" />
