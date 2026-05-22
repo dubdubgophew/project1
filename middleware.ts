@@ -41,6 +41,16 @@ export async function middleware(request: NextRequest) {
     return new NextResponse('Request Too Large', { status: 414 });
   }
 
+  // ── Cron routes: auth check BEFORE Supabase session (avoids session redirects) ──
+  if (pathname.startsWith('/api/cron/')) {
+    const authHeader = request.headers.get('authorization');
+    const cronSecret = process.env.CRON_SECRET;
+    if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    return NextResponse.next({ request });
+  }
+
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
@@ -83,15 +93,6 @@ export async function middleware(request: NextRequest) {
     const adminEmail = process.env.ADMIN_EMAIL;
     if (user.email !== adminEmail) {
       return NextResponse.redirect(new URL('/', request.url));
-    }
-  }
-
-  // Cron routes secured by secret
-  if (pathname.startsWith('/api/cron/')) {
-    const authHeader = request.headers.get('authorization');
-    const cronSecret = process.env.CRON_SECRET;
-    if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
   }
 
