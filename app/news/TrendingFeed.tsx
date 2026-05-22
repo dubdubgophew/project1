@@ -116,7 +116,7 @@ function ShareDropdown({ item, onClose }: { item: TrendingNews; onClose: () => v
   const ref = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
 
-  const shareUrl = `https://www.formly.tools/news?id=${item.id}`;
+  const shareUrl = `https://www.formly.tools/news#news-${item.id}`;
   const shareText = `${item.topic} — via Formly News`;
 
   useEffect(() => {
@@ -200,6 +200,7 @@ function ShareDropdown({ item, onClose }: { item: TrendingNews; onClose: () => v
 
 function NewsCard({ item }: { item: TrendingNews }) {
   const [shareOpen, setShareOpen] = useState(false);
+  const [highlighted, setHighlighted] = useState(false);
   const [imgSrc, setImgSrc] = useState<string>(
     item.image_url || CATEGORY_IMAGES[item.category] || CATEGORY_IMAGES.General
   );
@@ -208,9 +209,21 @@ function NewsCard({ item }: { item: TrendingNews }) {
   const catColor = CATEGORY_COLORS[item.category] ?? CATEGORY_COLORS.General;
   const keywords = getSeoKeywords(item.topic, item.category, item.country_name);
 
+  useEffect(() => {
+    if (window.location.hash === `#news-${item.id}`) {
+      setHighlighted(true);
+      setTimeout(() => setHighlighted(false), 2000);
+    }
+  }, [item.id]);
+
   return (
     <article
-      className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden flex flex-col hover:border-gray-700 transition-colors"
+      id={`news-${item.id}`}
+      className={`bg-gray-900 border rounded-2xl overflow-hidden flex flex-col transition-all duration-700 ${
+        highlighted
+          ? 'border-violet-500 ring-2 ring-violet-500/40'
+          : 'border-gray-800 hover:border-gray-700'
+      }`}
       itemScope
       itemType="https://schema.org/NewsArticle"
     >
@@ -556,6 +569,16 @@ export function TrendingFeed({
     const sq = searchParams.get('q')        ?? '';
     setCountry(c); setCategory(ca); setQ(sq); setSearchInput(sq);
   }, [searchParams]);
+
+  // Scroll to shared card when landing via hash link
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (!hash.startsWith('#news-')) return;
+    const el = document.getElementById(hash.slice(1));
+    if (el) {
+      setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+    }
+  }, [items]);
 
   // Interleave promos and newsletter into the flat item list
   function buildFeedItems(news: TrendingNews[]): ('newsletter' | { promo: number } | TrendingNews)[] {
