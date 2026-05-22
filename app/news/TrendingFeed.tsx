@@ -150,7 +150,7 @@ function AdSlot() {
         <ins
           className="adsbygoogle block w-full"
           style={{ display: 'block' }}
-          data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID ?? 'ca-pub-REPLACE'}
+          data-ad-client="ca-pub-7233937066598688"
           data-ad-slot="REPLACE_AD_SLOT_ID"
           data-ad-format="auto"
           data-full-width-responsive="true"
