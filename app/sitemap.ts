@@ -42,6 +42,7 @@ const STATIC_ROUTES = [
   // Static marketing pages
   { url: '/pricing', priority: 0.5, changeFrequency: 'monthly' as const },
   { url: '/news', priority: 0.9, changeFrequency: 'hourly' as const },
+  { url: '/ai-news', priority: 0.9, changeFrequency: 'hourly' as const },
   { url: '/blog', priority: 0.7, changeFrequency: 'daily' as const },
   { url: '/about', priority: 0.5, changeFrequency: 'monthly' as const },
 ];
