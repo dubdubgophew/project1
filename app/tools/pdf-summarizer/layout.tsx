@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import { ToolSchemas } from '@/components/shared/ToolSchemas';
 
 export const metadata: Metadata = {
-  title: 'Free AI PDF Summarizer — Summarize Any PDF Online | Formly',
-  description: 'Summarize any PDF instantly with AI. Get key points from research papers, reports, contracts & ebooks in seconds. Free, no signup required. Powered by Groq AI.',
-  keywords: ['pdf summarizer', 'summarize pdf online free', 'ai pdf summarizer', 'pdf summary tool', 'summarize document ai', 'pdf text extractor', 'research paper summarizer', 'free pdf reader ai', 'extract key points pdf', 'pdf summarizer no signup'],
-  openGraph: { title: 'Free AI PDF Summarizer | Formly', description: 'Summarize any PDF instantly with AI. Free, no signup. Key insights from any document in seconds.', url: 'https://formly.tools/tools/pdf-summarizer', type: 'website', siteName: 'Formly' },
-  twitter: { card: 'summary_large_image', title: 'Free AI PDF Summarizer | Formly', description: 'Summarize any PDF with AI in seconds. Free, no signup required.' },
+  title: 'Free PDF Summarizer — Get Key Points Instantly | Formly',
+  description: 'PDF summarizer free online — upload any PDF and get key points in seconds. Research papers, contracts, reports, and ebooks. AI-powered, accurate. No signup required.',
+  keywords: ['pdf summarizer free online', 'pdf summarizer', 'summarize pdf online free', 'ai pdf summarizer', 'pdf summary tool', 'summarize document ai', 'pdf text extractor', 'research paper summarizer', 'free pdf reader ai', 'extract key points pdf', 'pdf summarizer no signup', 'summarize pdf free', 'pdf key points extractor', 'document summarizer online'],
+  openGraph: { title: 'Free PDF Summarizer — Get Key Points Instantly | Formly', description: 'PDF summarizer free online — get key points from any PDF in seconds. Research papers, contracts, reports. AI-powered. No signup required.', url: 'https://formly.tools/tools/pdf-summarizer', type: 'website', siteName: 'Formly' },
+  twitter: { card: 'summary_large_image', title: 'Free PDF Summarizer — Get Key Points Instantly | Formly', description: 'PDF summarizer free online — extract key points from any PDF in seconds. No signup.' },
   alternates: { canonical: 'https://formly.tools/tools/pdf-summarizer' },
 };
 

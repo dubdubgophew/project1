@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import { ToolSchemas } from '@/components/shared/ToolSchemas';
 
 export const metadata: Metadata = {
-  title: 'Free AI Resume Builder — ATS-Optimized Resume Generator | Formly',
-  description: 'Build a professional, ATS-friendly resume with AI in minutes. Get an ATS score, keyword suggestions, and download as PDF. Free resume builder — no signup needed.',
-  keywords: ["ai resume builder", "free resume maker online", "ats resume builder", "resume generator ai", "free resume creator", "professional resume builder", "resume builder no signup", "ats friendly resume free", "resume builder download pdf", "ai cv builder free"],
-  openGraph: { title: 'Free AI Resume Builder | Formly', description: 'Build an ATS-optimized resume with AI. ATS score, keyword suggestions, PDF download. Free.', url: 'https://formly.tools/tools/resume-builder', type: 'website', siteName: 'Formly' },
-  twitter: { card: 'summary_large_image', title: 'Free AI Resume Builder | Formly', description: 'Free AI resume builder — ATS-optimized, PDF download, no signup required.' },
+  title: 'Free Resume Builder Online — ATS-Optimized in Minutes | Formly',
+  description: 'Free resume builder online — create an ATS-optimized resume in minutes with AI. Get an ATS score, keyword tips, and PDF download. Resume.io alternative. No signup needed.',
+  keywords: ["free resume builder online", "ai resume builder", "free resume maker online", "ats resume builder", "resume generator ai", "free resume creator", "professional resume builder", "resume builder no signup", "ats friendly resume free", "resume builder download pdf", "ai cv builder free", "resume io alternative free", "zety alternative free", "resume builder 2025"],
+  openGraph: { title: 'Free Resume Builder Online — ATS-Optimized in Minutes | Formly', description: 'Free resume builder online — create an ATS-optimized resume in minutes. AI-powered, ATS score, PDF download. Resume.io alternative. No signup needed.', url: 'https://formly.tools/tools/resume-builder', type: 'website', siteName: 'Formly' },
+  twitter: { card: 'summary_large_image', title: 'Free Resume Builder Online — ATS-Optimized in Minutes | Formly', description: 'Free resume builder online — ATS-optimized resume in minutes. PDF download, no signup.' },
   alternates: { canonical: 'https://formly.tools/tools/resume-builder' },
 };
 

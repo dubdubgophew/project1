@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import { ToolSchemas } from '@/components/shared/ToolSchemas';
 
 export const metadata: Metadata = {
-  title: 'Free Grammar Checker & Corrector Online — Better Than Grammarly | Formly',
-  description: 'Check and fix grammar, spelling, punctuation and style errors instantly. Free AI grammar checker — no signup needed. Supports formal and casual writing styles.',
-  keywords: ["grammar checker", "free grammar check online", "grammar corrector", "spell checker free", "grammar fixer online", "punctuation checker", "english grammar checker", "grammar check no signup", "ai grammar corrector", "sentence grammar checker"],
-  openGraph: { title: 'Free Grammar Checker | Formly', description: 'Fix grammar, spelling and punctuation instantly. AI-powered, free, no signup.', url: 'https://formly.tools/tools/grammar-checker', type: 'website', siteName: 'Formly' },
-  twitter: { card: 'summary_large_image', title: 'Free Grammar Checker | Formly', description: 'Free AI grammar checker — fix errors instantly. No signup required.' },
+  title: 'Free Grammar Checker Online — Fix Errors Instantly | Formly',
+  description: 'Free grammar checker online — fix grammar, spelling, and style errors instantly. Get explanations for every correction. Smarter than basic spellcheck. No account needed.',
+  keywords: ["free grammar checker online", "grammar checker", "free grammar check online", "grammar corrector", "spell checker free", "grammar fixer online", "punctuation checker", "english grammar checker", "grammar check no signup", "ai grammar corrector", "sentence grammar checker", "grammarly alternative free", "grammar check tool", "fix grammar online free"],
+  openGraph: { title: 'Free Grammar Checker Online — Fix Errors Instantly | Formly', description: 'Free grammar checker online — fix grammar, spelling, and style errors instantly. Get explanations for every correction. No account needed.', url: 'https://formly.tools/tools/grammar-checker', type: 'website', siteName: 'Formly' },
+  twitter: { card: 'summary_large_image', title: 'Free Grammar Checker Online — Fix Errors Instantly | Formly', description: 'Free grammar checker online — fix errors instantly with explanations. No signup required.' },
   alternates: { canonical: 'https://formly.tools/tools/grammar-checker' },
 };
 

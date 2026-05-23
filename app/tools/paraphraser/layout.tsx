@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import { ToolSchemas } from '@/components/shared/ToolSchemas';
 
 export const metadata: Metadata = {
-  title: 'Free AI Paraphrasing Tool — Reword Any Text Online | Formly',
-  description: 'Paraphrase any text instantly with AI. Rewrite sentences, paragraphs or essays in multiple tones — academic, fluent, simple. Free, no signup needed.',
-  keywords: ["paraphrasing tool", "paraphrase online free", "reword text online", "ai paraphraser", "sentence rewriter free", "text paraphraser", "essay rewriter", "paraphrase tool academic", "rewrite paragraph ai", "best free paraphraser"],
-  openGraph: { title: 'Free AI Paraphrasing Tool | Formly', description: 'Rewrite any text in seconds with AI. Multiple tones: academic, fluent, simple. Free, no signup.', url: 'https://formly.tools/tools/paraphraser', type: 'website', siteName: 'Formly' },
-  twitter: { card: 'summary_large_image', title: 'Free AI Paraphrasing Tool | Formly', description: 'AI paraphrasing tool — reword any text free. Academic, fluent & simple modes.' },
+  title: 'Free Paraphrasing Tool — Rewrite Text in 5 Styles | Formly',
+  description: 'Free paraphrasing tool online — rewrite any text in 5 styles instantly. Academic, fluent, simple, creative, and formal modes. QuillBot alternative. No signup needed.',
+  keywords: ["free paraphrasing tool online", "paraphrasing tool", "paraphrase online free", "reword text online", "ai paraphraser", "sentence rewriter free", "text paraphraser", "essay rewriter", "paraphrase tool academic", "rewrite paragraph ai", "best free paraphraser", "quillbot alternative free", "paraphrase generator free", "online paraphraser no signup"],
+  openGraph: { title: 'Free Paraphrasing Tool — Rewrite Text in 5 Styles | Formly', description: 'Free paraphrasing tool online — rewrite any text in 5 styles instantly. Academic, fluent, simple & more. QuillBot alternative. No signup needed.', url: 'https://formly.tools/tools/paraphraser', type: 'website', siteName: 'Formly' },
+  twitter: { card: 'summary_large_image', title: 'Free Paraphrasing Tool — Rewrite Text in 5 Styles | Formly', description: 'Free paraphrasing tool online — reword any text in 5 styles. QuillBot alternative, no signup.' },
   alternates: { canonical: 'https://formly.tools/tools/paraphraser' },
 };
 

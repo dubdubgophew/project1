@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import { ToolSchemas } from '@/components/shared/ToolSchemas';
 
 export const metadata: Metadata = {
-  title: 'Free Pay Stub Generator — Create Professional Paystubs Online | Formly',
-  description: 'Generate accurate pay stubs online for free. Supports USA (all 50 states), UK, Canada, India, Australia & more. Accurate 2025 tax calculations. Download PDF instantly.',
-  keywords: ['pay stub generator', 'paystub generator free', 'free paycheck stub creator', 'online pay stub maker', 'paycheck generator', 'pay slip generator', 'salary stub generator', 'free paystub maker', 'create pay stub online', 'pay stub template free'],
-  openGraph: { title: 'Free Pay Stub Generator | Formly', description: 'Create professional pay stubs instantly. Supports 8 countries with 2025 tax tables. Download as PDF.', url: 'https://formly.tools/tools/paystub-generator', type: 'website', siteName: 'Formly' },
-  twitter: { card: 'summary_large_image', title: 'Free Pay Stub Generator | Formly', description: 'Create accurate pay stubs in seconds. USA, UK, Canada, India, Australia supported. Free.' },
+  title: 'Free Pay Stub Generator — USA, UK, Canada 2025 | Formly',
+  description: 'Free pay stub generator online — create accurate pay stubs for USA, UK, and Canada instantly. 2025 tax tables, all 50 US states, PDF download. No signup required.',
+  keywords: ['free pay stub generator online', 'pay stub generator', 'paystub generator free', 'free paycheck stub creator', 'online pay stub maker', 'paycheck generator', 'pay slip generator', 'salary stub generator', 'free paystub maker', 'create pay stub online', 'pay stub template free', 'pay stub generator usa', 'pay stub generator canada', 'pay stub 2025'],
+  openGraph: { title: 'Free Pay Stub Generator — USA, UK, Canada 2025 | Formly', description: 'Free pay stub generator online — create accurate pay stubs for USA, UK, and Canada. 2025 tax tables, PDF download. No signup required.', url: 'https://formly.tools/tools/paystub-generator', type: 'website', siteName: 'Formly' },
+  twitter: { card: 'summary_large_image', title: 'Free Pay Stub Generator — USA, UK, Canada 2025 | Formly', description: 'Free pay stub generator online — USA, UK, Canada, 2025 taxes. PDF download, no signup.' },
   alternates: { canonical: 'https://formly.tools/tools/paystub-generator' },
 };
 

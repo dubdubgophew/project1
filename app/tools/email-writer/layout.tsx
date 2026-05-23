@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import { ToolSchemas } from '@/components/shared/ToolSchemas';
 
 export const metadata: Metadata = {
-  title: 'Free AI Email Writer — Write Professional Emails in Seconds | Formly',
-  description: 'Generate professional emails instantly with AI. Cold emails, follow-ups, apology emails, job applications & more. Free, customizable tone. No signup needed.',
-  keywords: ["ai email writer", "email generator free", "professional email writer", "write email with ai", "cold email generator", "business email writer", "email template generator ai", "free email writer online", "ai email composer", "email drafter free"],
-  openGraph: { title: 'Free AI Email Writer | Formly', description: 'Write professional emails in seconds with AI. Cold emails, follow-ups, job applications & more. Free.', url: 'https://formly.tools/tools/email-writer', type: 'website', siteName: 'Formly' },
-  twitter: { card: 'summary_large_image', title: 'Free AI Email Writer | Formly', description: 'AI email writer — generate professional emails instantly. Free, no signup.' },
+  title: 'Free AI Email Writer — Professional Emails Instantly | Formly',
+  description: 'AI email writer free — generate professional emails in seconds. Cold emails, follow-ups, job applications, and apologies in any tone. Better than templates. No signup needed.',
+  keywords: ["ai email writer free", "ai email writer", "email generator free", "professional email writer", "write email with ai", "cold email generator", "business email writer", "email template generator ai", "free email writer online", "ai email composer", "email drafter free", "cold outreach email generator", "follow up email generator ai", "job application email writer"],
+  openGraph: { title: 'Free AI Email Writer — Professional Emails Instantly | Formly', description: 'AI email writer free — generate professional emails in seconds. Cold emails, follow-ups, job applications in any tone. Better than templates. No signup needed.', url: 'https://formly.tools/tools/email-writer', type: 'website', siteName: 'Formly' },
+  twitter: { card: 'summary_large_image', title: 'Free AI Email Writer — Professional Emails Instantly | Formly', description: 'AI email writer free — professional emails in seconds. Any tone, any type. No signup.' },
   alternates: { canonical: 'https://formly.tools/tools/email-writer' },
 };
 

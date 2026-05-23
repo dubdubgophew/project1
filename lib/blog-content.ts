@@ -1809,6 +1809,81 @@ export const BLOG_POSTS: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: 'diagrify-free-ai-diagram-tool',
+    title: 'Diagrify: Free AI Diagram & Whiteboard Tool — Better Than Excalidraw for AI Diagrams',
+    category: 'ai-tools',
+    toolSlug: 'diagrify',
+    toolName: 'Diagrify',
+    readingTime: 6,
+    publishedAt: '2026-05-23',
+    updatedAt: '2026-05-23',
+    metaDescription:
+      'Diagrify is a free AI diagram and whiteboard tool. Type any description to instantly generate flowcharts, mind maps, and diagrams. Infinite canvas, no signup. Best free Excalidraw alternative with AI.',
+    intro:
+      'Creating diagrams and flowcharts has always taken time — drawing shapes, connecting arrows, arranging labels. Diagrify eliminates that friction entirely. Type a description of any process, system, or idea, and Diagrify\'s AI generates a complete, well-structured diagram in seconds. It works as a full infinite-canvas whiteboard too, with sketchy hand-drawn mode, blueprint mode, sticky notes, freehand pen, and one-click PNG/SVG export. Everything is free with no account required — and your work auto-saves in your browser just like Excalidraw.',
+    sections: [
+      {
+        heading: 'What Is Diagrify?',
+        body: 'Diagrify is a free online diagram and whiteboard tool built by Formly. It combines a full-featured infinite canvas whiteboard with AI-powered text-to-diagram generation. You can draw manually using shapes, arrows, freehand pen, and sticky notes — or simply describe what you want and the AI creates the diagram for you. Unlike most whiteboard tools, Diagrify requires no account, no signup, and no installation. Your canvas state is automatically saved to your browser so your work is always there when you return.',
+      },
+      {
+        heading: 'How AI Text-to-Diagram Works',
+        body: 'Click the "AI Generate" button in Diagrify and type a description like "user authentication flow", "microservices architecture", "sales pipeline", or "SDLC phases". The AI (powered by Groq\'s LLaMA model) parses your description and generates a structured diagram with proper shapes — rectangles for processes, diamonds for decisions, ellipses for storage, arrows for connections — all with accurate labels. The entire diagram appears on your canvas instantly, properly spaced and color-coded. You can then edit any element, add more shapes, or regenerate with a different description.',
+      },
+      {
+        heading: 'Diagrify vs Excalidraw: Key Differences',
+        body: 'Excalidraw is a great open-source whiteboard. Diagrify offers everything Excalidraw does — infinite canvas, sketchy rendering, shapes, arrows, freehand — plus built-in AI text-to-diagram that Excalidraw doesn\'t have natively. Both save to browser storage without requiring login. Diagrify additionally offers a Blueprint mode (technical drawing on dark blue canvas), quick AI prompts for common diagram types, and is integrated into the Formly platform alongside 28 other free professional tools.',
+      },
+      {
+        heading: 'Diagrify vs draw.io: Which Is Better for Quick Diagrams?',
+        body: 'draw.io (now diagrams.net) is powerful but has a steep learning curve and a cluttered interface. Diagrify is optimized for speed — open the tool and start diagramming in under 10 seconds. The AI generation feature means you can create a complete flowchart without touching a single shape tool. For complex enterprise diagrams with 100+ elements, draw.io wins. For quick flowcharts, brainstorming, and AI-powered diagrams, Diagrify is faster and simpler.',
+      },
+      {
+        heading: 'Rendering Modes: Clean, Sketchy, Blueprint',
+        body: 'Diagrify offers three canvas rendering modes. Clean mode renders crisp, precise shapes on a white background with dot grid — ideal for professional flowcharts. Sketchy mode renders shapes with a hand-drawn appearance, similar to Excalidraw\'s signature look, great for brainstorming sessions and informal diagrams. Blueprint mode renders on a dark blue grid canvas with bright blue lines — perfect for technical architecture diagrams and system designs. Switch modes with one click; your diagram content is preserved.',
+      },
+      {
+        heading: 'Shapes and Tools Available in Diagrify',
+        body: 'Diagrify includes 12 drawing tools accessible via the left toolbar or keyboard shortcuts: Select (V), Pan/Hand (H), Rectangle (R), Ellipse (E), Diamond (D), Triangle (T), Arrow (A), Line (L), Freehand Pen (P), Text (X), Sticky Note (N), and Eraser. Each shape has configurable stroke color, fill color, line width, opacity, font size, bold, and italic. Multi-select works with Shift+click or drag to select. Ctrl+Z / Cmd+Z for undo. Ctrl+A / Cmd+A to select all.',
+      },
+      {
+        heading: 'Export and Save Options',
+        body: 'Diagrify auto-saves your entire canvas — elements, zoom level, and pan position — to your browser\'s local storage every few seconds. The "● saved" indicator confirms each save. When you return to diagrify.formly.tools, your previous work is automatically restored. For sharing or printing, export as PNG (high-resolution screenshot of the visible canvas) or SVG (scalable vector format). Both exports work with one click from the top toolbar.',
+      },
+      {
+        heading: 'Use Cases for Diagrify',
+        body: 'Diagrify is used by developers (system architecture, API flow, database schema), product managers (user journey maps, feature roadmaps, process flows), designers (wireframes, user flow diagrams), students (mind maps, concept diagrams, study notes), and business analysts (process mapping, org charts, decision trees). The AI generation is particularly useful when you need to quickly visualize a concept without spending 20 minutes placing shapes manually.',
+      },
+    ],
+    faqs: [
+      {
+        q: 'Is Diagrify completely free?',
+        a: 'Yes. Diagrify is free with no account, no credit card, and no usage limits. It is part of the Formly free tools platform.',
+      },
+      {
+        q: 'Does Diagrify save my diagrams automatically?',
+        a: 'Yes. Diagrify automatically saves your canvas to your browser\'s local storage every 800ms. Your work is restored when you return to the page — no login required.',
+      },
+      {
+        q: 'Is Diagrify a good free alternative to Excalidraw?',
+        a: 'Yes. Diagrify offers the same infinite canvas, sketchy rendering, shapes, and arrows as Excalidraw, plus built-in AI text-to-diagram generation. Both are free and require no login.',
+      },
+      {
+        q: 'Can I use Diagrify instead of draw.io?',
+        a: 'For quick diagrams and AI-powered flowcharts, yes. Diagrify is much faster to use. For very complex enterprise diagrams with hundreds of elements, draw.io may be more appropriate.',
+      },
+      {
+        q: 'What AI model powers Diagrify\'s text-to-diagram feature?',
+        a: 'Diagrify uses Groq\'s hosted LLaMA 3.3 70B model for fast, high-quality diagram generation from natural language descriptions.',
+      },
+      {
+        q: 'Can I export diagrams from Diagrify?',
+        a: 'Yes. Export as PNG (raster image) or SVG (scalable vector) with one click from the top toolbar. The PNG exports the current canvas view at full quality.',
+      },
+    ],
+    countriesServed: ['US', 'GB', 'CA', 'AU', 'IN', 'DE', 'FR', 'NL', 'SG', 'JP'],
+  },
 ];
 
 // ─── Helper functions ──────────────────────────────────────────────────────
