@@ -41,17 +41,18 @@ interface Elem {
 }
 
 interface DragState {
-  type:    'move' | 'resize' | 'draw' | 'pan' | 'select-box';
-  startX:  number;
-  startY:  number;
-  origX?:  number;
-  origY?:  number;
-  origW?:  number;
-  origH?:  number;
-  handle?: string;
-  ids?:    string[];
-  snapX?:  number[];
-  snapY?:  number[];
+  type:           'move' | 'resize' | 'draw' | 'pan' | 'select-box';
+  startX:         number;
+  startY:         number;
+  origX?:         number;
+  origY?:         number;
+  origW?:         number;
+  origH?:         number;
+  handle?:        string;
+  ids?:           string[];
+  snapX?:         number[];
+  snapY?:         number[];
+  origPositions?: Record<string, { x: number; y: number; pts?: number[] }>;
 }
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -61,12 +62,12 @@ const MIN_SIZE      = 10;
 const GRID_SIZE     = 20;
 const SNAP_DIST     = 8;
 
-const STROKE_PRESETS = ['#f9fafb', '#a855f7', '#3b82f6', '#10b981', '#f59e0b', '#f43f5e', '#ec4899', '#000000'];
-const FILL_PRESETS   = ['transparent', '#7c3aed20', '#3b82f620', '#10b98120', '#f59e0b20', '#f43f5e20', '#ffffff10', '#1f2937'];
+const STROKE_PRESETS = ['#1e1e2e', '#5c7cfa', '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#a855f7', '#64748b'];
+const FILL_PRESETS   = ['transparent', '#ede9fe', '#dbeafe', '#d1fae5', '#fef3c7', '#fee2e2', '#fce7f3', '#f1f5f9'];
 
 const DEFAULT_STYLE: Pick<Elem, 'stroke' | 'fill' | 'lineWidth' | 'opacity' | 'fontSize'> = {
-  stroke:    '#a855f7',
-  fill:      '#7c3aed20',
+  stroke:    '#1e1e2e',
+  fill:      'transparent',
   lineWidth: 2,
   opacity:   1,
   fontSize:  15,
@@ -167,7 +168,7 @@ function drawBackground(ctx: CanvasRenderingContext2D, w: number, h: number, pan
     ctx.fillStyle = '#0a1628';
     ctx.fillRect(0, 0, w, h);
   } else {
-    ctx.fillStyle = '#030712';
+    ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, w, h);
   }
 
@@ -194,9 +195,9 @@ function drawBackground(ctx: CanvasRenderingContext2D, w: number, h: number, pan
       ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
     }
   } else {
-    // Dots
-    const dotSize = mode === 'sketchy' ? 1.5 : 1;
-    ctx.fillStyle = mode === 'sketchy' ? '#2d2540' : '#1f2937';
+    // Dots — light gray on white canvas
+    const dotSize = 1;
+    ctx.fillStyle = '#e5e7eb';
     for (let x = ox; x < w; x += gs) {
       for (let y = oy; y < h; y += gs) {
         ctx.beginPath();
@@ -264,7 +265,7 @@ function drawLabel(ctx: CanvasRenderingContext2D, label: string, cx: number, cy:
   const weight = el.bold ? 'bold ' : '';
   const style  = el.italic ? 'italic ' : '';
   ctx.font = `${style}${weight}${fs}px -apple-system, Inter, sans-serif`;
-  ctx.fillStyle = mode === 'blueprint' ? '#93c5fd' : (el.fill === 'transparent' ? el.stroke : '#f9fafb');
+  ctx.fillStyle = mode === 'blueprint' ? '#93c5fd' : '#1e1e2e';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.globalAlpha = el.opacity;
