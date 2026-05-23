@@ -11,18 +11,19 @@ import { BannerAd } from '@/components/shared/AdSense';
 import { AetherBoardBanner } from '@/components/landing/AetherBoardBanner';
 
 export const metadata: Metadata = {
-  title: 'Formly — 28 Free AI Tools: Pay Stub Generator, Resume Builder, Contract Generator & More',
+  title: 'Formly — 29 Free AI Tools: Pay Stub Generator, Resume Builder, Contract Generator & More',
   description:
-    'Free AI tools online: pay stub generator, resume builder, contract generator, PDF summarizer, paraphraser, grammar checker & 22 more. No signup needed. Used by 50,000+ professionals.',
+    'Free AI tools online: pay stub generator, resume builder, contract generator, PDF summarizer, paraphraser, grammar checker & 23 more. No signup needed. Used by 50,000+ professionals.',
   alternates: { canonical: 'https://formly.tools' },
 };
 
 export default function HomePage() {
   return (
     <>
-      <AetherBoardBanner />
       <Header />
       <main>
+        <div className="h-16" />
+        <AetherBoardBanner />
         <Hero />
         <PopularTools />
 
@@ -53,7 +54,7 @@ export default function HomePage() {
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a href="/tools" className="btn-primary text-base px-8 py-4">
-                  Try All 28 Tools Free →
+                  Try All 29 Tools Free →
                 </a>
                 <a href="/pricing" className="btn-outline text-base px-8 py-4">
                   View Pro Plans

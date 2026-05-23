@@ -32,7 +32,7 @@ export function Hero() {
 
         {/* Headline */}
         <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-6 animate-fade-up">
-          <span className="text-white">28 Free Tools,</span>
+          <span className="text-white">29 Free Tools,</span>
           <br />
           <span className="gradient-text">Completely Free</span>
           <br />
@@ -47,7 +47,7 @@ export function Hero() {
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-fade-up animate-delay-200">
           <Link href="/tools" className="btn-primary text-base px-8 py-4 shadow-2xl shadow-violet-500/30 hover:shadow-violet-500/50 group">
-            Try All 28 Tools Free
+            Try All 29 Tools Free
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </Link>
           <Link href="/pricing" className="btn-secondary text-base px-8 py-4 group">

@@ -99,6 +99,14 @@ const POPULAR_TOOLS = [
     category: 'Utilities',
     pinned: true,
   },
+  {
+    icon: '🎨',
+    name: 'AetherBoard',
+    href: '/tools/aetherboard',
+    desc: 'Infinite canvas with AI text-to-diagram, sketchy mode, shapes, arrows & stickies.',
+    category: 'Design',
+    pinned: true,
+  },
 ];
 
 export function PopularTools() {
@@ -119,7 +127,7 @@ export function PopularTools() {
             href="/tools"
             className="text-sm text-violet-400 hover:text-violet-300 font-medium transition-colors whitespace-nowrap self-start sm:self-auto"
           >
-            View all 28 tools →
+            View all 29 tools →
           </Link>
         </div>
 
@@ -176,7 +184,7 @@ export function PopularTools() {
             href="/tools"
             className="text-sm text-violet-400 hover:text-violet-300 font-medium transition-colors"
           >
-            View all 28 tools →
+            View all 29 tools →
           </Link>
         </div>
       </div>
