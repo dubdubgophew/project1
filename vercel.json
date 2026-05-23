@@ -27,6 +27,10 @@
     {
       "path": "/api/cron/fetch-ai-news",
       "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/send-digest",
+      "schedule": "0 10 * * *"
     }
   ],
   "functions": {
@@ -52,6 +56,9 @@
       "maxDuration": 300
     },
     "app/api/cron/fetch-ai-news/route.ts": {
+      "maxDuration": 300
+    },
+    "app/api/cron/send-digest/route.ts": {
       "maxDuration": 300
     }
   }
