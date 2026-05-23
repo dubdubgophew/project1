@@ -101,9 +101,9 @@ const POPULAR_TOOLS = [
   },
   {
     icon: '🎨',
-    name: 'AetherBoard',
-    href: '/tools/aetherboard',
-    desc: 'Infinite canvas with AI text-to-diagram, sketchy mode, shapes, arrows & stickies.',
+    name: 'Diagrify',
+    href: '/tools/diagrify',
+    desc: 'Create flowcharts, diagrams & mind maps with AI. Infinite canvas, no signup needed.',
     category: 'Design',
     pinned: true,
   },

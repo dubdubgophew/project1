@@ -308,9 +308,9 @@ const TOOLS: Tool[] = [
   },
   {
     icon: '🎨',
-    name: 'AetherBoard',
-    description: 'Infinite canvas whiteboard with AI text-to-diagram, sketchy & blueprint modes, shapes, arrows, freehand drawing, and sticky notes. Free, no signup.',
-    href: '/tools/aetherboard',
+    name: 'Diagrify',
+    description: 'Create flowcharts and diagrams with AI text-to-diagram. Infinite canvas, sketchy mode, shapes, arrows, freehand drawing. Free, no signup.',
+    href: '/tools/diagrify',
     badge: 'New',
     color: 'from-violet-500/10 to-purple-600/5 border-violet-500/20 hover:border-violet-500/40',
     tags: ['whiteboard', 'diagram', 'ai diagram', 'infinite canvas', 'drawing', 'flowchart', 'brainstorm', 'sketchy'],

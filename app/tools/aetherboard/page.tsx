@@ -1,6 +1,5 @@
-import { AetherBoard } from './AetherBoard';
+import { redirect } from 'next/navigation';
 
-// Full-screen tool — no header/footer, own embedded UI
-export default function AetherBoardPage() {
-  return <AetherBoard />;
+export default function AetherBoardRedirect() {
+  redirect('/tools/diagrify');
 }

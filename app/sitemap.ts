@@ -28,6 +28,7 @@ const STATIC_ROUTES = [
   { url: '/tools/password-generator', priority: 0.8, changeFrequency: 'monthly' as const },
   { url: '/tools/pdf-to-markdown', priority: 0.8, changeFrequency: 'monthly' as const },
   { url: '/tools/word-counter', priority: 0.8, changeFrequency: 'monthly' as const },
+  { url: '/tools/youtube-summarizer', priority: 0.8, changeFrequency: 'monthly' as const },
   { url: '/tools/expense-splitter', priority: 0.8, changeFrequency: 'monthly' as const },
   { url: '/tools/loan-calculator', priority: 0.8, changeFrequency: 'monthly' as const },
   { url: '/tools/unit-converter', priority: 0.8, changeFrequency: 'monthly' as const },
@@ -39,6 +40,9 @@ const STATIC_ROUTES = [
   { url: '/tools/terms-simplifier', priority: 0.8, changeFrequency: 'monthly' as const },
   { url: '/tools/qr-code', priority: 0.8, changeFrequency: 'monthly' as const },
   { url: '/tools/digital-signature', priority: 0.9, changeFrequency: 'monthly' as const },
+  { url: '/tools/diagrify', priority: 0.9, changeFrequency: 'weekly' as const },
+  // Comparison / alternatives pages (high-intent SEO)
+  { url: '/alternatives', priority: 0.8, changeFrequency: 'monthly' as const },
   // Static marketing pages
   { url: '/pricing', priority: 0.5, changeFrequency: 'monthly' as const },
   { url: '/news', priority: 0.9, changeFrequency: 'hourly' as const },

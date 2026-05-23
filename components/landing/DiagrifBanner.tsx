@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Sparkles, ArrowRight, X, Layers, Pen, Zap } from 'lucide-react';
 
-export function AetherBoardBanner() {
+export function DiagrifBanner() {
   const [dismissed, setDismissed] = useState(false);
   if (dismissed) return null;
 
@@ -19,7 +19,7 @@ export function AetherBoardBanner() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-4">
         {/* Icon */}
         <div className="shrink-0 hidden sm:flex w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 items-center justify-center shadow-lg shadow-violet-500/30">
-          <span className="text-white font-bold text-base">A</span>
+          <span className="text-white font-bold text-base">D</span>
         </div>
 
         {/* Content */}
@@ -28,7 +28,7 @@ export function AetherBoardBanner() {
             <span className="text-[11px] font-bold text-violet-400 bg-violet-500/15 border border-violet-500/30 px-2 py-0.5 rounded-full uppercase tracking-wider">
               NEW
             </span>
-            <span className="font-bold text-white text-sm">AetherBoard is live →</span>
+            <span className="font-bold text-white text-sm">Diagrify is live →</span>
           </div>
           <div className="flex items-center gap-3 text-xs text-gray-400 min-w-0">
             <span className="hidden md:flex items-center gap-1">
@@ -50,7 +50,7 @@ export function AetherBoardBanner() {
               <Zap className="w-3 h-3 text-amber-400 shrink-0" />
               Free, no signup
             </span>
-            <span className="sm:hidden text-gray-300">Infinite canvas whiteboard with AI</span>
+            <span className="sm:hidden text-gray-300">Free AI diagram & flowchart tool</span>
           </div>
         </div>
 

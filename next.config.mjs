@@ -76,11 +76,8 @@ const nextConfig = {
   },
   async redirects() {
     return [
-      {
-        source: '/home',
-        destination: '/',
-        permanent: true,
-      },
+      { source: '/home', destination: '/', permanent: true },
+      { source: '/tools/aetherboard', destination: '/tools/diagrify', permanent: true },
     ];
   },
 };
