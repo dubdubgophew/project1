@@ -96,7 +96,15 @@ Respond ONLY with a valid JSON array. No markdown, no extra text.`;
 export async function POST(_req: NextRequest) {
   console.log('[Cron] fetch-trending started');
   const supabase = createAdminClient();
-  const results: { country: string; inserted: number; error?: string }[] = [];
+  const results: { country: string; inserted: number; skipped: number; error?: string }[] = [];
+
+  // Load all source_urls stored in the last 7 days to deduplicate
+  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+  const { data: existingRows } = await supabase
+    .from('trending_news')
+    .select('source_url')
+    .gte('fetched_at', sevenDaysAgo);
+  const existingUrls = new Set((existingRows ?? []).map(r => r.source_url).filter(Boolean));
 
   for (const country of COUNTRIES) {
     try {
@@ -107,23 +115,27 @@ export async function POST(_req: NextRequest) {
         trends = await fetchCountryNews(country.code);
       } catch (err) {
         console.error(`[fetch-trending] Feed failed for ${country.code}:`, err);
-        results.push({ country: country.code, inserted: 0, error: String(err) });
+        results.push({ country: country.code, inserted: 0, skipped: 0, error: String(err) });
         await sleep(400);
         continue;
       }
 
-      if (!trends.length) {
-        results.push({ country: country.code, inserted: 0, error: 'No items in feed' });
+      // Skip articles already stored in the last 7 days
+      const newTrends = trends.filter(t => t.newsUrl && !existingUrls.has(t.newsUrl));
+      const skipped   = trends.length - newTrends.length;
+
+      if (!newTrends.length) {
+        results.push({ country: country.code, inserted: 0, skipped, error: skipped ? undefined : 'No items in feed' });
         await sleep(400);
         continue;
       }
 
       let summaries: AISummaryItem[];
       try {
-        summaries = await generateSummariesBatch(country.name, trends);
+        summaries = await generateSummariesBatch(country.name, newTrends);
       } catch (aiErr) {
         console.error(`[fetch-trending] AI failed for ${country.code}, using fallback:`, aiErr);
-        summaries = trends.map(t => ({
+        summaries = newTrends.map(t => ({
           topic: t.topic,
           summary: t.snippets.join(' ').slice(0, 600) || `${t.topic} — latest news from ${country.name}.`,
           category: detectCategory(t.topic, t.snippets),
@@ -131,51 +143,55 @@ export async function POST(_req: NextRequest) {
       }
 
       const now = new Date();
-      const expiresAt = new Date(now.getTime() + 26 * 60 * 60 * 1000); // 26h — survives until next daily run
+      const expiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
 
-      const rows = trends.map((trend, idx) => {
+      const rows = newTrends.map((trend, idx) => {
         const ai: AISummaryItem = summaries[idx] ?? {
           topic: trend.topic,
           summary: trend.snippets.join(' ').slice(0, 600) || trend.topic,
           category: detectCategory(trend.topic, trend.snippets),
         };
+        // Track newly inserted URLs so subsequent countries don't double-insert
+        if (trend.newsUrl) existingUrls.add(trend.newsUrl);
         return {
-          country_code:  country.code,
-          country_name:  country.name,
-          topic:         ai.topic || trend.topic,
-          summary:       ai.summary,
+          country_code:   country.code,
+          country_name:   country.name,
+          topic:          ai.topic || trend.topic,
+          summary:        ai.summary,
           traffic_volume: null,
-          category:      ai.category || detectCategory(trend.topic, trend.snippets),
-          source_url:    trend.newsUrl,
-          source_name:   trend.newsSource,
-          source_title:  trend.newsTitle || null,
-          image_url:     trend.imageUrl || null,
-          fetched_at:    now.toISOString(),
-          expires_at:    expiresAt.toISOString(),
-          rank:          idx + 1,
+          category:       ai.category || detectCategory(trend.topic, trend.snippets),
+          source_url:     trend.newsUrl,
+          source_name:    trend.newsSource,
+          source_title:   trend.newsTitle || null,
+          image_url:      trend.imageUrl || null,
+          fetched_at:     now.toISOString(),
+          expires_at:     expiresAt.toISOString(),
+          rank:           idx + 1,
         };
       });
 
       const { error: insertError } = await supabase.from('trending_news').insert(rows);
       if (insertError) {
         console.error(`[fetch-trending] Insert failed for ${country.code}:`, insertError);
-        results.push({ country: country.code, inserted: 0, error: insertError.message });
+        results.push({ country: country.code, inserted: 0, skipped, error: insertError.message });
       } else {
-        results.push({ country: country.code, inserted: rows.length });
+        results.push({ country: country.code, inserted: rows.length, skipped });
       }
     } catch (err) {
-      results.push({ country: country.code, inserted: 0, error: String(err) });
+      results.push({ country: country.code, inserted: 0, skipped: 0, error: String(err) });
     }
 
     await sleep(400);
   }
 
-  // Delete rows past their expiry
-  await supabase.from('trending_news').delete().lt('expires_at', new Date().toISOString());
+  // Prune articles older than 30 days to keep the database lean
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+  await supabase.from('trending_news').delete().lt('fetched_at', thirtyDaysAgo);
 
   const totalInserted = results.reduce((sum, r) => sum + r.inserted, 0);
-  console.log(`[fetch-trending] Done. Inserted ${totalInserted} rows.`);
-  return NextResponse.json({ success: true, totalInserted, results });
+  const totalSkipped  = results.reduce((sum, r) => sum + r.skipped, 0);
+  console.log(`[fetch-trending] Done. Inserted ${totalInserted}, skipped ${totalSkipped} duplicates.`);
+  return NextResponse.json({ success: true, totalInserted, totalSkipped, results });
 }
 
 export async function GET(req: NextRequest) {

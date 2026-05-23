@@ -38,7 +38,6 @@ async function fetchInitialData(searchParams: PageProps['searchParams']): Promis
 }> {
   try {
     const supabase = createAdminClient();
-    const sixHoursAgo = new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString();
 
     const category   = searchParams?.category;
     const q          = searchParams?.q ?? '';
@@ -47,7 +46,6 @@ async function fetchInitialData(searchParams: PageProps['searchParams']): Promis
     const { data: latestRow } = await supabase
       .from('ai_news')
       .select('fetched_at')
-      .gte('fetched_at', sixHoursAgo)
       .order('fetched_at', { ascending: false })
       .limit(1)
       .maybeSingle();
@@ -57,7 +55,6 @@ async function fetchInitialData(searchParams: PageProps['searchParams']): Promis
     let query = supabase
       .from('ai_news')
       .select('id,source_key,source_name,topic,summary,category,source_url,source_title,image_url,fetched_at,rank')
-      .gte('fetched_at', sixHoursAgo)
       .order('fetched_at', { ascending: false })
       .order('rank', { ascending: true })
       .limit(50);

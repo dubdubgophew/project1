@@ -25,14 +25,10 @@ export async function GET(req: NextRequest) {
   try {
     const supabase = createAdminClient();
 
-    // Determine the latest fetch window (last 6 hours)
-    const sixHoursAgo = new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString();
-
     // Get latest fetched_at timestamp
     const { data: latestRow } = await supabase
       .from('trending_news')
       .select('fetched_at')
-      .gte('fetched_at', sixHoursAgo)
       .order('fetched_at', { ascending: false })
       .limit(1)
       .maybeSingle();
@@ -42,8 +38,7 @@ export async function GET(req: NextRequest) {
     // Build the count query
     let countQuery = supabase
       .from('trending_news')
-      .select('id', { count: 'exact', head: true })
-      .gte('fetched_at', sixHoursAgo);
+      .select('id', { count: 'exact', head: true });
 
     if (country !== 'all' && country.length === 2) {
       countQuery = countQuery.eq('country_code', country.toUpperCase());
@@ -64,7 +59,6 @@ export async function GET(req: NextRequest) {
     let dataQuery = supabase
       .from('trending_news')
       .select('id,country_code,country_name,topic,summary,traffic_volume,category,source_url,source_name,source_title,image_url,fetched_at,rank')
-      .gte('fetched_at', sixHoursAgo)
       .order('fetched_at', { ascending: false })
       .order('rank', { ascending: true })
       .range(offset, offset + limit - 1);

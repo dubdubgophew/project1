@@ -12,12 +12,10 @@ export async function GET(req: NextRequest) {
     const offset   = (page - 1) * limit;
 
     const supabase = createAdminClient();
-    const sixHoursAgo = new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString();
 
     const { data: latestRow } = await supabase
       .from('ai_news')
       .select('fetched_at')
-      .gte('fetched_at', sixHoursAgo)
       .order('fetched_at', { ascending: false })
       .limit(1)
       .maybeSingle();
@@ -25,7 +23,6 @@ export async function GET(req: NextRequest) {
     let query = supabase
       .from('ai_news')
       .select('id,source_key,source_name,topic,summary,category,source_url,source_title,image_url,fetched_at,rank', { count: 'exact' })
-      .gte('fetched_at', sixHoursAgo)
       .order('fetched_at', { ascending: false })
       .order('rank', { ascending: true })
       .range(offset, offset + limit - 1);

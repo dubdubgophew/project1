@@ -77,7 +77,15 @@ Respond ONLY with a valid JSON array. No markdown, no extra text.`;
 export async function POST(_req: NextRequest) {
   console.log('[Cron] fetch-ai-news started');
   const supabase = createAdminClient();
-  const results: { source: string; inserted: number; error?: string }[] = [];
+  const results: { source: string; inserted: number; skipped: number; error?: string }[] = [];
+
+  // Load all source_urls stored in the last 7 days to deduplicate
+  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+  const { data: existingRows } = await supabase
+    .from('ai_news')
+    .select('source_url')
+    .gte('fetched_at', sevenDaysAgo);
+  const existingUrls = new Set((existingRows ?? []).map(r => r.source_url).filter(Boolean));
 
   for (const source of AI_SOURCES) {
     try {
@@ -88,23 +96,27 @@ export async function POST(_req: NextRequest) {
         items = await fetchSourceFeed(source.url);
       } catch (err) {
         console.error(`[fetch-ai-news] Feed failed for ${source.key}:`, err);
-        results.push({ source: source.key, inserted: 0, error: String(err) });
+        results.push({ source: source.key, inserted: 0, skipped: 0, error: String(err) });
         await sleep(400);
         continue;
       }
 
-      if (!items.length) {
-        results.push({ source: source.key, inserted: 0, error: 'No items in feed' });
+      // Skip articles whose source_url is already in the database
+      const newItems = items.filter(item => item.newsUrl && !existingUrls.has(item.newsUrl));
+      const skipped  = items.length - newItems.length;
+
+      if (!newItems.length) {
+        results.push({ source: source.key, inserted: 0, skipped, error: skipped ? undefined : 'No items in feed' });
         await sleep(400);
         continue;
       }
 
       let summaries: AISummaryItem[];
       try {
-        summaries = await generateAISummaries(source.name, items);
+        summaries = await generateAISummaries(source.name, newItems);
       } catch (aiErr) {
         console.error(`[fetch-ai-news] AI failed for ${source.key}, using fallback:`, aiErr);
-        summaries = items.map(t => ({
+        summaries = newItems.map(t => ({
           topic: t.topic,
           summary: t.snippets.join(' ').slice(0, 600) || `${t.topic} — latest AI news.`,
           category: 'Industry',
@@ -112,14 +124,16 @@ export async function POST(_req: NextRequest) {
       }
 
       const now = new Date();
-      const expiresAt = new Date(now.getTime() + 26 * 60 * 60 * 1000);
+      const expiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
 
-      const rows = items.map((item, idx) => {
+      const rows = newItems.map((item, idx) => {
         const ai: AISummaryItem = summaries[idx] ?? {
           topic: item.topic,
           summary: item.snippets.join(' ').slice(0, 600) || item.topic,
           category: 'Industry',
         };
+        // Track newly inserted URLs so subsequent sources don't double-insert
+        if (item.newsUrl) existingUrls.add(item.newsUrl);
         return {
           source_key:   source.key,
           source_name:  source.name,
@@ -138,22 +152,25 @@ export async function POST(_req: NextRequest) {
       const { error: insertError } = await supabase.from('ai_news').insert(rows);
       if (insertError) {
         console.error(`[fetch-ai-news] Insert failed for ${source.key}:`, insertError);
-        results.push({ source: source.key, inserted: 0, error: insertError.message });
+        results.push({ source: source.key, inserted: 0, skipped, error: insertError.message });
       } else {
-        results.push({ source: source.key, inserted: rows.length });
+        results.push({ source: source.key, inserted: rows.length, skipped });
       }
     } catch (err) {
-      results.push({ source: source.key, inserted: 0, error: String(err) });
+      results.push({ source: source.key, inserted: 0, skipped: 0, error: String(err) });
     }
 
     await sleep(400);
   }
 
-  await supabase.from('ai_news').delete().lt('expires_at', new Date().toISOString());
+  // Prune articles older than 30 days to keep the database lean
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+  await supabase.from('ai_news').delete().lt('fetched_at', thirtyDaysAgo);
 
   const totalInserted = results.reduce((sum, r) => sum + r.inserted, 0);
-  console.log(`[fetch-ai-news] Done. Inserted ${totalInserted} rows.`);
-  return NextResponse.json({ success: true, totalInserted, results });
+  const totalSkipped  = results.reduce((sum, r) => sum + r.skipped, 0);
+  console.log(`[fetch-ai-news] Done. Inserted ${totalInserted}, skipped ${totalSkipped} duplicates.`);
+  return NextResponse.json({ success: true, totalInserted, totalSkipped, results });
 }
 
 export async function GET(req: NextRequest) {
