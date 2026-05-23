@@ -299,8 +299,8 @@ function drawElement(ctx: CanvasRenderingContext2D, el: Elem, mode: Mode) {
     const isSolid = el.type === 'sticky';
 
     if (isSolid) {
-      ctx.fillStyle = el.fill === 'transparent' ? '#fef08a' : el.fill;
-      ctx.strokeStyle = mode === 'blueprint' ? '#60a5fa' : (el.stroke === '#f9fafb' ? '#ca8a04' : el.stroke);
+      ctx.fillStyle = el.fill === 'transparent' ? '#fef9c3' : el.fill;
+      ctx.strokeStyle = mode === 'blueprint' ? '#60a5fa' : el.stroke;
     }
 
     if (sketchy) {
@@ -434,7 +434,7 @@ function drawElement(ctx: CanvasRenderingContext2D, el: Elem, mode: Mode) {
       const weight = el.bold ? 'bold ' : '';
       const st = el.italic ? 'italic ' : '';
       ctx.font = `${st}${weight}${fs}px -apple-system, Inter, sans-serif`;
-      ctx.fillStyle = mode === 'blueprint' ? '#93c5fd' : el.stroke;
+      ctx.fillStyle = mode === 'blueprint' ? '#93c5fd' : '#1e1e2e';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       // Word wrap
@@ -738,13 +738,15 @@ export function AetherBoard() {
         }
         const snapX = elements.filter(x => x.id !== el.id).flatMap(x => [x.x, x.x + x.w, x.x + x.w / 2]);
         const snapY = elements.filter(x => x.id !== el.id).flatMap(x => [x.y, x.y + x.h, x.y + x.h / 2]);
-        const ids = e.shiftKey ? [...selectedIds, el.id] : selectedIds.includes(el.id) ? selectedIds : [el.id];
-        drag.current = {
-          type: 'move', startX: wx, startY: wy,
-          origX: el.x, origY: el.y,
-          ids,
-          snapX, snapY,
-        };
+        const moveIds = e.shiftKey
+          ? (selectedIds.includes(el.id) ? selectedIds : [...selectedIds, el.id])
+          : (selectedIds.includes(el.id) ? selectedIds : [el.id]);
+        const origPositions: Record<string, { x: number; y: number; pts?: number[] }> = {};
+        moveIds.forEach(id => {
+          const elem = elements.find(ex => ex.id === id);
+          if (elem) origPositions[id] = { x: elem.x, y: elem.y, pts: elem.pts ? [...elem.pts] : undefined };
+        });
+        drag.current = { type: 'move', startX: wx, startY: wy, origPositions, ids: moveIds, snapX, snapY };
         return;
       }
       // Start selection box
@@ -824,12 +826,18 @@ export function AetherBoard() {
       const dx = wx - d.startX, dy = wy - d.startY;
       setElements(prev => prev.map(el => {
         if (!d.ids?.includes(el.id) || el.locked) return el;
-        let nx = (d.origX ?? el.x) + dx;
-        let ny = (d.origY ?? el.y) + dy;
-        // Snap to grid
+        const orig = d.origPositions?.[el.id];
+        let nx = (orig?.x ?? el.x) + dx;
+        let ny = (orig?.y ?? el.y) + dy;
         if (e.shiftKey) {
           nx = Math.round(nx / GRID_SIZE) * GRID_SIZE;
           ny = Math.round(ny / GRID_SIZE) * GRID_SIZE;
+        }
+        if ((el.type === 'arrow' || el.type === 'line' || el.type === 'pen') && orig?.pts) {
+          const newPts = [...orig.pts];
+          for (let i = 0; i < newPts.length; i += 2) newPts[i] += dx;
+          for (let i = 1; i < newPts.length; i += 2) newPts[i] += dy;
+          return { ...el, x: nx, y: ny, pts: newPts };
         }
         return { ...el, x: nx, y: ny };
       }));
@@ -1100,11 +1108,11 @@ export function AetherBoard() {
     const maxY = Math.max(...hs2) + 20;
     const svgW = maxX - minX, svgH = maxY - minY;
     let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${svgW}" height="${svgH}" viewBox="${minX} ${minY} ${svgW} ${svgH}">`;
-    svg += `<rect x="${minX}" y="${minY}" width="${svgW}" height="${svgH}" fill="#030712"/>`;
+    svg += `<rect x="${minX}" y="${minY}" width="${svgW}" height="${svgH}" fill="#ffffff"/>`;
     elements.forEach(el => {
       if (el.type === 'rect' || el.type === 'sticky') {
         svg += `<rect x="${el.x}" y="${el.y}" width="${el.w}" height="${el.h}" fill="${el.fill}" stroke="${el.stroke}" stroke-width="${el.lineWidth}" rx="4"/>`;
-        if (el.label) svg += `<text x="${el.x + el.w/2}" y="${el.y + el.h/2}" text-anchor="middle" dominant-baseline="middle" fill="#f9fafb" font-size="${el.fontSize ?? 15}" font-family="sans-serif">${el.label}</text>`;
+        if (el.label) svg += `<text x="${el.x + el.w/2}" y="${el.y + el.h/2}" text-anchor="middle" dominant-baseline="middle" fill="#1e1e2e" font-size="${el.fontSize ?? 15}" font-family="sans-serif">${el.label}</text>`;
       } else if (el.type === 'ellipse') {
         svg += `<ellipse cx="${el.x+el.w/2}" cy="${el.y+el.h/2}" rx="${el.w/2}" ry="${el.h/2}" fill="${el.fill}" stroke="${el.stroke}" stroke-width="${el.lineWidth}"/>`;
       } else if (el.type === 'arrow') {
@@ -1192,28 +1200,28 @@ export function AetherBoard() {
   ];
 
   return (
-    <div className="w-screen h-screen bg-[#030712] flex flex-col overflow-hidden" style={{ fontFamily: '-apple-system, Inter, sans-serif' }}>
+    <div className="w-screen h-screen bg-white flex flex-col overflow-hidden" style={{ fontFamily: '-apple-system, Inter, sans-serif' }}>
 
       {/* ── Top bar ── */}
-      <div className="flex items-center justify-between px-3 h-12 border-b border-[#1f2937] bg-[#0a0f1a] shrink-0 z-20">
+      <div className="flex items-center justify-between px-3 h-12 border-b border-gray-200 bg-white shrink-0 z-20">
         {/* Left: logo + title */}
         <div className="flex items-center gap-3">
-          <a href="/tools" className="flex items-center gap-1.5 text-gray-500 hover:text-gray-300 transition-colors text-xs">
+          <a href="/tools" className="flex items-center gap-1.5 text-gray-500 hover:text-gray-700 transition-colors text-xs">
             <Home className="w-3.5 h-3.5" />
             <span>Formly</span>
           </a>
-          <span className="text-gray-700">/</span>
+          <span className="text-gray-400">/</span>
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded-md bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
               <span className="text-white text-xs font-bold">A</span>
             </div>
-            <span className="text-sm font-semibold text-white">AetherBoard</span>
+            <span className="text-sm font-semibold text-gray-900">AetherBoard</span>
             <span className="text-[10px] font-semibold text-violet-400 bg-violet-500/15 border border-violet-500/30 px-1.5 py-0.5 rounded-full">BETA</span>
           </div>
         </div>
 
         {/* Center: mode selector */}
-        <div className="flex items-center gap-1 bg-[#111827] border border-[#1f2937] rounded-xl p-1">
+        <div className="flex items-center gap-1 bg-gray-100 border border-gray-200 rounded-xl p-1">
           {(['clean', 'sketchy', 'blueprint'] as Mode[]).map(m => (
             <button
               key={m}
@@ -1221,7 +1229,7 @@ export function AetherBoard() {
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
                 mode === m
                   ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/20'
-                  : 'text-gray-400 hover:text-white hover:bg-[#1f2937]'
+                  : 'text-gray-500 hover:text-gray-900 hover:bg-gray-200'
               }`}
             >
               {m === 'clean' ? '✦ Clean' : m === 'sketchy' ? '✏️ Sketchy' : '📐 Blueprint'}
@@ -1242,17 +1250,17 @@ export function AetherBoard() {
             <Sparkles className="w-3.5 h-3.5" />
             AI Generate
           </button>
-          <button onClick={undo} disabled={histIdx <= 0} className="p-2 rounded-lg text-gray-500 hover:text-white hover:bg-[#1f2937] disabled:opacity-30 transition-colors" title="Undo (Cmd+Z)">
+          <button onClick={undo} disabled={histIdx <= 0} className="p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 disabled:opacity-30 transition-colors" title="Undo (Cmd+Z)">
             <Undo2 className="w-4 h-4" />
           </button>
-          <button onClick={redo} disabled={histIdx >= history.length - 1} className="p-2 rounded-lg text-gray-500 hover:text-white hover:bg-[#1f2937] disabled:opacity-30 transition-colors" title="Redo (Cmd+Shift+Z)">
+          <button onClick={redo} disabled={histIdx >= history.length - 1} className="p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 disabled:opacity-30 transition-colors" title="Redo (Cmd+Shift+Z)">
             <Redo2 className="w-4 h-4" />
           </button>
-          <div className="w-px h-5 bg-[#1f2937]" />
-          <button onClick={exportPNG} className="p-2 rounded-lg text-gray-500 hover:text-white hover:bg-[#1f2937] transition-colors" title="Export PNG">
+          <div className="w-px h-5 bg-gray-200" />
+          <button onClick={exportPNG} className="p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors" title="Export PNG">
             <Download className="w-4 h-4" />
           </button>
-          <button onClick={exportSVG} className="p-2 rounded-lg text-gray-500 hover:text-white hover:bg-[#1f2937] transition-colors" title="Export SVG">
+          <button onClick={exportSVG} className="p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors" title="Export SVG">
             <ExternalLink className="w-4 h-4" />
           </button>
           <button onClick={clearAll} className="p-2 rounded-lg text-gray-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors" title="Clear all">
@@ -1265,7 +1273,7 @@ export function AetherBoard() {
       <div className="flex flex-1 overflow-hidden relative">
 
         {/* ── Left toolbar ── */}
-        <div className="flex flex-col items-center gap-1 w-14 py-3 border-r border-[#1f2937] bg-[#0a0f1a] shrink-0 z-10 overflow-y-auto">
+        <div className="flex flex-col items-center gap-1 w-14 py-3 border-r border-gray-200 bg-gray-50 shrink-0 z-10 overflow-y-auto">
           {TOOLS.map(({ id, icon: Icon, label, key }) => (
             <button
               key={id}
@@ -1273,41 +1281,41 @@ export function AetherBoard() {
               title={`${label} (${key})`}
               className={`group relative flex items-center justify-center w-10 h-10 rounded-xl transition-all ${
                 tool === id
-                  ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/30'
-                  : 'text-gray-500 hover:bg-[#1f2937] hover:text-white'
+                  ? 'bg-violet-100 text-violet-700 border border-violet-300'
+                  : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
               }`}
             >
               <Icon className="w-4.5 h-4.5" style={{ width: 18, height: 18 }} />
               {/* Tooltip */}
-              <div className="absolute left-full ml-2 px-2 py-1 bg-[#1f2937] border border-[#374151] rounded-lg text-xs text-white whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 shadow-xl">
+              <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 border border-gray-700 rounded-lg text-xs text-white whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 shadow-xl">
                 {label}
                 <span className="ml-1.5 text-gray-500 font-mono">{key}</span>
               </div>
             </button>
           ))}
 
-          <div className="w-8 h-px bg-[#1f2937] my-1" />
+          <div className="w-8 h-px bg-gray-200 my-1" />
 
           <button
             onClick={() => setShowLayers(l => !l)}
             title="Layers"
             className={`flex items-center justify-center w-10 h-10 rounded-xl transition-all ${
-              showLayers ? 'bg-[#1f2937] text-violet-400' : 'text-gray-500 hover:bg-[#1f2937] hover:text-white'
+              showLayers ? 'bg-gray-200 text-violet-600' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
             }`}
           >
             <Layers style={{ width: 18, height: 18 }} />
           </button>
 
           {/* Zoom controls */}
-          <div className="w-8 h-px bg-[#1f2937] my-1" />
-          <button onClick={() => setZoom(z => clamp(z * 1.2, 0.05, 8))} className="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:bg-[#1f2937] hover:text-white transition-all" title="Zoom In (+)">
+          <div className="w-8 h-px bg-gray-200 my-1" />
+          <button onClick={() => setZoom(z => clamp(z * 1.2, 0.05, 8))} className="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-all" title="Zoom In (+)">
             <ZoomIn style={{ width: 18, height: 18 }} />
           </button>
-          <div className="text-[10px] text-gray-600 font-mono">{Math.round(zoom * 100)}%</div>
-          <button onClick={() => setZoom(z => clamp(z * 0.83, 0.05, 8))} className="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:bg-[#1f2937] hover:text-white transition-all" title="Zoom Out (-)">
+          <div className="text-[10px] text-gray-500 font-mono">{Math.round(zoom * 100)}%</div>
+          <button onClick={() => setZoom(z => clamp(z * 0.83, 0.05, 8))} className="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-all" title="Zoom Out (-)">
             <ZoomOut style={{ width: 18, height: 18 }} />
           </button>
-          <button onClick={() => { setZoom(1); setPan({ x: 0, y: 0 }); }} className="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:bg-[#1f2937] hover:text-white transition-all" title="Reset View (Cmd+0)">
+          <button onClick={() => { setZoom(1); setPan({ x: 0, y: 0 }); }} className="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-all" title="Reset View (Cmd+0)">
             <Maximize2 style={{ width: 18, height: 18 }} />
           </button>
         </div>
@@ -1348,7 +1356,7 @@ export function AetherBoard() {
                   }
                   e.stopPropagation();
                 }}
-                className="w-full h-full resize-none bg-transparent border-none outline-none text-white text-center"
+                className="w-full h-full resize-none bg-transparent border-none outline-none text-gray-900 text-center"
                 style={{
                   fontSize: `${(elements.find(e => e.id === editingId)?.fontSize ?? 15) * zoom}px`,
                   fontFamily: '-apple-system, Inter, sans-serif',
@@ -1361,17 +1369,17 @@ export function AetherBoard() {
           )}
 
           {/* Element count */}
-          <div className="absolute bottom-4 right-4 flex items-center gap-3 text-xs text-gray-600 pointer-events-none select-none">
+          <div className="absolute bottom-4 right-4 flex items-center gap-3 text-xs text-gray-400 pointer-events-none select-none">
             <span>{elements.length} element{elements.length !== 1 ? 's' : ''}</span>
             {selCount > 0 && <span className="text-violet-400">{selCount} selected</span>}
           </div>
         </div>
 
         {/* ── Right panel (style + properties) ── */}
-        <div className="w-60 border-l border-[#1f2937] bg-[#0a0f1a] shrink-0 flex flex-col overflow-y-auto z-10">
+        <div className="w-60 border-l border-gray-200 bg-gray-50 shrink-0 flex flex-col overflow-y-auto z-10">
 
           {/* Style panel */}
-          <div className="p-4 border-b border-[#1f2937]">
+          <div className="p-4 border-b border-gray-200">
             <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Style</p>
 
             {/* Stroke color */}
@@ -1383,7 +1391,7 @@ export function AetherBoard() {
                     key={c}
                     onClick={() => { setStroke(c); applyStylePatch({ stroke: c }); }}
                     className="w-6 h-6 rounded-full border-2 transition-transform hover:scale-110"
-                    style={{ backgroundColor: c === 'transparent' ? undefined : c, borderColor: stroke === c ? '#a855f7' : '#374151' }}
+                    style={{ backgroundColor: c === 'transparent' ? undefined : c, borderColor: stroke === c ? '#7c3aed' : '#e5e7eb' }}
                     title={c}
                   />
                 ))}
@@ -1391,15 +1399,15 @@ export function AetherBoard() {
               <div className="flex items-center gap-2">
                 <input
                   type="color"
-                  value={stroke === 'transparent' ? '#f9fafb' : stroke}
+                  value={stroke === 'transparent' ? '#1e1e2e' : stroke}
                   onChange={e => { setStroke(e.target.value); applyStylePatch({ stroke: e.target.value }); }}
-                  className="w-7 h-7 rounded cursor-pointer border border-[#374151] bg-transparent"
+                  className="w-7 h-7 rounded cursor-pointer border border-gray-200 bg-transparent"
                 />
                 <input
                   type="text"
                   value={stroke}
                   onChange={e => { setStroke(e.target.value); applyStylePatch({ stroke: e.target.value }); }}
-                  className="flex-1 text-xs bg-[#111827] border border-[#1f2937] rounded px-2 py-1 text-gray-300 font-mono"
+                  className="flex-1 text-xs bg-white border border-gray-200 rounded px-2 py-1 text-gray-700 font-mono"
                 />
               </div>
             </div>
@@ -1415,7 +1423,7 @@ export function AetherBoard() {
                     className="w-6 h-6 rounded-full border-2 transition-transform hover:scale-110 relative"
                     style={{
                       backgroundColor: c === 'transparent' ? undefined : c,
-                      borderColor: fill === c ? '#a855f7' : '#374151',
+                      borderColor: fill === c ? '#7c3aed' : '#e5e7eb',
                     }}
                     title={c}
                   >
@@ -1428,13 +1436,13 @@ export function AetherBoard() {
                   type="color"
                   value={fill === 'transparent' ? '#000000' : fill.slice(0, 7)}
                   onChange={e => { const v = e.target.value + '33'; setFill(v); applyStylePatch({ fill: v }); }}
-                  className="w-7 h-7 rounded cursor-pointer border border-[#374151] bg-transparent"
+                  className="w-7 h-7 rounded cursor-pointer border border-gray-200 bg-transparent"
                 />
                 <input
                   type="text"
                   value={fill}
                   onChange={e => { setFill(e.target.value); applyStylePatch({ fill: e.target.value }); }}
-                  className="flex-1 text-xs bg-[#111827] border border-[#1f2937] rounded px-2 py-1 text-gray-300 font-mono"
+                  className="flex-1 text-xs bg-white border border-gray-200 rounded px-2 py-1 text-gray-700 font-mono"
                 />
               </div>
             </div>
@@ -1448,7 +1456,7 @@ export function AetherBoard() {
                     key={w}
                     onClick={() => { setLineWidth(w); applyStylePatch({ lineWidth: w }); }}
                     className={`flex items-center justify-center w-8 h-8 rounded-lg text-xs font-bold transition-all border ${
-                      lineWidth === w ? 'bg-violet-600 text-white border-violet-500' : 'text-gray-400 border-[#1f2937] hover:border-gray-600 hover:text-white'
+                      lineWidth === w ? 'bg-violet-600 text-white border-violet-500' : 'text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-900'
                     }`}
                   >
                     {w}
@@ -1466,7 +1474,7 @@ export function AetherBoard() {
                     key={s}
                     onClick={() => { setFontSize(s); applyStylePatch({ fontSize: s }); }}
                     className={`flex items-center justify-center w-8 h-8 rounded-lg text-xs font-bold transition-all border ${
-                      fontSize === s ? 'bg-violet-600 text-white border-violet-500' : 'text-gray-400 border-[#1f2937] hover:border-gray-600 hover:text-white'
+                      fontSize === s ? 'bg-violet-600 text-white border-violet-500' : 'text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-900'
                     }`}
                   >
                     {s}
@@ -1476,11 +1484,11 @@ export function AetherBoard() {
               {/* Bold / Italic */}
               <div className="flex gap-1 mt-2">
                 <button onClick={() => { setBold(b => !b); applyStylePatch({ bold: !bold }); }}
-                  className={`flex items-center justify-center w-8 h-8 rounded-lg border transition-all ${bold ? 'bg-violet-600 text-white border-violet-500' : 'text-gray-400 border-[#1f2937] hover:text-white'}`}>
+                  className={`flex items-center justify-center w-8 h-8 rounded-lg border transition-all ${bold ? 'bg-violet-600 text-white border-violet-500' : 'text-gray-500 border-gray-200 hover:text-gray-900'}`}>
                   <Bold style={{ width: 14, height: 14 }} />
                 </button>
                 <button onClick={() => { setItalic(it => !it); applyStylePatch({ italic: !italic }); }}
-                  className={`flex items-center justify-center w-8 h-8 rounded-lg border transition-all ${italic ? 'bg-violet-600 text-white border-violet-500' : 'text-gray-400 border-[#1f2937] hover:text-white'}`}>
+                  className={`flex items-center justify-center w-8 h-8 rounded-lg border transition-all ${italic ? 'bg-violet-600 text-white border-violet-500' : 'text-gray-500 border-gray-200 hover:text-gray-900'}`}>
                   <Italic style={{ width: 14, height: 14 }} />
                 </button>
               </div>
@@ -1489,30 +1497,30 @@ export function AetherBoard() {
 
           {/* Selection properties */}
           {selEl && (
-            <div className="p-4 border-b border-[#1f2937]">
+            <div className="p-4 border-b border-gray-200">
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Element</p>
               <div className="space-y-2 text-xs">
                 <div className="flex gap-2">
                   <label className="text-gray-500 w-6">X</label>
                   <input type="number" value={Math.round(selEl.x)} onChange={e => updateElement(selEl.id, { x: Number(e.target.value) })}
-                    className="flex-1 bg-[#111827] border border-[#1f2937] rounded px-2 py-1 text-gray-300 font-mono" />
+                    className="flex-1 bg-white border border-gray-200 rounded px-2 py-1 text-gray-700 font-mono" />
                 </div>
                 <div className="flex gap-2">
                   <label className="text-gray-500 w-6">Y</label>
                   <input type="number" value={Math.round(selEl.y)} onChange={e => updateElement(selEl.id, { y: Number(e.target.value) })}
-                    className="flex-1 bg-[#111827] border border-[#1f2937] rounded px-2 py-1 text-gray-300 font-mono" />
+                    className="flex-1 bg-white border border-gray-200 rounded px-2 py-1 text-gray-700 font-mono" />
                 </div>
                 {selEl.type !== 'pen' && selEl.type !== 'arrow' && selEl.type !== 'line' && (
                   <>
                     <div className="flex gap-2">
                       <label className="text-gray-500 w-6">W</label>
                       <input type="number" value={Math.round(selEl.w)} onChange={e => updateElement(selEl.id, { w: Math.max(10, Number(e.target.value)) })}
-                        className="flex-1 bg-[#111827] border border-[#1f2937] rounded px-2 py-1 text-gray-300 font-mono" />
+                        className="flex-1 bg-white border border-gray-200 rounded px-2 py-1 text-gray-700 font-mono" />
                     </div>
                     <div className="flex gap-2">
                       <label className="text-gray-500 w-6">H</label>
                       <input type="number" value={Math.round(selEl.h)} onChange={e => updateElement(selEl.id, { h: Math.max(10, Number(e.target.value)) })}
-                        className="flex-1 bg-[#111827] border border-[#1f2937] rounded px-2 py-1 text-gray-300 font-mono" />
+                        className="flex-1 bg-white border border-gray-200 rounded px-2 py-1 text-gray-700 font-mono" />
                     </div>
                   </>
                 )}
@@ -1521,14 +1529,14 @@ export function AetherBoard() {
                   <input type="range" min="0" max="1" step="0.05" value={selEl.opacity}
                     onChange={e => { updateElement(selEl.id, { opacity: Number(e.target.value) }); }}
                     className="flex-1 accent-violet-500" />
-                  <span className="text-gray-400 w-8 text-right">{Math.round(selEl.opacity * 100)}%</span>
+                  <span className="text-gray-500 w-8 text-right">{Math.round(selEl.opacity * 100)}%</span>
                 </div>
                 {selEl.label !== undefined && (
                   <div>
                     <label className="text-gray-500 block mb-1">Label</label>
                     <input type="text" value={selEl.label ?? ''}
                       onChange={e => updateElement(selEl.id, { label: e.target.value })}
-                      className="w-full bg-[#111827] border border-[#1f2937] rounded px-2 py-1 text-gray-300"
+                      className="w-full bg-white border border-gray-200 rounded px-2 py-1 text-gray-700"
                       placeholder="Label…"
                     />
                   </div>
@@ -1538,16 +1546,16 @@ export function AetherBoard() {
               {/* Actions */}
               <div className="flex gap-1 mt-3">
                 <button onClick={() => { const el = elements.find(x => x.id === selEl.id); if (el) addElements([{ ...el, id: uid(), x: el.x + 20, y: el.y + 20 }]); }}
-                  className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs text-gray-400 hover:text-white hover:bg-[#1f2937] transition-colors">
+                  className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors">
                   <Copy style={{ width: 12, height: 12 }} /> Dupe
                 </button>
                 <button onClick={() => updateElement(selEl.id, { locked: !selEl.locked })}
-                  className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs text-gray-400 hover:text-white hover:bg-[#1f2937] transition-colors">
+                  className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors">
                   {selEl.locked ? <Unlock style={{ width: 12, height: 12 }} /> : <Lock style={{ width: 12, height: 12 }} />}
                   {selEl.locked ? 'Unlock' : 'Lock'}
                 </button>
                 <button onClick={deleteSelected}
-                  className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs text-gray-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors ml-auto">
+                  className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs text-gray-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors ml-auto">
                   <Trash2 style={{ width: 12, height: 12 }} /> Delete
                 </button>
               </div>
@@ -1564,17 +1572,17 @@ export function AetherBoard() {
                     key={el.id}
                     onClick={() => setSelectedIds([el.id])}
                     className={`flex items-center gap-2 px-2 py-1.5 rounded-lg cursor-pointer text-xs transition-colors ${
-                      selectedIds.includes(el.id) ? 'bg-violet-600/20 text-violet-300 border border-violet-500/30' : 'text-gray-400 hover:bg-[#1f2937] hover:text-white'
+                      selectedIds.includes(el.id) ? 'bg-violet-100 text-violet-700 border border-violet-200' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
                     }`}
                   >
-                    <span className="text-gray-600 font-mono w-4">{elements.length - i}</span>
+                    <span className="text-gray-400 font-mono w-4">{elements.length - i}</span>
                     <span className="capitalize">{el.type}</span>
                     <span className="text-gray-600 truncate ml-auto">{el.label ?? el.text ?? ''}</span>
                     {el.locked && <Lock style={{ width: 10, height: 10 }} className="text-amber-400 shrink-0" />}
                   </div>
                 ))}
                 {elements.length === 0 && (
-                  <p className="text-gray-600 text-xs text-center py-4">No elements yet</p>
+                  <p className="text-gray-400 text-xs text-center py-4">No elements yet</p>
                 )}
               </div>
             </div>
@@ -1584,7 +1592,7 @@ export function AetherBoard() {
           {!showLayers && elements.length === 0 && (
             <div className="p-4">
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Quick start</p>
-              <div className="space-y-1.5 text-xs text-gray-500">
+              <div className="space-y-1.5 text-xs text-gray-400">
                 {[
                   '⌨️ Press R for rectangle',
                   '⌨️ Press E for ellipse',
@@ -1603,18 +1611,18 @@ export function AetherBoard() {
 
         {/* ── AI Panel (floating overlay) ── */}
         {showAI && (
-          <div className="absolute top-4 right-[248px] w-80 bg-[#0d1117] border border-violet-500/30 rounded-2xl shadow-2xl shadow-violet-500/10 z-30 overflow-hidden">
-            <div className="flex items-center justify-between px-4 py-3 border-b border-[#1f2937] bg-gradient-to-r from-violet-900/20 to-purple-900/10">
+          <div className="absolute top-4 right-[248px] w-80 bg-white border border-gray-200 rounded-2xl shadow-2xl shadow-gray-200/80 z-30 overflow-hidden">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gradient-to-r from-violet-50 to-purple-50">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-violet-400" />
-                <span className="text-sm font-semibold text-white">AI Diagram Generator</span>
+                <Sparkles className="w-4 h-4 text-violet-500" />
+                <span className="text-sm font-semibold text-gray-900">AI Diagram Generator</span>
               </div>
-              <button onClick={() => setShowAI(false)} className="text-gray-500 hover:text-white transition-colors">
+              <button onClick={() => setShowAI(false)} className="text-gray-400 hover:text-gray-700 transition-colors">
                 <X className="w-4 h-4" />
               </button>
             </div>
             <div className="p-4">
-              <p className="text-xs text-gray-400 mb-3 leading-relaxed">
+              <p className="text-xs text-gray-500 mb-3 leading-relaxed">
                 Describe a diagram in plain English — AetherBoard&apos;s AI will generate it instantly.
               </p>
               <textarea
@@ -1622,7 +1630,7 @@ export function AetherBoard() {
                 onChange={e => setAiPrompt(e.target.value)}
                 onKeyDown={e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) generateDiagram(); e.stopPropagation(); }}
                 placeholder="e.g. &quot;User registration flow with email verification&quot;, &quot;Microservices architecture with API gateway&quot;, &quot;Database schema for e-commerce&quot;"
-                className="w-full h-28 bg-[#111827] border border-[#1f2937] focus:border-violet-500/50 rounded-xl px-3 py-2.5 text-sm text-gray-200 resize-none outline-none placeholder-gray-600 transition-colors"
+                className="w-full h-28 bg-gray-50 border border-gray-200 focus:border-violet-400 rounded-xl px-3 py-2.5 text-sm text-gray-800 resize-none outline-none placeholder-gray-400 transition-colors"
               />
               {aiError && (
                 <p className="text-xs text-rose-400 mt-2 flex items-center gap-1">
@@ -1658,13 +1666,13 @@ export function AetherBoard() {
                   <><Sparkles className="w-4 h-4" /> Generate Diagram</>
                 )}
               </button>
-              <p className="text-[10px] text-gray-600 mt-2 text-center">Powered by Groq AI · Cmd+Enter to generate</p>
+              <p className="text-[10px] text-gray-400 mt-2 text-center">Powered by Groq AI · Cmd+Enter to generate</p>
             </div>
           </div>
         )}
 
         {/* Layers button shortcut */}
-        <div className="absolute bottom-4 left-20 flex items-center gap-1 text-[10px] text-gray-700 pointer-events-none select-none">
+        <div className="absolute bottom-4 left-20 flex items-center gap-1 text-[10px] text-gray-400 pointer-events-none select-none">
           <span className="font-mono">Ctrl+Scroll</span>
           <span>zoom ·</span>
           <span className="font-mono">H</span>
