@@ -8,6 +8,7 @@ import { PricingSection } from '@/components/landing/PricingSection';
 import { FAQ } from '@/components/landing/FAQ';
 import { Testimonials } from '@/components/landing/Testimonials';
 import { BannerAd } from '@/components/shared/AdSense';
+import { AetherBoardBanner } from '@/components/landing/AetherBoardBanner';
 
 export const metadata: Metadata = {
   title: 'Formly — 28 Free AI Tools: Pay Stub Generator, Resume Builder, Contract Generator & More',
@@ -19,6 +20,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
+      <AetherBoardBanner />
       <Header />
       <main>
         <Hero />

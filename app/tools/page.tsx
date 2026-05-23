@@ -306,9 +306,19 @@ const TOOLS: Tool[] = [
     tags: ['digital signature', 'e-signature', 'sign document', 'electronic signature', 'esign'],
     category: 'Payroll & Legal',
   },
+  {
+    icon: '🎨',
+    name: 'AetherBoard',
+    description: 'Infinite canvas whiteboard with AI text-to-diagram, sketchy & blueprint modes, shapes, arrows, freehand drawing, and sticky notes. Free, no signup.',
+    href: '/tools/aetherboard',
+    badge: 'New',
+    color: 'from-violet-500/10 to-purple-600/5 border-violet-500/20 hover:border-violet-500/40',
+    tags: ['whiteboard', 'diagram', 'ai diagram', 'infinite canvas', 'drawing', 'flowchart', 'brainstorm', 'sketchy'],
+    category: 'Design & Diagrams',
+  },
 ];
 
-const ALL_CATEGORIES = ['All', 'Payroll & Legal', 'AI Writing', 'AI Documents', 'Developer', 'Finance', 'Utilities'];
+const ALL_CATEGORIES = ['All', 'Payroll & Legal', 'AI Writing', 'AI Documents', 'Developer', 'Finance', 'Utilities', 'Design & Diagrams'];
 
 function ToolsContent() {
   const searchParams = useSearchParams();
