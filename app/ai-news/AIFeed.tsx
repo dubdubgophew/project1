@@ -7,13 +7,12 @@ import {
   Search, ChevronDown, RefreshCw, Share2, Check,
   ExternalLink, Clock, Mail,
 } from 'lucide-react';
-import { COUNTRIES, type TrendingNews } from '@/lib/trending-utils';
+import { AI_CATEGORIES, type AINewsItem } from '@/lib/ai-news-utils';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 interface Props {
-  initialItems: TrendingNews[];
-  initialCountry: string;
+  initialItems: AINewsItem[];
   initialCategory: string;
   initialQ: string;
   initialId: string | null;
@@ -21,7 +20,7 @@ interface Props {
 }
 
 interface ApiResponse {
-  items: TrendingNews[];
+  items: AINewsItem[];
   total: number;
   page: number;
   hasMore: boolean;
@@ -30,45 +29,33 @@ interface ApiResponse {
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
-const CATEGORIES = [
-  { value: 'all', label: 'All Topics' },
-  { value: 'Sports', label: '🏆 Sports' },
-  { value: 'Tech', label: '💻 Tech' },
-  { value: 'Politics', label: '🏛️ Politics' },
-  { value: 'Entertainment', label: '🎬 Entertainment' },
-  { value: 'Business', label: '📈 Business' },
-  { value: 'Health', label: '❤️ Health' },
-  { value: 'General', label: '📰 General' },
-];
-
 const CATEGORY_COLORS: Record<string, string> = {
-  Sports:        'bg-blue-500/20 text-blue-300 border-blue-500/30',
-  Tech:          'bg-violet-500/20 text-violet-300 border-violet-500/30',
-  Politics:      'bg-red-500/20 text-red-300 border-red-500/30',
-  Entertainment: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
-  Business:      'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
-  Health:        'bg-teal-500/20 text-teal-300 border-teal-500/30',
-  General:       'bg-gray-500/20 text-gray-300 border-gray-500/30',
+  Tools:        'bg-violet-500/20 text-violet-300 border-violet-500/30',
+  Research:     'bg-blue-500/20 text-blue-300 border-blue-500/30',
+  Companies:    'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+  Hardware:     'bg-orange-500/20 text-orange-300 border-orange-500/30',
+  Learning:     'bg-amber-500/20 text-amber-300 border-amber-500/30',
+  'Open Source':'bg-teal-500/20 text-teal-300 border-teal-500/30',
+  Industry:     'bg-red-500/20 text-red-300 border-red-500/30',
 };
 
-// High-quality Unsplash fallback images per category
 const CATEGORY_IMAGES: Record<string, string> = {
-  Sports:        'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&q=75',
-  Tech:          'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=75',
-  Politics:      'https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=800&q=75',
-  Entertainment: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=800&q=75',
-  Business:      'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=75',
-  Health:        'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=75',
-  General:       'https://images.unsplash.com/photo-1495020689067-958852a7765e?w=800&q=75',
+  Tools:        'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=75',
+  Research:     'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&q=75',
+  Companies:    'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=75',
+  Hardware:     'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=75',
+  Learning:     'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=75',
+  'Open Source':'https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=800&q=75',
+  Industry:     'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=75',
 };
 
 const TOOL_PROMOS = [
-  { icon: '📄', name: 'PDF Summarizer',   href: '/tools/pdf-summarizer',   blurb: 'Upload any document from today\'s news and get the key points in seconds.' },
-  { icon: '📧', name: 'AI Email Writer',  href: '/tools/email-writer',     blurb: 'Draft a professional response to any news story or business update instantly.' },
-  { icon: '✍️', name: 'Digital Signature', href: '/tools/digital-signature', blurb: 'Sign documents, contracts, and agreements online — free, no DocuSign needed.' },
-  { icon: '📋', name: 'Resume Builder',   href: '/tools/resume-builder',   blurb: 'Land your next opportunity with an ATS-optimized resume. AI-powered, free.' },
-  { icon: '📷', name: 'QR Code Generator', href: '/tools/qr-code',         blurb: 'Create branded QR codes for sharing articles, profiles, and business links.' },
-  { icon: '✅', name: 'Grammar Checker',  href: '/tools/grammar-checker',  blurb: 'Polish any piece of writing — articles, emails, or reports — instantly free.' },
+  { icon: '📄', name: 'PDF Summarizer',    href: '/tools/pdf-summarizer',    blurb: 'Summarize any AI research paper or whitepaper in seconds. Free, no signup.' },
+  { icon: '✍️', name: 'AI Email Writer',   href: '/tools/email-writer',      blurb: 'Reach out to AI companies, researchers, or teams with a perfectly crafted email.' },
+  { icon: '📋', name: 'Resume Builder',    href: '/tools/resume-builder',    blurb: 'Land an AI/ML role with an ATS-optimized resume. Built with AI, free.' },
+  { icon: '📷', name: 'QR Code Generator', href: '/tools/qr-code',           blurb: 'Create branded QR codes for your AI projects, papers, or GitHub repos.' },
+  { icon: '✅', name: 'Grammar Checker',   href: '/tools/grammar-checker',   blurb: 'Polish your AI blog posts, documentation, or research abstracts instantly.' },
+  { icon: '🖊️', name: 'Digital Signature', href: '/tools/digital-signature', blurb: 'Sign NDAs, partnership agreements, and contracts online — free, no DocuSign.' },
 ];
 
 const STOP_WORDS = new Set([
@@ -97,28 +84,24 @@ function timeAgo(iso: string): string {
   return `${Math.floor(h / 24)}d ago`;
 }
 
-function getSeoKeywords(topic: string, category: string, country: string): string[] {
+function getSeoKeywords(topic: string, category: string): string[] {
   const words = topic
     .split(/\s+/)
     .map(w => w.replace(/[^a-zA-Z]/g, '').toLowerCase())
     .filter(w => w.length > 3 && !STOP_WORDS.has(w))
     .map(w => w.charAt(0).toUpperCase() + w.slice(1))
     .slice(0, 3);
-  return [country, category, ...words].filter(Boolean).slice(0, 5);
-}
-
-function getCountryFlag(code: string): string {
-  return COUNTRIES.find(c => c.code === code)?.flag ?? '🌍';
+  return ['AI', category, ...words].filter(Boolean).slice(0, 5);
 }
 
 // ─── Share Dropdown ───────────────────────────────────────────────────────────
 
-function ShareDropdown({ item, onClose }: { item: TrendingNews; onClose: () => void }) {
+function ShareDropdown({ item, onClose }: { item: AINewsItem; onClose: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
 
-  const shareUrl = `https://www.formly.tools/news?id=${item.id}`;
-  const shareText = `${item.topic} — via Formly News`;
+  const shareUrl  = `https://www.formly.tools/ai-news?id=${item.id}`;
+  const shareText = `${item.topic} — via Formly AI News`;
 
   useEffect(() => {
     function handler(e: MouseEvent) {
@@ -136,31 +119,11 @@ function ShareDropdown({ item, onClose }: { item: TrendingNews; onClose: () => v
   }
 
   const options = [
-    {
-      label: 'WhatsApp',
-      icon: '💬',
-      href: `https://wa.me/?text=${encodeURIComponent(`${shareText}\n${shareUrl}`)}`,
-    },
-    {
-      label: 'Twitter / X',
-      icon: '𝕏',
-      href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`,
-    },
-    {
-      label: 'Facebook',
-      icon: 'f',
-      href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
-    },
-    {
-      label: 'LinkedIn',
-      icon: 'in',
-      href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
-    },
-    {
-      label: 'Telegram',
-      icon: '✈️',
-      href: `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`,
-    },
+    { label: 'WhatsApp',   icon: '💬', href: `https://wa.me/?text=${encodeURIComponent(`${shareText}\n${shareUrl}`)}` },
+    { label: 'Twitter / X',icon: '𝕏',  href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}` },
+    { label: 'Facebook',   icon: 'f',  href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}` },
+    { label: 'LinkedIn',   icon: 'in', href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}` },
+    { label: 'Telegram',   icon: '✈️', href: `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}` },
   ];
 
   return (
@@ -186,11 +149,10 @@ function ShareDropdown({ item, onClose }: { item: TrendingNews; onClose: () => v
           onClick={copyLink}
           className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-gray-700 text-sm text-gray-200 hover:text-white transition-colors"
         >
-          {copied ? (
-            <><Check className="w-4 h-4 text-emerald-400" /><span className="text-emerald-400">Copied!</span></>
-          ) : (
-            <><span className="w-5 text-center text-xs">🔗</span>Copy link</>
-          )}
+          {copied
+            ? <><Check className="w-4 h-4 text-emerald-400" /><span className="text-emerald-400">Copied!</span></>
+            : <><span className="w-5 text-center text-xs">🔗</span>Copy link</>
+          }
         </button>
       </div>
     </div>
@@ -199,16 +161,15 @@ function ShareDropdown({ item, onClose }: { item: TrendingNews; onClose: () => v
 
 // ─── News Card ────────────────────────────────────────────────────────────────
 
-function NewsCard({ item }: { item: TrendingNews }) {
-  const [shareOpen, setShareOpen] = useState(false);
-  const [highlighted, setHighlighted] = useState(false);
+function AICard({ item }: { item: AINewsItem }) {
+  const [shareOpen,    setShareOpen]    = useState(false);
+  const [highlighted,  setHighlighted]  = useState(false);
   const [imgSrc, setImgSrc] = useState<string>(
-    item.image_url || CATEGORY_IMAGES[item.category] || CATEGORY_IMAGES.General
+    item.image_url || CATEGORY_IMAGES[item.category] || CATEGORY_IMAGES.Industry
   );
 
-  const flag     = getCountryFlag(item.country_code);
-  const catColor = CATEGORY_COLORS[item.category] ?? CATEGORY_COLORS.General;
-  const keywords = getSeoKeywords(item.topic, item.category, item.country_name);
+  const catColor = CATEGORY_COLORS[item.category] ?? 'bg-gray-500/20 text-gray-300 border-gray-500/30';
+  const keywords = getSeoKeywords(item.topic, item.category);
 
   useEffect(() => {
     const id = new URLSearchParams(window.location.search).get('id');
@@ -220,7 +181,7 @@ function NewsCard({ item }: { item: TrendingNews }) {
 
   return (
     <article
-      id={`news-${item.id}`}
+      id={`ai-${item.id}`}
       className={`bg-gray-900 border rounded-2xl overflow-hidden flex flex-col transition-all duration-700 ${
         highlighted
           ? 'border-violet-500 ring-2 ring-violet-500/40'
@@ -236,14 +197,12 @@ function NewsCard({ item }: { item: TrendingNews }) {
           src={imgSrc}
           alt={item.topic}
           className="w-full h-full object-cover"
-          onError={() => setImgSrc(CATEGORY_IMAGES[item.category] || CATEGORY_IMAGES.General)}
+          onError={() => setImgSrc(CATEGORY_IMAGES[item.category] || CATEGORY_IMAGES.Industry)}
           itemProp="image"
         />
-        {/* Rank badge */}
         <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm text-white text-xs font-bold px-2 py-1 rounded-lg">
           #{item.rank}
         </div>
-        {/* Category badge */}
         <div className={`absolute top-3 right-3 text-xs font-semibold px-2.5 py-1 rounded-full border backdrop-blur-sm ${catColor}`}>
           {item.category}
         </div>
@@ -251,13 +210,10 @@ function NewsCard({ item }: { item: TrendingNews }) {
 
       {/* Body */}
       <div className="flex flex-col flex-1 p-5 gap-3">
-        {/* Country + time row */}
+        {/* Source + time */}
         <div className="flex items-center justify-between gap-2 text-xs text-gray-500">
-          <span className="flex items-center gap-1.5">
-            <span>{flag}</span>
-            <span className="font-medium text-gray-400">{item.country_name}</span>
-          </span>
-          <span className="flex items-center gap-1">
+          <span className="font-medium text-gray-400 truncate">{item.source_name}</span>
+          <span className="flex items-center gap-1 shrink-0">
             <Clock className="w-3 h-3" />
             <time dateTime={item.fetched_at} itemProp="datePublished">
               {formatDateTime(item.fetched_at)}
@@ -266,10 +222,7 @@ function NewsCard({ item }: { item: TrendingNews }) {
         </div>
 
         {/* Headline */}
-        <h2
-          className="text-white font-bold text-base leading-snug"
-          itemProp="headline"
-        >
+        <h2 className="text-white font-bold text-base leading-snug" itemProp="headline">
           {item.topic}
         </h2>
 
@@ -285,15 +238,12 @@ function NewsCard({ item }: { item: TrendingNews }) {
           ))}
         </div>
 
-        {/* Full summary — no truncation */}
-        <p
-          className="text-gray-300 text-sm leading-relaxed flex-1"
-          itemProp="description"
-        >
+        {/* Full summary */}
+        <p className="text-gray-300 text-sm leading-relaxed flex-1" itemProp="description">
           {item.summary}
         </p>
 
-        {/* Footer: source + share */}
+        {/* Footer */}
         <div className="flex items-center justify-between pt-3 border-t border-gray-800 mt-auto">
           <a
             href={item.source_url}
@@ -303,9 +253,8 @@ function NewsCard({ item }: { item: TrendingNews }) {
             itemProp="publisher"
           >
             <ExternalLink className="w-3 h-3 shrink-0" />
-            <span className="truncate">{item.source_name}</span>
+            <span className="truncate">Read full story</span>
           </a>
-
           <div className="relative">
             <button
               onClick={() => setShareOpen(o => !o)}
@@ -314,9 +263,7 @@ function NewsCard({ item }: { item: TrendingNews }) {
               <Share2 className="w-3.5 h-3.5" />
               Share
             </button>
-            {shareOpen && (
-              <ShareDropdown item={item} onClose={() => setShareOpen(false)} />
-            )}
+            {shareOpen && <ShareDropdown item={item} onClose={() => setShareOpen(false)} />}
           </div>
         </div>
       </div>
@@ -324,16 +271,12 @@ function NewsCard({ item }: { item: TrendingNews }) {
   );
 }
 
-// ─── Tool Promo Card (monetisation) ──────────────────────────────────────────
+// ─── Tool Promo Card ──────────────────────────────────────────────────────────
 
 function ToolPromoCard({ promo }: { promo: typeof TOOL_PROMOS[number] }) {
   return (
     <div className="bg-gradient-to-br from-violet-900/30 to-purple-900/20 border border-violet-500/20 rounded-2xl p-6 flex flex-col gap-4">
-      <div className="flex items-center gap-2">
-        <span className="text-xs font-semibold text-violet-400 uppercase tracking-wider">
-          🤖 Free Tool Spotlight
-        </span>
-      </div>
+      <span className="text-xs font-semibold text-violet-400 uppercase tracking-wider">🤖 Free Tool Spotlight</span>
       <div className="flex items-start gap-3">
         <span className="text-3xl">{promo.icon}</span>
         <div>
@@ -341,17 +284,14 @@ function ToolPromoCard({ promo }: { promo: typeof TOOL_PROMOS[number] }) {
           <p className="text-gray-400 text-sm mt-1 leading-relaxed">{promo.blurb}</p>
         </div>
       </div>
-      <Link
-        href={promo.href}
-        className="btn-primary text-sm py-2 justify-center"
-      >
+      <Link href={promo.href} className="btn-primary text-sm py-2 justify-center">
         Try {promo.name} Free →
       </Link>
     </div>
   );
 }
 
-// ─── Newsletter Card (monetisation) ──────────────────────────────────────────
+// ─── Newsletter Card ──────────────────────────────────────────────────────────
 
 function NewsletterCard() {
   const [email, setEmail] = useState('');
@@ -367,23 +307,22 @@ function NewsletterCard() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       });
-      setState('done');
-    } catch {
+    } finally {
       setState('done');
     }
   }
 
   return (
-    <div className="bg-gradient-to-br from-emerald-900/30 to-teal-900/20 border border-emerald-500/20 rounded-2xl p-6 flex flex-col gap-3">
-      <Mail className="w-6 h-6 text-emerald-400" />
+    <div className="bg-gradient-to-br from-violet-900/30 to-indigo-900/20 border border-violet-500/20 rounded-2xl p-6 flex flex-col gap-3">
+      <Mail className="w-6 h-6 text-violet-400" />
       <div>
-        <h3 className="text-white font-bold text-base">Daily Trending Digest</h3>
+        <h3 className="text-white font-bold text-base">Daily AI Digest</h3>
         <p className="text-gray-400 text-sm mt-1">
-          Get the top 10 trending stories across 10 countries delivered to your inbox every morning.
+          Get the top AI stories from 10 sources delivered to your inbox every morning.
         </p>
       </div>
       {state === 'done' ? (
-        <div className="flex items-center gap-2 text-emerald-400 text-sm font-medium">
+        <div className="flex items-center gap-2 text-violet-400 text-sm font-medium">
           <Check className="w-4 h-4" /> You&apos;re in! Check your inbox.
         </div>
       ) : (
@@ -409,24 +348,6 @@ function NewsletterCard() {
   );
 }
 
-// ─── Ezoic Ad Placeholder (monetisation) ─────────────────────────────────────
-// To activate: sign up at ezoic.com, verify formly.tools, then replace this
-// component with your Ezoic ad placeholder divs. Ezoic works with Google
-// ad inventory and accepts sites of any size — no minimum traffic requirement.
-
-function EzoicAd({ id }: { id: number }) {
-  return (
-    <div className="w-full">
-      {/* Ezoic ad placeholder — replace with: <div id={`ezoic-pub-ad-placeholder-${id}`} /> */}
-      <div className="w-full h-[90px] bg-gray-900/40 border border-dashed border-gray-800 rounded-xl flex items-center justify-center">
-        <span className="text-xs text-gray-700">
-          Ad slot {id} · Sign up at ezoic.com to monetise
-        </span>
-      </div>
-    </div>
-  );
-}
-
 // ─── Loading Skeleton ─────────────────────────────────────────────────────────
 
 function Skeleton() {
@@ -435,12 +356,12 @@ function Skeleton() {
       <div className="w-full aspect-video bg-gray-800" />
       <div className="p-5 space-y-3">
         <div className="flex gap-2">
-          <div className="h-3 w-20 bg-gray-800 rounded" />
-          <div className="h-3 w-24 bg-gray-800 rounded ml-auto" />
+          <div className="h-3 w-24 bg-gray-800 rounded" />
+          <div className="h-3 w-20 bg-gray-800 rounded ml-auto" />
         </div>
         <div className="h-5 w-3/4 bg-gray-800 rounded" />
         <div className="flex gap-1.5">
-          {[60, 80, 70].map(w => (
+          {[50, 40, 60].map(w => (
             <div key={w} className="h-4 bg-gray-800 rounded-full" style={{ width: w }} />
           ))}
         </div>
@@ -458,12 +379,12 @@ function Skeleton() {
 
 function EmptyState({ onRefresh }: { onRefresh: () => void }) {
   return (
-    <div className="col-span-full flex justify-center py-16">
+    <div className="flex justify-center py-16">
       <div className="bg-gray-900 border border-gray-800 rounded-2xl p-10 text-center max-w-sm">
-        <div className="text-4xl mb-4">📡</div>
-        <h3 className="text-white font-bold text-lg mb-2">Fetching latest news…</h3>
+        <div className="text-4xl mb-4">🤖</div>
+        <h3 className="text-white font-bold text-lg mb-2">Gathering AI news…</h3>
         <p className="text-gray-400 text-sm mb-6 leading-relaxed">
-          Our AI agent is gathering today&apos;s top stories from 10 countries.
+          Our AI agent is curating today&apos;s top stories from 10 AI sources.
           Check back in a few minutes or trigger a manual refresh.
         </p>
         <button onClick={onRefresh} className="btn-primary flex items-center gap-2 mx-auto">
@@ -477,9 +398,8 @@ function EmptyState({ onRefresh }: { onRefresh: () => void }) {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export function TrendingFeed({
+export function AIFeed({
   initialItems,
-  initialCountry,
   initialCategory,
   initialQ,
   initialId,
@@ -488,12 +408,11 @@ export function TrendingFeed({
   const router       = useRouter();
   const searchParams = useSearchParams();
 
-  const [items,       setItems]       = useState<TrendingNews[]>(initialItems);
-  const [country,     setCountry]     = useState(initialCountry);
+  const [items,       setItems]       = useState<AINewsItem[]>(initialItems);
   const [category,    setCategory]    = useState(initialCategory);
   const [q,           setQ]           = useState(initialQ);
   const [page,        setPage]        = useState(1);
-  const [hasMore,     setHasMore]     = useState(initialItems.length === 20);
+  const [hasMore,     setHasMore]     = useState(initialItems.length === 50);
   const [loading,     setLoading]     = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<string | null>(initialLastUpdated);
@@ -501,23 +420,22 @@ export function TrendingFeed({
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const updateURL = useCallback((c: string, ca: string, sq: string) => {
+  const updateURL = useCallback((ca: string, sq: string) => {
     const p = new URLSearchParams();
-    if (c  && c  !== 'all') p.set('country', c);
     if (ca && ca !== 'all') p.set('category', ca);
     if (sq.trim())          p.set('q', sq.trim());
-    router.push(`/news${p.size ? `?${p}` : ''}`, { scroll: false });
+    router.push(`/ai-news${p.size ? `?${p}` : ''}`, { scroll: false });
   }, [router]);
 
   const fetchPage = useCallback(async (opts: {
-    country: string; category: string; q: string; page: number; append: boolean;
+    category: string; q: string; page: number; append: boolean;
   }) => {
     const p = new URLSearchParams({
-      country: opts.country, category: opts.category,
-      q: opts.q, page: String(opts.page), limit: '20',
+      category: opts.category, q: opts.q,
+      page: String(opts.page), limit: '20',
     });
     try {
-      const res = await fetch(`/api/trending?${p}`);
+      const res = await fetch(`/api/ai-news?${p}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data: ApiResponse = await res.json();
       if (opts.append) {
@@ -528,20 +446,14 @@ export function TrendingFeed({
       setHasMore(data.hasMore);
       if (data.lastUpdated) setLastUpdated(data.lastUpdated);
     } catch (err) {
-      console.error('[TrendingFeed]', err);
+      console.error('[AIFeed]', err);
     }
   }, []);
 
-  const handleCountryChange = (code: string) => {
-    setCountry(code); setPage(1); setLoading(true);
-    updateURL(code, category, q);
-    fetchPage({ country: code, category, q, page: 1, append: false }).finally(() => setLoading(false));
-  };
-
   const handleCategoryChange = (cat: string) => {
     setCategory(cat); setPage(1); setLoading(true);
-    updateURL(country, cat, q);
-    fetchPage({ country, category: cat, q, page: 1, append: false }).finally(() => setLoading(false));
+    updateURL(cat, q);
+    fetchPage({ category: cat, q, page: 1, append: false }).finally(() => setLoading(false));
   };
 
   const handleSearchChange = (val: string) => {
@@ -549,8 +461,8 @@ export function TrendingFeed({
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       setQ(val); setPage(1); setLoading(true);
-      updateURL(country, category, val);
-      fetchPage({ country, category, q: val, page: 1, append: false }).finally(() => setLoading(false));
+      updateURL(category, val);
+      fetchPage({ category, q: val, page: 1, append: false }).finally(() => setLoading(false));
     }, 400);
   };
 
@@ -558,40 +470,35 @@ export function TrendingFeed({
     setLoadingMore(true);
     const next = page + 1; setPage(next);
     const scrollY = window.scrollY;
-    await fetchPage({ country, category, q, page: next, append: true });
+    await fetchPage({ category, q, page: next, append: true });
     setLoadingMore(false);
-    // double-rAF: wait for React re-render + browser paint before restoring position
     requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, scrollY)));
   };
 
   const handleRefresh = () => {
     setLoading(true);
-    fetchPage({ country, category, q, page: 1, append: false }).finally(() => setLoading(false));
+    fetchPage({ category, q, page: 1, append: false }).finally(() => setLoading(false));
   };
 
   useEffect(() => {
-    const c  = searchParams.get('country')  ?? 'all';
     const ca = searchParams.get('category') ?? 'all';
     const sq = searchParams.get('q')        ?? '';
-    setCountry(c); setCategory(ca); setQ(sq); setSearchInput(sq);
+    setCategory(ca); setQ(sq); setSearchInput(sq);
   }, [searchParams]);
 
-  // Scroll to deep-linked card — element is guaranteed in SSR HTML so this is reliable
+  // Instant jump to deep-linked card
   useEffect(() => {
     if (!initialId) return;
-    const el = document.getElementById(`news-${initialId}`);
+    const el = document.getElementById(`ai-${initialId}`);
     if (el) el.scrollIntoView({ block: 'start', behavior: 'instant' });
   }, [initialId]);
 
-  // Interleave promos and newsletter into the flat item list
-  function buildFeedItems(news: TrendingNews[]): ('newsletter' | { promo: number } | TrendingNews)[] {
-    const out: ('newsletter' | { promo: number } | TrendingNews)[] = [];
+  function buildFeedItems(news: AINewsItem[]): ('newsletter' | { promo: number } | AINewsItem)[] {
+    const out: ('newsletter' | { promo: number } | AINewsItem)[] = [];
     let promoIdx = 0;
     for (let i = 0; i < news.length; i++) {
       out.push(news[i]);
-      // After item 7 (index 6), insert newsletter
       if (i === 6) out.push('newsletter');
-      // After every 4th item (4, 8, 12, …), insert a tool promo
       if ((i + 1) % 4 === 0 && i < news.length - 1) {
         out.push({ promo: promoIdx % TOOL_PROMOS.length });
         promoIdx++;
@@ -613,59 +520,28 @@ export function TrendingFeed({
             type="search"
             value={searchInput}
             onChange={e => handleSearchChange(e.target.value)}
-            placeholder="Search stories…"
+            placeholder="Search AI stories…"
             className="input pl-9 w-full text-sm py-2"
           />
         </div>
-
         <div className="relative">
           <select
             value={category}
             onChange={e => handleCategoryChange(e.target.value)}
             className="input appearance-none pr-8 text-sm py-2 cursor-pointer bg-gray-900 border-gray-700"
           >
-            {CATEGORIES.map(c => (
+            {AI_CATEGORIES.map(c => (
               <option key={c.value} value={c.value}>{c.label}</option>
             ))}
           </select>
           <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
         </div>
-
         {lastUpdated && (
           <p className="text-xs text-gray-500 flex items-center gap-1 shrink-0">
             <Clock className="w-3 h-3" />
             Updated {timeAgo(lastUpdated)}
           </p>
         )}
-      </div>
-
-      {/* ── Country pills ── */}
-      <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1" style={{ scrollbarWidth: 'none' }}>
-        <button
-          onClick={() => handleCountryChange('all')}
-          className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
-            country === 'all'
-              ? 'bg-violet-600 text-white border-violet-600'
-              : 'bg-gray-800/60 text-gray-400 border-gray-700 hover:text-white hover:border-gray-600'
-          }`}
-        >
-          🌍 All
-        </button>
-        {COUNTRIES.map(c => (
-          <button
-            key={c.code}
-            onClick={() => handleCountryChange(c.code)}
-            className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border flex items-center gap-1.5 ${
-              country === c.code
-                ? 'bg-violet-600 text-white border-violet-600'
-                : 'bg-gray-800/60 text-gray-400 border-gray-700 hover:text-white hover:border-gray-600'
-            }`}
-          >
-            {c.flag}
-            <span className="hidden sm:inline">{c.name}</span>
-            <span className="sm:hidden">{c.code}</span>
-          </button>
-        ))}
       </div>
 
       {/* ── Loading skeleton ── */}
@@ -675,7 +551,7 @@ export function TrendingFeed({
         </div>
       )}
 
-      {/* ── Feed grid ── */}
+      {/* ── Feed ── */}
       {!loading && (
         <div className="flex flex-col gap-5 max-w-2xl mx-auto">
           {items.length === 0 ? (
@@ -686,15 +562,14 @@ export function TrendingFeed({
                 return (
                   <Fragment key="newsletter">
                     <NewsletterCard />
-                    <EzoicAd id={1} />
                   </Fragment>
                 );
               }
               if (typeof entry === 'object' && 'promo' in entry) {
                 return <ToolPromoCard key={`promo-${idx}`} promo={TOOL_PROMOS[entry.promo]} />;
               }
-              const item = entry as TrendingNews;
-              return <NewsCard key={item.id} item={item} />;
+              const item = entry as AINewsItem;
+              return <AICard key={item.id} item={item} />;
             })
           )}
         </div>

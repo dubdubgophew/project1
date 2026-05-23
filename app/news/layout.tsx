@@ -1,25 +1,25 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "What's Trending Right Now — Formly Trending News",
+  title: "What's Trending Right Now — Live News from 15 Countries | Formly",
   description:
-    "Discover today's top trending topics from 10 countries — United States, India, UK, Canada, Australia, Germany, France, Brazil, Japan, and Indonesia. Updated daily by AI.",
+    "Discover today's top trending news from 15 countries — USA, India, UK, Canada, Australia, Germany, France, Brazil, Japan, Indonesia & more. AI-summarized, updated every 8 hours.",
   keywords: [
-    'trending news',
-    "what's trending today",
-    'google trends',
-    'viral stories',
-    'trending topics',
-    'top trending searches',
-    'news today',
-    'breaking news trends',
+    'trending news today',
+    "what's trending right now",
+    'top trending topics',
+    'viral stories today',
     'trending worldwide',
-    'trending in US',
-    'trending in India',
-    'trending in UK',
+    'breaking news trending',
+    'trending in US today',
+    'trending in India today',
+    'trending in UK today',
     'what is trending now',
-    'popular topics today',
+    'popular news today',
     'hot topics 2025',
+    'google trends today',
+    'news from multiple countries',
+    'ai summarized news',
   ],
   alternates: {
     canonical: 'https://formly.tools/news',
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "What's Trending Right Now — Formly",
     description:
-      'Top 5 trending topics from 10 countries, summarized by AI. Updated daily.',
+      'Top trending news from 15 countries, AI-summarized every 8 hours. USA, India, UK, Canada, Australia & more.',
     type: 'website',
     url: 'https://formly.tools/news',
     siteName: 'Formly',
@@ -48,10 +48,43 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: "What's Trending Right Now — Formly",
-    description: 'Top trending topics from 10 countries, AI-summarized daily.',
+    description: 'Top trending news from 15 countries, AI-summarized every 8 hours.',
   },
 };
 
 export default function NewsLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebPage',
+            name: "What's Trending Right Now",
+            description: 'AI-curated trending news from 15+ countries, updated every 8 hours.',
+            url: 'https://formly.tools/news',
+            isPartOf: { '@type': 'WebSite', name: 'Formly', url: 'https://formly.tools' },
+            about: {
+              '@type': 'Thing',
+              name: 'Trending News',
+              description: 'Real-time trending news and viral stories from USA, India, UK, Canada, Australia, Germany, France, Brazil, Japan, Indonesia, and more.',
+            },
+            provider: {
+              '@type': 'Organization',
+              name: 'Formly',
+              url: 'https://formly.tools',
+            },
+            inLanguage: ['en-US', 'en-GB', 'en-IN', 'en-CA', 'en-AU', 'de-DE', 'fr-FR', 'pt-BR', 'ja-JP', 'id-ID'],
+            audience: {
+              '@type': 'Audience',
+              audienceType: 'Global readers seeking trending news',
+            },
+          }),
+        }}
+      />
+      {children}
+    </>
+  );
 }
+

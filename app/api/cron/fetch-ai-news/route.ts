@@ -1,0 +1,161 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { callAI } from '@/lib/ai';
+import { createAdminClient } from '@/lib/supabase/server';
+import { AI_SOURCES, parseAIFeedRSS, type AIRawItem } from '@/lib/ai-news-utils';
+
+export const maxDuration = 300;
+
+// Cron: /api/cron/fetch-ai-news — schedule: 0 9 * * * (daily 9am UTC)
+// Secured by CRON_SECRET in middleware.ts
+
+interface AISummaryItem {
+  topic: string;
+  summary: string;
+  category: string;
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise(r => setTimeout(r, ms));
+}
+
+async function fetchSourceFeed(url: string): Promise<AIRawItem[]> {
+  const res = await fetch(url, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+      'Accept': 'application/rss+xml, application/xml, application/atom+xml, text/xml, */*',
+    },
+    next: { revalidate: 0 },
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status} from ${url}`);
+  return parseAIFeedRSS(await res.text());
+}
+
+async function generateAISummaries(sourceName: string, items: AIRawItem[]): Promise<AISummaryItem[]> {
+  const topicsBlock = items
+    .map((t, i) => {
+      const ctx = t.snippets.slice(0, 2).join(' ').slice(0, 400) || t.newsTitle;
+      return `${i + 1}. Headline: "${t.topic}"\n   Context: ${ctx}`;
+    })
+    .join('\n\n');
+
+  const prompt = `You are an AI news curator for ${sourceName}. Given these AI-related headlines, produce a JSON array with exactly ${items.length} objects in the SAME ORDER.
+
+Each object:
+- "topic": restate the headline clearly (max 12 words)
+- "summary": 150-200 words. Explain what it means technically, why it matters for AI/ML practitioners, developers or enthusiasts. Include key details like model names, benchmark numbers, company names where relevant.
+- "category": exactly one of Tools | Research | Companies | Hardware | Learning | Open Source | Industry
+
+Category guide:
+- Tools: AI products, apps, APIs, comparisons, new releases
+- Research: papers, breakthroughs, benchmarks, academic work
+- Companies: funding rounds, acquisitions, partnerships, business news
+- Hardware: GPUs, TPUs, chips, quantum computing, robotics, data centers
+- Learning: tutorials, explainers, terminology, how-to guides, courses
+- Open Source: open models, datasets, frameworks, GitHub releases
+- Industry: enterprise AI, use cases, regulation, policy, AI services
+
+Headlines:
+${topicsBlock}
+
+Respond ONLY with a valid JSON array. No markdown, no extra text.`;
+
+  const raw = await callAI(
+    [
+      { role: 'system', content: 'You are a professional AI news editor. Always respond with valid JSON only.' },
+      { role: 'user', content: prompt },
+    ],
+    { model: 'llama-3.1-8b-instant', maxTokens: 2200, temperature: 0.3 }
+  );
+
+  const jsonMatch = raw.match(/\[[\s\S]*\]/);
+  if (!jsonMatch) throw new Error('No JSON array in AI response');
+  const parsed = JSON.parse(jsonMatch[0]) as AISummaryItem[];
+  if (!Array.isArray(parsed)) throw new Error('AI response is not an array');
+  return parsed;
+}
+
+export async function POST(_req: NextRequest) {
+  console.log('[Cron] fetch-ai-news started');
+  const supabase = createAdminClient();
+  const results: { source: string; inserted: number; error?: string }[] = [];
+
+  for (const source of AI_SOURCES) {
+    try {
+      console.log(`[fetch-ai-news] Fetching ${source.name}…`);
+
+      let items: AIRawItem[];
+      try {
+        items = await fetchSourceFeed(source.url);
+      } catch (err) {
+        console.error(`[fetch-ai-news] Feed failed for ${source.key}:`, err);
+        results.push({ source: source.key, inserted: 0, error: String(err) });
+        await sleep(400);
+        continue;
+      }
+
+      if (!items.length) {
+        results.push({ source: source.key, inserted: 0, error: 'No items in feed' });
+        await sleep(400);
+        continue;
+      }
+
+      let summaries: AISummaryItem[];
+      try {
+        summaries = await generateAISummaries(source.name, items);
+      } catch (aiErr) {
+        console.error(`[fetch-ai-news] AI failed for ${source.key}, using fallback:`, aiErr);
+        summaries = items.map(t => ({
+          topic: t.topic,
+          summary: t.snippets.join(' ').slice(0, 600) || `${t.topic} — latest AI news.`,
+          category: 'Industry',
+        }));
+      }
+
+      const now = new Date();
+      const expiresAt = new Date(now.getTime() + 26 * 60 * 60 * 1000);
+
+      const rows = items.map((item, idx) => {
+        const ai: AISummaryItem = summaries[idx] ?? {
+          topic: item.topic,
+          summary: item.snippets.join(' ').slice(0, 600) || item.topic,
+          category: 'Industry',
+        };
+        return {
+          source_key:   source.key,
+          source_name:  source.name,
+          topic:        ai.topic || item.topic,
+          summary:      ai.summary,
+          category:     ai.category || 'Industry',
+          source_url:   item.newsUrl,
+          source_title: item.newsTitle || null,
+          image_url:    item.imageUrl || null,
+          fetched_at:   now.toISOString(),
+          expires_at:   expiresAt.toISOString(),
+          rank:         idx + 1,
+        };
+      });
+
+      const { error: insertError } = await supabase.from('ai_news').insert(rows);
+      if (insertError) {
+        console.error(`[fetch-ai-news] Insert failed for ${source.key}:`, insertError);
+        results.push({ source: source.key, inserted: 0, error: insertError.message });
+      } else {
+        results.push({ source: source.key, inserted: rows.length });
+      }
+    } catch (err) {
+      results.push({ source: source.key, inserted: 0, error: String(err) });
+    }
+
+    await sleep(400);
+  }
+
+  await supabase.from('ai_news').delete().lt('expires_at', new Date().toISOString());
+
+  const totalInserted = results.reduce((sum, r) => sum + r.inserted, 0);
+  console.log(`[fetch-ai-news] Done. Inserted ${totalInserted} rows.`);
+  return NextResponse.json({ success: true, totalInserted, results });
+}
+
+export async function GET(req: NextRequest) {
+  return POST(req);
+}

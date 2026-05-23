@@ -19,7 +19,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         url="https://formly.tools/tools/cover-letter"
         category="BusinessApplication"
         features={['Tailored to job role and company', 'Professional, enthusiastic, or concise tones', 'Edit and preview online', 'PDF download with letter formatting', 'Instant AI generation']}
-        faqs={[{ q: "How does the AI cover letter generator work?", a: "Enter the job title, company name, your key skills, and desired tone. The AI writes a fully customized cover letter in seconds — no templates or copy-paste required." }, { q: "Is it free to generate a cover letter?", a: "Yes — free to use up to 5 times per day. Sign up for a free account for 10/day. No subscription needed for basic use." }, { q: "Can I download the cover letter as PDF?", a: "Yes — switch to Preview mode to see the formatted letter, then click Download PDF to get a clean, print-ready document." }, { q: "How do I make the cover letter sound more personal?", a: "Add specific achievements and experiences in the 'key highlights' field. Mention specific products, projects, or values of the target company for the most personalized result." }]}
+        faqs={[
+          { q: "How does the AI cover letter generator work?", a: "Enter the job title, company name, your key skills, and desired tone. The AI writes a fully customized cover letter in seconds — no templates or copy-paste required." },
+          { q: "Is it free to generate a cover letter?", a: "Yes — free to use up to 5 times per day. Sign up for a free account for 10/day. No subscription needed for basic use." },
+          { q: "Can I download the cover letter as PDF?", a: "Yes — switch to Preview mode to see the formatted letter, then click Download PDF to get a clean, print-ready document." },
+          { q: "How do I make the cover letter sound more personal?", a: "Add specific achievements and experiences in the 'key highlights' field. Mention specific products, projects, or values of the target company for the most personalized result." },
+          { q: "What tones are available for the cover letter?", a: "Three tones: Professional (formal business language), Enthusiastic (energetic and passionate), and Concise (brief and direct). All are appropriate for job applications." },
+        ]}
+        steps={[
+          { name: 'Enter job and company details', text: 'Fill in the job title you are applying for and the company name. This personalizes the letter to the specific role.' },
+          { name: 'Add your background and skills', text: 'Describe your role and background (e.g. "5 years of React development, ex-Google") and list your key skills.' },
+          { name: 'Select tone and generate', text: 'Choose Professional, Enthusiastic, or Concise tone, then click Generate Cover Letter.' },
+          { name: 'Edit and preview', text: 'Review the generated letter in Edit mode. Make any changes, then switch to Preview to see the formatted letter with a professional layout.' },
+          { name: 'Download as PDF', text: 'Click Download PDF to get a print-ready cover letter document ready to attach to your job application.' },
+        ]}
       />
       {children}
     </>

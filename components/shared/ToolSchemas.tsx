@@ -1,5 +1,10 @@
 interface FAQ { q: string; a: string }
 
+interface HowToStep {
+  name: string;
+  text: string;
+}
+
 interface ToolSchemasProps {
   name: string;
   description: string;
@@ -7,9 +12,10 @@ interface ToolSchemasProps {
   category: string;
   features: string[];
   faqs?: FAQ[];
+  steps?: HowToStep[];
 }
 
-export function ToolSchemas({ name, description, url, category, features, faqs }: ToolSchemasProps) {
+export function ToolSchemas({ name, description, url, category, features, faqs, steps }: ToolSchemasProps) {
   const breadcrumb = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -46,12 +52,40 @@ export function ToolSchemas({ name, description, url, category, features, faqs }
     })),
   } : null;
 
+  const howToSchema = steps && steps.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: `How to use ${name}`,
+    description,
+    step: steps.map((s, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: s.name,
+      text: s.text,
+    })),
+    tool: {
+      '@type': 'HowToTool',
+      name,
+      url,
+    },
+  } : null;
+
+  const speakable = {
+    '@context': 'https://schema.org',
+    '@type': 'SpeakableSpecification',
+    cssSelector: ['.tool-description'],
+  };
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webApp) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakable) }} />
       {faqSchema && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      )}
+      {howToSchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
       )}
     </>
   );

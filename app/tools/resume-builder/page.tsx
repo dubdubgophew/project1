@@ -10,6 +10,137 @@ const RELATED = [
   { name: 'Bio Writer',      href: '/tools/bio-writer',      icon: '🪪' },
 ];
 
+// ─── TEMPLATES ───────────────────────────────────────────────────────────────
+
+const TEMPLATES = [
+  { id: 'classic',   name: 'Classic',   headerBg: '#1a2332', accent: '#1a5276' },
+  { id: 'modern',    name: 'Modern',    headerBg: '#7c3aed', accent: '#6d28d9' },
+  { id: 'executive', name: 'Executive', headerBg: '#111827', accent: '#b45309' },
+  { id: 'minimal',   name: 'Minimal',   headerBg: '#f3f4f6', accent: '#374151' },
+  { id: 'corporate', name: 'Corporate', headerBg: '#14532d', accent: '#166534' },
+];
+
+const TEMPLATE_CSS: Record<string, string> = {
+  classic: `*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,Helvetica,sans-serif;font-size:11pt;line-height:1.55;color:#111;background:#fff}
+.page{max-width:8.5in;margin:0 auto;padding:.75in}
+.resume-header{border-bottom:3px solid #4f46e5;padding-bottom:16px;margin-bottom:22px}
+.resume-name{font-size:26pt;font-weight:700;color:#1e1b4b;letter-spacing:-.5px}
+.resume-contact{font-size:10pt;color:#6b7280;margin-top:6px}
+.section{margin-bottom:18px}
+.section-title{font-size:9.5pt;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#4f46e5;border-bottom:1.5px solid #e0e7ff;padding-bottom:4px;margin-bottom:8px}
+.entry-header{font-weight:700;font-size:11pt;color:#1f2937;margin-top:8px;margin-bottom:1px}
+.bullet{padding-left:18px;position:relative;font-size:10.5pt;color:#374151;margin-bottom:2px}
+.bullet::before{content:"•";position:absolute;left:3px;color:#4f46e5;font-weight:700}
+.body-text{font-size:10.5pt;color:#374151;margin-bottom:4px;text-align:justify}
+.skills-wrap{display:flex;flex-wrap:wrap;gap:6px}
+.skill-tag{background:#ede9fe;color:#5b21b6;padding:3px 10px;border-radius:3px;font-size:10pt;font-weight:500}
+.gap{height:6px}
+@media print{.page{padding:.5in}}`,
+
+  modern: `*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'Segoe UI',Arial,sans-serif;font-size:11pt;line-height:1.6;color:#111;background:#fff}
+.page{max-width:8.5in;margin:0 auto}
+.resume-header{background:#1d4ed8;color:#fff;padding:32px 56px 24px;margin-bottom:28px}
+.resume-name{font-size:28pt;font-weight:800;color:#fff;letter-spacing:-.5px}
+.resume-contact{font-size:10pt;color:#bfdbfe;margin-top:8px}
+.page-body{padding:0 56px 48px}
+.section{margin-bottom:20px}
+.section-title{font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#1d4ed8;border-bottom:2px solid #bfdbfe;padding-bottom:4px;margin-bottom:10px}
+.entry-header{font-weight:700;font-size:11pt;color:#111;margin-top:10px;margin-bottom:2px}
+.bullet{padding-left:18px;position:relative;font-size:10.5pt;color:#374151;margin-bottom:2px}
+.bullet::before{content:"▸";position:absolute;left:2px;color:#1d4ed8}
+.body-text{font-size:10.5pt;color:#374151;margin-bottom:4px;text-align:justify}
+.skills-wrap{display:flex;flex-wrap:wrap;gap:6px}
+.skill-tag{background:#dbeafe;color:#1e40af;padding:4px 12px;border-radius:4px;font-size:10pt;font-weight:500}
+.gap{height:6px}
+@media print{.page{}.resume-header{padding:24px 48px 20px}.page-body{padding:0 48px 40px}}`,
+
+  executive: `*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Georgia,'Times New Roman',serif;font-size:11pt;line-height:1.6;color:#111;background:#fff}
+.page{max-width:8.5in;margin:0 auto;padding:.75in}
+.resume-header{margin-bottom:24px;padding-bottom:20px;border-bottom:3px double #111}
+.resume-name{font-size:28pt;font-weight:700;color:#111;letter-spacing:.5px;text-transform:uppercase}
+.resume-contact{font-size:10pt;color:#374151;margin-top:8px;letter-spacing:.3px}
+.section{margin-bottom:20px}
+.section-title{font-size:10pt;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#111;border-bottom:2px solid #111;padding-bottom:3px;margin-bottom:10px}
+.entry-header{font-weight:700;font-size:11.5pt;color:#111;margin-top:10px;margin-bottom:2px;font-style:italic}
+.bullet{padding-left:20px;position:relative;font-size:10.5pt;color:#374151;margin-bottom:3px}
+.bullet::before{content:"–";position:absolute;left:4px;color:#111}
+.body-text{font-size:10.5pt;color:#374151;margin-bottom:4px;text-align:justify}
+.skills-wrap{display:flex;flex-wrap:wrap;gap:6px}
+.skill-tag{background:#f9fafb;color:#111;padding:3px 10px;border:1px solid #d1d5db;font-size:10pt}
+.gap{height:6px}
+@media print{.page{padding:.5in}}`,
+
+  minimal: `*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,Helvetica,sans-serif;font-size:11pt;line-height:1.5;color:#111;background:#fff}
+.page{max-width:8.5in;margin:0 auto;padding:.75in}
+.resume-header{margin-bottom:24px}
+.resume-name{font-size:22pt;font-weight:700;color:#111;text-transform:uppercase;letter-spacing:2px}
+.resume-contact{font-size:10pt;color:#4b5563;margin-top:6px;border-top:1px solid #d1d5db;padding-top:6px}
+.section{margin-bottom:16px}
+.section-title{font-size:8.5pt;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:#111;padding-bottom:2px;margin-bottom:8px;border-bottom:1px solid #111}
+.entry-header{font-weight:700;font-size:11pt;color:#111;margin-top:8px;margin-bottom:1px}
+.bullet{padding-left:16px;position:relative;font-size:10.5pt;color:#374151;margin-bottom:2px}
+.bullet::before{content:"·";position:absolute;left:4px;color:#111;font-size:14pt;line-height:1}
+.body-text{font-size:10.5pt;color:#374151;margin-bottom:4px}
+.skills-wrap{display:flex;flex-wrap:wrap;gap:4px}
+.skill-tag{background:#fff;color:#111;padding:2px 8px;border:1px solid #111;font-size:9.5pt}
+.gap{height:4px}
+@media print{.page{padding:.5in}}`,
+
+  corporate: `*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Calibri',Arial,sans-serif;font-size:11pt;line-height:1.55;color:#111;background:#fff}
+.page{max-width:8.5in;margin:0 auto;padding:.75in}
+.resume-header{border-left:5px solid #0f766e;padding:12px 0 12px 20px;margin-bottom:24px}
+.resume-name{font-size:24pt;font-weight:700;color:#134e4a;letter-spacing:-.3px}
+.resume-contact{font-size:10pt;color:#6b7280;margin-top:5px}
+.section{margin-bottom:18px}
+.section-title{font-size:9.5pt;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#0f766e;background:#f0fdfa;padding:4px 8px;margin-bottom:8px;border-left:3px solid #0f766e}
+.entry-header{font-weight:700;font-size:11pt;color:#134e4a;margin-top:8px;margin-bottom:1px}
+.bullet{padding-left:18px;position:relative;font-size:10.5pt;color:#374151;margin-bottom:2px}
+.bullet::before{content:"•";position:absolute;left:3px;color:#0f766e;font-weight:700}
+.body-text{font-size:10.5pt;color:#374151;margin-bottom:4px;text-align:justify}
+.skills-wrap{display:flex;flex-wrap:wrap;gap:6px}
+.skill-tag{background:#ccfbf1;color:#134e4a;padding:3px 10px;border-radius:3px;font-size:10pt;font-weight:500}
+.gap{height:6px}
+@media print{.page{padding:.5in}}`,
+};
+
+function TemplatePicker({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  return (
+    <div className="card">
+      <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-3">Template</h2>
+      <div className="grid grid-cols-5 gap-2">
+        {TEMPLATES.map(t => (
+          <button
+            key={t.id}
+            type="button"
+            onClick={() => onChange(t.id)}
+            className={`flex flex-col items-center gap-2 p-2.5 rounded-xl border transition-all ${
+              value === t.id
+                ? 'border-violet-500 bg-violet-500/10'
+                : 'border-gray-700 hover:border-gray-600'
+            }`}
+          >
+            <div className="w-full rounded overflow-hidden" style={{ background: '#fff', border: '1px solid #e5e7eb' }}>
+              <div className="w-full h-3.5" style={{ background: t.headerBg }} />
+              <div className="px-1 py-1 space-y-0.5">
+                <div className="h-1 rounded" style={{ background: t.accent, width: '55%' }} />
+                <div className="h-0.5 rounded bg-gray-200 w-full" />
+                <div className="h-0.5 rounded bg-gray-200 w-4/5" />
+                <div className="h-0.5 rounded bg-gray-200 w-3/5" />
+              </div>
+            </div>
+            <span className="text-[10px] font-medium text-gray-300">{t.name}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ─── ATS SCORE ───────────────────────────────────────────────────────────────
 
 function calcAtsScore(text: string, title: string): { score: number; feedback: string[] } {
@@ -36,7 +167,9 @@ function escH(s: string) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-function buildResumeHTML(rawText: string): string {
+function buildResumeHTML(rawText: string, template: string = 'classic'): string {
+  const css = TEMPLATE_CSS[template] ?? TEMPLATE_CSS.classic;
+
   const lines = rawText.split('\n');
   const nonEmpty = lines.filter(l => l.trim());
 
@@ -92,28 +225,37 @@ function buildResumeHTML(rawText: string): string {
 
   const sectionsHTML = sections.map(renderSection).join('');
 
+  if (template === 'modern') {
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Resume — ${escH(nameLine)}</title>
+<style>
+${css}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="resume-header">
+    <div class="resume-name">${escH(nameLine)}</div>
+    ${contactLine ? `<div class="resume-contact">${escH(contactLine)}</div>` : ''}
+  </div>
+  <div class="page-body">
+    ${sectionsHTML}
+  </div>
+</div>
+</body>
+</html>`;
+  }
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Resume — ${escH(nameLine)}</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,Helvetica,sans-serif;font-size:11pt;line-height:1.55;color:#111;background:#fff}
-.page{max-width:8.5in;margin:0 auto;padding:.75in}
-.resume-header{border-bottom:3px solid #4f46e5;padding-bottom:16px;margin-bottom:22px}
-.resume-name{font-size:26pt;font-weight:700;color:#1e1b4b;letter-spacing:-.5px}
-.resume-contact{font-size:10pt;color:#6b7280;margin-top:6px}
-.section{margin-bottom:18px}
-.section-title{font-size:9.5pt;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#4f46e5;border-bottom:1.5px solid #e0e7ff;padding-bottom:4px;margin-bottom:8px}
-.entry-header{font-weight:700;font-size:11pt;color:#1f2937;margin-top:8px;margin-bottom:1px}
-.bullet{padding-left:18px;position:relative;font-size:10.5pt;color:#374151;margin-bottom:2px}
-.bullet::before{content:"•";position:absolute;left:3px;color:#4f46e5;font-weight:700}
-.body-text{font-size:10.5pt;color:#374151;margin-bottom:4px;text-align:justify}
-.skills-wrap{display:flex;flex-wrap:wrap;gap:6px}
-.skill-tag{background:#ede9fe;color:#5b21b6;padding:3px 10px;border-radius:3px;font-size:10pt;font-weight:500}
-.gap{height:6px}
-@media print{.page{padding:.5in}}
+${css}
 </style>
 </head>
 <body>
@@ -131,13 +273,14 @@ body{font-family:Arial,Helvetica,sans-serif;font-size:11pt;line-height:1.55;colo
 // ─── MAIN COMPONENT ──────────────────────────────────────────────────────────
 
 export default function ResumeBuilderPage() {
-  const [name, setName]         = useState('');
-  const [email, setEmail]       = useState('');
-  const [phone, setPhone]       = useState('');
-  const [location, setLocation] = useState('');
-  const [jobTitle, setJobTitle] = useState('');
-  const [summary, setSummary]   = useState('');
-  const [skills, setSkills]     = useState('');
+  const [template, setTemplate]   = useState('classic');
+  const [name, setName]           = useState('');
+  const [email, setEmail]         = useState('');
+  const [phone, setPhone]         = useState('');
+  const [location, setLocation]   = useState('');
+  const [jobTitle, setJobTitle]   = useState('');
+  const [summary, setSummary]     = useState('');
+  const [skills, setSkills]       = useState('');
   const [experience, setExperience] = useState([{ company: '', role: '', duration: '', bullets: '' }]);
   const [education, setEducation]   = useState([{ institution: '', degree: '', year: '' }]);
 
@@ -151,7 +294,7 @@ export default function ResumeBuilderPage() {
   const currentText = editableOutput || output;
 
   function handleDownloadPDF() {
-    const html = buildResumeHTML(currentText);
+    const html = buildResumeHTML(currentText, template);
     const win = window.open('', '_blank');
     if (!win) return;
     win.document.write(html);
@@ -193,6 +336,8 @@ export default function ResumeBuilderPage() {
       relatedTools={RELATED}
     >
       <form onSubmit={handleSubmit} className="space-y-6">
+
+        <TemplatePicker value={template} onChange={setTemplate} />
 
         <div className="card">
           <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-4">Personal Information</h2>
@@ -344,7 +489,7 @@ export default function ResumeBuilderPage() {
                 <>
                   <p className="text-xs text-gray-500 mb-3">Formatted preview — click Download PDF to export this professional layout.</p>
                   <iframe
-                    srcDoc={buildResumeHTML(currentText)}
+                    srcDoc={buildResumeHTML(currentText, template)}
                     className="w-full rounded-xl border border-gray-700 bg-white"
                     style={{ height: '800px' }}
                     title="Resume Preview"

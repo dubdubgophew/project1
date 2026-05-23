@@ -1,5 +1,19 @@
 import { Upload, Cpu, Download } from 'lucide-react';
 
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'How to Use Formly AI Tools',
+  description: "Get professional results from any of Formly's 29 free AI tools in three steps",
+  totalTime: 'PT2M',
+  estimatedCost: { '@type': 'MonetaryAmount', currency: 'USD', value: '0' },
+  step: [
+    { '@type': 'HowToStep', position: 1, name: 'Choose a tool', text: 'Select from 29 free AI tools — pay stub generator, resume builder, grammar checker, paraphraser, PDF summarizer, and more.' },
+    { '@type': 'HowToStep', position: 2, name: 'Enter your information', text: 'Fill in the relevant fields or paste your text. No account required for the first 5–10 uses per day.' },
+    { '@type': 'HowToStep', position: 3, name: 'Get your result instantly', text: 'Receive AI-generated output in seconds. Download as PDF, copy to clipboard, or continue editing.' },
+  ],
+};
+
 const STEPS = [
   {
     icon: Upload,
@@ -32,7 +46,9 @@ const STEPS = [
 
 export function HowItWorks() {
   return (
-    <section className="section bg-gray-950">
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
+      <section className="section bg-gray-950">
       <div className="container-wide">
         <div className="text-center mb-16">
           <p className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-3">Simple Process</p>
@@ -82,6 +98,7 @@ export function HowItWorks() {
           ))}
         </div>
       </div>
-    </section>
+      </section>
+    </>
   );
 }

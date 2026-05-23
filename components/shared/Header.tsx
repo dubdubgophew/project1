@@ -100,6 +100,10 @@ export function Header() {
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               Trending
             </Link>
+            <Link href="/ai-news" className="px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-gray-800/60 transition-all flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
+              Latest in AI
+            </Link>
           </nav>
 
           {/* Search */}
@@ -170,6 +174,10 @@ export function Header() {
             <Link href="/news" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-gray-800 transition-colors flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               Trending
+            </Link>
+            <Link href="/ai-news" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-gray-800 transition-colors flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
+              Latest in AI
             </Link>
             <div className="pt-3 flex flex-col gap-2 border-t border-gray-800 mt-2">
               {user ? (

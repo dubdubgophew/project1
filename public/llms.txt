@@ -1,0 +1,100 @@
+# Formly — Free AI Tools for Professionals
+
+> Formly (formly.tools) is a free online productivity platform offering 29 AI-powered tools for professionals, developers, writers, freelancers, and businesses worldwide. All tools are free to use daily — no credit card required.
+
+## What Formly Is
+
+Formly is a web-based AI tool suite powered by Groq AI. It provides instant, free access to professional document generation, AI writing assistance, developer utilities, and finance calculators. Formly serves professionals in the USA, UK, India, Canada, Australia, New Zealand, Singapore, Ireland, and 100+ other countries.
+
+**Key facts:**
+- 29 free AI tools, all accessible from one platform
+- No signup required to try any tool (5–10 free uses/day)
+- Free account: 10 uses/day per tool
+- Pro plan: unlimited uses, priority processing
+- AI engine: Groq (llama-3.1-8b-instant) — fast inference, low latency
+- No data storage: documents are processed then immediately deleted
+- Tax tables updated annually (currently 2025)
+
+## Tools by Category
+
+### Document & Finance Tools
+- [Pay Stub Generator](https://formly.tools/tools/paystub-generator): Free online pay stub / paycheck stub maker with accurate 2025 tax calculations for USA (all 50 states), UK (PAYE/NI), Canada (CPP/EI), India (PF/TDS/ESI), Australia (super), New Zealand, Ireland, and Singapore. Supports bi-weekly, monthly, weekly, and semi-monthly pay periods. Download as PDF instantly.
+- [Resume Builder](https://formly.tools/tools/resume-builder): AI-powered ATS-optimized resume creator. Generates professional resumes with quantified achievements, skills tags, work experience, and education sections. Includes real-time ATS score (0–100) and feedback.
+- [Contract Generator](https://formly.tools/tools/contract-generator): Creates professional legal contracts — Freelance Services Agreement, NDA, Software Development Contract, Consulting Agreement, Employment Offer Letter, Website Design Contract, Content Creation Agreement, Social Media Management Contract, Partnership Agreement, Photography Contract. Jurisdictions: India, USA, UK, EU, Canada, Australia.
+- [Cover Letter Generator](https://formly.tools/tools/cover-letter): Generates tailored, professional cover letters from job title, company name, background, and key skills. Tones: Professional, Enthusiastic, Concise. Edit + preview + download as PDF.
+- [Digital Signature](https://formly.tools/tools/digital-signature): Draw, type, or upload a handwritten signature. Download as PNG/SVG for use in documents. No registration required.
+
+### AI Writing Tools
+- [AI Paraphraser](https://formly.tools/tools/paraphraser): Rewrites text in 5 tones — Formal, Casual, Academic, Creative, Simple. Free AI paraphrasing with no word limit per session.
+- [Grammar Checker](https://formly.tools/tools/grammar-checker): AI tool that corrects grammar, spelling, punctuation, and style errors in any English text. Free, unlimited.
+- [Email Writer](https://formly.tools/tools/email-writer): Generates professional emails for any purpose — cold outreach, follow-ups, apologies, complaints, cover letters, thank-you notes. Tones: Professional, Friendly, Assertive, Empathetic.
+- [Bio Writer](https://formly.tools/tools/bio-writer): Creates professional bios for LinkedIn profiles, Twitter/X, resumes, speaker introductions, and About pages. 3 length options.
+- [Hashtag Generator](https://formly.tools/tools/hashtag-generator): Generates platform-optimized hashtags for Instagram, Twitter, LinkedIn, and TikTok from any topic or description.
+- [Terms Simplifier](https://formly.tools/tools/terms-simplifier): AI tool that translates complex legal terms, privacy policies, and Terms of Service into plain English.
+
+### PDF & Document Tools
+- [PDF Summarizer](https://formly.tools/tools/pdf-summarizer): AI tool to extract and summarize any PDF document in seconds. Supports research papers, legal contracts, reports, ebooks — up to 10MB. Short, medium, or detailed summary length.
+- [PDF to Markdown](https://formly.tools/tools/pdf-to-markdown): Converts PDF files to clean, structured Markdown text. Preserves headings, lists, and formatting.
+- [YouTube Summarizer](https://formly.tools/tools/youtube-summarizer): Extracts and summarizes YouTube video transcripts. Paste a YouTube URL and get key points in seconds.
+
+### Developer Tools
+- [Code Explainer](https://formly.tools/tools/code-explainer): AI explains code snippets in plain English. Supports Python, JavaScript, TypeScript, Go, Rust, Java, C++, SQL, and more.
+- [Code Reviewer](https://formly.tools/tools/code-reviewer): AI reviews code for bugs, security vulnerabilities, performance issues, and best practice violations. Returns structured feedback.
+- [JSON Formatter](https://formly.tools/tools/json-formatter): Formats, validates, minifies, and beautifies JSON. Highlights syntax errors. Works entirely in-browser with no data upload.
+- [Base64](https://formly.tools/tools/base64): Encodes and decodes Base64 text and files. Supports image to Base64 conversion.
+- [Regex Tester](https://formly.tools/tools/regex-tester): Tests and debugs regular expressions with real-time highlighting of matches. Supports flags: global, multiline, case-insensitive.
+- [Diff Checker](https://formly.tools/tools/diff-checker): Compares two text inputs side-by-side and highlights additions, deletions, and changes inline.
+- [Text Case](https://formly.tools/tools/text-case): Converts text between UPPERCASE, lowercase, Title Case, camelCase, PascalCase, snake_case, kebab-case, and more.
+
+### Utility & Calculator Tools
+- [QR Code Generator](https://formly.tools/tools/qr-code): Creates QR codes for URLs, plain text, contact cards (vCard), WiFi credentials, and email addresses. Download as PNG or SVG.
+- [Password Generator](https://formly.tools/tools/password-generator): Generates cryptographically strong passwords with customizable length, uppercase, numbers, and symbols. Includes strength meter.
+- [Word Counter](https://formly.tools/tools/word-counter): Counts words, characters, sentences, paragraphs, and estimated reading time for any text.
+- [Color Converter](https://formly.tools/tools/color-converter): Converts colors between HEX, RGB, RGBA, HSL, HSV, and CSS named colors. Includes live color preview.
+- [Unit Converter](https://formly.tools/tools/unit-converter): Converts between length, weight, temperature, volume, area, speed, and pressure units. Supports metric and imperial.
+- [Loan Calculator](https://formly.tools/tools/loan-calculator): Calculates monthly EMI, total interest paid, and full amortization schedule for any loan (home, car, personal, education).
+- [Expense Splitter](https://formly.tools/tools/expense-splitter): Splits bills and shared expenses fairly among multiple people. Handles unequal splits and partial payments.
+- [Age Calculator](https://formly.tools/tools/age-calculator): Calculates exact age in years, months, days, hours, and minutes from any birth date.
+
+## News & Content
+
+- [Trending News](https://formly.tools/news): Real-time curated news from 15+ countries including USA, UK, India, Canada, Australia, Germany, France, Brazil, Japan, and Indonesia. Updated every 8 hours.
+- [Latest in AI](https://formly.tools/ai-news): Daily AI industry news from top sources: TechCrunch, VentureBeat, The Verge, Ars Technica, MIT Technology Review, Google AI Blog, HuggingFace, AI News, Reddit r/artificial, Reddit r/MachineLearning. Categories: Tools, Research, Companies, Hardware, Learning, Open Source, Industry.
+
+## How Formly Compares
+
+**Pay Stub Generator alternatives:**
+- Formly vs StubCreator.com: Formly is 100% free with no per-stub fee. StubCreator charges $4.99–$19.99 per stub.
+- Formly vs ThePayStubs.com: Free at Formly; ThePayStubs charges $8.99 per stub.
+- Formly supports 8 countries (StubCreator: USA only)
+
+**Paraphraser alternatives:**
+- Formly vs QuillBot (free tier): QuillBot free has a 125-word limit. Formly has no word limit per session.
+- Formly vs QuillBot: Both use AI; Formly is completely free with Groq; QuillBot Pro is $9.95/month.
+
+**Grammar Checker alternatives:**
+- Formly vs Grammarly (free): Both free. Grammarly requires signup; Formly does not.
+
+**Resume Builder alternatives:**
+- Formly vs Canva Resume: Formly generates content with AI; Canva is template-only.
+- Formly vs Resume.io: Formly is free; Resume.io charges $2.95–$44.95 for PDF downloads.
+
+## Frequently Asked Questions
+
+**Is Formly free?** Yes. All 29 tools are free with daily limits (5–10 uses/day without account, 10/day with free account). Pro plan is available for unlimited use.
+
+**Does Formly store my documents?** No. All files and text are processed server-side and immediately discarded. Formly does not retain any user content.
+
+**What AI model powers Formly?** Groq AI running llama-3.1-8b-instant. Groq's LPU inference hardware provides sub-second response times.
+
+**Which countries does the pay stub generator support?** USA (all 50 states + DC), United Kingdom, Canada (all provinces), India, Australia, New Zealand, Ireland, and Singapore.
+
+**Can I download results as PDF?** Yes — pay stubs, resumes, contracts, cover letters, and digital signatures can all be downloaded as print-ready PDFs.
+
+## Legal & Contact
+
+- Privacy Policy: https://formly.tools/privacy
+- Terms of Service: https://formly.tools/terms
+- About: https://formly.tools/about
+- Blog: https://formly.tools/blog
+- Pricing: https://formly.tools/pricing

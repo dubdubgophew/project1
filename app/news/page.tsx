@@ -10,6 +10,7 @@ interface PageProps {
     country?: string;
     category?: string;
     q?: string;
+    id?: string;
   };
 }
 
@@ -41,14 +42,16 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
 async function fetchInitialData(searchParams: PageProps['searchParams']): Promise<{
   items: TrendingNews[];
   lastUpdated: string | null;
+  deepLinkId: string | null;
 }> {
   try {
     const supabase = createAdminClient();
     const sixHoursAgo = new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString();
 
-    const country  = searchParams?.country?.toUpperCase();
-    const category = searchParams?.category;
-    const q        = searchParams?.q ?? '';
+    const country    = searchParams?.country?.toUpperCase();
+    const category   = searchParams?.category;
+    const q          = searchParams?.q ?? '';
+    const deepLinkId = searchParams?.id ?? null;
 
     // Get latest fetched_at
     const { data: latestRow } = await supabase
@@ -61,7 +64,7 @@ async function fetchInitialData(searchParams: PageProps['searchParams']): Promis
 
     const lastUpdated = latestRow?.fetched_at ?? null;
 
-    // Build data query
+    // Build data query — load all 50 items so shared cards are always in the DOM
     let query = supabase
       .from('trending_news')
       .select(
@@ -70,7 +73,7 @@ async function fetchInitialData(searchParams: PageProps['searchParams']): Promis
       .gte('fetched_at', sixHoursAgo)
       .order('fetched_at', { ascending: false })
       .order('rank', { ascending: true })
-      .limit(20);
+      .limit(50);
 
     if (country && country !== 'ALL' && country.length === 2) {
       query = query.eq('country_code', country);
@@ -83,18 +86,26 @@ async function fetchInitialData(searchParams: PageProps['searchParams']): Promis
     }
 
     const { data: items } = await query;
+    let list = (items as TrendingNews[]) ?? [];
 
-    return {
-      items: (items as TrendingNews[]) ?? [],
-      lastUpdated,
-    };
+    // If deep-linking to a specific card, ensure it's in the list (fetch it if missing)
+    if (deepLinkId && !list.some(i => i.id === deepLinkId)) {
+      const { data: specific } = await supabase
+        .from('trending_news')
+        .select('id,country_code,country_name,topic,summary,traffic_volume,category,source_url,source_name,source_title,image_url,fetched_at,rank')
+        .eq('id', deepLinkId)
+        .maybeSingle();
+      if (specific) list = [specific as TrendingNews, ...list];
+    }
+
+    return { items: list, lastUpdated, deepLinkId };
   } catch {
-    return { items: [], lastUpdated: null };
+    return { items: [], lastUpdated: null, deepLinkId: null };
   }
 }
 
 export default async function NewsPage({ searchParams }: PageProps) {
-  const { items, lastUpdated } = await fetchInitialData(searchParams);
+  const { items, lastUpdated, deepLinkId } = await fetchInitialData(searchParams);
 
   const initialCountry  = searchParams?.country  ?? 'all';
   const initialCategory = searchParams?.category ?? 'all';
@@ -128,7 +139,7 @@ export default async function NewsPage({ searchParams }: PageProps) {
       <Header />
       <main className="min-h-screen bg-gray-950 pt-24 pb-20">
         {/* Hero */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
             <div className="flex items-center justify-center gap-2 mb-4">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -152,6 +163,7 @@ export default async function NewsPage({ searchParams }: PageProps) {
             initialCountry={initialCountry}
             initialCategory={initialCategory}
             initialQ={initialQ}
+            initialId={deepLinkId}
             lastUpdated={lastUpdated}
           />
         </div>

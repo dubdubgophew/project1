@@ -23,6 +23,10 @@
     {
       "path": "/api/cron/fetch-trending",
       "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/cron/fetch-ai-news",
+      "schedule": "0 9 * * *"
     }
   ],
   "functions": {
@@ -45,6 +49,9 @@
       "maxDuration": 30
     },
     "app/api/cron/fetch-trending/route.ts": {
+      "maxDuration": 300
+    },
+    "app/api/cron/fetch-ai-news/route.ts": {
       "maxDuration": 300
     }
   }

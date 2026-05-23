@@ -5,13 +5,41 @@ import { BannerAd } from '@/components/shared/AdSense';
 import { Zap, Target, Heart, Shield } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'About Formly — Our Mission & Story',
-  description: 'Formly is a free AI tools platform built in India. Our mission: give everyone access to powerful AI tools without expensive subscriptions.',
+  title: 'About Formly — Free AI Tools Platform Built in India',
+  description: 'Formly is a free AI tools platform built and operated from India. 29 professional AI tools — pay stub generator, resume builder, grammar checker & more. No subscriptions. Powered by Groq AI.',
+  alternates: { canonical: 'https://formly.tools/about' },
+  openGraph: {
+    title: 'About Formly — Free AI Tools for Everyone',
+    description: 'Formly democratizes AI tools. 29 professional-grade AI tools, free to try. Built in India, used by 50,000+ professionals worldwide.',
+    url: 'https://formly.tools/about',
+    type: 'website',
+    siteName: 'Formly',
+  },
 };
 
 export default function AboutPage() {
+  const orgSchema = {
+    '@context': 'https://schema.org',
+    '@type': ['Organization', 'SoftwareApplication'],
+    name: 'Formly',
+    alternateName: 'formly.tools',
+    url: 'https://formly.tools',
+    logo: 'https://formly.tools/favicon.svg',
+    description: 'Formly provides 29 free AI-powered productivity tools for professionals worldwide — pay stub generator, resume builder, contract generator, PDF summarizer, AI paraphraser, grammar checker, digital signature, QR code generator, and more. Built in India, used by 50,000+ professionals in 100+ countries.',
+    foundingLocation: { '@type': 'Place', name: 'India', addressCountry: 'IN' },
+    areaServed: ['US', 'GB', 'IN', 'CA', 'AU', 'NZ', 'SG', 'IE', 'Worldwide'],
+    audience: { '@type': 'Audience', audienceType: 'Professionals, developers, writers, freelancers, and businesses' },
+    applicationCategory: 'Productivity',
+    operatingSystem: 'Web Browser',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', description: 'Free daily usage for all 29 tools, no credit card required' },
+    sameAs: ['https://twitter.com/formlytools'],
+    numberOfEmployees: { '@type': 'QuantitativeValue', value: '1-10' },
+    keywords: 'free AI tools, pay stub generator, resume builder, grammar checker, paraphraser, PDF summarizer',
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
       <Header />
       <main className="min-h-screen bg-gray-950 pt-24 pb-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
