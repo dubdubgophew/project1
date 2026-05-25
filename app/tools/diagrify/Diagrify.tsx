@@ -264,8 +264,8 @@ function drawLabel(ctx: CanvasRenderingContext2D, label: string, cx: number, cy:
   const fs = el.fontSize ?? 15;
   const weight = el.bold ? 'bold ' : '';
   const style  = el.italic ? 'italic ' : '';
-  const fontFamily = mode === 'sketchy' ? "'Caveat', cursive" : "-apple-system, Inter, sans-serif";
-  const fontSizePx = mode === 'sketchy' ? fs * 1.2 : fs; // Caveat renders slightly smaller, so bump it
+  const fontFamily = mode === 'sketchy' ? "'Kalam', cursive" : "-apple-system, Inter, sans-serif";
+  const fontSizePx = mode === 'sketchy' ? fs * 1.05 : fs; // Kalam renders at near-normal size
   ctx.font = `${style}${weight}${fontSizePx}px ${fontFamily}`;
   ctx.fillStyle = mode === 'blueprint' ? '#93c5fd' : '#1e1e2e';
   ctx.textAlign = 'center';
@@ -435,7 +435,7 @@ function drawElement(ctx: CanvasRenderingContext2D, el: Elem, mode: Mode) {
       const fs = el.fontSize ?? 16;
       const weight = el.bold ? 'bold ' : '';
       const st = el.italic ? 'italic ' : '';
-      const fontFamily = mode === 'sketchy' ? "'Caveat', cursive" : "-apple-system, Inter, sans-serif";
+      const fontFamily = mode === 'sketchy' ? "'Kalam', cursive" : "-apple-system, Inter, sans-serif";
       const fontSizePx = mode === 'sketchy' ? fs * 1.2 : fs;
       ctx.font = `${st}${weight}${fontSizePx}px ${fontFamily}`;
       ctx.fillStyle = mode === 'blueprint' ? '#93c5fd' : '#1e1e2e';
@@ -1507,7 +1507,7 @@ export function Diagrify() {
                 }}
                 className="w-full h-full resize-none bg-transparent border-none outline-none text-gray-900 text-center"
                 style={{
-                  fontFamily: mode === 'sketchy' ? "'Caveat', cursive" : "-apple-system, Inter, sans-serif",
+                  fontFamily: mode === 'sketchy' ? "'Kalam', cursive" : "-apple-system, Inter, sans-serif",
                   fontSize: `${(elements.find(e => e.id === editingId)?.fontSize ?? 15) * (mode === 'sketchy' ? 1.2 : 1) * zoom}px`,
                   caretColor: '#a855f7',
                   padding: '4px',
