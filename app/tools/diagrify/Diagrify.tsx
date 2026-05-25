@@ -264,7 +264,9 @@ function drawLabel(ctx: CanvasRenderingContext2D, label: string, cx: number, cy:
   const fs = el.fontSize ?? 15;
   const weight = el.bold ? 'bold ' : '';
   const style  = el.italic ? 'italic ' : '';
-  ctx.font = `${style}${weight}${fs}px -apple-system, Inter, sans-serif`;
+  const fontFamily = mode === 'sketchy' ? "'Caveat', cursive" : "-apple-system, Inter, sans-serif";
+  const fontSizePx = mode === 'sketchy' ? fs * 1.2 : fs; // Caveat renders slightly smaller, so bump it
+  ctx.font = `${style}${weight}${fontSizePx}px ${fontFamily}`;
   ctx.fillStyle = mode === 'blueprint' ? '#93c5fd' : '#1e1e2e';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
@@ -433,7 +435,9 @@ function drawElement(ctx: CanvasRenderingContext2D, el: Elem, mode: Mode) {
       const fs = el.fontSize ?? 16;
       const weight = el.bold ? 'bold ' : '';
       const st = el.italic ? 'italic ' : '';
-      ctx.font = `${st}${weight}${fs}px -apple-system, Inter, sans-serif`;
+      const fontFamily = mode === 'sketchy' ? "'Caveat', cursive" : "-apple-system, Inter, sans-serif";
+      const fontSizePx = mode === 'sketchy' ? fs * 1.2 : fs;
+      ctx.font = `${st}${weight}${fontSizePx}px ${fontFamily}`;
       ctx.fillStyle = mode === 'blueprint' ? '#93c5fd' : '#1e1e2e';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
@@ -530,6 +534,13 @@ export function Diagrify() {
   const drawing = useRef<Elem | null>(null);
   const selectBox = useRef<{ x: number; y: number; w: number; h: number } | null>(null);
   const lastPan = useRef<Pt>({ x: 0, y: 0 });
+
+  // Space-to-pan and clipboard refs
+  const prevToolRef = useRef<Tool>('select');
+  const spaceHeld = useRef(false);
+  const clipboardRef = useRef<Elem[]>([]);
+  const toolRef = useRef<Tool>(tool);
+  useEffect(() => { toolRef.current = tool; }, [tool]);
 
   // DPR
   const dpr = useRef(typeof window !== 'undefined' ? (window.devicePixelRatio || 1) : 1);
@@ -757,6 +768,14 @@ export function Diagrify() {
 
       const el = findElement(wx, wy);
       if (el) {
+        // If already selected (single selection) and not locked — click again opens text editor
+        if (selectedIds.length === 1 && selectedIds.includes(el.id) && !e.shiftKey && !el.locked &&
+            (el.type === 'rect' || el.type === 'ellipse' || el.type === 'diamond' ||
+             el.type === 'triangle' || el.type === 'sticky' || el.type === 'text')) {
+          setEditingId(el.id);
+          setEditText(el.text ?? el.label ?? '');
+          return;
+        }
         if (e.shiftKey) {
           setSelectedIds(prev =>
             prev.includes(el.id) ? prev.filter(id => id !== el.id) : [...prev, el.id]
@@ -963,6 +982,10 @@ export function Diagrify() {
           el.w = el.type === 'sticky' ? 140 : 140;
           el.h = el.type === 'sticky' ? 80 : 60;
         }
+        // Auto-switch back to select tool (like Excalidraw)
+        if (el.type !== 'pen') {
+          setTool('select');
+        }
       }
       if ((el.type === 'pen') && (!el.pts || el.pts.length < 4)) {
         drawing.current = null;
@@ -970,6 +993,11 @@ export function Diagrify() {
       }
       drawing.current = null;
       addElements([el]);
+
+      // Auto-switch back to select tool (like Excalidraw)
+      if (el.type !== 'pen') {
+        setTool('select');
+      }
 
       // Auto-open text editing for sticky notes
       if (el.type === 'sticky' || el.type === 'text') {
@@ -1003,10 +1031,57 @@ export function Diagrify() {
     const onKey = (e: KeyboardEvent) => {
       if (editingId) return;
       const mod = e.metaKey || e.ctrlKey;
+
+      // Space bar to pan temporarily (handled via keyup below)
+      if (e.key === ' ' && !spaceHeld.current) {
+        e.preventDefault();
+        spaceHeld.current = true;
+        prevToolRef.current = toolRef.current;
+        setTool('hand');
+        return;
+      }
+
+      // Enter to edit selected element
+      if (e.key === 'Enter' && selectedIds.length === 1 && !editingId) {
+        e.preventDefault();
+        const selEl = elements.find(x => x.id === selectedIds[0]);
+        if (selEl && selEl.type !== 'pen' && selEl.type !== 'arrow' && selEl.type !== 'line') {
+          setEditingId(selEl.id);
+          setEditText(selEl.text ?? selEl.label ?? '');
+        }
+        return;
+      }
+
       if (mod && e.key === 'z') { e.preventDefault(); e.shiftKey ? redo() : undo(); return; }
       if (mod && e.key === 'y') { e.preventDefault(); redo(); return; }
       if (mod && e.key === 'a') { e.preventDefault(); setSelectedIds(elements.map(el => el.id)); return; }
-      if (mod && e.key === 'c') { /* copy — could implement later */ return; }
+      if (mod && e.key === 'c') {
+        e.preventDefault();
+        clipboardRef.current = elements.filter(el => selectedIds.includes(el.id)).map(el => ({...el}));
+        return;
+      }
+      if (mod && e.key === 'v') {
+        e.preventDefault();
+        if (clipboardRef.current.length) {
+          const pasted = clipboardRef.current.map(el => ({
+            ...el, id: uid(),
+            x: el.x + 20, y: el.y + 20,
+            seed: Math.floor(Math.random() * 100000),
+          }));
+          addElements(pasted);
+        }
+        return;
+      }
+      if (mod && e.key === 'd') {
+        e.preventDefault();
+        const duped = elements.filter(el => selectedIds.includes(el.id)).map(el => ({
+          ...el, id: uid(),
+          x: el.x + 20, y: el.y + 20,
+          seed: Math.floor(Math.random() * 100000),
+        }));
+        if (duped.length) addElements(duped);
+        return;
+      }
       if ((e.key === 'Delete' || e.key === 'Backspace') && selectedIds.length > 0) {
         e.preventDefault(); deleteSelected(); return;
       }
@@ -1022,9 +1097,19 @@ export function Diagrify() {
       };
       if (!mod && toolMap[e.key]) { setTool(toolMap[e.key]); }
     };
+    const onKeyUp = (e: KeyboardEvent) => {
+      if (e.key === ' ' && spaceHeld.current) {
+        spaceHeld.current = false;
+        setTool(prevToolRef.current);
+      }
+    };
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [editingId, undo, redo, deleteSelected, selectedIds, elements]);
+    window.addEventListener('keyup', onKeyUp);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      window.removeEventListener('keyup', onKeyUp);
+    };
+  }, [editingId, undo, redo, deleteSelected, selectedIds, elements, addElements]);
 
   // ─── Text editing ─────────────────────────────────────────────────────────
 
@@ -1103,7 +1188,41 @@ export function Diagrify() {
         const cy = (Math.min(...ys) + Math.max(...hs2)) / 2;
         const offX = vw / 2 / zoom - cx + (pan.x === 0 ? 0 : pan.x / zoom);
         const offY = vh / 2 / zoom - cy + (pan.y === 0 ? 0 : pan.y / zoom);
-        newElems.forEach(e => { e.x += offX; e.y += offY; });
+        newElems.forEach(e => {
+          e.x += offX;
+          e.y += offY;
+          if (e.pts && e.pts.length >= 2) {
+            for (let i = 0; i < e.pts.length; i += 2) e.pts[i] += offX;
+            for (let i = 1; i < e.pts.length; i += 2) e.pts[i] += offY;
+          }
+        });
+
+        // Snap arrows to shape edges
+        const shapes = newElems.filter(e => e.type !== 'arrow' && e.type !== 'line' && e.type !== 'pen');
+        newElems.forEach(e => {
+          if ((e.type !== 'arrow' && e.type !== 'line') || !e.pts || e.pts.length < 4) return;
+          const [fx, fy, tx, ty] = e.pts;
+          // Find closest shape to each endpoint
+          const nearest = (px: number, py: number) => {
+            let best: Elem | null = null;
+            let bestD = Infinity;
+            shapes.forEach(s => {
+              const ecx = s.x + s.w / 2, ecy = s.y + s.h / 2;
+              const d = Math.hypot(px - ecx, py - ecy);
+              if (d < bestD) { bestD = d; best = s; }
+            });
+            return best;
+          };
+          const fromEl = nearest(fx, fy);
+          const toEl = nearest(tx, ty);
+          if (fromEl && toEl && fromEl !== toEl) {
+            // Connect center-to-center (edge points computed at draw time visually)
+            e.pts[0] = fromEl.x + fromEl.w / 2;
+            e.pts[1] = fromEl.y + fromEl.h / 2;
+            e.pts[2] = toEl.x + toEl.w / 2;
+            e.pts[3] = toEl.y + toEl.h / 2;
+          }
+        });
       }
 
       addElements(newElems);
@@ -1390,8 +1509,8 @@ export function Diagrify() {
                 }}
                 className="w-full h-full resize-none bg-transparent border-none outline-none text-gray-900 text-center"
                 style={{
-                  fontSize: `${(elements.find(e => e.id === editingId)?.fontSize ?? 15) * zoom}px`,
-                  fontFamily: '-apple-system, Inter, sans-serif',
+                  fontFamily: mode === 'sketchy' ? "'Caveat', cursive" : "-apple-system, Inter, sans-serif",
+                  fontSize: `${(elements.find(e => e.id === editingId)?.fontSize ?? 15) * (mode === 'sketchy' ? 1.2 : 1) * zoom}px`,
                   caretColor: '#a855f7',
                   padding: '4px',
                 }}
@@ -1408,7 +1527,7 @@ export function Diagrify() {
         </div>
 
         {/* ── Right panel (style + properties) ── */}
-        <div className="w-60 border-l border-gray-200 bg-gray-50 shrink-0 flex flex-col overflow-y-auto z-10">
+        <div className="w-52 border-l border-gray-200 bg-gray-50 shrink-0 flex flex-col overflow-y-auto z-10">
 
           {/* Style panel */}
           <div className="p-4 border-b border-gray-200">
@@ -1434,12 +1553,6 @@ export function Diagrify() {
                   value={stroke === 'transparent' ? '#1e1e2e' : stroke}
                   onChange={e => { setStroke(e.target.value); applyStylePatch({ stroke: e.target.value }); }}
                   className="w-7 h-7 rounded cursor-pointer border border-gray-200 bg-transparent"
-                />
-                <input
-                  type="text"
-                  value={stroke}
-                  onChange={e => { setStroke(e.target.value); applyStylePatch({ stroke: e.target.value }); }}
-                  className="flex-1 text-xs bg-white border border-gray-200 rounded px-2 py-1 text-gray-700 font-mono"
                 />
               </div>
             </div>
@@ -1470,12 +1583,6 @@ export function Diagrify() {
                   onChange={e => { const v = e.target.value + '33'; setFill(v); applyStylePatch({ fill: v }); }}
                   className="w-7 h-7 rounded cursor-pointer border border-gray-200 bg-transparent"
                 />
-                <input
-                  type="text"
-                  value={fill}
-                  onChange={e => { setFill(e.target.value); applyStylePatch({ fill: e.target.value }); }}
-                  className="flex-1 text-xs bg-white border border-gray-200 rounded px-2 py-1 text-gray-700 font-mono"
-                />
               </div>
             </div>
 
@@ -1483,15 +1590,15 @@ export function Diagrify() {
             <div className="mb-3">
               <p className="text-xs text-gray-500 mb-1.5">Stroke width</p>
               <div className="flex gap-1">
-                {[1, 2, 3, 5, 8].map(w => (
+                {([{ label: 'Thin', w: 1 }, { label: 'Normal', w: 2 }, { label: 'Thick', w: 4 }] as { label: string; w: number }[]).map(({ label, w }) => (
                   <button
                     key={w}
                     onClick={() => { setLineWidth(w); applyStylePatch({ lineWidth: w }); }}
-                    className={`flex items-center justify-center w-8 h-8 rounded-lg text-xs font-bold transition-all border ${
+                    className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
                       lineWidth === w ? 'bg-violet-600 text-white border-violet-500' : 'text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-900'
                     }`}
                   >
-                    {w}
+                    {label}
                   </button>
                 ))}
               </div>
