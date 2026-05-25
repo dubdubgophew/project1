@@ -983,9 +983,7 @@ export function Diagrify() {
           el.h = el.type === 'sticky' ? 80 : 60;
         }
         // Auto-switch back to select tool (like Excalidraw)
-        if (el.type !== 'pen') {
-          setTool('select');
-        }
+        setTool('select');
       }
       if ((el.type === 'pen') && (!el.pts || el.pts.length < 4)) {
         drawing.current = null;
@@ -1213,14 +1211,14 @@ export function Diagrify() {
             });
             return best;
           };
-          const fromEl = nearest(fx, fy);
-          const toEl = nearest(tx, ty);
+          const fromEl = nearest(fx, fy) as Elem | null;
+          const toEl = nearest(tx, ty) as Elem | null;
           if (fromEl && toEl && fromEl !== toEl) {
             // Connect center-to-center (edge points computed at draw time visually)
-            e.pts[0] = fromEl.x + fromEl.w / 2;
-            e.pts[1] = fromEl.y + fromEl.h / 2;
-            e.pts[2] = toEl.x + toEl.w / 2;
-            e.pts[3] = toEl.y + toEl.h / 2;
+            e.pts[0] = (fromEl as Elem).x + (fromEl as Elem).w / 2;
+            e.pts[1] = (fromEl as Elem).y + (fromEl as Elem).h / 2;
+            e.pts[2] = (toEl as Elem).x + (toEl as Elem).w / 2;
+            e.pts[3] = (toEl as Elem).y + (toEl as Elem).h / 2;
           }
         });
       }
@@ -1519,10 +1517,12 @@ export function Diagrify() {
             </div>
           )}
 
-          {/* Element count */}
-          <div className="absolute bottom-4 right-4 flex items-center gap-3 text-xs text-gray-400 pointer-events-none select-none">
+          {/* Status bar */}
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-4 text-xs text-gray-400 pointer-events-none select-none bg-white/80 backdrop-blur-sm rounded-full px-4 py-1.5 border border-gray-200 shadow-sm">
+            <span>{Math.round(zoom * 100)}%</span>
+            <span className="text-gray-300">·</span>
             <span>{elements.length} element{elements.length !== 1 ? 's' : ''}</span>
-            {selCount > 0 && <span className="text-violet-400">{selCount} selected</span>}
+            {selCount > 0 && <><span className="text-gray-300">·</span><span className="text-violet-600">{selCount} selected</span></>}
           </div>
         </div>
 
@@ -1640,54 +1640,16 @@ export function Diagrify() {
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Element</p>
               <div className="space-y-2 text-xs">
                 <div className="flex gap-2">
-                  <label className="text-gray-500 w-6">X</label>
-                  <input type="number" value={Math.round(selEl.x)} onChange={e => updateElement(selEl.id, { x: Number(e.target.value) })}
-                    className="flex-1 bg-white border border-gray-200 rounded px-2 py-1 text-gray-700 font-mono" />
-                </div>
-                <div className="flex gap-2">
-                  <label className="text-gray-500 w-6">Y</label>
-                  <input type="number" value={Math.round(selEl.y)} onChange={e => updateElement(selEl.id, { y: Number(e.target.value) })}
-                    className="flex-1 bg-white border border-gray-200 rounded px-2 py-1 text-gray-700 font-mono" />
-                </div>
-                {selEl.type !== 'pen' && selEl.type !== 'arrow' && selEl.type !== 'line' && (
-                  <>
-                    <div className="flex gap-2">
-                      <label className="text-gray-500 w-6">W</label>
-                      <input type="number" value={Math.round(selEl.w)} onChange={e => updateElement(selEl.id, { w: Math.max(10, Number(e.target.value)) })}
-                        className="flex-1 bg-white border border-gray-200 rounded px-2 py-1 text-gray-700 font-mono" />
-                    </div>
-                    <div className="flex gap-2">
-                      <label className="text-gray-500 w-6">H</label>
-                      <input type="number" value={Math.round(selEl.h)} onChange={e => updateElement(selEl.id, { h: Math.max(10, Number(e.target.value)) })}
-                        className="flex-1 bg-white border border-gray-200 rounded px-2 py-1 text-gray-700 font-mono" />
-                    </div>
-                  </>
-                )}
-                <div className="flex gap-2">
                   <label className="text-gray-500 w-12">Opacity</label>
                   <input type="range" min="0" max="1" step="0.05" value={selEl.opacity}
                     onChange={e => { updateElement(selEl.id, { opacity: Number(e.target.value) }); }}
                     className="flex-1 accent-violet-500" />
                   <span className="text-gray-500 w-8 text-right">{Math.round(selEl.opacity * 100)}%</span>
                 </div>
-                {selEl.label !== undefined && (
-                  <div>
-                    <label className="text-gray-500 block mb-1">Label</label>
-                    <input type="text" value={selEl.label ?? ''}
-                      onChange={e => updateElement(selEl.id, { label: e.target.value })}
-                      className="w-full bg-white border border-gray-200 rounded px-2 py-1 text-gray-700"
-                      placeholder="Label…"
-                    />
-                  </div>
-                )}
               </div>
 
               {/* Actions */}
               <div className="flex gap-1 mt-3">
-                <button onClick={() => { const el = elements.find(x => x.id === selEl.id); if (el) addElements([{ ...el, id: uid(), x: el.x + 20, y: el.y + 20 }]); }}
-                  className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors">
-                  <Copy style={{ width: 12, height: 12 }} /> Dupe
-                </button>
                 <button onClick={() => updateElement(selEl.id, { locked: !selEl.locked })}
                   className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors">
                   {selEl.locked ? <Unlock style={{ width: 12, height: 12 }} /> : <Lock style={{ width: 12, height: 12 }} />}
@@ -1746,6 +1708,17 @@ export function Diagrify() {
               </div>
             </div>
           )}
+
+          {/* Keyboard shortcuts hint */}
+          <div className="mt-auto p-3 border-t border-gray-200">
+            <p className="text-[10px] text-gray-400 leading-relaxed">
+              <span className="font-semibold text-gray-500">Shortcuts</span><br />
+              V select · H pan · R rect<br />
+              E ellipse · A arrow · P pen<br />
+              N sticky · Del delete<br />
+              Ctrl+Z undo · Space pan
+            </p>
+          </div>
         </div>
 
         {/* ── AI Panel (floating overlay) ── */}
