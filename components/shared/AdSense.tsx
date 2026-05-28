@@ -4,7 +4,7 @@ import Script from 'next/script';
 import { useEffect, useRef, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 
-const ADSENSE_CLIENT = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+const ADSENSE_CLIENT = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID ?? 'ca-pub-7233937066598688';
 
 const FREE_PLANS = new Set(['free', null, undefined]);
 
@@ -29,7 +29,6 @@ function useShowAds(): boolean | null {
 }
 
 export function AdSenseScript() {
-  if (!ADSENSE_CLIENT) return null;
   return (
     <Script
       async
@@ -62,7 +61,7 @@ export function AdUnit({ slot, format = 'auto', responsive = true, className = '
   }, [showAds]);
 
   // Hide while loading or for paid users — no flash
-  if (!ADSENSE_CLIENT || !showAds) return null;
+  if (!showAds) return null;
 
   return (
     <div ref={adRef} className={`adsense-container ${className}`}>

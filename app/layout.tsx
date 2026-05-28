@@ -113,6 +113,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} dark`}>
       <head>
+        <meta name="google-adsense-account" content="ca-pub-7233937066598688" />
         <AdSenseScript />
         <meta name="monetag" content="701dad6c34191d949e21404ca1901f4f" />
         {/* Monetag ads */}

@@ -1898,31 +1898,31 @@ export const BLOG_POSTS: BlogPost[] = [
     sections: [
       {
         heading: 'How SIP Returns Are Calculated',
-        content: 'SIP uses the future value of an annuity formula: FV = P × ((1+r)^n − 1)/r × (1+r), where P is the monthly investment, r is the monthly return rate (annual rate ÷ 12), and n is the total number of months. The "× (1+r)" at the end accounts for each instalment earning returns from the day it is invested.',
+        body: 'SIP uses the future value of an annuity formula: FV = P × ((1+r)^n − 1)/r × (1+r), where P is the monthly investment, r is the monthly return rate (annual rate ÷ 12), and n is the total number of months. The "× (1+r)" at the end accounts for each instalment earning returns from the day it is invested.',
       },
       {
         heading: 'Step-Up SIP: Why It Matters',
-        content: 'A step-up SIP increases your monthly contribution by a fixed percentage each year — typically 10–15%, aligned with salary growth. Because your later contributions are larger AND have less time to compound, the combined effect is dramatically higher wealth than a flat SIP. Our calculator models this with a precise year-by-year loop, not an approximation.',
+        body: 'A step-up SIP increases your monthly contribution by a fixed percentage each year — typically 10–15%, aligned with salary growth. Because your later contributions are larger AND have less time to compound, the combined effect is dramatically higher wealth than a flat SIP. Our calculator models this with a precise year-by-year loop, not an approximation.',
       },
       {
         heading: 'Lumpsum vs SIP',
-        content: 'Lumpsum investing works better when markets are at a low point; SIP works better in volatile or rising markets through rupee cost averaging. For most salaried investors, SIP is the right choice — it removes the need to time the market and builds investing discipline automatically.',
+        body: 'Lumpsum investing works better when markets are at a low point; SIP works better in volatile or rising markets through rupee cost averaging. For most salaried investors, SIP is the right choice — it removes the need to time the market and builds investing discipline automatically.',
       },
       {
         heading: 'Expected Returns: What Rate to Use',
-        content: 'Equity mutual funds have historically delivered 12–15% CAGR over 10-year periods in India. Debt funds return 6–8%. A balanced portfolio might target 10–12%. For conservative planning, use 10%; for equity-heavy long-term goals, 12% is reasonable. Never assume more than 15% for projections.',
+        body: 'Equity mutual funds have historically delivered 12–15% CAGR over 10-year periods in India. Debt funds return 6–8%. A balanced portfolio might target 10–12%. For conservative planning, use 10%; for equity-heavy long-term goals, 12% is reasonable. Never assume more than 15% for projections.',
       },
       {
         heading: 'Goal Planning: Reverse SIP Formula',
-        content: 'If you know your target amount (e.g., ₹1 crore for retirement), you can reverse the SIP formula to find the required monthly contribution: P = FV × r / (((1+r)^n − 1) × (1+r)). Our calculator\'s Goal Planning section does this automatically.',
+        body: 'If you know your target amount (e.g., ₹1 crore for retirement), you can reverse the SIP formula to find the required monthly contribution: P = FV × r / (((1+r)^n − 1) × (1+r)). Our calculator\'s Goal Planning section does this automatically.',
       },
       {
         heading: 'Tax on Mutual Fund Returns (2025)',
-        content: 'Equity fund gains held over 1 year are Long-Term Capital Gains (LTCG), taxed at 12.5% above ₹1.25L per year (Budget 2024 change). Short-term gains (< 1 year) are taxed at 20%. Debt funds are taxed as per your income slab regardless of holding period (since 2023 amendment). ELSS funds offer 80C deduction up to ₹1.5L.',
+        body: 'Equity fund gains held over 1 year are Long-Term Capital Gains (LTCG), taxed at 12.5% above ₹1.25L per year (Budget 2024 change). Short-term gains (< 1 year) are taxed at 20%. Debt funds are taxed as per your income slab regardless of holding period (since 2023 amendment). ELSS funds offer 80C deduction up to ₹1.5L.',
       },
       {
         heading: 'How to Use the Formly SIP Calculator',
-        content: 'Enter your monthly SIP amount, expected annual return, and investment tenure. Toggle Step-Up SIP to model annual contribution increases. Switch to Lumpsum tab for one-time investment projections. The Goal Planner section calculates how much you need to invest monthly to reach a specific target amount.',
+        body: 'Enter your monthly SIP amount, expected annual return, and investment tenure. Toggle Step-Up SIP to model annual contribution increases. Switch to Lumpsum tab for one-time investment projections. The Goal Planner section calculates how much you need to invest monthly to reach a specific target amount.',
       },
     ],
     faqs: [
@@ -1947,31 +1947,31 @@ export const BLOG_POSTS: BlogPost[] = [
     sections: [
       {
         heading: 'New Regime Tax Slabs FY 2025-26 (Budget 2025)',
-        content: '₹0–4L: Nil | ₹4–8L: 5% | ₹8–12L: 10% | ₹12–16L: 15% | ₹16–20L: 20% | ₹20–24L: 25% | Above ₹24L: 30%. Plus ₹75,000 standard deduction for salaried employees. The 87A rebate makes income up to ₹12L (after standard deduction, so gross salary up to ₹12.75L) effectively tax-free.',
+        body: '₹0–4L: Nil | ₹4–8L: 5% | ₹8–12L: 10% | ₹12–16L: 15% | ₹16–20L: 20% | ₹20–24L: 25% | Above ₹24L: 30%. Plus ₹75,000 standard deduction for salaried employees. The 87A rebate makes income up to ₹12L (after standard deduction, so gross salary up to ₹12.75L) effectively tax-free.',
       },
       {
         heading: 'Old Regime Tax Slabs FY 2025-26',
-        content: '₹0–2.5L: Nil | ₹2.5–5L: 5% | ₹5–10L: 20% | Above ₹10L: 30%. Standard deduction ₹50,000, plus deductions under 80C (₹1.5L), 80D, HRA, Section 24b (home loan), NPS (80CCD), and others. The 87A rebate applies for taxable income up to ₹5L.',
+        body: '₹0–2.5L: Nil | ₹2.5–5L: 5% | ₹5–10L: 20% | Above ₹10L: 30%. Standard deduction ₹50,000, plus deductions under 80C (₹1.5L), 80D, HRA, Section 24b (home loan), NPS (80CCD), and others. The 87A rebate applies for taxable income up to ₹5L.',
       },
       {
         heading: 'Who Benefits from the New Regime?',
-        content: 'The new regime benefits anyone whose deductions (80C + HRA + home loan + NPS etc.) are less than approximately ₹3.75L annually. For most salaried employees without a home loan and living in company accommodation, the new regime is now better. The ₹75K standard deduction (vs ₹50K old) also helps.',
+        body: 'The new regime benefits anyone whose deductions (80C + HRA + home loan + NPS etc.) are less than approximately ₹3.75L annually. For most salaried employees without a home loan and living in company accommodation, the new regime is now better. The ₹75K standard deduction (vs ₹50K old) also helps.',
       },
       {
         heading: 'Who Should Stick to the Old Regime?',
-        content: 'If you have significant deductions — home loan interest (Section 24b up to ₹2L), NPS contributions (80CCD 1B up to ₹50K), HRA exemption, and full 80C (₹1.5L) — the old regime may still save more, especially for incomes between ₹10–20L with large deductions.',
+        body: 'If you have significant deductions — home loan interest (Section 24b up to ₹2L), NPS contributions (80CCD 1B up to ₹50K), HRA exemption, and full 80C (₹1.5L) — the old regime may still save more, especially for incomes between ₹10–20L with large deductions.',
       },
       {
         heading: 'Understanding Surcharge and Cess',
-        content: 'Surcharge applies on the base tax: 10% for income ₹50L–1Cr, 15% for ₹1–2Cr, 25% for ₹2–5Cr (new regime cap), 37% for above ₹5Cr (old regime only). Health and Education Cess is 4% on (base tax + surcharge) for all taxpayers.',
+        body: 'Surcharge applies on the base tax: 10% for income ₹50L–1Cr, 15% for ₹1–2Cr, 25% for ₹2–5Cr (new regime cap), 37% for above ₹5Cr (old regime only). Health and Education Cess is 4% on (base tax + surcharge) for all taxpayers.',
       },
       {
         heading: 'Section 87A Rebate',
-        content: 'If your taxable income (after all deductions) is ≤ ₹12L under the new regime (or ≤ ₹5L under old), you get a full rebate on your tax — meaning zero tax payable. This is a rebate, not a deduction, so it applies after computing tax on slabs.',
+        body: 'If your taxable income (after all deductions) is ≤ ₹12L under the new regime (or ≤ ₹5L under old), you get a full rebate on your tax — meaning zero tax payable. This is a rebate, not a deduction, so it applies after computing tax on slabs.',
       },
       {
         heading: 'How to Use the Formly Income Tax Calculator',
-        content: 'Enter your annual gross salary and any other income. For the old regime, fill in your deductions (80C, 80D, HRA, home loan interest). Toggle between new and old regime to see the comparison. The calculator shows the better option and how much you save by choosing it.',
+        body: 'Enter your annual gross salary and any other income. For the old regime, fill in your deductions (80C, 80D, HRA, home loan interest). Toggle between new and old regime to see the comparison. The calculator shows the better option and how much you save by choosing it.',
       },
     ],
     faqs: [
@@ -1996,27 +1996,27 @@ export const BLOG_POSTS: BlogPost[] = [
     sections: [
       {
         heading: 'GST Calculation: Adding GST to a Base Price',
-        content: 'GST Amount = Base Price × (GST Rate / 100). Total Price = Base Price + GST Amount. Example: ₹10,000 base price with 18% GST → GST = ₹1,800 → Total = ₹11,800. This is the "exclusive" or "add GST" mode used when you know the pre-tax price.',
+        body: 'GST Amount = Base Price × (GST Rate / 100). Total Price = Base Price + GST Amount. Example: ₹10,000 base price with 18% GST → GST = ₹1,800 → Total = ₹11,800. This is the "exclusive" or "add GST" mode used when you know the pre-tax price.',
       },
       {
         heading: 'Removing GST from an Inclusive Price',
-        content: 'Original Price = Inclusive Price / (1 + GST Rate/100). GST Amount = Inclusive Price − Original Price. Example: ₹11,800 inclusive of 18% GST → Base = ₹11,800/1.18 = ₹10,000 → GST = ₹1,800. Use this when a price "includes GST" and you need the breakup.',
+        body: 'Original Price = Inclusive Price / (1 + GST Rate/100). GST Amount = Inclusive Price − Original Price. Example: ₹11,800 inclusive of 18% GST → Base = ₹11,800/1.18 = ₹10,000 → GST = ₹1,800. Use this when a price "includes GST" and you need the breakup.',
       },
       {
         heading: 'CGST + SGST vs IGST',
-        content: 'For intra-state transactions (buyer and seller in same state): GST splits equally into CGST (Central) + SGST (State), each at half the GST rate. For inter-state transactions (different states): Full GST is charged as IGST (Integrated). Example at 18%: Intra-state = 9% CGST + 9% SGST. Inter-state = 18% IGST.',
+        body: 'For intra-state transactions (buyer and seller in same state): GST splits equally into CGST (Central) + SGST (State), each at half the GST rate. For inter-state transactions (different states): Full GST is charged as IGST (Integrated). Example at 18%: Intra-state = 9% CGST + 9% SGST. Inter-state = 18% IGST.',
       },
       {
         heading: 'GST Rate Slabs in India',
-        content: '0% — Essential items: food grains, fresh vegetables, milk, eggs. 5% — Mass consumption items: packaged food, transport services, restaurants. 12% — Processed food, computers, mobiles, business class travel. 18% — Most services, electronics, restaurants above ₹7,500/day. 28% — Luxury items: cars, tobacco, aerated drinks, high-end goods.',
+        body: '0% — Essential items: food grains, fresh vegetables, milk, eggs. 5% — Mass consumption items: packaged food, transport services, restaurants. 12% — Processed food, computers, mobiles, business class travel. 18% — Most services, electronics, restaurants above ₹7,500/day. 28% — Luxury items: cars, tobacco, aerated drinks, high-end goods.',
       },
       {
         heading: 'GST Registration Threshold (2025)',
-        content: 'Businesses with annual turnover above ₹40L (goods) or ₹20L (services) must register for GST. Special category states have a lower ₹20L/₹10L threshold respectively. Voluntary registration is allowed below the threshold to claim Input Tax Credit (ITC).',
+        body: 'Businesses with annual turnover above ₹40L (goods) or ₹20L (services) must register for GST. Special category states have a lower ₹20L/₹10L threshold respectively. Voluntary registration is allowed below the threshold to claim Input Tax Credit (ITC).',
       },
       {
         heading: 'Input Tax Credit (ITC)',
-        content: 'Registered businesses can claim ITC — offsetting GST paid on purchases against GST collected on sales. ITC is only available on business purchases, not personal expenses. The net GST payable = GST collected − ITC. This prevents the cascading tax-on-tax effect of the old system.',
+        body: 'Registered businesses can claim ITC — offsetting GST paid on purchases against GST collected on sales. ITC is only available on business purchases, not personal expenses. The net GST payable = GST collected − ITC. This prevents the cascading tax-on-tax effect of the old system.',
       },
     ],
     faqs: [
