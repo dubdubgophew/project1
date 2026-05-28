@@ -316,9 +316,80 @@ const TOOLS: Tool[] = [
     tags: ['whiteboard', 'diagram', 'ai diagram', 'infinite canvas', 'drawing', 'flowchart', 'brainstorm', 'sketchy'],
     category: 'Design & Diagrams',
   },
+  // India Calculators
+  {
+    icon: '💵',
+    name: 'Hand Salary Calculator',
+    description: 'Calculate take-home salary in India after PF, professional tax, and income tax deductions. CTC to in-hand breakdown.',
+    href: '/tools/hand-salary-calculator',
+    badge: 'New',
+    color: 'from-green-500/10 to-emerald-600/5 border-green-500/20 hover:border-green-500/40',
+    tags: ['salary', 'ctc', 'take home', 'india', 'pf', 'tax'],
+    category: 'Calculators',
+  },
+  {
+    icon: '🧾',
+    name: 'Income Tax Calculator',
+    description: 'India income tax FY 2025-26. Compare new vs old regime, calculate surcharge, cess, and TDS. Budget 2025 slabs.',
+    href: '/tools/income-tax-calculator',
+    badge: 'New',
+    color: 'from-orange-500/10 to-amber-600/5 border-orange-500/20 hover:border-orange-500/40',
+    tags: ['income tax', 'tax', 'india', 'new regime', 'old regime', 'itr'],
+    category: 'Calculators',
+  },
+  {
+    icon: '🏠',
+    name: 'HRA Calculator',
+    description: 'Calculate HRA exemption from income tax under Section 10(13A). Metro vs non-metro, all three components shown.',
+    href: '/tools/hra-calculator',
+    badge: 'New',
+    color: 'from-sky-500/10 to-blue-600/5 border-sky-500/20 hover:border-sky-500/40',
+    tags: ['hra', 'house rent allowance', 'india', 'tax exemption', 'section 10'],
+    category: 'Calculators',
+  },
+  {
+    icon: '🏦',
+    name: 'Gratuity Calculator',
+    description: 'Calculate gratuity under Payment of Gratuity Act 1972. Taxable vs exempt gratuity with latest ₹20L limit.',
+    href: '/tools/gratuity-calculator',
+    badge: 'New',
+    color: 'from-yellow-500/10 to-amber-600/5 border-yellow-500/20 hover:border-yellow-500/40',
+    tags: ['gratuity', 'india', 'gratuity act', 'retirement', 'tax exemption'],
+    category: 'Calculators',
+  },
+  {
+    icon: '🧮',
+    name: 'GST Calculator',
+    description: 'Calculate GST for any amount. Add or remove GST, CGST+SGST vs IGST, all slab rates. Compare across rates instantly.',
+    href: '/tools/gst-calculator',
+    badge: 'New',
+    color: 'from-rose-500/10 to-red-600/5 border-rose-500/20 hover:border-rose-500/40',
+    tags: ['gst', 'goods and services tax', 'india', 'cgst', 'sgst', 'igst'],
+    category: 'Calculators',
+  },
+  {
+    icon: '📈',
+    name: 'SIP Calculator',
+    description: 'Calculate mutual fund SIP returns with step-up SIP, lumpsum mode, goal planner, and year-by-year growth table.',
+    href: '/tools/sip-calculator',
+    badge: 'New',
+    color: 'from-purple-500/10 to-violet-600/5 border-purple-500/20 hover:border-purple-500/40',
+    tags: ['sip', 'mutual fund', 'india', 'investment', 'returns', 'lumpsum'],
+    category: 'Calculators',
+  },
+  {
+    icon: '🏡',
+    name: 'Home Loan EMI Calculator',
+    description: 'Calculate home loan EMI, total interest, amortization schedule. Prepayment analysis, Section 24b tax benefit.',
+    href: '/tools/home-loan-emi-calculator',
+    badge: 'New',
+    color: 'from-teal-500/10 to-cyan-600/5 border-teal-500/20 hover:border-teal-500/40',
+    tags: ['home loan', 'emi', 'india', 'mortgage', 'amortization', 'section 24b'],
+    category: 'Calculators',
+  },
 ];
 
-const ALL_CATEGORIES = ['All', 'Payroll & Legal', 'AI Writing', 'AI Documents', 'Developer', 'Finance', 'Utilities', 'Design & Diagrams'];
+const ALL_CATEGORIES = ['All', 'Payroll & Legal', 'AI Writing', 'AI Documents', 'Developer', 'Finance', 'Utilities', 'Design & Diagrams', 'Calculators'];
 
 function ToolsContent() {
   const searchParams = useSearchParams();

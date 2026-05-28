@@ -41,6 +41,13 @@ const STATIC_ROUTES = [
   { url: '/tools/qr-code', priority: 0.8, changeFrequency: 'monthly' as const },
   { url: '/tools/digital-signature', priority: 0.9, changeFrequency: 'monthly' as const },
   { url: '/tools/diagrify', priority: 0.9, changeFrequency: 'weekly' as const },
+  { url: '/tools/hand-salary-calculator', priority: 0.9, changeFrequency: 'monthly' as const },
+  { url: '/tools/income-tax-calculator', priority: 0.9, changeFrequency: 'monthly' as const },
+  { url: '/tools/hra-calculator', priority: 0.8, changeFrequency: 'monthly' as const },
+  { url: '/tools/gratuity-calculator', priority: 0.8, changeFrequency: 'monthly' as const },
+  { url: '/tools/gst-calculator', priority: 0.9, changeFrequency: 'monthly' as const },
+  { url: '/tools/sip-calculator', priority: 0.9, changeFrequency: 'monthly' as const },
+  { url: '/tools/home-loan-emi-calculator', priority: 0.9, changeFrequency: 'monthly' as const },
   // Comparison / alternatives pages (high-intent SEO)
   { url: '/alternatives', priority: 0.8, changeFrequency: 'monthly' as const },
   // Static marketing pages

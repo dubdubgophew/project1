@@ -127,7 +127,7 @@ export function PopularTools() {
             href="/tools"
             className="text-sm text-violet-400 hover:text-violet-300 font-medium transition-colors whitespace-nowrap self-start sm:self-auto"
           >
-            View all 29 tools →
+            View all 36 tools →
           </Link>
         </div>
 
@@ -184,7 +184,7 @@ export function PopularTools() {
             href="/tools"
             className="text-sm text-violet-400 hover:text-violet-300 font-medium transition-colors"
           >
-            View all 29 tools →
+            View all 36 tools →
           </Link>
         </div>
       </div>

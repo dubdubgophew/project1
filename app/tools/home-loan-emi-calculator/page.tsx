@@ -1,0 +1,681 @@
+'use client';
+
+import { useState, useMemo } from 'react';
+import { ToolLayout } from '@/components/tools/ToolLayout';
+
+// ── Helpers ─────────────────────────────────────────────────────────────────
+const fmtINR = (n: number) => '₹' + Math.round(n).toLocaleString('en-IN');
+
+function calcEMI(principal: number, annualRate: number, months: number): number {
+  if (annualRate === 0) return principal / months;
+  const r = annualRate / 12 / 100;
+  const pow = Math.pow(1 + r, months);
+  return (principal * r * pow) / (pow - 1);
+}
+
+interface YearSummary {
+  year: number;
+  emiPaid: number;
+  principalPaid: number;
+  interestPaid: number;
+  balance: number;
+}
+
+interface AmortResult {
+  emi: number;
+  totalPaid: number;
+  totalInterest: number;
+  yearSummaries: YearSummary[];
+  // With prepayment
+  prepayTenureMonths: number;
+  prepayInterestSaved: number;
+}
+
+function buildAmortization(
+  principal: number,
+  annualRate: number,
+  tenureMonths: number,
+  emi: number,
+  extraMonthly: number,
+  processingFee: number,
+): AmortResult {
+  const r = annualRate / 12 / 100;
+  let balance = principal;
+  const yearSummaries: YearSummary[] = [];
+  let month = 0;
+  let totalPrincipalPaid = 0;
+  let totalInterestPaid = 0;
+
+  // Standard amort (no prepay) for totals
+  const stdTotal = emi * tenureMonths + processingFee;
+  const stdTotalInterest = stdTotal - principal - processingFee;
+
+  // Prepay amort
+  let prepayBalance = principal;
+  let prepayMonths = 0;
+  let prepayTotalInterest = 0;
+
+  while (prepayBalance > 0.01 && prepayMonths < tenureMonths * 2) {
+    const interest = prepayBalance * r;
+    let principalPart = emi - interest;
+    if (principalPart < 0) principalPart = 0;
+    let extra = Math.min(extraMonthly, Math.max(0, prepayBalance - principalPart));
+    prepayBalance = Math.max(0, prepayBalance - principalPart - extra);
+    prepayTotalInterest += interest;
+    prepayMonths++;
+  }
+
+  // Regular amort for year table
+  balance = principal;
+  for (let y = 1; balance > 0.01; y++) {
+    let yEmiPaid = 0;
+    let yPrincipal = 0;
+    let yInterest = 0;
+    for (let m = 0; m < 12 && balance > 0.01; m++) {
+      const interest = balance * r;
+      const principalPart = Math.min(emi - interest, balance);
+      balance = Math.max(0, balance - principalPart);
+      yEmiPaid += emi;
+      yPrincipal += principalPart;
+      yInterest += interest;
+      month++;
+    }
+    yearSummaries.push({
+      year: y,
+      emiPaid: yEmiPaid,
+      principalPaid: yPrincipal,
+      interestPaid: yInterest,
+      balance,
+    });
+    if (month >= tenureMonths) break;
+  }
+
+  return {
+    emi,
+    totalPaid: stdTotal,
+    totalInterest: stdTotalInterest,
+    yearSummaries,
+    prepayTenureMonths: prepayMonths,
+    prepayInterestSaved: stdTotalInterest - prepayTotalInterest,
+  };
+}
+
+// Tax benefit calc (old regime)
+function calcTaxBenefit(
+  principal: number,
+  annualRate: number,
+  tenureMonths: number,
+  emi: number,
+): { annualPrincipal: number; annualInterest: number; annualTaxSaving: number } {
+  const r = annualRate / 12 / 100;
+  let balance = principal;
+  let firstYearPrincipal = 0;
+  let firstYearInterest = 0;
+  for (let m = 0; m < 12 && m < tenureMonths; m++) {
+    const interest = balance * r;
+    const principalPart = emi - interest;
+    balance = Math.max(0, balance - principalPart);
+    firstYearPrincipal += principalPart;
+    firstYearInterest += interest;
+  }
+  const deductiblePrincipal = Math.min(firstYearPrincipal, 150000);
+  const deductibleInterest = Math.min(firstYearInterest, 200000);
+  const taxSaving = (deductiblePrincipal + deductibleInterest) * 0.30 * 1.04; // 30% slab + 4% cess
+  return {
+    annualPrincipal: firstYearPrincipal,
+    annualInterest: firstYearInterest,
+    annualTaxSaving: taxSaving,
+  };
+}
+
+const COMPARE_RATES = [8, 8.5, 9, 9.5, 10];
+
+// ── Component ────────────────────────────────────────────────────────────────
+export default function HomeLoanEMIPage() {
+  // Property & loan
+  const [propertyValue, setPropertyValue] = useState('5000000');
+  const [downPaymentMode, setDownPaymentMode] = useState<'pct' | 'amt'>('pct');
+  const [downPaymentPct, setDownPaymentPct] = useState('20');
+  const [downPaymentAmt, setDownPaymentAmt] = useState('1000000');
+  const [loanAmountOverride, setLoanAmountOverride] = useState('');
+  const [interestRate, setInterestRate] = useState('8.75');
+  const [tenureYears, setTenureYears] = useState(20);
+  const [processingFeePct, setProcessingFeePct] = useState('0.5');
+
+  // Advanced
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [prepayMonthly, setPrepayMonthly] = useState('0');
+  const [showTaxBenefit, setShowTaxBenefit] = useState(false);
+
+  // Table pagination
+  const [yearPage, setYearPage] = useState(0);
+
+  // ── Derived loan amount ──────────────────────────────────────────────────
+  const derivedLoanAmount = useMemo(() => {
+    const pv = parseFloat(propertyValue);
+    if (isNaN(pv) || pv <= 0) return 0;
+    if (loanAmountOverride !== '') {
+      const ov = parseFloat(loanAmountOverride);
+      return isNaN(ov) ? 0 : ov;
+    }
+    if (downPaymentMode === 'pct') {
+      const dp = parseFloat(downPaymentPct);
+      return isNaN(dp) ? pv : pv * (1 - dp / 100);
+    } else {
+      const dp = parseFloat(downPaymentAmt);
+      return isNaN(dp) ? pv : Math.max(0, pv - dp);
+    }
+  }, [propertyValue, downPaymentMode, downPaymentPct, downPaymentAmt, loanAmountOverride]);
+
+  // ── Main calculation ──────────────────────────────────────────────────────
+  const result = useMemo(() => {
+    const P = derivedLoanAmount;
+    const r = parseFloat(interestRate);
+    const n = tenureYears * 12;
+    const feePct = parseFloat(processingFeePct);
+    const extra = parseFloat(prepayMonthly) || 0;
+    const pv = parseFloat(propertyValue);
+
+    if (!P || !r || !n || isNaN(P) || isNaN(r) || P <= 0 || r <= 0) return null;
+
+    const fee = isNaN(feePct) ? 0 : P * feePct / 100;
+    const emi = calcEMI(P, r, n);
+    const ltv = pv > 0 ? (P / pv) * 100 : 0;
+
+    const amort = buildAmortization(P, r, n, emi, extra, fee);
+    const tax = calcTaxBenefit(P, r, n, emi);
+
+    const compareRates = COMPARE_RATES.map((rate) => ({
+      rate,
+      emi: calcEMI(P, rate, n),
+      totalInterest: calcEMI(P, rate, n) * n - P,
+    }));
+
+    return { P, r, n, fee, emi, ltv, amort, tax, compareRates, extra };
+  }, [derivedLoanAmount, interestRate, tenureYears, processingFeePct, prepayMonthly, propertyValue]);
+
+  const totalPages = result ? Math.ceil(result.amort.yearSummaries.length / 5) : 0;
+  const pageRows = result ? result.amort.yearSummaries.slice(yearPage * 5, yearPage * 5 + 5) : [];
+
+  const principalPct = result ? Math.round((result.P / result.amort.totalPaid) * 100) : 0;
+  const interestPct = 100 - principalPct;
+
+  return (
+    <ToolLayout
+      title="Home Loan EMI Calculator India"
+      description="Calculate EMI, amortization schedule, LTV ratio, Section 24b tax benefits, and prepayment savings for home loans in India."
+      icon="🏠"
+      relatedTools={[
+        { name: 'SIP Calculator', href: '/tools/sip-calculator', icon: '📈' },
+        { name: 'In-Hand Salary Calculator', href: '/tools/hand-salary-calculator', icon: '💼' },
+        { name: 'Income Tax Calculator', href: '/tools/income-tax-calculator', icon: '🧾' },
+      ]}
+    >
+      <div className="space-y-6">
+        {/* Country selector */}
+        <div className="flex items-center gap-2 mb-6">
+          <span className="text-xs text-gray-500 uppercase tracking-wider">Country</span>
+          <select className="text-sm bg-gray-800 border border-gray-700 rounded-lg px-3 py-1.5 text-white">
+            <option value="IN">🇮🇳 India</option>
+            <option disabled value="US">🇺🇸 USA (coming soon)</option>
+          </select>
+        </div>
+
+        {/* ── Inputs ─────────────────────────────────────────────────────── */}
+        <div className="card space-y-5">
+          <h2 className="text-sm font-semibold text-white">Property & Loan Details</h2>
+
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label className="label">Home / Property Value (₹)</label>
+              <input
+                className="input"
+                type="number"
+                min="100000"
+                step="100000"
+                placeholder="5000000"
+                value={propertyValue}
+                onChange={(e) => {
+                  setPropertyValue(e.target.value);
+                  setLoanAmountOverride('');
+                }}
+              />
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <label className="label mb-0">Down Payment</label>
+                <div className="flex gap-1 bg-gray-800 rounded-lg p-0.5">
+                  {(['pct', 'amt'] as const).map((m) => (
+                    <button
+                      key={m}
+                      onClick={() => { setDownPaymentMode(m); setLoanAmountOverride(''); }}
+                      className={`px-2.5 py-0.5 rounded text-xs font-medium transition-all ${
+                        downPaymentMode === m ? 'bg-violet-600 text-white' : 'text-gray-400 hover:text-white'
+                      }`}
+                    >
+                      {m === 'pct' ? '%' : '₹'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              {downPaymentMode === 'pct' ? (
+                <input
+                  className="input"
+                  type="number"
+                  min="0"
+                  max="100"
+                  step="1"
+                  placeholder="20"
+                  value={downPaymentPct}
+                  onChange={(e) => { setDownPaymentPct(e.target.value); setLoanAmountOverride(''); }}
+                />
+              ) : (
+                <input
+                  className="input"
+                  type="number"
+                  min="0"
+                  step="50000"
+                  placeholder="1000000"
+                  value={downPaymentAmt}
+                  onChange={(e) => { setDownPaymentAmt(e.target.value); setLoanAmountOverride(''); }}
+                />
+              )}
+            </div>
+
+            <div>
+              <label className="label">Loan Amount (₹)</label>
+              <input
+                className="input"
+                type="number"
+                min="0"
+                step="50000"
+                placeholder="Auto-calculated"
+                value={loanAmountOverride !== '' ? loanAmountOverride : Math.round(derivedLoanAmount).toString()}
+                onChange={(e) => setLoanAmountOverride(e.target.value)}
+              />
+              {loanAmountOverride === '' && (
+                <p className="text-xs text-gray-600 mt-1">Auto: {fmtINR(derivedLoanAmount)}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="label">Annual Interest Rate (%)</label>
+              <input
+                className="input"
+                type="number"
+                min="1"
+                max="30"
+                step="0.05"
+                placeholder="8.75"
+                value={interestRate}
+                onChange={(e) => setInterestRate(e.target.value)}
+              />
+              <p className="text-xs text-gray-600 mt-1">SBI home loan rate: ~8.75%</p>
+            </div>
+          </div>
+
+          <div>
+            <div className="flex justify-between mb-1">
+              <label className="label mb-0">Loan Tenure</label>
+              <span className="text-sm text-violet-400 font-semibold">{tenureYears} years</span>
+            </div>
+            <input
+              type="range"
+              min={5}
+              max={30}
+              step={1}
+              value={tenureYears}
+              onChange={(e) => setTenureYears(Number(e.target.value))}
+              className="w-full accent-violet-500"
+            />
+            <div className="flex justify-between text-xs text-gray-600 mt-1">
+              <span>5 yrs</span><span>30 yrs</span>
+            </div>
+          </div>
+
+          <div className="sm:w-1/2">
+            <label className="label">Processing Fee (%)</label>
+            <input
+              className="input"
+              type="number"
+              min="0"
+              max="5"
+              step="0.1"
+              placeholder="0.5"
+              value={processingFeePct}
+              onChange={(e) => setProcessingFeePct(e.target.value)}
+            />
+          </div>
+
+          {/* Advanced Options */}
+          <div className="border border-gray-700 rounded-xl">
+            <button
+              onClick={() => setShowAdvanced((v) => !v)}
+              className="flex items-center justify-between w-full px-4 py-3 text-left"
+            >
+              <span className="text-sm font-medium text-gray-300">Advanced Options</span>
+              <span className="text-gray-500">{showAdvanced ? '−' : '+'}</span>
+            </button>
+            {showAdvanced && (
+              <div className="px-4 pb-4 space-y-4 border-t border-gray-700 pt-4">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="label">Monthly Prepayment (₹)</label>
+                    <input
+                      className="input"
+                      type="number"
+                      min="0"
+                      step="1000"
+                      placeholder="0"
+                      value={prepayMonthly}
+                      onChange={(e) => setPrepayMonthly(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setShowTaxBenefit((v) => !v)}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                      showTaxBenefit ? 'bg-violet-600' : 'bg-gray-700'
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 rounded-full bg-white transition-transform ${
+                        showTaxBenefit ? 'translate-x-6' : 'translate-x-1'
+                      }`}
+                    />
+                  </button>
+                  <span className="text-sm text-gray-300">Show Section 24b Tax Benefits (Old Regime)</span>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* ── Results ─────────────────────────────────────────────────────── */}
+        {result ? (
+          <>
+            {/* Stat boxes */}
+            <div className="grid sm:grid-cols-3 gap-4">
+              <div className="card text-center py-5">
+                <p className="text-2xl font-bold text-violet-400">{fmtINR(result.emi)}</p>
+                <p className="text-xs text-gray-500 mt-1 uppercase tracking-wider">Monthly EMI</p>
+              </div>
+              <div className="card text-center py-5">
+                <p className="text-2xl font-bold text-amber-400">{fmtINR(result.amort.totalInterest)}</p>
+                <p className="text-xs text-gray-500 mt-1 uppercase tracking-wider">Total Interest</p>
+              </div>
+              <div className="card text-center py-5">
+                <p className="text-2xl font-bold text-emerald-400">{fmtINR(result.amort.totalPaid)}</p>
+                <p className="text-xs text-gray-500 mt-1 uppercase tracking-wider">Total Payment</p>
+              </div>
+            </div>
+
+            {/* LTV + breakdown */}
+            <div className="card space-y-5">
+              {/* LTV ratio */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <div>
+                    <p className="text-sm font-semibold text-white">Loan-to-Value (LTV) Ratio</p>
+                    <p className="text-xs text-gray-500 mt-0.5">RBI limit: 75–90% depending on loan amount</p>
+                  </div>
+                  <div className="text-right">
+                    <p className={`text-xl font-bold ${result.ltv > 80 ? 'text-amber-400' : 'text-emerald-400'}`}>
+                      {result.ltv.toFixed(1)}%
+                    </p>
+                    <span
+                      className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                        result.ltv > 80
+                          ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                          : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                      }`}
+                    >
+                      {result.ltv > 80 ? 'High LTV' : 'Good LTV'}
+                    </span>
+                  </div>
+                </div>
+                <div className="h-3 rounded-full overflow-hidden bg-gray-800">
+                  <div
+                    className={`h-full rounded-full transition-all ${result.ltv > 80 ? 'bg-amber-500' : 'bg-emerald-500'}`}
+                    style={{ width: `${Math.min(result.ltv, 100)}%` }}
+                  />
+                </div>
+              </div>
+
+              {/* Principal vs Interest bar */}
+              <div>
+                <p className="text-sm font-semibold text-white mb-3">Principal vs Interest Breakdown</p>
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="flex-1 h-8 rounded-xl overflow-hidden flex">
+                    <div
+                      className="bg-violet-600 flex items-center justify-center text-xs text-white font-medium transition-all"
+                      style={{ width: `${principalPct}%` }}
+                    >
+                      {principalPct > 15 ? `${principalPct}%` : ''}
+                    </div>
+                    <div
+                      className="bg-amber-500 flex items-center justify-center text-xs text-white font-medium transition-all"
+                      style={{ width: `${interestPct}%` }}
+                    >
+                      {interestPct > 15 ? `${interestPct}%` : ''}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex gap-6 text-xs">
+                  <span className="flex items-center gap-1.5 text-gray-400">
+                    <span className="w-2.5 h-2.5 rounded-sm bg-violet-600 inline-block" />
+                    Principal: {fmtINR(result.P)} ({principalPct}%)
+                  </span>
+                  <span className="flex items-center gap-1.5 text-gray-400">
+                    <span className="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block" />
+                    Interest: {fmtINR(result.amort.totalInterest)} ({interestPct}%)
+                  </span>
+                  {result.fee > 0 && (
+                    <span className="flex items-center gap-1.5 text-gray-400">
+                      Processing fee: {fmtINR(result.fee)}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Amortization chart — CSS stacked bars per year */}
+            <div className="card">
+              <h3 className="text-sm font-semibold text-white mb-4">Amortization Chart</h3>
+              <div className="space-y-1.5 overflow-y-auto max-h-72">
+                {result.amort.yearSummaries.map((row) => {
+                  const total = row.principalPaid + row.interestPaid;
+                  const pPct = total > 0 ? (row.principalPaid / total) * 100 : 0;
+                  return (
+                    <div key={row.year} className="flex items-center gap-3">
+                      <span className="text-xs text-gray-500 w-10 shrink-0">Yr {row.year}</span>
+                      <div className="flex-1 h-5 rounded overflow-hidden flex bg-gray-800">
+                        <div className="bg-violet-600" style={{ width: `${pPct}%` }} />
+                        <div className="bg-amber-500" style={{ width: `${100 - pPct}%` }} />
+                      </div>
+                      <span className="text-xs text-gray-500 w-24 text-right shrink-0">
+                        {fmtINR(row.balance)}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="flex gap-4 mt-3 text-xs">
+                <span className="flex items-center gap-1.5 text-gray-400">
+                  <span className="w-2.5 h-2.5 rounded-sm bg-violet-600 inline-block" />Principal
+                </span>
+                <span className="flex items-center gap-1.5 text-gray-400">
+                  <span className="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block" />Interest
+                </span>
+                <span className="text-gray-600 ml-auto">Remaining balance →</span>
+              </div>
+            </div>
+
+            {/* Year-wise summary table */}
+            <div className="card">
+              <h3 className="text-sm font-semibold text-white mb-3">Year-wise Summary</h3>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-gray-700">
+                      <th className="text-left py-2 px-3 text-gray-400 font-medium">Year</th>
+                      <th className="text-right py-2 px-3 text-gray-400 font-medium">EMI Paid</th>
+                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Principal</th>
+                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Interest</th>
+                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Balance</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {pageRows.map((row) => (
+                      <tr key={row.year} className="border-b border-gray-800 hover:bg-gray-800/30">
+                        <td className="py-2 px-3 text-gray-400">Year {row.year}</td>
+                        <td className="py-2 px-3 text-right text-gray-300">{fmtINR(row.emiPaid)}</td>
+                        <td className="py-2 px-3 text-right text-violet-400">{fmtINR(row.principalPaid)}</td>
+                        <td className="py-2 px-3 text-right text-amber-400">{fmtINR(row.interestPaid)}</td>
+                        <td className="py-2 px-3 text-right text-gray-300">{fmtINR(row.balance)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {totalPages > 1 && (
+                <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-800">
+                  <button
+                    disabled={yearPage === 0}
+                    onClick={() => setYearPage((p) => p - 1)}
+                    className="text-xs text-gray-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  >
+                    ← Previous
+                  </button>
+                  <span className="text-xs text-gray-500">
+                    Years {yearPage * 5 + 1}–{Math.min(yearPage * 5 + 5, result.amort.yearSummaries.length)} of {result.amort.yearSummaries.length}
+                  </span>
+                  <button
+                    disabled={yearPage >= totalPages - 1}
+                    onClick={() => setYearPage((p) => p + 1)}
+                    className="text-xs text-gray-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  >
+                    Next →
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Prepayment analysis */}
+            {result.extra > 0 && (
+              <div className="card bg-emerald-500/5 border-emerald-500/20">
+                <h3 className="text-sm font-semibold text-white mb-3">Prepayment Analysis</h3>
+                <div className="grid sm:grid-cols-3 gap-4">
+                  <div className="text-center">
+                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Actual Tenure</p>
+                    <p className="text-xl font-bold text-emerald-400">
+                      {Math.floor(result.amort.prepayTenureMonths / 12)} yrs{' '}
+                      {result.amort.prepayTenureMonths % 12} mo
+                    </p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Months Saved</p>
+                    <p className="text-xl font-bold text-emerald-400">
+                      {result.n - result.amort.prepayTenureMonths} months
+                    </p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Interest Saved</p>
+                    <p className="text-xl font-bold text-emerald-400">
+                      {fmtINR(Math.max(0, result.amort.prepayInterestSaved))}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Tax benefit */}
+            {showTaxBenefit && (
+              <div className="card bg-blue-500/5 border-blue-500/20">
+                <h3 className="text-sm font-semibold text-white mb-1">Section 24b Tax Benefits (Old Regime)</h3>
+                <p className="text-xs text-gray-500 mb-4">Estimated for Year 1 at 30% tax slab + 4% cess</p>
+                <div className="grid sm:grid-cols-2 gap-4 mb-4">
+                  <div className="bg-gray-800/50 rounded-xl p-4">
+                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Principal Repaid (Year 1)</p>
+                    <p className="text-lg font-bold text-white">{fmtINR(result.tax.annualPrincipal)}</p>
+                    <p className="text-xs text-gray-500 mt-1">80C deductible: {fmtINR(Math.min(result.tax.annualPrincipal, 150000))}</p>
+                  </div>
+                  <div className="bg-gray-800/50 rounded-xl p-4">
+                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Interest Paid (Year 1)</p>
+                    <p className="text-lg font-bold text-white">{fmtINR(result.tax.annualInterest)}</p>
+                    <p className="text-xs text-gray-500 mt-1">Sec 24b deductible: {fmtINR(Math.min(result.tax.annualInterest, 200000))}</p>
+                  </div>
+                </div>
+                <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 flex items-center gap-4">
+                  <span className="text-3xl">💰</span>
+                  <div>
+                    <p className="text-xs text-gray-400 uppercase tracking-wider">Estimated Annual Tax Saving</p>
+                    <p className="text-2xl font-bold text-blue-400 mt-1">{fmtINR(result.tax.annualTaxSaving)}</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      (₹1.5L/yr under 80C + ₹2L/yr under Sec 24b) × 31.2%
+                    </p>
+                  </div>
+                </div>
+                <p className="text-xs text-gray-600 mt-3">
+                  * Only applicable for self-occupied property under old tax regime. Consult a CA for exact figures.
+                </p>
+              </div>
+            )}
+
+            {/* Compare Rates */}
+            <div className="card">
+              <h3 className="text-sm font-semibold text-white mb-3">Rate Comparison</h3>
+              <p className="text-xs text-gray-500 mb-3">
+                Monthly EMI for {fmtINR(result.P)} over {tenureYears} years at different rates
+              </p>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-gray-700">
+                      <th className="text-left py-2 px-3 text-gray-400 font-medium">Rate</th>
+                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Monthly EMI</th>
+                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Total Interest</th>
+                      <th className="text-right py-2 px-3 text-gray-400 font-medium">vs Current</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {result.compareRates.map((cr) => {
+                      const diff = cr.emi - result.emi;
+                      const isActive = Math.abs(cr.rate - result.r) < 0.01;
+                      return (
+                        <tr
+                          key={cr.rate}
+                          className={`border-b border-gray-800 ${isActive ? 'bg-violet-500/10' : 'hover:bg-gray-800/30'}`}
+                        >
+                          <td className="py-2 px-3 text-gray-300 font-medium">
+                            {cr.rate}%
+                            {isActive && (
+                              <span className="ml-2 text-xs text-violet-400">(current)</span>
+                            )}
+                          </td>
+                          <td className="py-2 px-3 text-right text-white">{fmtINR(cr.emi)}</td>
+                          <td className="py-2 px-3 text-right text-gray-400">{fmtINR(cr.totalInterest)}</td>
+                          <td className={`py-2 px-3 text-right text-xs font-medium ${
+                            diff > 0 ? 'text-red-400' : diff < 0 ? 'text-emerald-400' : 'text-gray-500'
+                          }`}>
+                            {isActive ? '—' : diff > 0 ? `+${fmtINR(diff)}/mo` : `${fmtINR(diff)}/mo`}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="card text-center py-8 text-gray-500 text-sm">
+            Enter valid loan details above to see results.
+          </div>
+        )}
+      </div>
+    </ToolLayout>
+  );
+}

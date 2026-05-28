@@ -11,9 +11,9 @@ import { BannerAd } from '@/components/shared/AdSense';
 import { DiagrifBanner } from '@/components/landing/DiagrifBanner';
 
 export const metadata: Metadata = {
-  title: 'Formly — 29 Free AI Tools: Pay Stub Generator, Resume Builder, Contract Generator & More',
+  title: 'Formly — 36 Free AI Tools: Pay Stub Generator, Resume Builder, Contract Generator & More',
   description:
-    'Free AI tools online: pay stub generator, resume builder, contract generator, PDF summarizer, paraphraser, grammar checker & 23 more. No signup needed. Used by 50,000+ professionals.',
+    'Free AI tools online: pay stub generator, resume builder, contract generator, PDF summarizer, paraphraser, grammar checker & 30 more. No signup needed. Used by 50,000+ professionals.',
   alternates: { canonical: 'https://formly.tools' },
 };
 
@@ -54,7 +54,7 @@ export default function HomePage() {
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a href="/tools" className="btn-primary text-base px-8 py-4">
-                  Try All 29 Tools Free →
+                  Try All 36 Tools Free →
                 </a>
                 <a href="/pricing" className="btn-outline text-base px-8 py-4">
                   View Pro Plans
