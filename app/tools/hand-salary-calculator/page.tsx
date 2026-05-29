@@ -206,15 +206,15 @@ export default function HandSalaryCalculatorPage() {
     const foodExempt = Math.min(food, 26400);
     const foodTaxable = food - foodExempt;
 
-    // New regime tax
-    const taxableNew = Math.max(0, grossSalary - pfEmployee - 75000 - profTaxAnnual - npsEmp);
+    // New regime tax — 80C not available, standard deduction ₹75K, PT and NPS 80CCD(2) allowed
+    const taxableNew = Math.max(0, grossSalary - 75000 - profTaxAnnual - npsEmp);
     const baseTaxNew = calcNewRegimeTax(taxableNew);
     const totalTaxNew = baseTaxNew * 1.04;
 
-    // Old regime tax
+    // Old regime tax — 80C (PF) deductible once, HRA/LTA/food exemptions, std deduction ₹50K
     const deductions80C = Math.min(pfEmployee, 150000);
     const taxableOld = Math.max(0,
-      grossSalary - pfEmployee - hraExemption - ltaExempt - foodExempt
+      grossSalary - hraExemption - ltaExempt - foodExempt
         - 50000 - profTaxAnnual - deductions80C - npsEmp,
     );
     const baseTaxOld = calcOldRegimeTax(taxableOld);
@@ -556,19 +556,106 @@ export default function HandSalaryCalculatorPage() {
               </div>
             </div>
 
+            {/* ── Where money goes ── */}
+            <div className="card space-y-3">
+              <h3 className="text-sm font-semibold text-white">Where Your Compensation Goes</h3>
+              <p className="text-xs text-gray-500 -mt-1">PF and NPS are yours — but credited to separate accounts, not your bank.</p>
+
+              {/* Bank account */}
+              <div className="flex items-center justify-between p-3 rounded-xl bg-violet-500/10 border border-violet-500/20">
+                <div className="flex items-center gap-3">
+                  <span className="text-xl">🏦</span>
+                  <div>
+                    <p className="text-sm font-semibold text-white">Bank Account (Take-Home)</p>
+                    <p className="text-xs text-gray-500">After TDS, PF deduction & Professional Tax</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-base font-bold text-violet-400">{fmtINR(result.monthlyTakeHome)}/mo</p>
+                  <p className="text-xs text-gray-500">{fmtINR(result.annualTakeHome)}/yr</p>
+                </div>
+              </div>
+
+              {/* EPF account */}
+              {pfEnabled && (
+                <div className="flex items-center justify-between p-3 rounded-xl bg-blue-500/10 border border-blue-500/20">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xl">🏛️</span>
+                    <div>
+                      <p className="text-sm font-semibold text-white">EPF Account (Not in Hand)</p>
+                      <p className="text-xs text-gray-500">
+                        Your share: {fmtINR(result.pfEmployee)}/yr &nbsp;+&nbsp; Employer share: {fmtINR(result.pfEmployer)}/yr
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-base font-bold text-blue-400">{fmtINR((result.pfEmployee + result.pfEmployer) / 12)}/mo</p>
+                    <p className="text-xs text-gray-500">{fmtINR(result.pfEmployee + result.pfEmployer)}/yr total</p>
+                  </div>
+                </div>
+              )}
+
+              {/* NPS account */}
+              {result.npsEmp > 0 && (
+                <div className="flex items-center justify-between p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xl">📈</span>
+                    <div>
+                      <p className="text-sm font-semibold text-white">NPS Account (Not in Hand)</p>
+                      <p className="text-xs text-gray-500">Employer NPS — deductible under 80CCD(2) in both regimes</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-base font-bold text-emerald-400">{fmtINR(result.npsEmp / 12)}/mo</p>
+                    <p className="text-xs text-gray-500">{fmtINR(result.npsEmp)}/yr</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Income Tax */}
+              <div className="flex items-center justify-between p-3 rounded-xl bg-red-500/10 border border-red-500/20">
+                <div className="flex items-center gap-3">
+                  <span className="text-xl">📋</span>
+                  <div>
+                    <p className="text-sm font-semibold text-white">Income Tax (TDS)</p>
+                    <p className="text-xs text-gray-500">Deducted at source, paid to government</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-base font-bold text-red-400">{fmtINR(result.activeMonthlyTax)}/mo</p>
+                  <p className="text-xs text-gray-500">{fmtINR(result.activeTax)}/yr (incl. 4% cess)</p>
+                </div>
+              </div>
+
+              {/* Gratuity */}
+              <div className="flex items-center justify-between p-3 rounded-xl bg-amber-500/10 border border-amber-500/20">
+                <div className="flex items-center gap-3">
+                  <span className="text-xl">🎁</span>
+                  <div>
+                    <p className="text-sm font-semibold text-white">Gratuity Provision</p>
+                    <p className="text-xs text-gray-500">Employer accrual at 4.81% of basic — paid on exit after 5 yrs service</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-base font-bold text-amber-400">{fmtINR(result.gratuity / 12)}/mo</p>
+                  <p className="text-xs text-gray-500">{fmtINR(result.gratuity)}/yr</p>
+                </div>
+              </div>
+            </div>
+
             {/* ── PIE CHARTS ── */}
             <div className="grid sm:grid-cols-2 gap-4">
               {/* Chart 1: Where does your CTC go */}
               <div className="card">
-                <h3 className="text-sm font-semibold text-white mb-4">Where Does Your CTC Go?</h3>
+                <h3 className="text-sm font-semibold text-white mb-4">CTC Distribution</h3>
                 <PieChart segments={[
-                  { label: 'Take-Home', value: result.annualTakeHome, color: '#8b5cf6' },
-                  { label: 'Income Tax', value: result.activeTax, color: '#ef4444' },
-                  { label: 'Employee PF', value: result.pfEmployee, color: '#3b82f6' },
-                  { label: 'Prof. Tax', value: result.profTaxAnnual, color: '#6b7280' },
-                  { label: 'Employer PF', value: result.pfEmployer, color: '#0ea5e9' },
-                  { label: 'Gratuity (prov.)', value: result.gratuity, color: '#d97706' },
-                  ...(result.npsEmp > 0 ? [{ label: 'Employer NPS', value: result.npsEmp, color: '#10b981' }] : []),
+                  { label: 'Bank Account (Take-Home)', value: result.annualTakeHome, color: '#8b5cf6' },
+                  { label: 'EPF — Your Share', value: result.pfEmployee, color: '#3b82f6' },
+                  { label: 'EPF — Employer Share', value: result.pfEmployer, color: '#60a5fa' },
+                  { label: 'Income Tax + Cess', value: result.activeTax, color: '#ef4444' },
+                  { label: 'Professional Tax', value: result.profTaxAnnual, color: '#6b7280' },
+                  { label: 'Gratuity Provision', value: result.gratuity, color: '#d97706' },
+                  ...(result.npsEmp > 0 ? [{ label: 'NPS (Employer)', value: result.npsEmp, color: '#10b981' }] : []),
                 ]} />
               </div>
 
@@ -653,24 +740,31 @@ export default function HandSalaryCalculatorPage() {
                       <td colSpan={3} className="py-1.5 px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Deductions from Payslip</td>
                     </tr>
                     <tr className="border-b border-gray-800/50">
-                      <td className="py-2 px-3 text-red-400/90 pl-5">
-                        Employee PF ({pfEnabled ? `${pfEmployerPct}% of basic` : 'disabled'})
+                      <td className="py-2 px-3 pl-5">
+                        <span className="text-blue-400/90">Employee PF ({pfEnabled ? `${pfEmployerPct}% of basic` : 'disabled'})</span>
+                        <p className="text-xs text-blue-400/50">→ Your EPF account (not in hand, but yours)</p>
                       </td>
-                      <td className="py-2 px-3 text-right text-red-400/80">-{fmtINR(result.pfEmployee)}</td>
-                      <td className="py-2 px-3 text-right text-red-400/80">-{fmtINR(result.monthlyPF)}</td>
+                      <td className="py-2 px-3 text-right text-blue-400/80">-{fmtINR(result.pfEmployee)}</td>
+                      <td className="py-2 px-3 text-right text-blue-400/80">-{fmtINR(result.monthlyPF)}</td>
                     </tr>
                     <tr className="border-b border-gray-800/50">
-                      <td className="py-2 px-3 text-red-400/90 pl-5">Professional Tax</td>
+                      <td className="py-2 px-3 pl-5">
+                        <span className="text-red-400/90">Professional Tax</span>
+                        <p className="text-xs text-gray-600">→ State government</p>
+                      </td>
                       <td className="py-2 px-3 text-right text-red-400/80">-{fmtINR(result.profTaxAnnual)}</td>
                       <td className="py-2 px-3 text-right text-red-400/80">-{fmtINR(result.monthlyProfTax)}</td>
                     </tr>
                     <tr className="border-b border-gray-800">
-                      <td className="py-2 px-3 text-red-400/90 pl-5">Income Tax + Cess (TDS)</td>
+                      <td className="py-2 px-3 pl-5">
+                        <span className="text-red-400/90">Income Tax + Cess (TDS)</span>
+                        <p className="text-xs text-gray-600">→ Central government</p>
+                      </td>
                       <td className="py-2 px-3 text-right text-red-400/80">-{fmtINR(result.activeTax)}</td>
                       <td className="py-2 px-3 text-right text-red-400/80">-{fmtINR(result.activeMonthlyTax)}</td>
                     </tr>
                     <tr className="bg-violet-600/10">
-                      <td className="py-3 px-3 text-violet-300 font-bold">= Net Take-Home</td>
+                      <td className="py-3 px-3 text-violet-300 font-bold">= Net Take-Home (Bank)</td>
                       <td className="py-3 px-3 text-right text-violet-300 font-bold">{fmtINR(result.annualTakeHome)}</td>
                       <td className="py-3 px-3 text-right text-violet-300 font-bold">{fmtINR(result.monthlyTakeHome)}</td>
                     </tr>
@@ -711,16 +805,25 @@ export default function HandSalaryCalculatorPage() {
                   <div className="divide-y divide-gray-800/50">
                     {pfEnabled && (
                       <div className="flex justify-between px-4 py-2">
-                        <span className="text-gray-400">PF ({pfEmployerPct}%)</span>
-                        <span className="text-red-400/80">{fmtINR(result.monthlyPF)}</span>
+                        <div>
+                          <span className="text-gray-400">Employee PF ({pfEmployerPct}%)</span>
+                          <p className="text-xs text-blue-400/70">→ Your EPF account</p>
+                        </div>
+                        <span className="text-blue-400/80">{fmtINR(result.monthlyPF)}</span>
                       </div>
                     )}
                     <div className="flex justify-between px-4 py-2">
-                      <span className="text-gray-400">Professional Tax</span>
+                      <div>
+                        <span className="text-gray-400">Professional Tax</span>
+                        <p className="text-xs text-gray-600">→ State government</p>
+                      </div>
                       <span className="text-red-400/80">{fmtINR(result.monthlyProfTax)}</span>
                     </div>
                     <div className="flex justify-between px-4 py-2">
-                      <span className="text-gray-400">TDS / Income Tax</span>
+                      <div>
+                        <span className="text-gray-400">TDS / Income Tax</span>
+                        <p className="text-xs text-gray-600">→ Central government</p>
+                      </div>
                       <span className="text-red-400/80">{fmtINR(result.activeMonthlyTax)}</span>
                     </div>
                   </div>
@@ -789,11 +892,14 @@ export default function HandSalaryCalculatorPage() {
             </div>
 
             {/* ── Footer note ── */}
-            <div className="rounded-xl border border-gray-700/50 bg-gray-800/30 p-4 text-xs text-gray-500 space-y-1">
+            <div className="rounded-xl border border-gray-700/50 bg-gray-800/30 p-4 text-xs text-gray-500 space-y-1.5">
               <p>
-                <span className="text-gray-400 font-medium">Note:</span> Employer PF ({fmtINR(result.pfEmployer)}/yr) and Gratuity provisioning ({fmtINR(result.gratuity)}/yr) are part of CTC but not in take-home.
+                <span className="text-gray-400 font-medium">Tax regime note:</span> New regime does not allow 80C (employee PF deduction). Old regime allows 80C up to ₹1.5L. NPS employer 80CCD(2) is deductible in BOTH regimes.
               </p>
-              <p>PF capped at ₹1,800/month • Professional tax capped at ₹2,500/year • Food coupon exemption ₹26,400/year • NPS 80CCD(2) capped at 10% of basic for private employers.</p>
+              <p>
+                <span className="text-gray-400 font-medium">EPF:</span> Employee PF + Employer PF both go to your EPF account — not your bank account. Accessible after retirement / on resignation (with conditions).
+              </p>
+              <p>PF capped at ₹1,800/month (12% of ₹15K wage ceiling) • PT capped at ₹2,500/year • Food coupon exemption ₹26,400/year • Gratuity: paid on exit after 5 years of service.</p>
             </div>
           </>
         )}
