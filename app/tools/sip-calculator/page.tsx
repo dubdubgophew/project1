@@ -5,7 +5,9 @@ import { ToolLayout } from '@/components/tools/ToolLayout';
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 const fmtINR = (n: number) => '₹' + Math.round(n).toLocaleString('en-IN');
+const fmtPct = (n: number) => n.toFixed(2) + '%';
 
+// ── Calculation helpers ──────────────────────────────────────────────────────
 function calcSIP(monthly: number, annualRate: number, years: number): {
   fv: number; invested: number; returns: number; cagr: number; absReturns: number;
 } {
@@ -14,7 +16,7 @@ function calcSIP(monthly: number, annualRate: number, years: number): {
   const fv = r === 0 ? monthly * n : monthly * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
   const invested = monthly * n;
   const returns = fv - invested;
-  const cagr = invested > 0 ? (Math.pow(fv / invested, 1 / years) - 1) * 100 : 0;
+  const cagr = invested > 0 && years > 0 ? (Math.pow(fv / invested, 1 / years) - 1) * 100 : 0;
   const absReturns = invested > 0 ? (returns / invested) * 100 : 0;
   return { fv, invested, returns, cagr, absReturns };
 }
@@ -26,7 +28,6 @@ function calcStepUpSIP(monthly: number, annualRate: number, years: number, stepU
   let fv = 0;
   let invested = 0;
   let currentMonthly = monthly;
-
   for (let y = 0; y < years; y++) {
     for (let m = 0; m < 12; m++) {
       const monthsRemaining = (years - y) * 12 - m;
@@ -37,9 +38,8 @@ function calcStepUpSIP(monthly: number, annualRate: number, years: number, stepU
     }
     currentMonthly = currentMonthly * (1 + stepUpPct / 100);
   }
-
   const returns = fv - invested;
-  const cagr = invested > 0 ? (Math.pow(fv / invested, 1 / years) - 1) * 100 : 0;
+  const cagr = invested > 0 && years > 0 ? (Math.pow(fv / invested, 1 / years) - 1) * 100 : 0;
   const absReturns = invested > 0 ? (returns / invested) * 100 : 0;
   return { fv, invested, returns, cagr, absReturns };
 }
@@ -54,12 +54,23 @@ function calcLumpsum(amount: number, annualRate: number, years: number): {
   return { fv, invested: amount, returns, cagr, absReturns };
 }
 
-// Reverse SIP: monthly investment needed to reach a goal
 function calcReverseSIP(goal: number, annualRate: number, years: number): number {
   const r = annualRate / 12 / 100;
   const n = years * 12;
   if (r === 0) return goal / n;
   return goal / (((Math.pow(1 + r, n) - 1) / r) * (1 + r));
+}
+
+// LTCG Tax (Equity): exempt ₹1.25L, 12.5% on remainder
+function calcEquityTax(gains: number): number {
+  const exempt = 125000;
+  if (gains <= exempt) return 0;
+  return (gains - exempt) * 0.125;
+}
+
+// Real value adjusted for inflation
+function calcRealValue(nominalFV: number, inflationPct: number, years: number): number {
+  return nominalFV / Math.pow(1 + inflationPct / 100, years);
 }
 
 interface YearRow { year: number; invested: number; value: number; returns: number }
@@ -111,6 +122,13 @@ export default function SIPCalculatorPage() {
   const [lsRate, setLsRate] = useState('12');
   const [lsYears, setLsYears] = useState(10);
 
+  // Inflation
+  const [inflationRate, setInflationRate] = useState('6');
+
+  // Tax
+  const [fundType, setFundType] = useState<'equity' | 'debt'>('equity');
+  const [debtSlabRate, setDebtSlabRate] = useState('30');
+
   // Goal planner
   const [goalAmount, setGoalAmount] = useState('1000000');
   const [goalRate, setGoalRate] = useState('12');
@@ -128,9 +146,7 @@ export default function SIPCalculatorPage() {
       const y = sipYears;
       const su = parseFloat(stepUpPct);
       if (!P || !r || !y || isNaN(P) || isNaN(r) || isNaN(y) || P <= 0 || r <= 0 || y <= 0) return null;
-      if (stepUpEnabled && su > 0) {
-        return calcStepUpSIP(P, r, y, su);
-      }
+      if (stepUpEnabled && su > 0) return calcStepUpSIP(P, r, y, su);
       return calcSIP(P, r, y);
     } else {
       const P = parseFloat(lsAmount);
@@ -140,6 +156,44 @@ export default function SIPCalculatorPage() {
       return calcLumpsum(P, r, y);
     }
   }, [tab, sipAmount, sipRate, sipYears, stepUpEnabled, stepUpPct, lsAmount, lsRate, lsYears]);
+
+  const taxResult = useMemo(() => {
+    if (!result) return null;
+    const gains = result.returns;
+    if (fundType === 'equity') {
+      const tax = calcEquityTax(gains);
+      const postTax = result.fv - tax;
+      return { tax, postTax, label: 'LTCG @ 12.5% (₹1.25L exempt)' };
+    } else {
+      const slabRate = parseFloat(debtSlabRate) || 30;
+      const tax = gains * (slabRate / 100);
+      const postTax = result.fv - tax;
+      return { tax, postTax, label: `Debt / Slab Rate @ ${slabRate}%` };
+    }
+  }, [result, fundType, debtSlabRate]);
+
+  const inflationResult = useMemo(() => {
+    if (!result) return null;
+    const inflation = parseFloat(inflationRate);
+    const years = tab === 'sip' ? sipYears : lsYears;
+    if (isNaN(inflation) || inflation < 0) return null;
+    const realValue = calcRealValue(result.fv, inflation, years);
+    return { realValue };
+  }, [result, inflationRate, tab, sipYears, lsYears]);
+
+  // SIP vs Lumpsum comparison (same total invested)
+  const comparisonResult = useMemo(() => {
+    if (tab !== 'sip') return null;
+    const P = parseFloat(sipAmount);
+    const r = parseFloat(sipRate);
+    const y = sipYears;
+    const su = parseFloat(stepUpPct);
+    if (!P || !r || !y || isNaN(P) || isNaN(r) || P <= 0 || r <= 0) return null;
+    const sipRes = stepUpEnabled && su > 0 ? calcStepUpSIP(P, r, y, su) : calcSIP(P, r, y);
+    const totalInvested = sipRes.invested;
+    const lsRes = calcLumpsum(totalInvested, r, y);
+    return { sipFV: sipRes.fv, lsFV: lsRes.fv, totalInvested, diff: sipRes.fv - lsRes.fv };
+  }, [tab, sipAmount, sipRate, sipYears, stepUpEnabled, stepUpPct]);
 
   const yearRows = useMemo(() => {
     if (tab === 'sip') {
@@ -166,15 +220,21 @@ export default function SIPCalculatorPage() {
 
   const currentYears = tab === 'sip' ? sipYears : lsYears;
   const displayedRows = showAllYears ? yearRows : yearRows.slice(0, 5);
-
   const investedPct = result ? Math.round((result.invested / result.fv) * 100) : 0;
   const returnsPct = 100 - investedPct;
   const growthMultiple = result ? (result.fv / result.invested).toFixed(2) : null;
 
+  // Helper to set rate preset
+  const setRatePreset = (rate: number) => {
+    if (tab === 'sip') setSipRate(String(rate));
+    else setLsRate(String(rate));
+  };
+  const currentRate = tab === 'sip' ? sipRate : lsRate;
+
   return (
     <ToolLayout
       title="SIP Calculator India"
-      description="Calculate mutual fund SIP returns, lumpsum growth, CAGR and year-by-year wealth. Includes step-up SIP and goal planning reverse calculator."
+      description="Calculate mutual fund SIP returns, lumpsum growth, CAGR, inflation-adjusted real value, post-tax corpus and year-by-year wealth. Includes step-up SIP and goal planning."
       icon="📈"
       relatedTools={[
         { name: 'Home Loan EMI Calculator', href: '/tools/home-loan-emi-calculator', icon: '🏠' },
@@ -208,6 +268,28 @@ export default function SIPCalculatorPage() {
                 {t === 'sip' ? 'SIP' : 'Lumpsum'}
               </button>
             ))}
+          </div>
+
+          {/* Return Rate Presets */}
+          <div>
+            <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">Quick Presets</p>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { label: 'Conservative', rate: 8, color: 'bg-blue-600/20 border-blue-500/30 text-blue-300 hover:bg-blue-600/30' },
+                { label: 'Moderate', rate: 12, color: 'bg-violet-600/20 border-violet-500/30 text-violet-300 hover:bg-violet-600/30' },
+                { label: 'Aggressive', rate: 15, color: 'bg-emerald-600/20 border-emerald-500/30 text-emerald-300 hover:bg-emerald-600/30' },
+              ].map(({ label, rate, color }) => (
+                <button
+                  key={rate}
+                  onClick={() => setRatePreset(rate)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${color} ${
+                    currentRate === String(rate) ? 'ring-1 ring-offset-1 ring-offset-gray-900 ring-current' : ''
+                  }`}
+                >
+                  {label} ({rate}%)
+                </button>
+              ))}
+            </div>
           </div>
 
           {tab === 'sip' ? (
@@ -349,6 +431,56 @@ export default function SIPCalculatorPage() {
               </div>
             </div>
           )}
+
+          {/* Inflation & Tax settings */}
+          <div className="border-t border-gray-700 pt-4 grid sm:grid-cols-2 gap-4">
+            <div>
+              <label className="label">Inflation Rate (%)</label>
+              <input
+                className="input"
+                type="number"
+                min="0"
+                max="20"
+                step="0.5"
+                placeholder="6"
+                value={inflationRate}
+                onChange={(e) => setInflationRate(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="label">Fund / Tax Type</label>
+              <div className="flex gap-1 bg-gray-800/60 rounded-xl p-1 w-fit mt-1">
+                {(['equity', 'debt'] as const).map((t) => (
+                  <button
+                    key={t}
+                    onClick={() => setFundType(t)}
+                    className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                      fundType === t
+                        ? 'bg-violet-600 text-white shadow'
+                        : 'text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    {t === 'equity' ? 'Equity / MF (LTCG)' : 'Debt (Slab Rate)'}
+                  </button>
+                ))}
+              </div>
+              {fundType === 'debt' && (
+                <div className="mt-2">
+                  <label className="label">Your Tax Slab (%)</label>
+                  <select
+                    className="input"
+                    value={debtSlabRate}
+                    onChange={(e) => setDebtSlabRate(e.target.value)}
+                  >
+                    <option value="5">5%</option>
+                    <option value="10">10%</option>
+                    <option value="20">20%</option>
+                    <option value="30">30%</option>
+                  </select>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Results */}
@@ -366,11 +498,66 @@ export default function SIPCalculatorPage() {
               </div>
               <div className="card text-center py-5">
                 <p className="text-2xl font-bold text-violet-400">{fmtINR(result.fv)}</p>
-                <p className="text-xs text-gray-500 mt-1 uppercase tracking-wider">Total Value</p>
+                <p className="text-xs text-gray-500 mt-1 uppercase tracking-wider">Total Value (Nominal)</p>
+                {inflationResult && (
+                  <p className="text-xs text-amber-400 mt-1">
+                    Real: {fmtINR(inflationResult.realValue)}
+                  </p>
+                )}
               </div>
             </div>
 
-            {/* Growth multiple + CAGR */}
+            {/* Nominal vs Real Value + Tax */}
+            <div className="card space-y-4">
+              {/* Inflation card */}
+              {inflationResult && (
+                <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-4">
+                  <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">Inflation-Adjusted Value ({inflationRate}% p.a.)</p>
+                  <div className="flex flex-wrap gap-6">
+                    <div>
+                      <p className="text-xs text-gray-500">Nominal (Future ₹)</p>
+                      <p className="text-lg font-bold text-white">{fmtINR(result.fv)}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500">Real Value (Today&apos;s ₹)</p>
+                      <p className="text-lg font-bold text-amber-400">{fmtINR(inflationResult.realValue)}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500">Purchasing Power Lost</p>
+                      <p className="text-lg font-bold text-red-400">{fmtINR(result.fv - inflationResult.realValue)}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Tax card */}
+              {taxResult && (
+                <div className="bg-blue-500/5 border border-blue-500/20 rounded-xl p-4">
+                  <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">Post-Tax Corpus — {taxResult.label}</p>
+                  <div className="flex flex-wrap gap-6">
+                    <div>
+                      <p className="text-xs text-gray-500">Gross Corpus</p>
+                      <p className="text-lg font-bold text-white">{fmtINR(result.fv)}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500">
+                        {fundType === 'equity' ? 'LTCG Tax' : 'Tax on Gains'}
+                      </p>
+                      <p className="text-lg font-bold text-red-400">− {fmtINR(taxResult.tax)}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500">Net Post-Tax Corpus</p>
+                      <p className="text-lg font-bold text-emerald-400">{fmtINR(taxResult.postTax)}</p>
+                    </div>
+                  </div>
+                  {fundType === 'equity' && (
+                    <p className="text-xs text-gray-600 mt-2">* LTCG: ₹1.25L of gains exempt, remainder taxed at 12.5% (as per Finance Act 2024)</p>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Growth multiple + CAGR + Absolute Returns */}
             <div className="card">
               <div className="flex flex-wrap gap-6 mb-5">
                 <div>
@@ -380,11 +567,11 @@ export default function SIPCalculatorPage() {
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">CAGR</p>
-                  <p className="text-lg font-bold text-amber-400">{result.cagr.toFixed(2)}%</p>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">CAGR on Invested</p>
+                  <p className="text-lg font-bold text-amber-400">{fmtPct(result.cagr)}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Absolute Returns</p>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Absolute Returns %</p>
                   <p className="text-lg font-bold text-emerald-400">{result.absReturns.toFixed(1)}%</p>
                 </div>
               </div>
@@ -396,14 +583,8 @@ export default function SIPCalculatorPage() {
                   <span>Returns ({returnsPct}%)</span>
                 </div>
                 <div className="h-4 rounded-full overflow-hidden bg-gray-800 flex">
-                  <div
-                    className="bg-gray-500 transition-all"
-                    style={{ width: `${investedPct}%` }}
-                  />
-                  <div
-                    className="bg-emerald-500 transition-all"
-                    style={{ width: `${returnsPct}%` }}
-                  />
+                  <div className="bg-gray-500 transition-all" style={{ width: `${investedPct}%` }} />
+                  <div className="bg-emerald-500 transition-all" style={{ width: `${returnsPct}%` }} />
                 </div>
                 <div className="flex gap-4 mt-2 text-xs">
                   <span className="flex items-center gap-1.5 text-gray-400">
@@ -417,6 +598,51 @@ export default function SIPCalculatorPage() {
                 </div>
               </div>
             </div>
+
+            {/* SIP vs Lumpsum Comparison */}
+            {comparisonResult && (
+              <div className="card">
+                <h3 className="text-sm font-semibold text-white mb-3">SIP vs Lumpsum Comparison</h3>
+                <p className="text-xs text-gray-500 mb-4">
+                  Same total invested ({fmtINR(comparisonResult.totalInvested)}): SIP monthly vs all at start
+                </p>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-gray-700">
+                        <th className="text-left py-2 px-3 text-gray-400 font-medium">Mode</th>
+                        <th className="text-right py-2 px-3 text-gray-400 font-medium">Total Invested</th>
+                        <th className="text-right py-2 px-3 text-gray-400 font-medium">Final Value</th>
+                        <th className="text-right py-2 px-3 text-gray-400 font-medium">Difference</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-gray-800 bg-violet-500/5">
+                        <td className="py-2 px-3 text-violet-300 font-medium">SIP (Monthly)</td>
+                        <td className="py-2 px-3 text-right text-gray-300">{fmtINR(comparisonResult.totalInvested)}</td>
+                        <td className="py-2 px-3 text-right text-violet-400 font-semibold">{fmtINR(comparisonResult.sipFV)}</td>
+                        <td className="py-2 px-3 text-right text-gray-500">—</td>
+                      </tr>
+                      <tr className="border-b border-gray-800">
+                        <td className="py-2 px-3 text-amber-300 font-medium">Lumpsum (At Start)</td>
+                        <td className="py-2 px-3 text-right text-gray-300">{fmtINR(comparisonResult.totalInvested)}</td>
+                        <td className="py-2 px-3 text-right text-amber-400 font-semibold">{fmtINR(comparisonResult.lsFV)}</td>
+                        <td className="py-2 px-3 text-right">
+                          <span className={comparisonResult.diff >= 0 ? 'text-emerald-400' : 'text-red-400'}>
+                            {comparisonResult.diff >= 0 ? '+' : ''}{fmtINR(comparisonResult.diff)}
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p className="text-xs text-gray-600 mt-2">
+                  {comparisonResult.diff >= 0
+                    ? 'SIP benefits from rupee cost averaging — lumpsum wins when market only rises.'
+                    : 'Lumpsum wins here because compounding starts earlier on full corpus.'}
+                </p>
+              </div>
+            )}
 
             {/* Year-by-year table */}
             <div className="card">
@@ -448,7 +674,7 @@ export default function SIPCalculatorPage() {
                   onClick={() => setShowAllYears((v) => !v)}
                   className="mt-3 text-xs text-violet-400 hover:text-violet-300 transition-colors w-full text-center"
                 >
-                  {showAllYears ? `Show less` : `Show all ${currentYears} years`}
+                  {showAllYears ? 'Show less' : `Show all ${currentYears} years`}
                 </button>
               )}
             </div>
