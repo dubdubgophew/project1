@@ -15,10 +15,16 @@ function calcEMI(principal: number, annualRate: number, months: number): number 
 
 interface YearSummary {
   year: number;
+  openingBalance: number;
   emiPaid: number;
   principalPaid: number;
   interestPaid: number;
   balance: number;
+}
+
+interface LumpSum {
+  amount: string;
+  afterMonth: string;
 }
 
 interface AmortResult {
@@ -29,6 +35,7 @@ interface AmortResult {
   // With prepayment
   prepayTenureMonths: number;
   prepayInterestSaved: number;
+  revisedEMI: number; // for reduce-EMI mode
 }
 
 function buildAmortization(
@@ -38,50 +45,95 @@ function buildAmortization(
   emi: number,
   extraMonthly: number,
   processingFee: number,
+  prepayMode: 'reduce-tenure' | 'reduce-emi',
+  lumpSums: LumpSum[],
+  floatRateYear: number,
+  floatNewRate: number,
 ): AmortResult {
-  const r = annualRate / 12 / 100;
-  let balance = principal;
-  const yearSummaries: YearSummary[] = [];
-  let month = 0;
-  let totalPrincipalPaid = 0;
-  let totalInterestPaid = 0;
-
-  // Standard amort (no prepay) for totals
   const stdTotal = emi * tenureMonths + processingFee;
   const stdTotalInterest = stdTotal - principal - processingFee;
 
-  // Prepay amort
+  // Parse lump sums
+  const parsedLumps: { month: number; amount: number }[] = lumpSums
+    .map((ls) => ({ month: parseInt(ls.afterMonth) || 0, amount: parseFloat(ls.amount) || 0 }))
+    .filter((ls) => ls.amount > 0 && ls.month > 0);
+
+  // Prepay amort (with all options)
   let prepayBalance = principal;
   let prepayMonths = 0;
   let prepayTotalInterest = 0;
+  let currentEMI = emi;
+  let remainingMonths = tenureMonths;
+  let revisedEMI = emi;
 
-  while (prepayBalance > 0.01 && prepayMonths < tenureMonths * 2) {
-    const interest = prepayBalance * r;
-    let principalPart = emi - interest;
-    if (principalPart < 0) principalPart = 0;
-    let extra = Math.min(extraMonthly, Math.max(0, prepayBalance - principalPart));
-    prepayBalance = Math.max(0, prepayBalance - principalPart - extra);
-    prepayTotalInterest += interest;
+  while (prepayBalance > 0.5 && prepayMonths < tenureMonths * 2) {
     prepayMonths++;
+
+    // Apply float rate change
+    const currentYearForFloat = Math.ceil(prepayMonths / 12);
+    const activeRate =
+      floatNewRate > 0 && floatRateYear > 0 && currentYearForFloat > floatRateYear
+        ? floatNewRate
+        : annualRate;
+    const r = activeRate / 12 / 100;
+
+    const interest = prepayBalance * r;
+    let principalPart = currentEMI - interest;
+    if (principalPart < 0) principalPart = 0;
+
+    // Monthly extra prepayment
+    let extra = Math.min(extraMonthly, Math.max(0, prepayBalance - principalPart));
+
+    // One-time lump sum
+    const lumpThisMonth = parsedLumps
+      .filter((ls) => ls.month === prepayMonths)
+      .reduce((sum, ls) => sum + ls.amount, 0);
+    const lumpApplied = Math.min(lumpThisMonth, Math.max(0, prepayBalance - principalPart - extra));
+
+    prepayBalance = Math.max(0, prepayBalance - principalPart - extra - lumpApplied);
+    prepayTotalInterest += interest;
+
+    // After applying lump + extra, adjust based on mode
+    if ((extra > 0 || lumpApplied > 0) && prepayBalance > 0.5) {
+      remainingMonths = tenureMonths - prepayMonths;
+      if (remainingMonths > 0) {
+        if (prepayMode === 'reduce-emi') {
+          currentEMI = calcEMI(prepayBalance, activeRate, remainingMonths);
+          revisedEMI = currentEMI;
+        }
+        // reduce-tenure: keep same EMI, tenure auto-shortens
+      }
+    }
   }
 
-  // Regular amort for year table
-  balance = principal;
-  for (let y = 1; balance > 0.01; y++) {
+  // Regular amort for year table (no prepay, but with float rate)
+  let balance = principal;
+  let month = 0;
+  const yearSummaries: YearSummary[] = [];
+
+  for (let y = 1; balance > 0.5; y++) {
+    const opening = balance;
     let yEmiPaid = 0;
     let yPrincipal = 0;
     let yInterest = 0;
-    for (let m = 0; m < 12 && balance > 0.01; m++) {
-      const interest = balance * r;
+    for (let m = 0; m < 12 && balance > 0.5; m++) {
+      month++;
+      const currentYearForFloat2 = Math.ceil(month / 12);
+      const activeRate2 =
+        floatNewRate > 0 && floatRateYear > 0 && currentYearForFloat2 > floatRateYear
+          ? floatNewRate
+          : annualRate;
+      const r2 = activeRate2 / 12 / 100;
+      const interest = balance * r2;
       const principalPart = Math.min(emi - interest, balance);
       balance = Math.max(0, balance - principalPart);
       yEmiPaid += emi;
       yPrincipal += principalPart;
       yInterest += interest;
-      month++;
     }
     yearSummaries.push({
       year: y,
+      openingBalance: opening,
       emiPaid: yEmiPaid,
       principalPaid: yPrincipal,
       interestPaid: yInterest,
@@ -97,10 +149,10 @@ function buildAmortization(
     yearSummaries,
     prepayTenureMonths: prepayMonths,
     prepayInterestSaved: stdTotalInterest - prepayTotalInterest,
+    revisedEMI,
   };
 }
 
-// Tax benefit calc (old regime)
 function calcTaxBenefit(
   principal: number,
   annualRate: number,
@@ -120,12 +172,33 @@ function calcTaxBenefit(
   }
   const deductiblePrincipal = Math.min(firstYearPrincipal, 150000);
   const deductibleInterest = Math.min(firstYearInterest, 200000);
-  const taxSaving = (deductiblePrincipal + deductibleInterest) * 0.30 * 1.04; // 30% slab + 4% cess
+  const taxSaving = (deductiblePrincipal + deductibleInterest) * 0.30 * 1.04;
   return {
     annualPrincipal: firstYearPrincipal,
     annualInterest: firstYearInterest,
     annualTaxSaving: taxSaving,
   };
+}
+
+function calcOutstandingAfterN(
+  principal: number,
+  annualRate: number,
+  tenureMonths: number,
+  emi: number,
+  afterN: number,
+): { outstanding: number; interestPaid: number; principalPaid: number } {
+  const r = annualRate / 12 / 100;
+  let balance = principal;
+  let totalInterest = 0;
+  let totalPrincipal = 0;
+  for (let m = 0; m < afterN && balance > 0.5; m++) {
+    const interest = balance * r;
+    const principalPart = Math.min(emi - interest, balance);
+    balance = Math.max(0, balance - principalPart);
+    totalInterest += interest;
+    totalPrincipal += principalPart;
+  }
+  return { outstanding: balance, interestPaid: totalInterest, principalPaid: totalPrincipal };
 }
 
 const COMPARE_RATES = [8, 8.5, 9, 9.5, 10];
@@ -145,9 +218,20 @@ export default function HomeLoanEMIPage() {
   // Advanced
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [prepayMonthly, setPrepayMonthly] = useState('0');
+  const [prepayMode, setPrepayMode] = useState<'reduce-tenure' | 'reduce-emi'>('reduce-tenure');
   const [showTaxBenefit, setShowTaxBenefit] = useState(false);
 
-  // Table pagination
+  // Lump sum prepayments (up to 5)
+  const [lumpSums, setLumpSums] = useState<LumpSum[]>([{ amount: '', afterMonth: '' }]);
+
+  // Outstanding balance lookup
+  const [outstandingN, setOutstandingN] = useState(12);
+
+  // Floating rate
+  const [floatRateYear, setFloatRateYear] = useState('');
+  const [floatNewRate, setFloatNewRate] = useState('');
+
+  // Table view
   const [yearPage, setYearPage] = useState(0);
 
   // ── Derived loan amount ──────────────────────────────────────────────────
@@ -175,6 +259,8 @@ export default function HomeLoanEMIPage() {
     const feePct = parseFloat(processingFeePct);
     const extra = parseFloat(prepayMonthly) || 0;
     const pv = parseFloat(propertyValue);
+    const fRateYear = parseFloat(floatRateYear) || 0;
+    const fNewRate = parseFloat(floatNewRate) || 0;
 
     if (!P || !r || !n || isNaN(P) || isNaN(r) || P <= 0 || r <= 0) return null;
 
@@ -182,7 +268,7 @@ export default function HomeLoanEMIPage() {
     const emi = calcEMI(P, r, n);
     const ltv = pv > 0 ? (P / pv) * 100 : 0;
 
-    const amort = buildAmortization(P, r, n, emi, extra, fee);
+    const amort = buildAmortization(P, r, n, emi, extra, fee, prepayMode, lumpSums, fRateYear, fNewRate);
     const tax = calcTaxBenefit(P, r, n, emi);
 
     const compareRates = COMPARE_RATES.map((rate) => ({
@@ -192,18 +278,41 @@ export default function HomeLoanEMIPage() {
     }));
 
     return { P, r, n, fee, emi, ltv, amort, tax, compareRates, extra };
-  }, [derivedLoanAmount, interestRate, tenureYears, processingFeePct, prepayMonthly, propertyValue]);
+  }, [
+    derivedLoanAmount, interestRate, tenureYears, processingFeePct,
+    prepayMonthly, prepayMode, propertyValue, lumpSums, floatRateYear, floatNewRate,
+  ]);
+
+  // Outstanding balance lookup
+  const outstandingResult = useMemo(() => {
+    if (!result) return null;
+    return calcOutstandingAfterN(result.P, result.r, result.n, result.emi, outstandingN);
+  }, [result, outstandingN]);
+
+  const maxTenureMonths = tenureYears * 12;
 
   const totalPages = result ? Math.ceil(result.amort.yearSummaries.length / 5) : 0;
   const pageRows = result ? result.amort.yearSummaries.slice(yearPage * 5, yearPage * 5 + 5) : [];
-
   const principalPct = result ? Math.round((result.P / result.amort.totalPaid) * 100) : 0;
   const interestPct = 100 - principalPct;
+
+  const hasPrepayEffect = result && (result.extra > 0 || lumpSums.some((ls) => parseFloat(ls.amount) > 0));
+
+  // Lump sum helpers
+  const addLumpSum = () => {
+    if (lumpSums.length < 5) setLumpSums((prev) => [...prev, { amount: '', afterMonth: '' }]);
+  };
+  const removeLumpSum = (idx: number) => {
+    setLumpSums((prev) => prev.filter((_, i) => i !== idx));
+  };
+  const updateLumpSum = (idx: number, field: keyof LumpSum, value: string) => {
+    setLumpSums((prev) => prev.map((ls, i) => i === idx ? { ...ls, [field]: value } : ls));
+  };
 
   return (
     <ToolLayout
       title="Home Loan EMI Calculator India"
-      description="Calculate EMI, amortization schedule, LTV ratio, Section 24b tax benefits, and prepayment savings for home loans in India."
+      description="Calculate EMI, amortization, LTV, Section 24b tax benefits, prepayment savings, outstanding balance lookup and floating rate scenarios for home loans in India."
       icon="🏠"
       relatedTools={[
         { name: 'SIP Calculator', href: '/tools/sip-calculator', icon: '📈' },
@@ -235,10 +344,7 @@ export default function HomeLoanEMIPage() {
                 step="100000"
                 placeholder="5000000"
                 value={propertyValue}
-                onChange={(e) => {
-                  setPropertyValue(e.target.value);
-                  setLoanAmountOverride('');
-                }}
+                onChange={(e) => { setPropertyValue(e.target.value); setLoanAmountOverride(''); }}
               />
             </div>
 
@@ -358,21 +464,136 @@ export default function HomeLoanEMIPage() {
               <span className="text-gray-500">{showAdvanced ? '−' : '+'}</span>
             </button>
             {showAdvanced && (
-              <div className="px-4 pb-4 space-y-4 border-t border-gray-700 pt-4">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="label">Monthly Prepayment (₹)</label>
-                    <input
-                      className="input"
-                      type="number"
-                      min="0"
-                      step="1000"
-                      placeholder="0"
-                      value={prepayMonthly}
-                      onChange={(e) => setPrepayMonthly(e.target.value)}
-                    />
+              <div className="px-4 pb-4 space-y-5 border-t border-gray-700 pt-4">
+
+                {/* Monthly Prepayment + Mode */}
+                <div>
+                  <p className="text-sm font-medium text-white mb-3">Monthly Prepayment</p>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="label">Extra Monthly Amount (₹)</label>
+                      <input
+                        className="input"
+                        type="number"
+                        min="0"
+                        step="1000"
+                        placeholder="0"
+                        value={prepayMonthly}
+                        onChange={(e) => setPrepayMonthly(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <label className="label">Prepayment Mode</label>
+                      <div className="flex gap-1 bg-gray-800/60 rounded-xl p-1 w-fit mt-1">
+                        {(['reduce-tenure', 'reduce-emi'] as const).map((m) => (
+                          <button
+                            key={m}
+                            onClick={() => setPrepayMode(m)}
+                            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                              prepayMode === m
+                                ? 'bg-violet-600 text-white shadow'
+                                : 'text-gray-400 hover:text-white'
+                            }`}
+                          >
+                            {m === 'reduce-tenure' ? 'Reduce Tenure' : 'Reduce EMI'}
+                          </button>
+                        ))}
+                      </div>
+                      <p className="text-xs text-gray-600 mt-1">
+                        {prepayMode === 'reduce-tenure'
+                          ? 'Keep EMI same, finish loan earlier'
+                          : 'Keep tenure, recalculate lower EMI'}
+                      </p>
+                    </div>
                   </div>
                 </div>
+
+                {/* Lump Sum Prepayments */}
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="text-sm font-medium text-white">One-Time Lump Sum Prepayments</p>
+                    {lumpSums.length < 5 && (
+                      <button
+                        onClick={addLumpSum}
+                        className="text-xs text-violet-400 hover:text-violet-300 transition-colors"
+                      >
+                        + Add
+                      </button>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    {lumpSums.map((ls, idx) => (
+                      <div key={idx} className="flex gap-2 items-end">
+                        <div className="flex-1">
+                          <label className="label text-xs">Amount (₹)</label>
+                          <input
+                            className="input text-sm"
+                            type="number"
+                            min="0"
+                            step="10000"
+                            placeholder="500000"
+                            value={ls.amount}
+                            onChange={(e) => updateLumpSum(idx, 'amount', e.target.value)}
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <label className="label text-xs">After EMI #</label>
+                          <input
+                            className="input text-sm"
+                            type="number"
+                            min="1"
+                            max="360"
+                            placeholder="24"
+                            value={ls.afterMonth}
+                            onChange={(e) => updateLumpSum(idx, 'afterMonth', e.target.value)}
+                          />
+                        </div>
+                        {lumpSums.length > 1 && (
+                          <button
+                            onClick={() => removeLumpSum(idx)}
+                            className="text-red-400 hover:text-red-300 text-xs pb-2"
+                          >
+                            ✕
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Floating Rate Scenario */}
+                <div>
+                  <p className="text-sm font-medium text-white mb-3">Floating Rate Scenario</p>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="label">Rate Changes After Year</label>
+                      <input
+                        className="input"
+                        type="number"
+                        min="1"
+                        max="30"
+                        placeholder="5"
+                        value={floatRateYear}
+                        onChange={(e) => setFloatRateYear(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <label className="label">New Interest Rate (%)</label>
+                      <input
+                        className="input"
+                        type="number"
+                        min="1"
+                        max="30"
+                        step="0.05"
+                        placeholder="9.5"
+                        value={floatNewRate}
+                        onChange={(e) => setFloatNewRate(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Tax benefit toggle */}
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setShowTaxBenefit((v) => !v)}
@@ -401,6 +622,11 @@ export default function HomeLoanEMIPage() {
               <div className="card text-center py-5">
                 <p className="text-2xl font-bold text-violet-400">{fmtINR(result.emi)}</p>
                 <p className="text-xs text-gray-500 mt-1 uppercase tracking-wider">Monthly EMI</p>
+                {prepayMode === 'reduce-emi' && result.extra > 0 && result.amort.revisedEMI !== result.emi && (
+                  <p className="text-xs text-emerald-400 mt-1">
+                    Revised: {fmtINR(result.amort.revisedEMI)}
+                  </p>
+                )}
               </div>
               <div className="card text-center py-5">
                 <p className="text-2xl font-bold text-amber-400">{fmtINR(result.amort.totalInterest)}</p>
@@ -412,9 +638,89 @@ export default function HomeLoanEMIPage() {
               </div>
             </div>
 
+            {/* Prepayment Effect — show when any prepay set */}
+            {hasPrepayEffect && (
+              <div className="card bg-emerald-500/5 border-emerald-500/20">
+                <h3 className="text-sm font-semibold text-white mb-3">Prepayment Analysis</h3>
+                <div className="grid sm:grid-cols-3 gap-4 mb-4">
+                  <div className="text-center">
+                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Effective Tenure</p>
+                    <p className="text-xl font-bold text-emerald-400">
+                      {Math.floor(result.amort.prepayTenureMonths / 12)} yrs{' '}
+                      {result.amort.prepayTenureMonths % 12} mo
+                    </p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">
+                      {prepayMode === 'reduce-tenure' ? 'Months Saved' : 'EMI Reduction'}
+                    </p>
+                    <p className="text-xl font-bold text-emerald-400">
+                      {prepayMode === 'reduce-tenure'
+                        ? `${result.n - result.amort.prepayTenureMonths} months`
+                        : result.amort.revisedEMI < result.emi
+                        ? `${fmtINR(result.emi - result.amort.revisedEMI)}/mo`
+                        : '—'}
+                    </p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Interest Saved</p>
+                    <p className="text-xl font-bold text-emerald-400">
+                      {fmtINR(Math.max(0, result.amort.prepayInterestSaved))}
+                    </p>
+                  </div>
+                </div>
+                {prepayMode === 'reduce-emi' && result.amort.revisedEMI !== result.emi && (
+                  <div className="bg-gray-800/40 rounded-xl p-3 flex gap-6 text-sm">
+                    <div>
+                      <p className="text-xs text-gray-500">Original EMI</p>
+                      <p className="font-semibold text-gray-300">{fmtINR(result.emi)}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500">Revised EMI (after prepay)</p>
+                      <p className="font-semibold text-emerald-400">{fmtINR(result.amort.revisedEMI)}</p>
+                    </div>
+                  </div>
+                )}
+                {prepayMode === 'reduce-tenure' && (
+                  <div className="bg-gray-800/40 rounded-xl p-3 flex gap-6 text-sm">
+                    <div>
+                      <p className="text-xs text-gray-500">Original Tenure</p>
+                      <p className="font-semibold text-gray-300">{tenureYears} years</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500">New Effective Tenure</p>
+                      <p className="font-semibold text-emerald-400">
+                        {Math.floor(result.amort.prepayTenureMonths / 12)} yrs{' '}
+                        {result.amort.prepayTenureMonths % 12} mo
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Floating rate effect */}
+            {parseFloat(floatRateYear) > 0 && parseFloat(floatNewRate) > 0 && (
+              <div className="card bg-blue-500/5 border-blue-500/20">
+                <h3 className="text-sm font-semibold text-white mb-2">Floating Rate Scenario</h3>
+                <p className="text-xs text-gray-500">
+                  Rate changes from {interestRate}% to {floatNewRate}% after Year {floatRateYear}.
+                  The amortization table below reflects this change.
+                </p>
+                {parseFloat(floatNewRate) > parseFloat(interestRate) ? (
+                  <p className="text-xs text-amber-400 mt-1">
+                    Rate increased — expect higher effective interest cost.
+                  </p>
+                ) : (
+                  <p className="text-xs text-emerald-400 mt-1">
+                    Rate decreased — you save on interest from Year {floatRateYear} onwards.
+                  </p>
+                )}
+              </div>
+            )}
+
             {/* LTV + breakdown */}
             <div className="card space-y-5">
-              {/* LTV ratio */}
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <div>
@@ -444,7 +750,6 @@ export default function HomeLoanEMIPage() {
                 </div>
               </div>
 
-              {/* Principal vs Interest bar */}
               <div>
                 <p className="text-sm font-semibold text-white mb-3">Principal vs Interest Breakdown</p>
                 <div className="flex items-center gap-2 mb-2">
@@ -481,19 +786,64 @@ export default function HomeLoanEMIPage() {
               </div>
             </div>
 
+            {/* Outstanding Balance Lookup */}
+            <div className="card">
+              <h3 className="text-sm font-semibold text-white mb-3">Outstanding Balance Lookup</h3>
+              <div>
+                <div className="flex justify-between mb-1">
+                  <label className="label mb-0">After how many EMIs paid?</label>
+                  <span className="text-sm text-violet-400 font-semibold">{outstandingN} EMIs</span>
+                </div>
+                <input
+                  type="range"
+                  min={1}
+                  max={maxTenureMonths}
+                  value={outstandingN}
+                  onChange={(e) => setOutstandingN(Number(e.target.value))}
+                  className="w-full accent-violet-500"
+                />
+                <div className="flex justify-between text-xs text-gray-600 mt-1">
+                  <span>1 EMI</span><span>{maxTenureMonths} EMIs ({tenureYears} yrs)</span>
+                </div>
+              </div>
+              {outstandingResult && (
+                <div className="mt-4 grid sm:grid-cols-3 gap-3">
+                  <div className="bg-gray-800/50 rounded-xl p-3 text-center">
+                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Outstanding Principal</p>
+                    <p className="text-lg font-bold text-amber-400">{fmtINR(outstandingResult.outstanding)}</p>
+                  </div>
+                  <div className="bg-gray-800/50 rounded-xl p-3 text-center">
+                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Principal Paid</p>
+                    <p className="text-lg font-bold text-violet-400">{fmtINR(outstandingResult.principalPaid)}</p>
+                  </div>
+                  <div className="bg-gray-800/50 rounded-xl p-3 text-center">
+                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Interest Paid</p>
+                    <p className="text-lg font-bold text-red-400">{fmtINR(outstandingResult.interestPaid)}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Amortization chart — CSS stacked bars per year */}
             <div className="card">
-              <h3 className="text-sm font-semibold text-white mb-4">Amortization Chart</h3>
+              <h3 className="text-sm font-semibold text-white mb-4">Amortization Chart (Year-wise)</h3>
               <div className="space-y-1.5 overflow-y-auto max-h-72">
                 {result.amort.yearSummaries.map((row) => {
                   const total = row.principalPaid + row.interestPaid;
                   const pPct = total > 0 ? (row.principalPaid / total) * 100 : 0;
+                  const maxTotal = Math.max(...result.amort.yearSummaries.map((r2) => r2.principalPaid + r2.interestPaid));
+                  const barWidth = maxTotal > 0 ? (total / maxTotal) * 100 : 0;
                   return (
                     <div key={row.year} className="flex items-center gap-3">
                       <span className="text-xs text-gray-500 w-10 shrink-0">Yr {row.year}</span>
-                      <div className="flex-1 h-5 rounded overflow-hidden flex bg-gray-800">
-                        <div className="bg-violet-600" style={{ width: `${pPct}%` }} />
-                        <div className="bg-amber-500" style={{ width: `${100 - pPct}%` }} />
+                      <div className="flex-1 h-5 rounded overflow-hidden bg-gray-800/50">
+                        <div
+                          className="h-full rounded overflow-hidden flex"
+                          style={{ width: `${barWidth}%` }}
+                        >
+                          <div className="bg-violet-600" style={{ width: `${pPct}%` }} />
+                          <div className="bg-amber-500" style={{ width: `${100 - pPct}%` }} />
+                        </div>
                       </div>
                       <span className="text-xs text-gray-500 w-24 text-right shrink-0">
                         {fmtINR(row.balance)}
@@ -515,22 +865,24 @@ export default function HomeLoanEMIPage() {
 
             {/* Year-wise summary table */}
             <div className="card">
-              <h3 className="text-sm font-semibold text-white mb-3">Year-wise Summary</h3>
+              <h3 className="text-sm font-semibold text-white mb-3">Year-wise Amortization</h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-gray-700">
                       <th className="text-left py-2 px-3 text-gray-400 font-medium">Year</th>
+                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Opening Bal</th>
                       <th className="text-right py-2 px-3 text-gray-400 font-medium">EMI Paid</th>
                       <th className="text-right py-2 px-3 text-gray-400 font-medium">Principal</th>
                       <th className="text-right py-2 px-3 text-gray-400 font-medium">Interest</th>
-                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Balance</th>
+                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Closing Bal</th>
                     </tr>
                   </thead>
                   <tbody>
                     {pageRows.map((row) => (
                       <tr key={row.year} className="border-b border-gray-800 hover:bg-gray-800/30">
                         <td className="py-2 px-3 text-gray-400">Year {row.year}</td>
+                        <td className="py-2 px-3 text-right text-gray-500 text-xs">{fmtINR(row.openingBalance)}</td>
                         <td className="py-2 px-3 text-right text-gray-300">{fmtINR(row.emiPaid)}</td>
                         <td className="py-2 px-3 text-right text-violet-400">{fmtINR(row.principalPaid)}</td>
                         <td className="py-2 px-3 text-right text-amber-400">{fmtINR(row.interestPaid)}</td>
@@ -562,34 +914,6 @@ export default function HomeLoanEMIPage() {
                 </div>
               )}
             </div>
-
-            {/* Prepayment analysis */}
-            {result.extra > 0 && (
-              <div className="card bg-emerald-500/5 border-emerald-500/20">
-                <h3 className="text-sm font-semibold text-white mb-3">Prepayment Analysis</h3>
-                <div className="grid sm:grid-cols-3 gap-4">
-                  <div className="text-center">
-                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Actual Tenure</p>
-                    <p className="text-xl font-bold text-emerald-400">
-                      {Math.floor(result.amort.prepayTenureMonths / 12)} yrs{' '}
-                      {result.amort.prepayTenureMonths % 12} mo
-                    </p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Months Saved</p>
-                    <p className="text-xl font-bold text-emerald-400">
-                      {result.n - result.amort.prepayTenureMonths} months
-                    </p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Interest Saved</p>
-                    <p className="text-xl font-bold text-emerald-400">
-                      {fmtINR(Math.max(0, result.amort.prepayInterestSaved))}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
 
             {/* Tax benefit */}
             {showTaxBenefit && (
@@ -651,9 +975,7 @@ export default function HomeLoanEMIPage() {
                         >
                           <td className="py-2 px-3 text-gray-300 font-medium">
                             {cr.rate}%
-                            {isActive && (
-                              <span className="ml-2 text-xs text-violet-400">(current)</span>
-                            )}
+                            {isActive && <span className="ml-2 text-xs text-violet-400">(current)</span>}
                           </td>
                           <td className="py-2 px-3 text-right text-white">{fmtINR(cr.emi)}</td>
                           <td className="py-2 px-3 text-right text-gray-400">{fmtINR(cr.totalInterest)}</td>
