@@ -5,6 +5,7 @@ import { Footer } from '@/components/shared/Footer';
 export const metadata: Metadata = {
   title: 'Privacy Policy — Formly',
   description: 'Formly Privacy Policy. We do not store your content. Learn what data we collect and how we protect your privacy.',
+  alternates: { canonical: 'https://formly.tools/privacy' },
 };
 
 export default function PrivacyPage() {

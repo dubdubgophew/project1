@@ -89,9 +89,6 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  alternates: {
-    canonical: 'https://formly.tools',
-  },
   icons: {
     icon: '/favicon.svg',
     shortcut: '/favicon.svg',

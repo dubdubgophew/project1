@@ -50,12 +50,17 @@ const STATIC_ROUTES = [
   { url: '/tools/home-loan-emi-calculator', priority: 0.9, changeFrequency: 'monthly' as const },
   // Comparison / alternatives pages (high-intent SEO)
   { url: '/alternatives', priority: 0.8, changeFrequency: 'monthly' as const },
-  // Static marketing pages
-  { url: '/pricing', priority: 0.5, changeFrequency: 'monthly' as const },
+  // Static marketing & informational pages
+  { url: '/pricing', priority: 0.6, changeFrequency: 'monthly' as const },
+  { url: '/about', priority: 0.5, changeFrequency: 'monthly' as const },
+  { url: '/contact', priority: 0.4, changeFrequency: 'yearly' as const },
+  { url: '/terms', priority: 0.3, changeFrequency: 'yearly' as const },
+  { url: '/privacy', priority: 0.3, changeFrequency: 'yearly' as const },
+  { url: '/refunds', priority: 0.3, changeFrequency: 'yearly' as const },
+  // News & blog
   { url: '/news', priority: 0.9, changeFrequency: 'hourly' as const },
   { url: '/ai-news', priority: 0.9, changeFrequency: 'hourly' as const },
   { url: '/blog', priority: 0.7, changeFrequency: 'daily' as const },
-  { url: '/about', priority: 0.5, changeFrequency: 'monthly' as const },
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

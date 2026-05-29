@@ -5,6 +5,7 @@ import { Footer } from '@/components/shared/Footer';
 export const metadata: Metadata = {
   title: 'Terms of Service — Formly',
   description: 'Formly Terms of Service. Read our usage terms, subscription policies, and content guidelines.',
+  alternates: { canonical: 'https://formly.tools/terms' },
 };
 
 export default function TermsPage() {

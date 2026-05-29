@@ -7,19 +7,19 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/admin/', '/api/', '/dashboard/', '/settings/'],
+        disallow: ['/admin', '/api/', '/dashboard', '/settings', '/login', '/signup'],
       },
       // Googlebot: explicit allow for key SEO paths
       {
         userAgent: 'Googlebot',
-        allow: ['/', '/tools/', '/blog/', '/pricing', '/about', '/news', '/ai-news'],
-        disallow: ['/admin/', '/api/', '/dashboard/', '/settings/'],
+        allow: ['/', '/tools/', '/blog/', '/pricing', '/about', '/news', '/ai-news', '/alternatives', '/contact'],
+        disallow: ['/admin', '/api/', '/dashboard', '/settings', '/login', '/signup'],
       },
       // Bingbot
       {
         userAgent: 'Bingbot',
         allow: ['/', '/tools/', '/blog/', '/pricing', '/about', '/news', '/ai-news'],
-        disallow: ['/admin/', '/api/', '/dashboard/', '/settings/'],
+        disallow: ['/admin', '/api/', '/dashboard', '/settings', '/login', '/signup'],
       },
       // Allow AI training crawlers (GPTBot, Claude, etc.) — boosts GEO
       {

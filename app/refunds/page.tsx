@@ -2,7 +2,11 @@ import type { Metadata } from 'next';
 import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
 
-export const metadata: Metadata = { title: 'Refund Policy — Formly', description: 'Formly refund policy. 7-day money-back guarantee on all paid plans.' };
+export const metadata: Metadata = {
+  title: 'Refund Policy — Formly',
+  description: 'Formly refund policy. 7-day money-back guarantee on all paid plans.',
+  alternates: { canonical: 'https://formly.tools/refunds' },
+};
 
 export default function RefundsPage() {
   return (
