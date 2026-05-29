@@ -7,6 +7,51 @@ import { ToolLayout } from '@/components/tools/ToolLayout';
 const fmtINR = (n: number) => '₹' + Math.round(n).toLocaleString('en-IN');
 const fmtPct = (n: number) => n.toFixed(2) + '%';
 
+interface PieSegment { label: string; value: number; color: string; }
+function PieChart({ segments }: { segments: PieSegment[] }) {
+  const filtered = segments.filter(s => s.value > 0.5);
+  const total = filtered.reduce((s, x) => s + x.value, 0);
+  if (total === 0) return null;
+  const cx = 80, cy = 80, r = 65, inner = 30, gap = 1.5;
+  let cumAngle = -90;
+  const paths = filtered.map(seg => {
+    const pct = seg.value / total;
+    const degrees = pct * 360 - gap;
+    const startA = cumAngle + gap / 2;
+    const endA = cumAngle + degrees + gap / 2;
+    cumAngle += pct * 360;
+    const toRad = (d: number) => (d * Math.PI) / 180;
+    const x1 = cx + r * Math.cos(toRad(startA)), y1 = cy + r * Math.sin(toRad(startA));
+    const x2 = cx + r * Math.cos(toRad(endA)), y2 = cy + r * Math.sin(toRad(endA));
+    const ix1 = cx + inner * Math.cos(toRad(startA)), iy1 = cy + inner * Math.sin(toRad(startA));
+    const ix2 = cx + inner * Math.cos(toRad(endA)), iy2 = cy + inner * Math.sin(toRad(endA));
+    const large = degrees > 180 ? 1 : 0;
+    const d = `M ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2} L ${ix2} ${iy2} A ${inner} ${inner} 0 ${large} 0 ${ix1} ${iy1} Z`;
+    return { ...seg, d, pct };
+  });
+  return (
+    <div className="flex flex-col sm:flex-row items-center gap-6">
+      <svg viewBox="0 0 160 160" className="w-36 h-36 flex-shrink-0">
+        {paths.map((p, i) => <path key={i} d={p.d} fill={p.color} />)}
+        <circle cx={cx} cy={cy} r={inner - 1} fill="#030712" />
+      </svg>
+      <div className="flex-1 space-y-2 w-full">
+        {paths.map((p, i) => (
+          <div key={i} className="flex items-center justify-between gap-2 text-xs">
+            <span className="flex items-center gap-1.5 text-gray-400 min-w-0">
+              <span className="w-2.5 h-2.5 rounded-sm flex-shrink-0" style={{ background: p.color }} />
+              <span className="truncate">{p.label}</span>
+            </span>
+            <span className="text-gray-300 font-medium whitespace-nowrap">
+              {fmtINR(p.value)} <span className="text-gray-500">({(p.pct * 100).toFixed(1)}%)</span>
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ── Calculation helpers ──────────────────────────────────────────────────────
 function calcSIP(monthly: number, annualRate: number, years: number): {
   fv: number; invested: number; returns: number; cagr: number; absReturns: number;
@@ -220,8 +265,6 @@ export default function SIPCalculatorPage() {
 
   const currentYears = tab === 'sip' ? sipYears : lsYears;
   const displayedRows = showAllYears ? yearRows : yearRows.slice(0, 5);
-  const investedPct = result ? Math.round((result.invested / result.fv) * 100) : 0;
-  const returnsPct = 100 - investedPct;
   const growthMultiple = result ? (result.fv / result.invested).toFixed(2) : null;
 
   // Helper to set rate preset
@@ -576,27 +619,11 @@ export default function SIPCalculatorPage() {
                 </div>
               </div>
 
-              {/* CSS progress bar */}
-              <div>
-                <div className="flex justify-between text-xs text-gray-500 mb-1">
-                  <span>Invested ({investedPct}%)</span>
-                  <span>Returns ({returnsPct}%)</span>
-                </div>
-                <div className="h-4 rounded-full overflow-hidden bg-gray-800 flex">
-                  <div className="bg-gray-500 transition-all" style={{ width: `${investedPct}%` }} />
-                  <div className="bg-emerald-500 transition-all" style={{ width: `${returnsPct}%` }} />
-                </div>
-                <div className="flex gap-4 mt-2 text-xs">
-                  <span className="flex items-center gap-1.5 text-gray-400">
-                    <span className="w-2.5 h-2.5 rounded-sm bg-gray-500 inline-block" />
-                    Invested: {fmtINR(result.invested)}
-                  </span>
-                  <span className="flex items-center gap-1.5 text-gray-400">
-                    <span className="w-2.5 h-2.5 rounded-sm bg-emerald-500 inline-block" />
-                    Returns: {fmtINR(result.returns)}
-                  </span>
-                </div>
-              </div>
+              {/* Invested vs Returns donut */}
+              <PieChart segments={[
+                { label: 'Amount Invested', value: result.invested, color: '#6b7280' },
+                { label: 'Total Returns (Gains)', value: result.returns, color: '#10b981' },
+              ]} />
             </div>
 
             {/* SIP vs Lumpsum Comparison */}

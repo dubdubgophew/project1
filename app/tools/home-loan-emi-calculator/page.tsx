@@ -6,6 +6,51 @@ import { ToolLayout } from '@/components/tools/ToolLayout';
 // ── Helpers ─────────────────────────────────────────────────────────────────
 const fmtINR = (n: number) => '₹' + Math.round(n).toLocaleString('en-IN');
 
+interface PieSegment { label: string; value: number; color: string; }
+function PieChart({ segments }: { segments: PieSegment[] }) {
+  const filtered = segments.filter(s => s.value > 0.5);
+  const total = filtered.reduce((s, x) => s + x.value, 0);
+  if (total === 0) return null;
+  const cx = 80, cy = 80, r = 65, inner = 30, gap = 1.5;
+  let cumAngle = -90;
+  const paths = filtered.map(seg => {
+    const pct = seg.value / total;
+    const degrees = pct * 360 - gap;
+    const startA = cumAngle + gap / 2;
+    const endA = cumAngle + degrees + gap / 2;
+    cumAngle += pct * 360;
+    const toRad = (d: number) => (d * Math.PI) / 180;
+    const x1 = cx + r * Math.cos(toRad(startA)), y1 = cy + r * Math.sin(toRad(startA));
+    const x2 = cx + r * Math.cos(toRad(endA)), y2 = cy + r * Math.sin(toRad(endA));
+    const ix1 = cx + inner * Math.cos(toRad(startA)), iy1 = cy + inner * Math.sin(toRad(startA));
+    const ix2 = cx + inner * Math.cos(toRad(endA)), iy2 = cy + inner * Math.sin(toRad(endA));
+    const large = degrees > 180 ? 1 : 0;
+    const d = `M ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2} L ${ix2} ${iy2} A ${inner} ${inner} 0 ${large} 0 ${ix1} ${iy1} Z`;
+    return { ...seg, d, pct };
+  });
+  return (
+    <div className="flex flex-col sm:flex-row items-center gap-6">
+      <svg viewBox="0 0 160 160" className="w-36 h-36 flex-shrink-0">
+        {paths.map((p, i) => <path key={i} d={p.d} fill={p.color} />)}
+        <circle cx={cx} cy={cy} r={inner - 1} fill="#030712" />
+      </svg>
+      <div className="flex-1 space-y-2 w-full">
+        {paths.map((p, i) => (
+          <div key={i} className="flex items-center justify-between gap-2 text-xs">
+            <span className="flex items-center gap-1.5 text-gray-400 min-w-0">
+              <span className="w-2.5 h-2.5 rounded-sm flex-shrink-0" style={{ background: p.color }} />
+              <span className="truncate">{p.label}</span>
+            </span>
+            <span className="text-gray-300 font-medium whitespace-nowrap">
+              {fmtINR(p.value)} <span className="text-gray-500">({(p.pct * 100).toFixed(1)}%)</span>
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function calcEMI(principal: number, annualRate: number, months: number): number {
   if (annualRate === 0) return principal / months;
   const r = annualRate / 12 / 100;
@@ -293,8 +338,6 @@ export default function HomeLoanEMIPage() {
 
   const totalPages = result ? Math.ceil(result.amort.yearSummaries.length / 5) : 0;
   const pageRows = result ? result.amort.yearSummaries.slice(yearPage * 5, yearPage * 5 + 5) : [];
-  const principalPct = result ? Math.round((result.P / result.amort.totalPaid) * 100) : 0;
-  const interestPct = 100 - principalPct;
 
   const hasPrepayEffect = result && (result.extra > 0 || lumpSums.some((ls) => parseFloat(ls.amount) > 0));
 
@@ -751,38 +794,12 @@ export default function HomeLoanEMIPage() {
               </div>
 
               <div>
-                <p className="text-sm font-semibold text-white mb-3">Principal vs Interest Breakdown</p>
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="flex-1 h-8 rounded-xl overflow-hidden flex">
-                    <div
-                      className="bg-violet-600 flex items-center justify-center text-xs text-white font-medium transition-all"
-                      style={{ width: `${principalPct}%` }}
-                    >
-                      {principalPct > 15 ? `${principalPct}%` : ''}
-                    </div>
-                    <div
-                      className="bg-amber-500 flex items-center justify-center text-xs text-white font-medium transition-all"
-                      style={{ width: `${interestPct}%` }}
-                    >
-                      {interestPct > 15 ? `${interestPct}%` : ''}
-                    </div>
-                  </div>
-                </div>
-                <div className="flex gap-6 text-xs">
-                  <span className="flex items-center gap-1.5 text-gray-400">
-                    <span className="w-2.5 h-2.5 rounded-sm bg-violet-600 inline-block" />
-                    Principal: {fmtINR(result.P)} ({principalPct}%)
-                  </span>
-                  <span className="flex items-center gap-1.5 text-gray-400">
-                    <span className="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block" />
-                    Interest: {fmtINR(result.amort.totalInterest)} ({interestPct}%)
-                  </span>
-                  {result.fee > 0 && (
-                    <span className="flex items-center gap-1.5 text-gray-400">
-                      Processing fee: {fmtINR(result.fee)}
-                    </span>
-                  )}
-                </div>
+                <p className="text-sm font-semibold text-white mb-4">Principal vs Interest Breakdown</p>
+                <PieChart segments={[
+                  { label: 'Principal (Loan Amount)', value: result.P, color: '#7c3aed' },
+                  { label: 'Total Interest Cost', value: result.amort.totalInterest, color: '#f59e0b' },
+                  ...(result.fee > 0 ? [{ label: 'Processing Fee', value: result.fee, color: '#6b7280' }] : []),
+                ]} />
               </div>
             </div>
 
