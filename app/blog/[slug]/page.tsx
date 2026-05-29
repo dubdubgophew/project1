@@ -6,6 +6,7 @@ import { Footer } from '@/components/shared/Footer';
 import { SidebarAd, BannerAd } from '@/components/shared/AdSense';
 import { BLOG_POSTS } from '@/lib/blog-content';
 import { ArrowLeft, Clock, Calendar, Globe } from 'lucide-react';
+import { SocialShare } from '@/components/shared/SocialShare';
 
 interface Props { params: { slug: string } }
 
@@ -87,9 +88,11 @@ export default function BlogPostPage({ params }: Props) {
               <p className="text-gray-300 text-lg leading-relaxed mb-8">{post.intro}</p>
 
               {/* CTA — top */}
-              <Link href={`/tools/${post.toolSlug}`} className="btn-primary inline-flex mb-10">
+              <Link href={`/tools/${post.toolSlug}`} className="btn-primary inline-flex mb-8">
                 Try {post.toolName} Free →
               </Link>
+
+              <SocialShare url={`https://formly.tools/blog/${post.slug}`} title={post.title} />
 
               {/* Sections */}
               {post.sections.map((section, i) => (

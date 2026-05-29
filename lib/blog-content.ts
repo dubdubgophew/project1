@@ -1936,13 +1936,13 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     slug: 'income-tax-calculator-india-2025-26',
     title: 'Income Tax Calculator India FY 2025-26: New vs Old Regime, Budget 2025 Slabs',
-    description: 'Calculate your exact income tax for FY 2025-26 with Budget 2025 slabs. Compare new vs old regime, understand 87A rebate, surcharge, cess, and which regime saves you more money.',
+    metaDescription: 'Calculate your exact income tax for FY 2025-26 with Budget 2025 slabs. Compare new vs old regime, understand 87A rebate, surcharge, cess, and which regime saves you more money.',
     category: 'finance',
     toolSlug: 'income-tax-calculator',
-    readTime: '8 min read',
+    toolName: 'Income Tax Calculator',
+    readingTime: 8,
     publishedAt: '2026-05-28',
     updatedAt: '2026-05-28',
-    heroEmoji: '🧾',
     intro: 'Budget 2025 brought significant changes to India\'s income tax structure — most notably making income up to ₹12 lakh effectively tax-free under the new regime. If you haven\'t revisited your tax planning since February 2025, you may be paying more tax than necessary. This guide explains the new slabs and helps you decide which regime is better for you.',
     sections: [
       {
@@ -1985,13 +1985,13 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     slug: 'gst-calculator-india',
     title: 'GST Calculator India 2025: Add/Remove GST, CGST+SGST vs IGST, All Slab Rates',
-    description: 'Free GST calculator for India. Add GST to base price or extract GST from inclusive price. Calculate CGST+SGST (intra-state) or IGST (inter-state) for 5%, 12%, 18%, and 28% rates.',
+    metaDescription: 'Free GST calculator for India. Add GST to base price or extract GST from inclusive price. Calculate CGST+SGST (intra-state) or IGST (inter-state) for 5%, 12%, 18%, and 28% rates.',
     category: 'finance',
     toolSlug: 'gst-calculator',
-    readTime: '5 min read',
+    toolName: 'GST Calculator',
+    readingTime: 5,
     publishedAt: '2026-05-28',
     updatedAt: '2026-05-28',
-    heroEmoji: '🧮',
     intro: 'GST (Goods and Services Tax) replaced India\'s complex indirect tax system in July 2017. Whether you\'re a business owner issuing invoices, a freelancer calculating taxes, or a consumer wanting to verify charges, understanding how GST is calculated prevents costly mistakes. This guide covers every scenario.',
     sections: [
       {
@@ -2026,6 +2026,242 @@ export const BLOG_POSTS: BlogPost[] = [
       { q: 'How is GST different from VAT?', a: 'VAT was a state-level tax with cascading effects (tax on tax). GST replaced it with a single unified tax across India, with ITC available throughout the supply chain, eliminating the cascading effect.' },
     ],
     countriesServed: ['IN'],
+  },
+  {
+    slug: 'hand-salary-calculator-india-2026-27',
+    title: 'In-Hand Salary Calculator India FY 2026-27: Take-Home Pay After Tax & PF',
+    metaDescription: 'Calculate your exact in-hand salary for FY 2026-27. Includes PF, ESI, professional tax, new vs old regime income tax, HRA exemption, and all deductions. Free online calculator.',
+    category: 'finance',
+    toolSlug: 'hand-salary-calculator',
+    toolName: 'In-Hand Salary Calculator',
+    readingTime: 9,
+    publishedAt: '2026-05-29',
+    updatedAt: '2026-05-29',
+    intro: 'Your CTC (Cost to Company) is just a number on your offer letter — what you actually receive every month is your in-hand or take-home salary. For FY 2026-27, with the new income tax regime now being default for most salaried employees and updated PF rules, understanding exactly how your CTC breaks down into take-home pay is critical for financial planning.',
+    sections: [
+      {
+        heading: 'CTC vs Gross Salary vs In-Hand Salary',
+        body: 'CTC (Cost to Company) includes everything the employer spends on you: gross salary + employer PF (12% of basic) + employer ESI (3.25% if applicable) + gratuity component + any other benefits. Gross Salary is what you earn before deductions but excluding employer contributions. In-Hand (Take-Home) is gross salary minus employee PF (12% of basic), employee ESI (0.75%), professional tax (state-dependent, typically ₹200/month), and income tax (TDS).',
+      },
+      {
+        heading: 'PF Deduction Rules FY 2026-27',
+        body: 'Employee PF contribution: 12% of basic salary. Employer PF contribution: 12% of basic (8.33% goes to EPS — Employee Pension Scheme, 3.67% to EPF). Both employee and employer contribute 12% each, but only the employee share reduces your take-home. PF is deducted only if basic salary is ≤ ₹15,000/month (mandatory) or if the company voluntarily extends it to higher salary employees. Interest earned on EPF is 8.25% p.a. (2024-25 rate).',
+      },
+      {
+        heading: 'Income Tax Under New Regime FY 2026-27',
+        body: 'The new tax regime slabs remain unchanged from FY 2025-26: ₹0-4L (0%), ₹4-8L (5%), ₹8-12L (10%), ₹12-16L (15%), ₹16-20L (20%), ₹20-24L (25%), above ₹24L (30%). Standard deduction is ₹75,000 for salaried. Section 87A rebate makes tax zero for income up to ₹12L. Marginal relief applies between ₹12L–₹12.75L so tax never exceeds income above ₹12L.',
+      },
+      {
+        heading: 'Income Tax Under Old Regime FY 2026-27',
+        body: 'Old regime slabs: ₹0-2.5L (0%), ₹2.5-5L (5%), ₹5-10L (20%), above ₹10L (30%). Standard deduction ₹50,000. Available deductions: 80C (₹1.5L — PF, ELSS, PPF, LIC), 80D (health insurance), HRA exemption, Section 24b (home loan interest up to ₹2L), 80CCD(1B) NPS (₹50K). 87A rebate up to ₹5L taxable income.',
+      },
+      {
+        heading: 'HRA Exemption Calculation',
+        body: 'HRA exemption (only in old regime) = minimum of: (1) Actual HRA received, (2) Actual rent paid minus 10% of basic salary, (3) 50% of basic (metro cities: Mumbai, Delhi, Kolkata, Chennai) or 40% of basic (non-metro). If you live in employer accommodation or own your house, HRA is fully taxable. HRA is not available under new regime.',
+      },
+      {
+        heading: 'Professional Tax & ESI',
+        body: 'Professional tax varies by state: Maharashtra ₹200/month (₹2,400/yr), Karnataka ₹200/month, West Bengal up to ₹208/month, Tamil Nadu ₹208/month. Some states (Delhi, Haryana, UP, Rajasthan) have no professional tax. ESI (Employee State Insurance) applies only if gross salary ≤ ₹21,000/month: employee contribution 0.75%, employer 3.25%. ESI provides health insurance benefits.',
+      },
+      {
+        heading: 'How to Use the Formly In-Hand Salary Calculator',
+        body: 'Enter your annual CTC or gross salary. Set your basic salary percentage (typically 40-50% of CTC). Add HRA, special allowance, and other components. Choose new or old tax regime. If old regime, enter your deductions and rent paid. The calculator instantly shows your monthly take-home, all deductions itemized, and a comparison between regimes.',
+      },
+    ],
+    faqs: [
+      { q: 'What percentage of CTC is in-hand salary?', a: 'Typically 65-75% of CTC is your in-hand salary. The rest goes to employer PF contribution, gratuity provision, taxes, and employee PF/ESI deductions. Higher CTC employees (above ₹15L) may see a higher take-home percentage since PF deductions are capped relative to salary.' },
+      { q: 'Is new regime better for FY 2026-27?', a: 'For most salaried employees without a home loan, the new regime is better in FY 2026-27. If your total deductions (HRA + 80C + home loan interest + NPS) exceed ₹3.75L, the old regime may save more tax. Use the calculator to compare both.' },
+      { q: 'How is monthly salary calculated from annual CTC?', a: 'Monthly in-hand ≠ CTC ÷ 12. CTC ÷ 12 gives monthly CTC which includes employer PF and other costs. Your monthly gross salary is lower, and monthly take-home is further reduced by employee deductions and TDS (tax / 12).' },
+      { q: 'Does PF get deducted if salary is above ₹15,000?', a: 'PF is mandatory only for employees with basic salary ≤ ₹15,000/month. For higher salaries, it depends on company policy. Many companies cap PF deduction at 12% of ₹15,000 = ₹1,800/month, while others deduct on actual basic.' },
+    ],
+    countriesServed: ['IN'],
+  },
+  {
+    slug: 'hra-calculator-india-2026-27',
+    title: 'HRA Exemption Calculator India FY 2026-27: Save Maximum Tax on House Rent',
+    metaDescription: 'Calculate your HRA (House Rent Allowance) exemption for FY 2026-27. Learn the three-rule formula, metro vs non-metro calculation, and how to maximize HRA tax savings under old regime.',
+    category: 'finance',
+    toolSlug: 'hra-calculator',
+    toolName: 'HRA Calculator',
+    readingTime: 7,
+    publishedAt: '2026-05-29',
+    updatedAt: '2026-05-29',
+    intro: 'HRA (House Rent Allowance) is one of the largest tax-saving components for salaried employees in India — but only under the old income tax regime. If you\'re paying rent and your salary structure includes HRA, calculating the exact exemption can save you tens of thousands of rupees annually. This guide explains the exact HRA calculation formula and how to claim it correctly for FY 2026-27.',
+    sections: [
+      {
+        heading: 'HRA Exemption Formula — The Three-Rule Minimum',
+        body: 'HRA exemption = Minimum of these three amounts:\n\n1. Actual HRA received from employer\n2. Actual rent paid minus 10% of basic salary\n3. 50% of basic salary (metro cities) or 40% of basic salary (non-metro)\n\nThe lowest of these three is your HRA exemption. The balance HRA (received minus exempt) is taxable.',
+      },
+      {
+        heading: 'Metro vs Non-Metro Cities for HRA',
+        body: 'Metro cities (50% HRA exemption cap): Mumbai, Delhi, Kolkata, Chennai. These four are the only "metro" cities for HRA purposes per Income Tax rules. Non-metro cities (40% cap): Bengaluru, Hyderabad, Pune, Ahmedabad, and all other cities. Many people incorrectly assume Bengaluru and Hyderabad are metro — they are not for HRA tax purposes.',
+      },
+      {
+        heading: 'HRA Example Calculation (Delhi)',
+        body: 'Example: Annual basic salary ₹6L, HRA received ₹3L, rent paid ₹3.6L (₹30,000/month), Delhi (metro).\n\n1. HRA received = ₹3,00,000\n2. Rent paid − 10% of basic = ₹3,60,000 − ₹60,000 = ₹3,00,000\n3. 50% of basic = ₹3,00,000\n\nAll three are equal at ₹3L, so HRA exempt = ₹3,00,000. Zero taxable HRA.',
+      },
+      {
+        heading: 'HRA Example Calculation (Bengaluru)',
+        body: 'Example: Annual basic ₹8L, HRA ₹3.2L, rent paid ₹4.2L (₹35,000/month), Bengaluru (non-metro).\n\n1. HRA received = ₹3,20,000\n2. Rent − 10% of basic = ₹4,20,000 − ₹80,000 = ₹3,40,000\n3. 40% of basic = ₹3,20,000\n\nMinimum = ₹3,20,000. Taxable HRA = ₹3,20,000 − ₹3,20,000 = ₹0. Fully exempt.',
+      },
+      {
+        heading: 'HRA Conditions and Documentation',
+        body: 'To claim HRA exemption: (1) You must actually pay rent — self-owned house disqualifies you. (2) You must have HRA in your salary structure. (3) If annual rent exceeds ₹1,00,000, you must provide landlord PAN. (4) Rent receipts or rental agreement required. (5) You cannot claim both HRA exemption and home loan principal deduction (80C) for the same property. Living in a different city from your family home allows both.',
+      },
+      {
+        heading: 'HRA Under New vs Old Regime',
+        body: 'HRA exemption is available ONLY under the old income tax regime. Under the new regime (default from FY 2024-25), HRA is fully taxable as part of your salary. This is a key factor when deciding between regimes — if you pay high rent in a metro and have significant HRA, the old regime might still be better despite losing other deductions.',
+      },
+      {
+        heading: 'How to Use the Formly HRA Calculator',
+        body: 'Enter your basic salary, HRA received from employer, monthly rent paid, and select metro or non-metro city. The calculator applies the three-rule formula and shows you the exact exempt amount and taxable HRA. It also shows the tax saving at your income slab rate.',
+      },
+    ],
+    faqs: [
+      { q: 'Can I claim HRA if my landlord is my parent?', a: 'Yes. You can pay rent to parents and claim HRA exemption, provided the rent is actually paid (bank transfer preferred), the parent declares it as rental income in their ITR, and your name is not on the property. Paying rent to parents is a legitimate tax-saving strategy.' },
+      { q: 'What if I have no HRA component but pay rent?', a: 'If your salary has no HRA component, you can claim deduction under Section 80GG (for non-HRA employees or self-employed). The limit is ₹5,000/month or 25% of total income or rent − 10% of income, whichever is least.' },
+      { q: 'Is HRA exempt if I work from home?', a: 'Yes, HRA can still be claimed even if you work from home, as long as you are paying actual rent for accommodation. The exemption rules don\'t require you to commute to an office.' },
+      { q: 'Can I claim both HRA and home loan deductions?', a: 'Yes, in specific cases. If your owned house is in a different city from where you work, you can claim HRA for rented accommodation (work city) AND home loan deductions (80C principal + Section 24b interest) for your owned property.' },
+    ],
+    countriesServed: ['IN'],
+  },
+  {
+    slug: 'home-loan-emi-calculator-india-2026',
+    title: 'Home Loan EMI Calculator India 2026: Monthly EMI, Total Interest & Amortization',
+    metaDescription: 'Calculate your home loan EMI instantly. See monthly EMI, total interest payable, amortization schedule, and the impact of prepayments. Free home loan calculator for India 2026.',
+    category: 'finance',
+    toolSlug: 'home-loan-emi-calculator',
+    toolName: 'Home Loan EMI Calculator',
+    readingTime: 8,
+    publishedAt: '2026-05-29',
+    updatedAt: '2026-05-29',
+    intro: 'A home loan is the largest financial commitment most Indians will ever make — often a 20-30 year relationship with your bank. Before signing, you need to know exactly what you\'re committing to: monthly EMI, total interest paid over the tenure, and how making extra prepayments can dramatically reduce your interest burden. This calculator and guide covers all of that.',
+    sections: [
+      {
+        heading: 'Home Loan EMI Formula',
+        body: 'EMI = P × r × (1+r)^n / ((1+r)^n − 1)\n\nWhere: P = Principal loan amount, r = Monthly interest rate (annual rate ÷ 12 ÷ 100), n = Tenure in months.\n\nExample: ₹50L loan at 8.5% for 20 years (240 months): r = 8.5/12/100 = 0.007083. EMI = 50,00,000 × 0.007083 × (1.007083)^240 / ((1.007083)^240 − 1) = ₹43,391/month.',
+      },
+      {
+        heading: 'Home Loan Interest Rates in India 2026',
+        body: 'Major banks\' home loan rates (floating): SBI 8.50–9.15%, HDFC Bank 8.75–9.35%, ICICI Bank 8.75–9.25%, Kotak Mahindra 8.75–9.00%, Bank of Baroda 8.40–10.60%, LIC HFL 8.50–10.75%. Rates depend on credit score (CIBIL 750+ gets best rates), loan amount, and property type. Fixed-rate loans are slightly higher but protect against rate hikes.',
+      },
+      {
+        heading: 'Impact of Loan Tenure on Total Interest',
+        body: 'For a ₹50L loan at 8.5%:\n10 years: EMI ₹61,993, Total interest ₹24.4L\n15 years: EMI ₹49,228, Total interest ₹38.6L\n20 years: EMI ₹43,391, Total interest ₹54.1L\n30 years: EMI ₹38,446, Total interest ₹88.4L\n\nChoosing 30 years over 10 years saves ₹23,547/month but costs ₹64L extra in interest. Even small extra EMI payments can dramatically cut this.',
+      },
+      {
+        heading: 'Power of Prepayments',
+        body: 'Making even one extra EMI per year can cut tenure by 3-4 years on a 20-year loan. A lump sum prepayment of ₹5L on a ₹50L loan (8.5%, 20 years) in year 3 saves approximately ₹8-10L in interest and cuts tenure by ~2 years. Most banks allow unlimited prepayment on floating-rate loans without penalty (RBI mandate). Fixed-rate loans may have 2-4% prepayment penalty.',
+      },
+      {
+        heading: 'Tax Benefits on Home Loan FY 2026-27',
+        body: 'OLD REGIME ONLY: Section 24b: Deduction on home loan interest up to ₹2L/year (self-occupied property). Section 80C: Principal repayment (up to ₹1.5L limit, shared with other 80C investments). Section 80EEA: Additional ₹1.5L interest deduction for first-time buyers (affordable housing under ₹45L, expired — check current budget for extension). NEW REGIME: No home loan deductions except employer-provided housing.',
+      },
+      {
+        heading: 'PMAY and Subsidized Loans',
+        body: 'PMAY (Pradhan Mantri Awas Yojana) offers interest subsidies for first-time homebuyers. PMAY Urban 2.0 (launched 2024): EWS/LIG category (income up to ₹3L/₹6L): 6.5% subsidy. MIG-I (₹6-12L income): 4% subsidy. MIG-II (₹12-18L): 3% subsidy. Subsidy is credited upfront to your loan account, reducing the principal and hence EMI. Apply through your bank or directly on PMAY portal.',
+      },
+      {
+        heading: 'How to Use the Formly Home Loan EMI Calculator',
+        body: 'Enter your loan amount, interest rate, and tenure. The calculator shows monthly EMI, total amount payable, and total interest. Switch to the amortization schedule to see month-by-month principal and interest breakdown. Use the prepayment section to see how extra payments reduce total interest and tenure.',
+      },
+    ],
+    faqs: [
+      { q: 'What is the maximum home loan I can get?', a: 'Banks typically lend 75-90% of property value (LTV ratio) and limit EMI to 40-50% of your monthly net income. With a ₹1L/month take-home, you can typically afford EMI of ₹40-50K, which corresponds to a loan of ~₹50-60L at 8.5% for 20 years.' },
+      { q: 'Fixed or floating rate home loan — which is better?', a: 'In a falling interest rate environment, floating is better (your rate decreases). In a rising rate environment, fixed locks in your rate. Currently (2026), with RBI rates expected to ease, floating rate loans are generally preferred by most financial advisors.' },
+      { q: 'How does CIBIL score affect home loan rate?', a: 'CIBIL 750+: Best rates (lowest spread). 700-749: 0.25-0.50% higher rate. 650-699: May face rejection or significantly higher rates. Below 650: Loan unlikely or from NBFCs at high rates. Check your CIBIL score free once a year on CIBIL website before applying.' },
+      { q: 'Can I transfer my home loan to another bank?', a: 'Yes, home loan balance transfer is allowed and can save significantly if you get a 0.5-1% lower rate. Cost: processing fee (0.5-1% of outstanding balance) + legal/technical charges. Break-even is typically 2-3 years, so transfer is worthwhile if you have 7+ years remaining.' },
+    ],
+    countriesServed: ['IN'],
+  },
+  {
+    slug: 'gratuity-calculator-india-2026',
+    title: 'Gratuity Calculator India 2026: Formula, Eligibility, Taxation & Maximum Amount',
+    metaDescription: 'Calculate your gratuity amount instantly. Learn the Gratuity Act formula, eligibility (5 years service), 2026 maximum limit, tax exemptions, and when gratuity is paid.',
+    category: 'finance',
+    toolSlug: 'gratuity-calculator',
+    toolName: 'Gratuity Calculator',
+    readingTime: 6,
+    publishedAt: '2026-05-29',
+    updatedAt: '2026-05-29',
+    intro: 'Gratuity is a statutory benefit paid by employers to employees who have completed at least 5 years of continuous service. It\'s governed by the Payment of Gratuity Act, 1972 for companies with 10+ employees. For millions of Indian employees, gratuity is a significant lump-sum payout on retirement, resignation, or death — yet many don\'t know how it\'s calculated or how much they\'re entitled to.',
+    sections: [
+      {
+        heading: 'Gratuity Formula — Payment of Gratuity Act, 1972',
+        body: 'For employees covered under the Gratuity Act:\nGratuity = (Last drawn salary × 15 / 26) × Years of service\n\nWhere: Last drawn salary = Basic + Dearness Allowance (DA). 15 = 15 days pay. 26 = Working days in a month (excluding 4 Sundays). Years = Rounded to nearest year (6+ months rounds up, less than 6 months rounds down).\n\nExample: Basic + DA ₹50,000/month, 8 years 7 months service → Rounds to 9 years → Gratuity = (50,000 × 15/26) × 9 = ₹2,59,615.',
+      },
+      {
+        heading: 'Gratuity for Employees NOT Under the Act',
+        body: 'For employees in companies not covered by the Gratuity Act (less than 10 employees) but where the employer voluntarily pays gratuity:\nGratuity = (Last drawn salary × 15 / 30) × Years of service\n\nNote: 30 instead of 26 (calendar days). This results in a lower payout. Example: ₹50,000/month, 9 years → (50,000 × 15/30) × 9 = ₹2,25,000.',
+      },
+      {
+        heading: 'Gratuity Eligibility Rules',
+        body: 'Minimum 5 years of continuous service required (4 years 240+ days counts as 5 years in some court interpretations). Triggered on: resignation (5+ years), retirement, death (any duration — paid to nominee), permanent disability (any duration), retrenchment. Contract and daily wage workers covered if employed continuously. Apprentices generally not covered.',
+      },
+      {
+        heading: 'Gratuity Maximum Limit 2026',
+        body: 'The maximum gratuity payable under the Payment of Gratuity Act is ₹25,00,000 (₹25 lakh). This limit was last revised from ₹10L to ₹20L in 2018 and then ₹20L to ₹25L effective November 2020. Government employees under Central Civil Services rules have no upper limit — they receive full formula-based gratuity. Private sector employers can voluntarily pay more than ₹25L, but the excess is taxable.',
+      },
+      {
+        heading: 'Gratuity Taxation',
+        body: 'Government employees: Gratuity fully tax-exempt (no limit). Private employees covered by the Gratuity Act: Exempt up to ₹25L or actual amount, whichever is lower. Excess over ₹25L is taxable at slab rate. Private employees NOT covered by the Act: Exempt up to ₹10L, ½ × monthly salary × years of service, or actual amount — whichever is least. Gratuity received on death/disability is fully exempt for all.',
+      },
+      {
+        heading: 'When is Gratuity Paid?',
+        body: 'Gratuity must be paid within 30 days of it becoming payable. If delayed beyond 30 days, the employer must pay simple interest at prescribed rates. If gratuity is not paid, the employee can file a complaint with the Controlling Authority (typically Regional Labour Commissioner). The employer must not forfeit gratuity except in specific cases of misconduct causing financial damage.',
+      },
+    ],
+    faqs: [
+      { q: 'Does gratuity include allowances?', a: 'No. Gratuity is calculated only on Basic Salary + Dearness Allowance (DA). HRA, special allowance, incentives, bonuses, and other components are excluded. This is why a high-CTC employee with low basic has lower gratuity than expected.' },
+      { q: 'Can gratuity be forfeited?', a: 'Yes, but only partially. An employer can forfeit gratuity to the extent of damage/loss caused by the employee\'s misconduct. Full forfeiture is only allowed if the employee\'s services are terminated for moral turpitude offences. Resignation or normal termination cannot result in forfeiture if eligibility is met.' },
+      { q: 'What happens to gratuity if the employee dies?', a: 'Gratuity becomes payable immediately to the nominated beneficiary (or legal heir if no nominee). The 5-year service requirement is waived for death or disability. The nominee receives the full formula-based amount (or proportionate for shorter service), fully tax-exempt.' },
+      { q: 'Is gratuity applicable to contract employees?', a: 'Contract employees on company payroll who have worked continuously for 5+ years are eligible for gratuity. However, employees hired through a contractor/agency may receive gratuity from the contractor, not the principal employer, depending on the arrangement.' },
+    ],
+    countriesServed: ['IN'],
+  },
+  {
+    slug: 'youtube-summarizer-free',
+    title: 'Free YouTube Summarizer: Get AI Summaries of Any YouTube Video in Seconds',
+    metaDescription: 'Summarize any YouTube video instantly with AI. Get key points, chapters, and actionable takeaways from long videos in under 30 seconds. Free YouTube summarizer — no extension needed.',
+    category: 'ai-tools',
+    toolSlug: 'youtube-summarizer',
+    toolName: 'YouTube Summarizer',
+    readingTime: 5,
+    publishedAt: '2026-05-29',
+    updatedAt: '2026-05-29',
+    intro: 'The average YouTube video is 7 minutes long, but educational content, podcasts, and lectures often run 45 minutes to 3 hours. An AI YouTube summarizer lets you extract the key ideas in under 30 seconds — helping you decide if the full video is worth watching, or giving you a quick reference for content you\'ve already seen. Here\'s how it works and when to use it.',
+    sections: [
+      {
+        heading: 'How AI YouTube Summarization Works',
+        body: 'AI YouTube summarizers work in two steps: First, they fetch the video\'s transcript (captions/subtitles generated by YouTube or the creator). Second, they send the transcript to a large language model (LLM) that extracts key points, creates a structured summary, and identifies actionable takeaways. The entire process takes 10–30 seconds depending on video length. Videos without captions or with auto-generated captions in non-English languages may have lower accuracy.',
+      },
+      {
+        heading: 'What You Can Get from a YouTube Summary',
+        body: 'A good YouTube summarizer provides: (1) A 3-5 sentence TL;DR of the entire video. (2) Key points or chapter summaries (if the video is long). (3) Actionable steps or takeaways for how-to videos. (4) Quotes or timestamps for important moments. (5) A list of topics covered for easy reference. Formly\'s YouTube Summarizer provides all of this in a clean, copyable format.',
+      },
+      {
+        heading: 'Best Use Cases for YouTube Summaries',
+        body: 'Research and learning: Quickly scan 10 educational videos to find the 2 most relevant ones. Podcast episodes: Get key insights from 2-hour podcasts without listening end-to-end. Meeting recordings: Summarize recorded Zoom/Teams calls uploaded to YouTube. News videos: Stay updated on multiple news items in a fraction of the time. Study aid: Get chapter summaries for lecture recordings before reviewing in full.',
+      },
+      {
+        heading: 'Limitations of YouTube Summarizers',
+        body: 'Transcripts required: Videos without captions cannot be summarized. Live streams without auto-captions, music videos, and some regional language content may not work. Quality depends on transcript: Auto-generated captions for technical content (code, medical terms, names) may have errors that affect summary quality. Not a replacement: For nuanced or critical content (medical advice, legal guidance, complex tutorials), always watch the source video.',
+      },
+      {
+        heading: 'YouTube Summarizer vs Browser Extensions',
+        body: 'Browser extensions (like YouTube Summary with ChatGPT) require installation and browser access. Web-based tools like Formly\'s YouTube Summarizer work on any device (including mobile and tablets) without installation. They also don\'t require a ChatGPT Plus subscription or API key — just paste the YouTube URL and get your summary. Formly offers 5 free summaries daily, with unlimited access on Pro.',
+      },
+      {
+        heading: 'Tips for Better YouTube Summaries',
+        body: 'Paste the full YouTube URL including the video ID (e.g., youtube.com/watch?v=...). For very long videos (3+ hours), the summary focuses on the most content-dense sections. If you want a specific angle (e.g., "summarize only the technical parts"), specify it in the prompt field. For non-English videos, request summary in English for best results using Formly\'s language option.',
+      },
+    ],
+    faqs: [
+      { q: 'Does it work with YouTube Shorts?', a: 'Yes, YouTube Shorts have auto-generated captions and can be summarized, though very short videos (under 60 seconds) produce brief summaries since there\'s limited content to compress.' },
+      { q: 'Can I summarize private or unlisted YouTube videos?', a: 'No. Only public YouTube videos can be summarized, as the tool accesses YouTube\'s public transcript API. Private videos and age-restricted videos without login access cannot be processed.' },
+      { q: 'How long can the YouTube video be?', a: 'Formly\'s YouTube Summarizer handles videos up to 3 hours (approximately 50,000 words of transcript). Beyond this, the transcript is chunked and summarized in sections. For most practical use cases (up to 2 hours), the full transcript is processed in one pass.' },
+      { q: 'Is YouTube summarizing legal?', a: 'Yes. YouTube provides public transcript data through its API for accessibility purposes. Using publicly available transcripts for summarization falls under fair use. You are creating a derivative summary for personal use, not republishing the full transcript or video content.' },
+    ],
   },
 ];
 
