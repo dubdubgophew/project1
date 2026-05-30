@@ -56,6 +56,14 @@ export default function EmailWriterPage() {
       icon="📧"
       badge="Popular"
       relatedTools={RELATED}
+      faqs={[
+        { q: 'Is the AI email writer free?', a: 'Yes. Formly\'s AI email writer is completely free with no word limits and no account required. Generate professional emails instantly without signup.' },
+        { q: 'What types of emails can it write?', a: 'The AI generates business emails, follow-up emails, cold outreach, apology emails, resignation letters, complaint emails, thank-you notes, sales pitches, meeting requests, and more — just describe your purpose.' },
+        { q: 'Can I choose the tone of the email?', a: 'Yes. You can select from tones including Professional, Friendly, Formal, Persuasive, and Concise. The AI adjusts vocabulary, structure, and formality to match your selected tone.' },
+        { q: 'How do I write a professional follow-up email?', a: 'Select the "Follow-up" purpose, describe what you\'re following up on (job application, meeting, proposal), choose your tone, and the AI generates a polite, appropriately timed follow-up email ready to send.' },
+        { q: 'Can it write cold outreach emails for sales?', a: 'Yes — describe your product/service and target audience, select the Persuasive tone, and the AI creates a personalized cold outreach email with a clear value proposition and call to action.' },
+        { q: 'Are the emails plagiarism-free and unique?', a: 'Yes. Every email is generated fresh from your specific inputs. No templates are reused — each output is unique to your described context and tone preferences.' },
+      ]}
     >
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="grid sm:grid-cols-2 gap-4">

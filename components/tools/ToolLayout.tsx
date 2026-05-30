@@ -1,8 +1,11 @@
 import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
 import { SidebarAd } from '@/components/shared/AdSense';
+import { ToolFAQ } from '@/components/tools/ToolFAQ';
 import Link from 'next/link';
 import { ArrowLeft, Lock, Zap, Infinity } from 'lucide-react';
+
+interface FAQ { q: string; a: string }
 
 interface ToolLayoutProps {
   title: string;
@@ -14,6 +17,8 @@ interface ToolLayoutProps {
   showAds?: boolean;
   /** true = paystub-style per-plan daily limits; false (default) = free & unlimited */
   rateLimited?: boolean;
+  /** Visible FAQ accordion rendered below the tool for SEO indexability */
+  faqs?: FAQ[];
 }
 
 export function ToolLayout({
@@ -25,6 +30,7 @@ export function ToolLayout({
   relatedTools = [],
   showAds = true,
   rateLimited = false,
+  faqs,
 }: ToolLayoutProps) {
   return (
     <>
@@ -63,6 +69,8 @@ export function ToolLayout({
             {/* Main tool area */}
             <div className="space-y-6">
               {children}
+
+              {faqs && faqs.length > 0 && <ToolFAQ faqs={faqs} />}
 
               {/* Usage notice */}
               {rateLimited ? (

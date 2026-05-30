@@ -87,6 +87,15 @@ export default function PDFSummarizerPage() {
       icon="📄"
       badge="Free"
       relatedTools={RELATED}
+      faqs={[
+        { q: 'How does the free PDF summarizer work?', a: 'Upload your PDF and the AI extracts the digital text, then generates a structured summary with key points, findings, and conclusions — in under 30 seconds. No software installation required.' },
+        { q: 'What is the maximum file size?', a: 'The free PDF summarizer supports files up to 10MB. Most research papers, contracts, and business reports fall within this limit. For larger files, split the PDF into sections first.' },
+        { q: 'Do I need an account to summarize a PDF?', a: 'No. You can summarize PDFs completely free without creating an account, entering an email, or providing a credit card. Open the tool and start immediately.' },
+        { q: 'Can it summarize research papers and academic PDFs?', a: 'Yes — the AI is especially effective for research papers, scientific reports, legal documents, and business reports. It preserves key statistics, findings, citations, and section structure in the output.' },
+        { q: 'Is my PDF kept private?', a: 'Your PDF is processed in memory and never permanently stored. Files are discarded immediately after summarization. Formly does not retain, sell, or share your document content.' },
+        { q: 'What languages does it support?', a: 'The summarizer can process PDFs written in English, Spanish, French, German, Hindi, and most major European languages. Output is generated in English by default.' },
+        { q: 'Does it work on scanned PDFs?', a: 'The tool reads digital text embedded in PDFs, not images. Scanned PDFs (image-only) without OCR text will have reduced accuracy. For best results, use PDFs exported from Word, Google Docs, or academic publishers.' },
+      ]}
     >
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Drop zone */}

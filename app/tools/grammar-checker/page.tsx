@@ -53,6 +53,14 @@ export default function GrammarCheckerPage() {
       description="Instantly detect and fix grammar, spelling, punctuation, and style errors. Get clear explanations for every correction."
       icon="✅"
       relatedTools={RELATED}
+      faqs={[
+        { q: 'Is this grammar checker completely free?', a: 'Yes. Formly\'s grammar checker is free with no word limits and no premium paywall. No account or credit card required — open the tool and start checking immediately.' },
+        { q: 'What errors does the AI grammar checker catch?', a: 'It catches grammar errors, spelling mistakes, punctuation issues, run-on sentences, passive voice overuse, subject-verb disagreement, comma splices, dangling modifiers, and style/clarity suggestions. Every correction includes a plain-language explanation.' },
+        { q: 'Is it better than Grammarly?', a: 'For free use, yes — Grammarly locks most suggestions behind a $12/month subscription. Formly provides full corrections with explanations at no cost, with no account needed.' },
+        { q: 'Does it work for academic and professional writing?', a: 'Yes. It handles academic essays, research papers, business emails, and reports. It identifies passive voice overuse, formal grammar violations, and awkward phrasing common in academic writing.' },
+        { q: 'Does it support British English?', a: 'Yes. The tool understands both US and UK English conventions and will not flag British spellings like "colour", "organise", or "programme" as errors.' },
+        { q: 'Is my text private and secure?', a: 'Your text is sent only for processing and is never stored, logged, or shared. The connection is HTTPS-encrypted and no account is needed, so your writing stays private.' },
+      ]}
     >
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
