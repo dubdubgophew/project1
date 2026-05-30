@@ -92,7 +92,7 @@ export default async function BlogPostPage({ params }: Props) {
                 <Link href="/blog" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-300 mb-6 transition-colors">
                   <ArrowLeft className="w-4 h-4" /> All Guides
                 </Link>
-                <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4 leading-tight">{post.title}</h1>
+                <h1 className="text-3xl sm:text-4xl font-bold text-stone-900 mb-4 leading-tight">{post.title}</h1>
                 <div className="flex flex-wrap items-center gap-4 text-xs text-gray-600 mb-6 pb-6 border-b border-gray-800">
                   <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" />Updated {new Date(post.updatedAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
                   <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{post.readingTime} min read</span>
@@ -102,7 +102,7 @@ export default async function BlogPostPage({ params }: Props) {
                 <SocialShare url={`https://formly.tools/blog/${post.slug}`} title={post.title} />
                 {post.sections.map((section, i) => (
                   <section key={i} className="mb-8">
-                    <h2 className="text-xl font-bold text-white mb-3">{section.heading}</h2>
+                    <h2 className="text-xl font-bold text-stone-900 mb-3">{section.heading}</h2>
                     {section.body.split('\n\n').map((para, j) => (
                       <p key={j} className="text-gray-300 leading-relaxed mb-3">{para}</p>
                     ))}
@@ -110,11 +110,11 @@ export default async function BlogPostPage({ params }: Props) {
                   </section>
                 ))}
                 <div className="mt-10 mb-8">
-                  <h2 className="text-2xl font-bold text-white mb-6">Frequently Asked Questions</h2>
+                  <h2 className="text-2xl font-bold text-stone-900 mb-6">Frequently Asked Questions</h2>
                   <div className="space-y-3">
                     {post.faqs.map(({ q, a }, i) => (
-                      <details key={i} className="group rounded-xl border border-gray-800 bg-gray-900/50">
-                        <summary className="flex items-center justify-between p-4 cursor-pointer text-white font-medium text-sm list-none">
+                      <details key={i} className="group rounded-xl border border-stone-200 bg-white">
+                        <summary className="flex items-center justify-between p-4 cursor-pointer text-stone-900 font-medium text-sm list-none">
                           {q}<span className="text-gray-500 group-open:rotate-180 transition-transform text-lg leading-none">⌄</span>
                         </summary>
                         <p className="px-4 pb-4 text-gray-400 text-sm leading-relaxed">{a}</p>
@@ -123,7 +123,7 @@ export default async function BlogPostPage({ params }: Props) {
                   </div>
                 </div>
                 <div className="p-8 rounded-2xl bg-gradient-to-br from-violet-600/10 to-purple-600/5 border border-violet-500/20 text-center">
-                  <h3 className="text-xl font-bold text-white mb-2">Try {post.toolName} — It&apos;s Free</h3>
+                  <h3 className="text-xl font-bold text-stone-900 mb-2">Try {post.toolName} — It&apos;s Free</h3>
                   <p className="text-gray-400 text-sm mb-4">No signup needed. 5 free uses daily.</p>
                   <Link href={`/tools/${post.toolSlug}`} className="btn-primary inline-flex">Open {post.toolName} →</Link>
                 </div>
@@ -134,10 +134,10 @@ export default async function BlogPostPage({ params }: Props) {
                 <SidebarAd />
                 {related.length > 0 && (
                   <div className="card">
-                    <h3 className="font-semibold text-white mb-4 text-sm">Related Guides</h3>
+                    <h3 className="font-semibold text-stone-900 mb-4 text-sm">Related Guides</h3>
                     <div className="space-y-3">
                       {related.map(r => (
-                        <Link key={r.slug} href={`/blog/${r.slug}`} className="block text-sm text-gray-400 hover:text-white transition-colors leading-snug">→ {r.title}</Link>
+                        <Link key={r.slug} href={`/blog/${r.slug}`} className="block text-sm text-stone-500 hover:text-stone-900 transition-colors leading-snug">→ {r.title}</Link>
                       ))}
                     </div>
                   </div>
@@ -175,14 +175,14 @@ export default async function BlogPostPage({ params }: Props) {
               <Link href="/blog" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-300 mb-6 transition-colors">
                 <ArrowLeft className="w-4 h-4" /> All Guides
               </Link>
-              <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4 leading-tight">{post.title}</h1>
+              <h1 className="text-3xl sm:text-4xl font-bold text-stone-900 mb-4 leading-tight">{post.title}</h1>
               <div className="flex flex-wrap items-center gap-4 text-xs text-gray-600 mb-6 pb-6 border-b border-gray-800">
                 <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" />{new Date(post.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
                 <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{post.read_time} min read</span>
                 {post.tags?.length > 0 && (
                   <div className="flex flex-wrap gap-1.5 ml-auto">
                     {post.tags.slice(0, 3).map(tag => (
-                      <span key={tag} className="px-2 py-0.5 rounded-md bg-gray-800 text-gray-500 text-[10px]">{tag}</span>
+                      <span key={tag} className="px-2 py-0.5 rounded-md bg-stone-100 text-stone-500 text-[10px]">{tag}</span>
                     ))}
                   </div>
                 )}
@@ -193,19 +193,19 @@ export default async function BlogPostPage({ params }: Props) {
               {/* Render HTML content from AI */}
               <div
                 className="prose prose-invert prose-sm max-w-none mt-6
-                  prose-headings:text-white prose-headings:font-bold
+                  prose-headings:text-stone-900 prose-headings:font-bold
                   prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-3
                   prose-h3:text-lg prose-h3:mt-6 prose-h3:mb-2
                   prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-4
                   prose-li:text-gray-300 prose-ul:my-4 prose-ol:my-4
-                  prose-strong:text-white
+                  prose-strong:text-stone-900
                   prose-a:text-violet-400 prose-a:no-underline hover:prose-a:text-violet-300
-                  prose-code:text-violet-300 prose-code:bg-gray-800 prose-code:px-1 prose-code:rounded"
+                  prose-code:text-orange-600 prose-code:bg-orange-50 prose-code:px-1 prose-code:rounded"
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />
 
               <div className="mt-10 p-8 rounded-2xl bg-gradient-to-br from-violet-600/10 to-purple-600/5 border border-violet-500/20 text-center">
-                <h3 className="text-xl font-bold text-white mb-2">Try Formly Tools — Free</h3>
+                <h3 className="text-xl font-bold text-stone-900 mb-2">Try Formly Tools — Free</h3>
                 <p className="text-gray-400 text-sm mb-4">No signup needed. 37 free AI tools.</p>
                 <Link href="/tools" className="btn-primary inline-flex">Explore All Tools →</Link>
               </div>
@@ -216,7 +216,7 @@ export default async function BlogPostPage({ params }: Props) {
             <aside className="space-y-6 lg:pt-12">
               <SidebarAd />
               <div className="card">
-                <h3 className="font-semibold text-white mb-4 text-sm">Top Tools</h3>
+                <h3 className="font-semibold text-stone-900 mb-4 text-sm">Top Tools</h3>
                 <div className="space-y-2">
                   {[
                     { name: 'Pay Stub Generator', href: '/tools/paystub-generator', icon: '🧾' },
@@ -225,7 +225,7 @@ export default async function BlogPostPage({ params }: Props) {
                     { name: 'PDF Summarizer', href: '/tools/pdf-summarizer', icon: '📄' },
                     { name: 'AI Paraphraser', href: '/tools/paraphraser', icon: '✍️' },
                   ].map(t => (
-                    <Link key={t.href} href={t.href} className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-gray-800 transition-colors text-sm text-gray-300 hover:text-white">
+                    <Link key={t.href} href={t.href} className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-stone-50 transition-colors text-sm text-stone-600 hover:text-stone-900">
                       <span>{t.icon}</span>{t.name}
                     </Link>
                   ))}

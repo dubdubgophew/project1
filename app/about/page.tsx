@@ -44,8 +44,8 @@ export default function AboutPage() {
       <main className="min-h-screen bg-[#F9F7F4] pt-24 pb-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12">
-            <h1 className="text-4xl font-bold text-white mb-4">About Formly</h1>
-            <p className="text-xl text-gray-400 leading-relaxed">
+            <h1 className="text-4xl font-bold text-stone-900 mb-4">About Formly</h1>
+            <p className="text-xl text-stone-600 leading-relaxed">
               We&apos;re making professional AI tools accessible to everyone — not just
               those who can afford $100/month subscriptions.
             </p>
@@ -55,7 +55,7 @@ export default function AboutPage() {
             {[
               {
                 icon: Target,
-                color: 'text-violet-400',
+                color: 'text-orange-500',
                 bg: 'bg-violet-500/10',
                 title: 'Our Mission',
                 text: 'Formly was built to democratize AI tools. The best writing assistants, grammar checkers, and AI utilities were locked behind expensive paywalls. We changed that — 28 professional-grade AI tools, free to try, forever.',
@@ -87,7 +87,7 @@ export default function AboutPage() {
                   <item.icon className={`w-6 h-6 ${item.color}`} />
                 </div>
                 <div>
-                  <h2 className="text-lg font-semibold text-white mb-2">{item.title}</h2>
+                  <h2 className="text-lg font-semibold text-stone-900 mb-2">{item.title}</h2>
                   <p className="text-gray-400 text-sm leading-relaxed">{item.text}</p>
                 </div>
               </div>
@@ -95,7 +95,7 @@ export default function AboutPage() {
           </div>
 
           <div className="mt-12 p-8 rounded-2xl bg-gradient-to-br from-violet-600/10 to-purple-600/5 border border-violet-500/20 text-center">
-            <h2 className="text-xl font-bold text-white mb-2">Join 50,000+ Users</h2>
+            <h2 className="text-xl font-bold text-stone-900 mb-2">Join 50,000+ Users</h2>
             <p className="text-gray-400 text-sm mb-4">Start using Formly free — no credit card required.</p>
             <a href="/tools" className="btn-primary inline-flex">Try All 28 Tools Free →</a>
           </div>

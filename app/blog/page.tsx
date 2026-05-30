@@ -69,19 +69,19 @@ export default async function BlogPage() {
 
           {/* Hero */}
           <div className="mb-12 text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+            <h1 className="text-4xl sm:text-5xl font-bold text-stone-900 mb-4">
               AI Tool Guides &amp; Tutorials
             </h1>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            <p className="text-stone-500 text-lg max-w-2xl mx-auto">
               Step-by-step guides for every Formly tool — with geo-specific tips for USA, UK, India, Canada, Australia, and more.
             </p>
-            <p className="text-gray-600 text-sm mt-3">{allPosts.length} guides published</p>
+            <p className="text-stone-400 text-sm mt-3">{allPosts.length} guides published</p>
           </div>
 
           {/* Category pills */}
           <div className="flex flex-wrap gap-2 mb-10 justify-center">
             {Object.entries(CATEGORY_LABELS).map(([cat, label]) => (
-              <span key={cat} className="px-3 py-1.5 rounded-full text-sm bg-gray-800 text-gray-400 border border-gray-700">
+              <span key={cat} className="px-3 py-1.5 rounded-full text-sm bg-stone-100 text-stone-600 border border-stone-200">
                 {label}
               </span>
             ))}
@@ -110,22 +110,22 @@ export default async function BlogPage() {
                   className={`group flex flex-col p-6 rounded-2xl border transition-all duration-200 hover:scale-[1.02] ${
                     isPinned
                       ? 'bg-amber-500/5 border-amber-500/20 hover:border-amber-500/40'
-                      : 'bg-gray-900/50 border-gray-800 hover:border-violet-500/30 hover:bg-gray-900'
+                      : 'bg-white border-stone-200 hover:border-orange-300 hover:shadow-md'
                   }`}
                 >
                   {isPinned && (
                     <span className="text-xs font-semibold text-amber-400 mb-2">🔥 Most Popular</span>
                   )}
-                  <span className="text-xs px-2 py-0.5 rounded-md bg-gray-800 text-gray-500 w-fit mb-3">
+                  <span className="text-xs px-2 py-0.5 rounded-md bg-stone-100 text-stone-400 w-fit mb-3">
                     {CATEGORY_LABELS[category] ?? category}
                   </span>
-                  <h2 className="text-base font-bold text-white mb-2 group-hover:text-violet-300 transition-colors leading-snug">
+                  <h2 className="text-base font-bold text-stone-900 mb-2 group-hover:text-orange-500 transition-colors leading-snug">
                     {post.title}
                   </h2>
-                  <p className="text-gray-500 text-sm leading-relaxed flex-1 line-clamp-2">
+                  <p className="text-stone-500 text-sm leading-relaxed flex-1 line-clamp-2">
                     {meta}
                   </p>
-                  <div className="flex items-center justify-between mt-4 text-xs text-gray-600">
+                  <div className="flex items-center justify-between mt-4 text-xs text-stone-400">
                     <span>{new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                     <span>{readTime} min read</span>
                   </div>

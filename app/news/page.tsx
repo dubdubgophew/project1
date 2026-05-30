@@ -143,7 +143,7 @@ export default async function NewsPage({ searchParams }: PageProps) {
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               <span className="text-emerald-400 text-xs font-medium uppercase tracking-widest">Live</span>
             </div>
-            <h1 className="text-3xl font-extrabold text-white mb-1">
+            <h1 className="text-3xl font-extrabold text-stone-900 mb-1">
               What&apos;s <span className="gradient-text">Trending</span> Right Now
             </h1>
             <p className="text-gray-500 text-sm">Updated daily · 50 topics · 10 countries</p>

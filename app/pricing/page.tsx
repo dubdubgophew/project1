@@ -136,10 +136,10 @@ export default function PricingPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+            <h1 className="text-4xl sm:text-5xl font-bold text-stone-900 mb-4">
               Simple, Transparent Pricing
             </h1>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-4">
+            <p className="text-xl text-stone-500 max-w-2xl mx-auto mb-4">
               Start free. Upgrade when you need more. Cancel anytime — 7-day money-back guarantee.
             </p>
             <p className="text-sm text-gray-600">
@@ -154,15 +154,15 @@ export default function PricingPage() {
                 key={plan.id}
                 className={`relative rounded-2xl p-8 border transition-all duration-300 flex flex-col ${
                   plan.highlighted
-                    ? 'bg-gradient-to-b from-violet-600/10 to-purple-600/5 border-violet-500/40 shadow-2xl shadow-violet-500/20'
-                    : 'bg-gray-900 border-gray-800'
+                    ? 'bg-gradient-to-b from-orange-50 to-amber-50/30 border-orange-300 shadow-xl shadow-orange-500/10 ring-1 ring-orange-200'
+                    : 'bg-white border-stone-200 hover:border-stone-300 hover:shadow-md'
                 }`}
               >
                 {plan.badge && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                     <span className={`px-4 py-1.5 rounded-full text-xs font-bold ${
                       plan.highlighted
-                        ? 'bg-violet-600 text-white'
+                        ? 'bg-orange-500 text-white'
                         : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
                     }`}>
                       {plan.badge}
@@ -171,18 +171,18 @@ export default function PricingPage() {
                 )}
 
                 <div className="flex items-center gap-3 mb-4">
-                  <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${plan.highlighted ? 'bg-violet-500/20' : 'bg-gray-800'}`}>
-                    <plan.icon className={`w-5 h-5 ${plan.highlighted ? 'text-violet-400' : 'text-gray-400'}`} />
+                  <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${plan.highlighted ? 'bg-orange-100' : 'bg-stone-100'}`}>
+                    <plan.icon className={`w-5 h-5 ${plan.highlighted ? 'text-orange-500' : 'text-stone-400'}`} />
                   </div>
-                  <h2 className="text-xl font-bold text-white">{plan.name}</h2>
+                  <h2 className="text-xl font-bold text-stone-900">{plan.name}</h2>
                 </div>
 
                 <div className="mb-2">
                   {plan.priceUSD === 0 ? (
-                    <span className="text-5xl font-bold text-white">Free</span>
+                    <span className="text-5xl font-bold text-stone-900">Free</span>
                   ) : (
                     <div className="flex items-end gap-1">
-                      <span className="text-5xl font-bold text-white">${plan.priceUSD}</span>
+                      <span className="text-5xl font-bold text-stone-900">${plan.priceUSD}</span>
                       <span className="text-gray-500 mb-2">
                         {(plan as any).oneTime ? ' one-time' : '/mo'}
                       </span>
@@ -190,26 +190,26 @@ export default function PricingPage() {
                   )}
                 </div>
                 {plan.priceUSD > 0 && (
-                  <p className="text-xs text-gray-600 mb-3">
+                  <p className="text-xs text-stone-400 mb-3">
                     {(plan as any).oneTime
                       ? '24h Pro access · No subscription'
                       : 'Billed monthly · 10% off with annual · Cancel anytime'}
                   </p>
                 )}
 
-                <p className="text-gray-400 text-sm mb-6">{plan.description}</p>
+                <p className="text-stone-500 text-sm mb-6">{plan.description}</p>
 
                 <ul className="space-y-3 mb-6 flex-1">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-start gap-2.5">
                       <Check className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                      <span className="text-sm text-gray-300">{f}</span>
+                      <span className="text-sm text-stone-700">{f}</span>
                     </li>
                   ))}
                   {plan.notIncluded.map((f) => (
                     <li key={f} className="flex items-start gap-2.5 opacity-40">
                       <span className="w-4 h-4 mt-0.5 shrink-0 text-center text-gray-600 text-xs font-bold">✕</span>
-                      <span className="text-sm text-gray-500 line-through">{f}</span>
+                      <span className="text-sm text-stone-400 line-through">{f}</span>
                     </li>
                   ))}
                 </ul>
@@ -230,18 +230,18 @@ export default function PricingPage() {
 
           {/* Comparison table */}
           <div className="card mb-16 overflow-x-auto">
-            <h2 className="text-xl font-bold text-white mb-6">Full Comparison</h2>
+            <h2 className="text-xl font-bold text-stone-900 mb-6">Full Comparison</h2>
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-800">
-                  <th className="text-left py-3 pr-4 text-gray-400 font-medium w-2/5">Feature</th>
-                  <th className="text-center py-3 px-2 text-gray-400 font-medium">Free</th>
+                <tr className="border-b border-stone-200">
+                  <th className="text-left py-3 pr-4 text-stone-500 font-medium w-2/5">Feature</th>
+                  <th className="text-center py-3 px-2 text-stone-500 font-medium">Free</th>
                   <th className="text-center py-3 px-2 text-orange-400 font-medium">Day Pass</th>
-                  <th className="text-center py-3 px-2 text-violet-400 font-semibold">Pro</th>
+                  <th className="text-center py-3 px-2 text-orange-500 font-semibold">Pro</th>
                   <th className="text-center py-3 px-2 text-amber-400 font-medium">Unlimited</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-800/50">
+              <tbody className="divide-y divide-stone-200">
                 {[
                   ['AI uses', '5–10/day', '200 (24h)', '200/day', 'Unlimited'],
                   ['All 28 AI tools', '✓', '✓', '✓', '✓'],
@@ -255,11 +255,11 @@ export default function PricingPage() {
                   ['Billing', 'Free', '$1.99 once', '$9.99/mo', '$19.99/mo'],
                 ].map(([feature, free, dayPass, pro, unlim]) => (
                   <tr key={feature}>
-                    <td className="py-3 pr-4 text-gray-400">{feature}</td>
-                    <td className="text-center py-3 px-2 text-gray-500">{free}</td>
-                    <td className="text-center py-3 px-2 text-gray-300">{dayPass}</td>
-                    <td className="text-center py-3 px-2 text-gray-300">{pro}</td>
-                    <td className="text-center py-3 px-2 text-gray-300">{unlim}</td>
+                    <td className="py-3 pr-4 text-stone-500">{feature}</td>
+                    <td className="text-center py-3 px-2 text-stone-400">{free}</td>
+                    <td className="text-center py-3 px-2 text-stone-600">{dayPass}</td>
+                    <td className="text-center py-3 px-2 text-stone-600">{pro}</td>
+                    <td className="text-center py-3 px-2 text-stone-600">{unlim}</td>
                   </tr>
                 ))}
               </tbody>
@@ -268,7 +268,7 @@ export default function PricingPage() {
 
           {/* FAQ */}
           <div className="max-w-2xl mx-auto">
-            <h2 className="text-2xl font-bold text-white text-center mb-8">Pricing FAQ</h2>
+            <h2 className="text-2xl font-bold text-stone-900 text-center mb-8">Pricing FAQ</h2>
             <div className="space-y-4">
               {[
                 {
@@ -304,7 +304,7 @@ export default function PricingPage() {
                   <div className="flex items-start gap-3">
                     <HelpCircle className="w-5 h-5 text-violet-400 shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-semibold text-white mb-2">{faq.q}</p>
+                      <p className="font-semibold text-stone-900 mb-2">{faq.q}</p>
                       <p className="text-sm text-gray-400">{faq.a}</p>
                     </div>
                   </div>

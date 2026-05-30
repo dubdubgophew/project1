@@ -118,7 +118,7 @@ export default async function AINewsPage({ searchParams }: PageProps) {
               <span className="w-2 h-2 rounded-full bg-violet-400 animate-pulse" />
               <span className="text-violet-400 text-xs font-medium uppercase tracking-widest">Daily</span>
             </div>
-            <h1 className="text-3xl font-extrabold text-white mb-1">
+            <h1 className="text-3xl font-extrabold text-stone-900 mb-1">
               Latest in <span className="gradient-text">AI</span>
             </h1>
             <p className="text-gray-500 text-sm">Updated daily · 50 stories · 10 sources</p>
