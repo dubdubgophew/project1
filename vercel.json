@@ -31,6 +31,10 @@
     {
       "path": "/api/cron/send-digest",
       "schedule": "0 10 * * *"
+    },
+    {
+      "path": "/api/cron/seo-traffic-agent",
+      "schedule": "0 3 * * *"
     }
   ],
   "functions": {
@@ -59,6 +63,12 @@
       "maxDuration": 300
     },
     "app/api/cron/send-digest/route.ts": {
+      "maxDuration": 300
+    },
+    "app/api/cron/seo-traffic-agent/route.ts": {
+      "maxDuration": 300
+    },
+    "app/api/admin/seo-agent/route.ts": {
       "maxDuration": 300
     }
   }
