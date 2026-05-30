@@ -146,7 +146,7 @@ export default async function NewsPage({ searchParams }: PageProps) {
             <h1 className="text-3xl font-extrabold text-stone-900 mb-1">
               What&apos;s <span className="gradient-text">Trending</span> Right Now
             </h1>
-            <p className="text-gray-500 text-sm">Updated daily · 50 topics · 10 countries</p>
+            <p className="text-stone-500 text-sm">Updated daily · 50 topics · 10 countries</p>
           </div>
 
           <div className="grid lg:grid-cols-[1fr_260px] gap-8">

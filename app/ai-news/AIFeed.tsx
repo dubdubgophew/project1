@@ -182,16 +182,16 @@ function AICard({ item }: { item: AINewsItem }) {
   return (
     <article
       id={`ai-${item.id}`}
-      className={`bg-gray-900 border rounded-2xl overflow-hidden flex flex-col transition-all duration-700 ${
+      className={`bg-stone-900 border rounded-2xl overflow-hidden flex flex-col transition-all duration-700 ${
         highlighted
-          ? 'border-violet-500 ring-2 ring-violet-500/40'
-          : 'border-gray-800 hover:border-gray-700'
+          ? 'border-orange-500 ring-2 ring-orange-500/40'
+          : 'border-stone-800 hover:border-stone-700'
       }`}
       itemScope
       itemType="https://schema.org/NewsArticle"
     >
       {/* Image — shorter aspect ratio */}
-      <div className="relative w-full aspect-[16/7] overflow-hidden bg-gray-800">
+      <div className="relative w-full aspect-[16/7] overflow-hidden bg-stone-800">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={imgSrc}
@@ -211,8 +211,8 @@ function AICard({ item }: { item: AINewsItem }) {
       {/* Body */}
       <div className="flex flex-col flex-1 p-3 gap-2">
         {/* Source + time */}
-        <div className="flex items-center justify-between gap-2 text-[10px] text-gray-500">
-          <span className="font-medium text-gray-400 truncate">{item.source_name}</span>
+        <div className="flex items-center justify-between gap-2 text-[10px] text-stone-500">
+          <span className="font-medium text-stone-400 truncate">{item.source_name}</span>
           <span className="flex items-center gap-1 shrink-0">
             <Clock className="w-3 h-3" />
             <time dateTime={item.fetched_at} itemProp="datePublished">
@@ -227,17 +227,17 @@ function AICard({ item }: { item: AINewsItem }) {
         </h2>
 
         {/* Summary — truncated */}
-        <p className="text-gray-400 text-xs leading-relaxed flex-1 line-clamp-3" itemProp="description">
+        <p className="text-stone-300 text-xs leading-relaxed flex-1 line-clamp-3" itemProp="description">
           {item.summary}
         </p>
 
         {/* Footer */}
-        <div className="flex items-center justify-between pt-2 border-t border-gray-800 mt-auto">
+        <div className="flex items-center justify-between pt-2 border-t border-stone-800 mt-auto">
           <a
             href={item.source_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1 text-[10px] text-gray-400 hover:text-violet-400 transition-colors"
+            className="flex items-center gap-1 text-[10px] text-stone-400 hover:text-orange-400 transition-colors"
             itemProp="publisher"
           >
             <ExternalLink className="w-3 h-3 shrink-0" />
@@ -246,7 +246,7 @@ function AICard({ item }: { item: AINewsItem }) {
           <div className="relative">
             <button
               onClick={() => setShareOpen(o => !o)}
-              className="flex items-center gap-1 text-[10px] font-medium text-gray-400 hover:text-white bg-gray-800 hover:bg-gray-700 px-2 py-1 rounded transition-colors"
+              className="flex items-center gap-1 text-[10px] font-medium text-stone-400 hover:text-white bg-stone-800 hover:bg-stone-700 px-2 py-1 rounded transition-colors"
             >
               <Share2 className="w-3 h-3" />
               Share
@@ -263,13 +263,13 @@ function AICard({ item }: { item: AINewsItem }) {
 
 function ToolPromoCard({ promo }: { promo: typeof TOOL_PROMOS[number] }) {
   return (
-    <div className="bg-gradient-to-br from-violet-900/30 to-purple-900/20 border border-violet-500/20 rounded-2xl p-6 flex flex-col gap-4">
-      <span className="text-xs font-semibold text-violet-400 uppercase tracking-wider">🤖 Free Tool Spotlight</span>
+    <div className="bg-gradient-to-br from-orange-50 to-amber-50/50 border border-orange-200 rounded-2xl p-6 flex flex-col gap-4">
+      <span className="text-xs font-semibold text-orange-500 uppercase tracking-wider">🤖 Free Tool Spotlight</span>
       <div className="flex items-start gap-3">
         <span className="text-3xl">{promo.icon}</span>
         <div>
-          <h3 className="text-white font-bold text-base">{promo.name}</h3>
-          <p className="text-gray-400 text-sm mt-1 leading-relaxed">{promo.blurb}</p>
+          <h3 className="text-stone-900 font-bold text-base">{promo.name}</h3>
+          <p className="text-stone-600 text-sm mt-1 leading-relaxed">{promo.blurb}</p>
         </div>
       </div>
       <Link href={promo.href} className="btn-primary text-sm py-2 justify-center">
@@ -301,16 +301,16 @@ function NewsletterCard() {
   }
 
   return (
-    <div className="bg-gradient-to-br from-violet-900/30 to-indigo-900/20 border border-violet-500/20 rounded-2xl p-6 flex flex-col gap-3">
-      <Mail className="w-6 h-6 text-violet-400" />
+    <div className="bg-violet-50 border border-violet-200 rounded-2xl p-6 flex flex-col gap-3">
+      <Mail className="w-6 h-6 text-violet-600" />
       <div>
-        <h3 className="text-white font-bold text-base">Daily AI Digest</h3>
-        <p className="text-gray-400 text-sm mt-1">
+        <h3 className="text-stone-900 font-bold text-base">Daily AI Digest</h3>
+        <p className="text-stone-600 text-sm mt-1">
           Get the top AI stories from 10 sources delivered to your inbox every morning.
         </p>
       </div>
       {state === 'done' ? (
-        <div className="flex items-center gap-2 text-violet-400 text-sm font-medium">
+        <div className="flex items-center gap-2 text-violet-600 text-sm font-medium">
           <Check className="w-4 h-4" /> You&apos;re in! Check your inbox.
         </div>
       ) : (
@@ -340,22 +340,22 @@ function NewsletterCard() {
 
 function Skeleton() {
   return (
-    <div className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden animate-pulse">
-      <div className="w-full aspect-video bg-gray-800" />
+    <div className="bg-white border border-stone-200 rounded-2xl overflow-hidden animate-pulse">
+      <div className="w-full aspect-video bg-stone-200" />
       <div className="p-5 space-y-3">
         <div className="flex gap-2">
-          <div className="h-3 w-24 bg-gray-800 rounded" />
-          <div className="h-3 w-20 bg-gray-800 rounded ml-auto" />
+          <div className="h-3 w-24 bg-stone-200 rounded" />
+          <div className="h-3 w-20 bg-stone-200 rounded ml-auto" />
         </div>
-        <div className="h-5 w-3/4 bg-gray-800 rounded" />
+        <div className="h-5 w-3/4 bg-stone-200 rounded" />
         <div className="flex gap-1.5">
           {[50, 40, 60].map(w => (
-            <div key={w} className="h-4 bg-gray-800 rounded-full" style={{ width: w }} />
+            <div key={w} className="h-4 bg-stone-200 rounded-full" style={{ width: w }} />
           ))}
         </div>
         <div className="space-y-2">
           {[100, 95, 90, 88, 85].map(w => (
-            <div key={w} className="h-3 bg-gray-800 rounded" style={{ width: `${w}%` }} />
+            <div key={w} className="h-3 bg-stone-200 rounded" style={{ width: `${w}%` }} />
           ))}
         </div>
       </div>
@@ -368,10 +368,10 @@ function Skeleton() {
 function EmptyState({ onRefresh }: { onRefresh: () => void }) {
   return (
     <div className="flex justify-center py-16">
-      <div className="bg-gray-900 border border-gray-800 rounded-2xl p-10 text-center max-w-sm">
+      <div className="bg-white border border-stone-200 rounded-2xl p-10 text-center max-w-sm">
         <div className="text-4xl mb-4">🤖</div>
-        <h3 className="text-white font-bold text-lg mb-2">Gathering AI news…</h3>
-        <p className="text-gray-400 text-sm mb-6 leading-relaxed">
+        <h3 className="text-stone-900 font-bold text-lg mb-2">Gathering AI news…</h3>
+        <p className="text-stone-500 text-sm mb-6 leading-relaxed">
           Our AI agent is curating today&apos;s top stories from 10 AI sources.
           Check back in a few minutes or trigger a manual refresh.
         </p>
@@ -503,7 +503,7 @@ export function AIFeed({
       {/* ── Filter bar ── */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
           <input
             type="search"
             value={searchInput}
@@ -516,16 +516,16 @@ export function AIFeed({
           <select
             value={category}
             onChange={e => handleCategoryChange(e.target.value)}
-            className="input appearance-none pr-8 text-sm py-2 cursor-pointer bg-gray-900 border-gray-700"
+            className="input appearance-none pr-8 text-sm py-2 cursor-pointer"
           >
             {AI_CATEGORIES.map(c => (
               <option key={c.value} value={c.value}>{c.label}</option>
             ))}
           </select>
-          <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
+          <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 pointer-events-none" />
         </div>
         {lastUpdated && (
-          <p className="text-xs text-gray-500 flex items-center gap-1 shrink-0">
+          <p className="text-xs text-stone-500 flex items-center gap-1 shrink-0">
             <Clock className="w-3 h-3" />
             Updated {timeAgo(lastUpdated)}
           </p>

@@ -44,8 +44,8 @@ export function Header() {
       {/* Floating pill container */}
       <div className={`max-w-7xl mx-auto rounded-2xl transition-all duration-300 ${
         scrolled
-          ? 'bg-white/98 backdrop-blur-xl border border-stone-200 shadow-lg shadow-stone-900/5'
-          : 'bg-white/85 backdrop-blur-md border border-stone-200/70'
+          ? 'bg-white shadow-lg shadow-stone-900/8 border border-stone-200'
+          : 'bg-white/97 backdrop-blur-xl border border-stone-200/80'
       }`}>
         <div className="px-4 sm:px-5">
           <div className="flex items-center justify-between h-14">
