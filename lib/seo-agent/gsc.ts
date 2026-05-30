@@ -1,18 +1,14 @@
 /**
  * Google Search Console API client
- * Service account JWT auth — no googleapis package required
+ * Supports two auth methods:
+ *   1. OAuth2 refresh token (recommended — works for regular Google accounts)
+ *   2. Service account JWT (requires Google Workspace domain-wide delegation)
  */
 
 import crypto from 'crypto';
 
-const GSC_SCOPE = 'https://www.googleapis.com/auth/webmasters.readonly';
 const TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const GSC_API = 'https://searchconsole.googleapis.com/webmasters/v3/sites';
-
-interface ServiceAccount {
-  client_email: string;
-  private_key: string;
-}
 
 interface GSCRow {
   keys: string[];
@@ -40,15 +36,38 @@ export interface KeywordMetric {
 }
 
 export function isGSCConfigured(): boolean {
-  return !!(process.env.GSC_SERVICE_ACCOUNT_JSON && process.env.GSC_SITE_URL);
+  const hasOAuth = !!(process.env.GSC_CLIENT_ID && process.env.GSC_CLIENT_SECRET && process.env.GSC_REFRESH_TOKEN);
+  const hasServiceAccount = !!(process.env.GSC_SERVICE_ACCOUNT_JSON);
+  return !!(process.env.GSC_SITE_URL && (hasOAuth || hasServiceAccount));
 }
 
-async function getAccessToken(sa: ServiceAccount): Promise<string> {
+// ── Auth method 1: OAuth2 refresh token ──────────────────────────────────────
+
+async function getTokenFromRefreshToken(): Promise<string> {
+  const res = await fetch(TOKEN_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      client_id: process.env.GSC_CLIENT_ID!,
+      client_secret: process.env.GSC_CLIENT_SECRET!,
+      refresh_token: process.env.GSC_REFRESH_TOKEN!,
+      grant_type: 'refresh_token',
+    }),
+  });
+  const data = await res.json() as { access_token?: string; error?: string; error_description?: string };
+  if (!data.access_token) throw new Error(`GSC OAuth failed: ${data.error} — ${data.error_description}`);
+  return data.access_token;
+}
+
+// ── Auth method 2: Service account JWT ───────────────────────────────────────
+
+async function getTokenFromServiceAccount(): Promise<string> {
+  const sa = JSON.parse(process.env.GSC_SERVICE_ACCOUNT_JSON!) as { client_email: string; private_key: string };
   const now = Math.floor(Date.now() / 1000);
   const header = Buffer.from(JSON.stringify({ alg: 'RS256', typ: 'JWT' })).toString('base64url');
   const claims = Buffer.from(JSON.stringify({
     iss: sa.client_email,
-    scope: GSC_SCOPE,
+    scope: 'https://www.googleapis.com/auth/webmasters.readonly',
     aud: TOKEN_URL,
     exp: now + 3600,
     iat: now,
@@ -70,9 +89,18 @@ async function getAccessToken(sa: ServiceAccount): Promise<string> {
   });
 
   const data = await res.json() as { access_token?: string; error?: string };
-  if (!data.access_token) throw new Error(`GSC auth failed: ${data.error ?? 'unknown'}`);
+  if (!data.access_token) throw new Error(`GSC service account auth failed: ${data.error}`);
   return data.access_token;
 }
+
+async function getAccessToken(): Promise<string> {
+  if (process.env.GSC_CLIENT_ID && process.env.GSC_REFRESH_TOKEN) {
+    return getTokenFromRefreshToken();
+  }
+  return getTokenFromServiceAccount();
+}
+
+// ── GSC query ─────────────────────────────────────────────────────────────────
 
 async function gscQuery(token: string, siteUrl: string, body: Record<string, unknown>): Promise<GSCRow[]> {
   const encoded = encodeURIComponent(siteUrl);
@@ -84,7 +112,7 @@ async function gscQuery(token: string, siteUrl: string, body: Record<string, unk
 
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`GSC query failed ${res.status}: ${text.slice(0, 200)}`);
+    throw new Error(`GSC query failed ${res.status}: ${text.slice(0, 300)}`);
   }
 
   const data = await res.json() as { rows?: GSCRow[] };
@@ -97,16 +125,16 @@ function daysAgoStr(n: number): string {
   return d.toISOString().split('T')[0];
 }
 
+// ── Public API ────────────────────────────────────────────────────────────────
+
 export async function fetchGSCData(windowDays = 14): Promise<{
   pages: PageMetric[];
   pagesPrev: PageMetric[];
   keywords: KeywordMetric[];
   dateRange: { start: string; end: string };
 }> {
-  const saJson = process.env.GSC_SERVICE_ACCOUNT_JSON!;
   const siteUrl = process.env.GSC_SITE_URL!;
-  const sa = JSON.parse(saJson) as ServiceAccount;
-  const token = await getAccessToken(sa);
+  const token = await getAccessToken();
 
   // GSC has ~3 day reporting lag
   const endDate = daysAgoStr(3);
