@@ -83,10 +83,19 @@ The title should:
 Return ONLY valid JSON: {"title": "...", "tags": ["tag1", "tag2", "tag3"]}`,
       },
       { role: 'user', content: `Keyword: "${targetKeyword}"` },
-    ], { temperature: 0.7, maxTokens: 200 });
+    ], { temperature: 0.7, maxTokens: 400 });
 
-    const titleJson = JSON.parse(titleResponse.match(/\{[\s\S]*\}/)![0]);
-    const title: string = titleJson.title;
+    const titleMatch = titleResponse.match(/\{[\s\S]*\}/);
+    if (!titleMatch) {
+      console.error('[SEO Agent] Title JSON parse failed:', titleResponse.slice(0, 200));
+      return null;
+    }
+    const titleJson = JSON.parse(titleMatch[0]);
+    const title: string = titleJson.title?.trim();
+    if (!title || title.length < 10) {
+      console.error('[SEO Agent] Title too short or missing:', titleJson);
+      return null;
+    }
     const tags: string[] = titleJson.tags ?? [];
     const slug = slugify(title);
 
