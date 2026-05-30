@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { ToolSchemas } from '@/components/shared/ToolSchemas';
 
 export const metadata: Metadata = {
-  title: 'Home Loan EMI Calculator India 2025 — Interest & Amortization | Formly',
+  title: 'Home Loan EMI Calculator India 2026 — Interest & Amortization | Formly',
   description:
     'Calculate home loan EMI, total interest, and amortization schedule for India. Includes tax benefits under Section 24b, LTV ratio, prepayment analysis. Free.',
   keywords: [
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     'home loan tax benefit calculator',
   ],
   openGraph: {
-    title: 'Home Loan EMI Calculator India 2025 — Interest & Amortization | Formly',
+    title: 'Home Loan EMI Calculator India 2026 — Interest & Amortization | Formly',
     description:
       'Calculate home loan EMI, total interest, and amortization schedule for India. Includes tax benefits under Section 24b, LTV ratio, prepayment analysis. Free.',
     url: 'https://formly.tools/tools/home-loan-emi-calculator',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Home Loan EMI Calculator India 2025 | Formly',
+    title: 'Home Loan EMI Calculator India 2026 | Formly',
     description:
       'Free home loan EMI calculator — amortization, LTV, Section 24b tax benefits, prepayment analysis.',
   },

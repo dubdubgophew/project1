@@ -3,7 +3,7 @@ import { ToolSchemas } from '@/components/shared/ToolSchemas';
 
 export const metadata: Metadata = {
   title: 'Income Tax Calculator India FY 2025-26 — New vs Old Regime | Formly',
-  description: 'Calculate income tax for FY 2025-26. Compare new vs old tax regime, find which saves more. Includes Budget 2025 slabs, surcharge, 87A rebate. Free, instant.',
+  description: 'Calculate income tax for FY 2025-26. Compare new vs old tax regime, find which saves more. Includes Budget 2026 slabs, surcharge, 87A rebate. Free, instant.',
   keywords: [
     'income tax calculator india 2025-26',
     'income tax calculator new regime',
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: 'Income Tax Calculator India FY 2025-26 — New vs Old Regime | Formly',
-    description: 'Calculate income tax for FY 2025-26. Compare new vs old tax regime with Budget 2025 slabs, 87A rebate & surcharge. Free, instant.',
+    description: 'Calculate income tax for FY 2025-26. Compare new vs old tax regime with Budget 2026 slabs, 87A rebate & surcharge. Free, instant.',
     url: 'https://formly.tools/tools/income-tax-calculator',
     type: 'website',
     siteName: 'Formly',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Income Tax Calculator India FY 2025-26 | Formly',
-    description: 'Free income tax calculator — new vs old regime comparison, Budget 2025 slabs, 87A rebate, surcharge. FY 2025-26.',
+    description: 'Free income tax calculator — new vs old regime comparison, Budget 2026 slabs, 87A rebate, surcharge. FY 2025-26.',
   },
   alternates: { canonical: 'https://formly.tools/tools/income-tax-calculator' },
 };
@@ -34,12 +34,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <>
       <ToolSchemas
         name="Income Tax Calculator India FY 2025-26"
-        description="Calculate income tax for FY 2025-26. Compare new vs old tax regime, find which saves more. Includes Budget 2025 slabs, surcharge, 87A rebate. Free, instant."
+        description="Calculate income tax for FY 2025-26. Compare new vs old tax regime, find which saves more. Includes Budget 2026 slabs, surcharge, 87A rebate. Free, instant."
         url="https://formly.tools/tools/income-tax-calculator"
         category="FinanceApplication"
         features={[
           'New vs Old regime side-by-side comparison',
-          'FY 2025-26 Budget 2025 tax slabs',
+          'FY 2025-26 Budget 2026 tax slabs',
           'Section 87A rebate (zero tax up to ₹12L new regime)',
           'Surcharge calculation (10% to 37%)',
           'Health & Education Cess (4%)',
@@ -52,7 +52,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         faqs={[
           {
             q: 'What are the new income tax slabs for FY 2025-26?',
-            a: 'Under the new regime (Budget 2025): 0% up to ₹4L, 5% from ₹4L-8L, 10% from ₹8L-12L, 15% from ₹12L-16L, 20% from ₹16L-20L, 25% from ₹20L-24L, and 30% above ₹24L. With the Section 87A rebate, there is effectively zero tax for income up to ₹12 lakh.',
+            a: 'Under the new regime (Budget 2026): 0% up to ₹4L, 5% from ₹4L-8L, 10% from ₹8L-12L, 15% from ₹12L-16L, 20% from ₹16L-20L, 25% from ₹20L-24L, and 30% above ₹24L. With the Section 87A rebate, there is effectively zero tax for income up to ₹12 lakh.',
           },
           {
             q: 'Should I choose new regime or old regime in FY 2025-26?',

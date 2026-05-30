@@ -11,15 +11,78 @@ import { BannerAd } from '@/components/shared/AdSense';
 import { DiagrifBanner } from '@/components/landing/DiagrifBanner';
 
 export const metadata: Metadata = {
-  title: 'Formly — 37 Free AI Tools: Pay Stub Generator, Resume Builder, Military Calisthenics Tracker & More',
+  title: 'Formly Tools — 37 Free AI Tools Online | No Signup Required',
   description:
-    'Free AI tools online: pay stub generator, resume builder, contract generator, PDF summarizer, paraphraser, grammar checker, Iron Core 30-day workout tracker & 30 more. No signup needed. Used by 50,000+ professionals.',
+    'Free AI-powered tools: pay stub generator, resume builder, grammar checker, PDF summarizer, contract generator, income tax calculator, diagram maker & 31 more. No signup. No credit card. Works instantly in your browser.',
+  keywords: [
+    'free ai tools online', 'free tools no signup', 'ai productivity tools free',
+    'pay stub generator free', 'resume builder free ai', 'grammar checker free online',
+    'pdf summarizer free', 'free contract generator', 'income tax calculator india',
+    'free diagram tool', 'formly tools',
+  ],
   alternates: { canonical: 'https://formly.tools' },
+  openGraph: {
+    title: 'Formly Tools — 37 Free AI Tools Online | No Signup Required',
+    description: '37 free AI-powered tools in one place. Pay stubs, resumes, contracts, grammar check, PDF summarizer, diagrams & more. No signup needed.',
+    url: 'https://formly.tools',
+    type: 'website',
+    siteName: 'Formly Tools',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Formly Tools — 37 Free AI Tools | No Signup',
+    description: '37 free AI tools: pay stubs, resumes, grammar checker, PDF summarizer, diagrams & more. No signup needed.',
+  },
+};
+
+const webPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': 'https://formly.tools/#webpage',
+  url: 'https://formly.tools',
+  name: 'Formly Tools — 37 Free AI Tools Online',
+  description: 'Free AI-powered tools: pay stub generator, resume builder, grammar checker, PDF summarizer, contract generator, income tax calculator, diagram maker & 31 more. No signup required.',
+  isPartOf: { '@id': 'https://formly.tools/#website' },
+  about: { '@type': 'Thing', name: 'Free AI Tools' },
+  datePublished: '2024-01-15',
+  dateModified: '2026-05-31',
+  inLanguage: 'en-US',
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://formly.tools' }],
+  },
+  speakable: {
+    '@type': 'SpeakableSpecification',
+    cssSelector: ['h1', '.hero-description', '[data-speakable]'],
+  },
+};
+
+const softwareAppListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Top Free AI Tools — Formly Tools',
+  description: 'The most popular free AI-powered productivity tools on Formly Tools. No signup required.',
+  url: 'https://formly.tools/tools',
+  numberOfItems: 37,
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Free Pay Stub Generator', url: 'https://formly.tools/tools/paystub-generator' },
+    { '@type': 'ListItem', position: 2, name: 'Free Resume Builder', url: 'https://formly.tools/tools/resume-builder' },
+    { '@type': 'ListItem', position: 3, name: 'Free Grammar Checker', url: 'https://formly.tools/tools/grammar-checker' },
+    { '@type': 'ListItem', position: 4, name: 'Free PDF Summarizer', url: 'https://formly.tools/tools/pdf-summarizer' },
+    { '@type': 'ListItem', position: 5, name: 'Free Contract Generator', url: 'https://formly.tools/tools/contract-generator' },
+    { '@type': 'ListItem', position: 6, name: 'Free AI Diagram Tool (Diagrify)', url: 'https://formly.tools/tools/diagrify' },
+    { '@type': 'ListItem', position: 7, name: 'Free Income Tax Calculator India', url: 'https://formly.tools/tools/income-tax-calculator' },
+    { '@type': 'ListItem', position: 8, name: 'Free Email Writer', url: 'https://formly.tools/tools/email-writer' },
+    { '@type': 'ListItem', position: 9, name: 'Free Cover Letter Generator', url: 'https://formly.tools/tools/cover-letter' },
+    { '@type': 'ListItem', position: 10, name: 'Free Paraphraser Tool', url: 'https://formly.tools/tools/paraphraser' },
+  ],
 };
 
 export default function HomePage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppListSchema) }} />
       <Header />
       <main>
         <div className="h-20" />

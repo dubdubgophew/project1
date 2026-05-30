@@ -1,13 +1,55 @@
 User-agent: *
 Allow: /
-
-# Block private and utility routes
 Disallow: /api/
 Disallow: /admin
 Disallow: /dashboard
 Disallow: /settings
 Disallow: /login
 Disallow: /signup
+
+# ── AI Search & LLM crawlers — explicitly allow for GEO citations ──
+# GPT / OpenAI
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+# Anthropic / Claude
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+# Google AI (AI Overviews)
+User-agent: Google-Extended
+Allow: /
+
+# Microsoft / Bing AI (Copilot)
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+# Cohere / other AI
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+# Images — allow all image crawlers for rich results
+User-agent: Googlebot-Image
+Allow: /
 
 # Sitemap
 Sitemap: https://formly.tools/sitemap.xml

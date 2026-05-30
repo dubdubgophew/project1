@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import { ToolSchemas } from '@/components/shared/ToolSchemas';
 
 export const metadata: Metadata = {
-  title: 'SIP Calculator India 2025 — Mutual Fund Returns & Wealth Calculator | Formly',
+  title: 'SIP Calculator India 2026 — Mutual Fund Returns & Wealth Calculator | Formly',
   description:
-    'Calculate SIP returns for mutual fund investments. Find future value, wealth gained, and CAGR. Also lumpsum calculator. Free SIP calculator for India 2025.',
+    'Calculate SIP returns for mutual fund investments. Find future value, wealth gained, and CAGR. Also lumpsum calculator. Free SIP calculator for India 2026.',
   keywords: [
     'sip calculator',
     'sip calculator india',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     'sip vs lumpsum calculator',
   ],
   openGraph: {
-    title: 'SIP Calculator India 2025 — Mutual Fund Returns & Wealth Calculator | Formly',
+    title: 'SIP Calculator India 2026 — Mutual Fund Returns & Wealth Calculator | Formly',
     description:
       'Calculate SIP returns for mutual fund investments. Find future value, wealth gained, and CAGR. Also lumpsum calculator. Free.',
     url: 'https://formly.tools/tools/sip-calculator',
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'SIP Calculator India 2025 | Formly',
+    title: 'SIP Calculator India 2026 | Formly',
     description:
       'Free SIP & lumpsum calculator for India — future value, CAGR, wealth gained, year-by-year breakdown.',
   },
@@ -39,7 +39,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <>
       <ToolSchemas
         name="SIP Calculator India"
-        description="Calculate SIP returns for mutual fund investments. Find future value, wealth gained, and CAGR. Also lumpsum calculator. Free SIP calculator for India 2025."
+        description="Calculate SIP returns for mutual fund investments. Find future value, wealth gained, and CAGR. Also lumpsum calculator. Free SIP calculator for India 2026."
         url="https://formly.tools/tools/sip-calculator"
         category="FinanceApplication"
         features={[

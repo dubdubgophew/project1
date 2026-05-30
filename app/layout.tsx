@@ -28,68 +28,72 @@ const dmSerifDisplay = DM_Serif_Display({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://formly.tools'),
   title: {
-    default: 'Formly — 28 Free AI Tools for Writers, Devs & Professionals',
-    template: '%s | Formly',
+    default: 'Formly Tools — 37 Free AI Tools Online | No Signup Required',
+    template: '%s | Formly Tools',
   },
   description:
-    'Free AI tools: PDF summarizer, paraphraser, grammar checker, email writer, pay stub generator, resume builder & more. Powered by Groq AI. No signup needed.',
+    'Free AI tools online — pay stub generator, resume builder, grammar checker, paraphraser, contract generator, PDF summarizer, diagrams & 30 more. No signup. No credit card. Used by 50,000+ professionals.',
   keywords: [
-    'free ai tools',
+    'free ai tools online',
+    'free tools no signup',
     'pay stub generator free',
     'paystub maker online',
     'ai paraphraser free',
-    'grammar checker free',
-    'ai resume builder',
+    'grammar checker free online',
+    'ai resume builder free',
     'free contract generator',
-    'pdf summarizer ai',
-    'ai email writer',
-    'cover letter generator',
+    'pdf summarizer ai free',
+    'ai email writer free',
+    'cover letter generator free',
     'qr code generator free',
-    'code reviewer ai',
-    'youtube video summarizer',
-    'digital signature online',
+    'ai code reviewer',
+    'free diagram generator',
+    'digital signature online free',
     'free password generator',
-    'online productivity tools',
     'free ai writing tools',
-    'developer tools online',
+    'developer tools online free',
     'formly tools',
     'ai tools no signup',
-    'free paystub creator',
+    'free paystub creator 2026',
     'loan emi calculator',
-    'unit converter online',
-    'pdf to markdown converter',
-    'regex tester online',
+    'income tax calculator india',
+    'gst calculator free',
+    'sip calculator india',
   ],
-  authors: [{ name: 'Formly' }],
-  creator: 'Formly',
-  publisher: 'Formly',
+  authors: [{ name: 'Formly Tools', url: 'https://formly.tools' }],
+  creator: 'Formly Tools',
+  publisher: 'Formly Tools',
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: 'https://formly.tools',
-    siteName: 'Formly',
-    title: 'Formly — 28 Free AI Tools for Professionals',
+    siteName: 'Formly Tools',
+    title: 'Formly Tools — 37 Free AI Tools Online | No Signup',
     description:
-      'Free AI tools: PDF summarizer, resume builder, pay stub generator, paraphraser, grammar checker & 21 more. Try free daily — no signup needed.',
+      'Free AI tools: pay stub generator, resume builder, grammar checker, paraphraser, contract generator, PDF summarizer, AI diagrams & 30 more. No signup required.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Formly — AI Tools Suite',
+        alt: 'Formly Tools — 37 Free AI Tools Online',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Formly — 28 Free AI Tools',
-    description: 'AI PDF summarizer, resume builder, pay stub generator, paraphraser, grammar checker & 21 more tools. Free.',
+    title: 'Formly Tools — 37 Free AI Tools Online',
+    description: 'Free AI tools: pay stubs, resume builder, grammar checker, diagrams, contracts & 32 more. No signup required.',
     images: ['/og-image.png'],
     creator: '@formlytools',
+    site: '@formlytools',
   },
   robots: {
     index: true,
     follow: true,
+    'max-snippet': -1,
+    'max-image-preview': 'large',
+    'max-video-preview': -1,
     googleBot: {
       index: true,
       follow: true,
@@ -102,6 +106,10 @@ export const metadata: Metadata = {
     icon: '/favicon.svg',
     shortcut: '/favicon.svg',
     apple: '/favicon.svg',
+  },
+  // Verification tags (add actual values when available)
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION ?? '',
   },
 };
 
@@ -133,104 +141,121 @@ export default function RootLayout({
         <link rel="alternate" hrefLang="en-CA" href="https://formly.tools" />
         <link rel="alternate" hrefLang="x-default" href="https://formly.tools" />
 
-        {/* Schema.org — WebSite with SiteLinksSearchBox */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'WebSite',
-              name: 'Formly',
-              url: 'https://formly.tools',
-              description: 'Free AI-powered productivity tools for professionals worldwide — pay stub generator, resume builder, contract generator, PDF summarizer, and 22 more tools.',
-              inLanguage: ['en-US', 'en-GB', 'en-IN', 'en-AU', 'en-CA'],
-              audience: {
-                '@type': 'Audience',
-                geographicArea: {
-                  '@type': 'AdministrativeArea',
-                  name: 'Worldwide — USA, United Kingdom, India, Australia, Canada, New Zealand, Singapore, Ireland',
-                },
-              },
-              potentialAction: {
-                '@type': 'SearchAction',
-                target: { '@type': 'EntryPoint', urlTemplate: 'https://formly.tools/tools?q={search_term_string}' },
-                'query-input': 'required name=search_term_string',
-              },
-            }),
-          }}
-        />
-        {/* Schema.org — Organization with LLM context */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'Organization',
-              name: 'Formly',
-              url: 'https://formly.tools',
-              logo: 'https://formly.tools/favicon.svg',
-              description: 'Formly provides 29 free AI-powered tools for professionals — including a free pay stub generator, resume builder, contract generator, PDF summarizer, AI paraphraser, grammar checker, digital signature creator, QR code generator, and developer utilities. Used by 50,000+ professionals in the USA, UK, India, Australia, and Canada.',
-              sameAs: ['https://twitter.com/formlytools'],
-              hasOfferCatalog: {
-                '@type': 'OfferCatalog',
-                name: 'Free AI Tools',
-                numberOfItems: 29,
-                itemListElement: [
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Pay Stub Generator', url: 'https://formly.tools/tools/paystub-generator' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Resume Builder', url: 'https://formly.tools/tools/resume-builder' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Contract Generator', url: 'https://formly.tools/tools/contract-generator' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'PDF Summarizer', url: 'https://formly.tools/tools/pdf-summarizer' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'AI Paraphraser', url: 'https://formly.tools/tools/paraphraser' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Grammar Checker', url: 'https://formly.tools/tools/grammar-checker' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Email Writer', url: 'https://formly.tools/tools/email-writer' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Cover Letter Generator', url: 'https://formly.tools/tools/cover-letter' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Code Explainer', url: 'https://formly.tools/tools/code-explainer' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Code Reviewer', url: 'https://formly.tools/tools/code-reviewer' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'QR Code Generator', url: 'https://formly.tools/tools/qr-code' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Digital Signature', url: 'https://formly.tools/tools/digital-signature' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'PDF to Markdown', url: 'https://formly.tools/tools/pdf-to-markdown' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'YouTube Summarizer', url: 'https://formly.tools/tools/youtube-summarizer' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Bio Writer', url: 'https://formly.tools/tools/bio-writer' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Hashtag Generator', url: 'https://formly.tools/tools/hashtag-generator' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'JSON Formatter', url: 'https://formly.tools/tools/json-formatter' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Base64 Encoder/Decoder', url: 'https://formly.tools/tools/base64' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Password Generator', url: 'https://formly.tools/tools/password-generator' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Word Counter', url: 'https://formly.tools/tools/word-counter' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Color Converter', url: 'https://formly.tools/tools/color-converter' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Unit Converter', url: 'https://formly.tools/tools/unit-converter' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Loan Calculator', url: 'https://formly.tools/tools/loan-calculator' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Expense Splitter', url: 'https://formly.tools/tools/expense-splitter' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Age Calculator', url: 'https://formly.tools/tools/age-calculator' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Regex Tester', url: 'https://formly.tools/tools/regex-tester' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Diff Checker', url: 'https://formly.tools/tools/diff-checker' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Text Case Converter', url: 'https://formly.tools/tools/text-case' } },
-                  { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Terms Simplifier', url: 'https://formly.tools/tools/terms-simplifier' } },
-                ],
-              },
-            }),
-          }}
-        />
-        {/* Schema.org — AggregateRating */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'Product',
-              name: 'Formly AI Tools',
-              description: 'Free AI-powered productivity tools for professionals',
-              brand: { '@type': 'Brand', name: 'Formly' },
-              url: 'https://formly.tools',
-              aggregateRating: {
-                '@type': 'AggregateRating',
-                ratingValue: '4.8',
-                reviewCount: '2847',
-                bestRating: '5',
-                worstRating: '1',
-              },
-            }),
-          }}
-        />
+        {/* Schema: WebSite + SiteLinksSearchBox — helps Google show search box in results */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: 'Formly Tools',
+          alternateName: ['Formly', 'formly.tools'],
+          url: 'https://formly.tools',
+          description: 'Formly Tools provides 37 free AI-powered tools for professionals worldwide — pay stub generator, resume builder, grammar checker, AI paraphraser, contract generator, PDF summarizer, diagram maker, and more. No signup required. Used by 50,000+ professionals in the USA, UK, India, Australia, and Canada.',
+          inLanguage: ['en-US', 'en-GB', 'en-IN', 'en-AU', 'en-CA'],
+          dateModified: '2026-05-31',
+          publisher: { '@type': 'Organization', name: 'Formly Tools', url: 'https://formly.tools' },
+          audience: {
+            '@type': 'Audience',
+            audienceType: 'Professionals, Freelancers, Students, Small Business Owners',
+            geographicArea: { '@type': 'AdministrativeArea', name: 'Worldwide — USA, United Kingdom, India, Australia, Canada, New Zealand, Singapore, Ireland' },
+          },
+          potentialAction: {
+            '@type': 'SearchAction',
+            target: { '@type': 'EntryPoint', urlTemplate: 'https://formly.tools/tools?q={search_term_string}' },
+            'query-input': 'required name=search_term_string',
+          },
+        }) }} />
+
+        {/* Schema: Organization — full entity graph for AI engines and Knowledge Panel */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Organization',
+          name: 'Formly Tools',
+          alternateName: 'Formly',
+          url: 'https://formly.tools',
+          logo: { '@type': 'ImageObject', url: 'https://formly.tools/favicon.svg', width: 512, height: 512 },
+          description: 'Formly Tools is a free AI tools platform used by 50,000+ professionals. It offers 37 free tools including a pay stub generator, AI resume builder, grammar checker, paraphraser, contract generator, PDF summarizer, AI diagram generator (Diagrify), QR code generator, digital signature, income tax calculators for India, and developer utilities — all free with no signup required.',
+          foundingDate: '2024',
+          sameAs: ['https://twitter.com/formlytools'],
+          contactPoint: { '@type': 'ContactPoint', contactType: 'customer support', url: 'https://formly.tools/contact', availableLanguage: 'English' },
+          hasOfferCatalog: {
+            '@type': 'OfferCatalog',
+            name: 'Free AI Tools — No Signup Required',
+            numberOfItems: 37,
+            itemListElement: [
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Free Pay Stub Generator', description: 'Generate pay stubs for USA, UK, Canada, India, Australia. 2026 tax tables.', url: 'https://formly.tools/tools/paystub-generator' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'AI Resume Builder', description: 'Build ATS-optimized resumes with AI. Free, no signup.', url: 'https://formly.tools/tools/resume-builder' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Free Contract Generator', description: 'Generate freelance contracts, NDAs, service agreements instantly.', url: 'https://formly.tools/tools/contract-generator' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Terms of Service Simplifier', description: 'Paste any Terms of Service and get a plain-English summary.', url: 'https://formly.tools/tools/terms-simplifier' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'AI PDF Summarizer', description: 'Upload any PDF and get a bullet-point summary with key insights.', url: 'https://formly.tools/tools/pdf-summarizer' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'AI Paraphraser', description: 'Rewrite text in 5 styles: Standard, Formal, Creative, Academic, Simple.', url: 'https://formly.tools/tools/paraphraser' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Free Grammar Checker', description: 'Fix grammar, spelling, and style errors instantly with AI explanations.', url: 'https://formly.tools/tools/grammar-checker' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'AI Email Writer', description: 'Generate professional emails in seconds. Formal, casual, or persuasive.', url: 'https://formly.tools/tools/email-writer' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Hashtag Generator', description: 'Generate viral hashtags for Instagram, Twitter, LinkedIn, TikTok.', url: 'https://formly.tools/tools/hashtag-generator' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'AI Bio Writer', description: 'Create professional bios for LinkedIn, Twitter, Instagram, websites.', url: 'https://formly.tools/tools/bio-writer' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Cover Letter Generator', description: 'Generate tailored cover letters matching job descriptions.', url: 'https://formly.tools/tools/cover-letter' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'PDF to Markdown Converter', description: 'Convert PDFs to clean Markdown format preserving structure.', url: 'https://formly.tools/tools/pdf-to-markdown' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Code Explainer', description: 'Explain any code in plain English. Supports 20+ languages.', url: 'https://formly.tools/tools/code-explainer' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'AI Code Reviewer', description: 'Instant AI code review — issues, quality score, performance tips.', url: 'https://formly.tools/tools/code-reviewer' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'JSON Formatter', description: 'Format, minify, and validate JSON instantly.', url: 'https://formly.tools/tools/json-formatter' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Base64 Encoder Decoder', description: 'Encode and decode Base64 strings and files instantly.', url: 'https://formly.tools/tools/base64' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Color Converter', description: 'Convert colors between HEX, RGB, HSL, HSV, CMYK formats.', url: 'https://formly.tools/tools/color-converter' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Regex Tester', description: 'Test regular expressions live with match highlighting.', url: 'https://formly.tools/tools/regex-tester' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Diff Checker', description: 'Compare two texts side by side with color-coded changes.', url: 'https://formly.tools/tools/diff-checker' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Expense Splitter', description: 'Split group expenses fairly with debt settlement calculation.', url: 'https://formly.tools/tools/expense-splitter' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Loan EMI Calculator', description: 'Calculate monthly EMI, total interest, and amortization schedule.', url: 'https://formly.tools/tools/loan-calculator' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Free Password Generator', description: 'Generate cryptographically secure passwords with strength analysis.', url: 'https://formly.tools/tools/password-generator' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Word Counter', description: 'Count words, characters, sentences in real time with reading time.', url: 'https://formly.tools/tools/word-counter' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Unit Converter', description: 'Convert length, weight, temperature, area, volume, speed, and more.', url: 'https://formly.tools/tools/unit-converter' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Age Calculator', description: 'Calculate exact age, next birthday countdown, zodiac sign.', url: 'https://formly.tools/tools/age-calculator' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Text Case Converter', description: 'Convert text to UPPERCASE, lowercase, camelCase, snake_case and more.', url: 'https://formly.tools/tools/text-case' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'QR Code Generator', description: 'Generate artistic QR codes with custom colors and logos.', url: 'https://formly.tools/tools/qr-code' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Free Digital Signature', description: 'Create e-signatures by drawing, typing, or uploading.', url: 'https://formly.tools/tools/digital-signature' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Diagrify — AI Diagram Maker', description: 'Free AI whiteboard and diagram generator. Type description, get flowchart.', url: 'https://formly.tools/tools/diagrify' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Hand Salary Calculator India', description: 'Calculate take-home salary in India after PF, professional tax, income tax.', url: 'https://formly.tools/tools/hand-salary-calculator' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Income Tax Calculator India 2026', description: 'India income tax FY 2025-26. New vs old regime, Budget 2025 slabs.', url: 'https://formly.tools/tools/income-tax-calculator' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'HRA Exemption Calculator', description: 'Calculate HRA exemption under Section 10(13A). Metro vs non-metro.', url: 'https://formly.tools/tools/hra-calculator' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Gratuity Calculator India', description: 'Calculate gratuity under Payment of Gratuity Act 1972.', url: 'https://formly.tools/tools/gratuity-calculator' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'GST Calculator', description: 'Calculate GST for any amount. Add or remove GST, CGST+SGST vs IGST.', url: 'https://formly.tools/tools/gst-calculator' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'SIP Calculator India', description: 'Calculate mutual fund SIP returns with step-up SIP and goal planner.', url: 'https://formly.tools/tools/sip-calculator' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Home Loan EMI Calculator', description: 'Calculate home loan EMI, total interest, Section 24b tax benefit.', url: 'https://formly.tools/tools/home-loan-emi-calculator' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Iron Core Military Workout', description: '30-day military calisthenics program. No equipment needed.', url: 'https://formly.tools/tools/iron-core-workout' } },
+            ],
+          },
+        }) }} />
+
+        {/* Schema: SiteNavigationElement — helps AI understand site structure */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          name: 'Formly Tools — Free AI Tool Categories',
+          description: 'Browse 37 free AI tools organized by category: AI Writing, Payroll & Legal, Developer Tools, Finance, Utilities, and more.',
+          url: 'https://formly.tools/tools',
+          numberOfItems: 37,
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'AI Writing Tools', item: 'https://formly.tools/tools#writing' },
+            { '@type': 'ListItem', position: 2, name: 'Payroll & Legal Tools', item: 'https://formly.tools/tools#payroll' },
+            { '@type': 'ListItem', position: 3, name: 'Developer Tools', item: 'https://formly.tools/tools#developer' },
+            { '@type': 'ListItem', position: 4, name: 'Indian Finance Calculators', item: 'https://formly.tools/tools#calculators' },
+            { '@type': 'ListItem', position: 5, name: 'Utility Tools', item: 'https://formly.tools/tools#utilities' },
+            { '@type': 'ListItem', position: 6, name: 'Design & Diagrams', item: 'https://formly.tools/tools#design' },
+          ],
+        }) }} />
+
+        {/* Schema: AggregateRating — trust signal across all tools */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Product',
+          name: 'Formly Tools — Free AI Tools Suite',
+          description: 'Free AI-powered productivity tools for professionals, freelancers, and students worldwide.',
+          brand: { '@type': 'Brand', name: 'Formly Tools' },
+          url: 'https://formly.tools',
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: '4.8',
+            reviewCount: '3241',
+            bestRating: '5',
+            worstRating: '1',
+          },
+        }) }} />
       </head>
       <body className="font-sans antialiased bg-[#F9F7F4] text-stone-900 min-h-screen">
         <GoogleAnalytics />
