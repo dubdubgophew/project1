@@ -926,6 +926,9 @@ export default function IronCoreWorkoutPage() {
       `}</style>
       <main style={{background:'#0a0a08', minHeight:'100vh', paddingBottom:60}}>
 
+        {/* Header spacer */}
+        <div style={{height:64}} />
+
         {/* TICKER */}
         <div style={{background:'#b5341e', overflow:'hidden', height:32, display:'flex', alignItems:'center'}}>
           <div className="ticker-inner" style={{color:'#fff', fontFamily:'monospace', fontSize:12, fontWeight:'bold', letterSpacing:2}}>
