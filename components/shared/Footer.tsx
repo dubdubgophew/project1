@@ -2,14 +2,15 @@ import Link from 'next/link';
 import { Zap, Twitter, Github, Linkedin, Mail } from 'lucide-react';
 
 const TOOLS = [
+  { name: 'Pay Stub Generator', href: '/tools/paystub-generator' },
+  { name: 'Resume Builder', href: '/tools/resume-builder' },
+  { name: 'Contract Generator', href: '/tools/contract-generator' },
   { name: 'PDF Summarizer', href: '/tools/pdf-summarizer' },
+  { name: 'Digital Signature', href: '/tools/digital-signature' },
   { name: 'Paraphraser', href: '/tools/paraphraser' },
   { name: 'Grammar Checker', href: '/tools/grammar-checker' },
   { name: 'Email Writer', href: '/tools/email-writer' },
   { name: 'Code Explainer', href: '/tools/code-explainer' },
-  { name: 'Pay Stub Generator', href: '/tools/paystub-generator' },
-  { name: 'Resume Builder', href: '/tools/resume-builder' },
-  { name: 'Contract Generator', href: '/tools/contract-generator' },
   { name: 'Cover Letter', href: '/tools/cover-letter' },
   { name: 'Code Reviewer', href: '/tools/code-reviewer' },
   { name: 'Terms Simplifier', href: '/tools/terms-simplifier' },

@@ -8,11 +8,12 @@ import { createClient } from '@/lib/supabase/client';
 import type { User } from '@supabase/supabase-js';
 
 const TOOLS_NAV = [
+  { name: 'Pay Stub Generator', href: '/tools/paystub-generator' },
+  { name: 'Resume Builder', href: '/tools/resume-builder' },
+  { name: 'Contract Generator', href: '/tools/contract-generator' },
   { name: 'PDF Summarizer', href: '/tools/pdf-summarizer' },
+  { name: 'Digital Signature', href: '/tools/digital-signature' },
   { name: 'Paraphraser', href: '/tools/paraphraser' },
-  { name: 'Grammar Checker', href: '/tools/grammar-checker' },
-  { name: 'Email Writer', href: '/tools/email-writer' },
-  { name: 'Code Explainer', href: '/tools/code-explainer' },
 ];
 
 export function Header() {
