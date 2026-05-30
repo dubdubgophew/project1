@@ -229,8 +229,8 @@ function NewsCard({ item }: { item: TrendingNews }) {
       itemScope
       itemType="https://schema.org/NewsArticle"
     >
-      {/* Image */}
-      <div className="relative w-full aspect-video overflow-hidden bg-gray-800">
+      {/* Image — shorter aspect ratio */}
+      <div className="relative w-full aspect-[16/7] overflow-hidden bg-gray-800">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={imgSrc}
@@ -240,66 +240,48 @@ function NewsCard({ item }: { item: TrendingNews }) {
           itemProp="image"
         />
         {/* Rank badge */}
-        <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm text-white text-xs font-bold px-2 py-1 rounded-lg">
+        <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-sm text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
           #{item.rank}
         </div>
         {/* Category badge */}
-        <div className={`absolute top-3 right-3 text-xs font-semibold px-2.5 py-1 rounded-full border backdrop-blur-sm ${catColor}`}>
+        <div className={`absolute top-2 right-2 text-[10px] font-semibold px-2 py-0.5 rounded-full border backdrop-blur-sm ${catColor}`}>
           {item.category}
         </div>
       </div>
 
       {/* Body */}
-      <div className="flex flex-col flex-1 p-5 gap-3">
+      <div className="flex flex-col flex-1 p-3 gap-2">
         {/* Country + time row */}
-        <div className="flex items-center justify-between gap-2 text-xs text-gray-500">
-          <span className="flex items-center gap-1.5">
+        <div className="flex items-center justify-between gap-2 text-[10px] text-gray-500">
+          <span className="flex items-center gap-1">
             <span>{flag}</span>
             <span className="font-medium text-gray-400">{item.country_name}</span>
           </span>
           <span className="flex items-center gap-1">
             <Clock className="w-3 h-3" />
             <time dateTime={item.fetched_at} itemProp="datePublished">
-              {formatDateTime(item.fetched_at)}
+              {timeAgo(item.fetched_at)}
             </time>
           </span>
         </div>
 
         {/* Headline */}
-        <h2
-          className="text-white font-bold text-base leading-snug"
-          itemProp="headline"
-        >
+        <h2 className="text-white font-bold text-sm leading-snug" itemProp="headline">
           {item.topic}
         </h2>
 
-        {/* SEO keyword tags */}
-        <div className="flex flex-wrap gap-1.5" aria-label="Related topics">
-          {keywords.map(kw => (
-            <span
-              key={kw}
-              className="text-[10px] font-semibold text-violet-400 bg-violet-500/10 border border-violet-500/20 px-1.5 py-0.5 rounded-full"
-            >
-              #{kw}
-            </span>
-          ))}
-        </div>
-
-        {/* Full summary — no truncation */}
-        <p
-          className="text-gray-300 text-sm leading-relaxed flex-1"
-          itemProp="description"
-        >
+        {/* Summary — truncated */}
+        <p className="text-gray-400 text-xs leading-relaxed flex-1 line-clamp-3" itemProp="description">
           {item.summary}
         </p>
 
         {/* Footer: source + share */}
-        <div className="flex items-center justify-between pt-3 border-t border-gray-800 mt-auto">
+        <div className="flex items-center justify-between pt-2 border-t border-gray-800 mt-auto">
           <a
             href={item.source_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-violet-400 transition-colors max-w-[55%]"
+            className="flex items-center gap-1 text-[10px] text-gray-400 hover:text-violet-400 transition-colors"
             itemProp="publisher"
           >
             <ExternalLink className="w-3 h-3 shrink-0" />
@@ -309,9 +291,9 @@ function NewsCard({ item }: { item: TrendingNews }) {
           <div className="relative">
             <button
               onClick={() => setShareOpen(o => !o)}
-              className="flex items-center gap-1.5 text-xs font-medium text-gray-400 hover:text-white bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-lg transition-colors"
+              className="flex items-center gap-1 text-[10px] font-medium text-gray-400 hover:text-white bg-gray-800 hover:bg-gray-700 px-2 py-1 rounded transition-colors"
             >
-              <Share2 className="w-3.5 h-3.5" />
+              <Share2 className="w-3 h-3" />
               Share
             </button>
             {shareOpen && (
@@ -670,28 +652,32 @@ export function TrendingFeed({
 
       {/* ── Loading skeleton ── */}
       {loading && (
-        <div className="flex flex-col gap-5 max-w-2xl mx-auto">
-          {Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} />)}
+        <div className="grid sm:grid-cols-2 gap-4">
+          {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} />)}
         </div>
       )}
 
       {/* ── Feed grid ── */}
       {!loading && (
-        <div className="flex flex-col gap-5 max-w-2xl mx-auto">
+        <div className="grid sm:grid-cols-2 gap-4">
           {items.length === 0 ? (
-            <EmptyState onRefresh={handleRefresh} />
+            <div className="sm:col-span-2"><EmptyState onRefresh={handleRefresh} /></div>
           ) : (
             feedItems.map((entry, idx) => {
               if (entry === 'newsletter') {
                 return (
-                  <Fragment key="newsletter">
+                  <div key="newsletter" className="sm:col-span-2">
                     <NewsletterCard />
                     <EzoicAd id={1} />
-                  </Fragment>
+                  </div>
                 );
               }
               if (typeof entry === 'object' && 'promo' in entry) {
-                return <ToolPromoCard key={`promo-${idx}`} promo={TOOL_PROMOS[entry.promo]} />;
+                return (
+                  <div key={`promo-${idx}`} className="sm:col-span-2">
+                    <ToolPromoCard promo={TOOL_PROMOS[entry.promo]} />
+                  </div>
+                );
               }
               const item = entry as TrendingNews;
               return <NewsCard key={item.id} item={item} />;

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
+import { SidebarAd } from '@/components/shared/AdSense';
 import { createAdminClient } from '@/lib/supabase/server';
 import { COUNTRY_MAP, type TrendingNews } from '@/lib/trending-utils';
 import { TrendingFeed } from './TrendingFeed';
@@ -135,34 +136,37 @@ export default async function NewsPage({ searchParams }: PageProps) {
     <>
       <Header />
       <main className="min-h-screen bg-gray-950 pt-24 pb-20">
-        {/* Hero */}
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-emerald-400 text-sm font-medium uppercase tracking-widest">
-                Live
-              </span>
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Hero */}
+          <div className="mb-8">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-emerald-400 text-xs font-medium uppercase tracking-widest">Live</span>
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-4 tracking-tight">
-              What&apos;s{' '}
-              <span className="gradient-text">Trending</span>{' '}
-              Right Now
+            <h1 className="text-3xl font-extrabold text-white mb-1">
+              What&apos;s <span className="gradient-text">Trending</span> Right Now
             </h1>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              Updated daily &middot; 50 topics &middot; 10 countries
-            </p>
+            <p className="text-gray-500 text-sm">Updated daily · 50 topics · 10 countries</p>
           </div>
 
-          {/* Feed */}
-          <TrendingFeed
-            initialItems={items}
-            initialCountry={initialCountry}
-            initialCategory={initialCategory}
-            initialQ={initialQ}
-            initialId={deepLinkId}
-            lastUpdated={lastUpdated}
-          />
+          <div className="grid lg:grid-cols-[1fr_260px] gap-8">
+            <div>
+              <TrendingFeed
+                initialItems={items}
+                initialCountry={initialCountry}
+                initialCategory={initialCategory}
+                initialQ={initialQ}
+                initialId={deepLinkId}
+                lastUpdated={lastUpdated}
+              />
+            </div>
+            <aside className="hidden lg:flex flex-col gap-4">
+              <div className="sticky top-24 space-y-4">
+                <SidebarAd />
+                <SidebarAd />
+              </div>
+            </aside>
+          </div>
         </div>
       </main>
 

@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
-import { BannerAd } from '@/components/shared/AdSense';
+import { BannerAd, SidebarAd } from '@/components/shared/AdSense';
 
 type Tool = {
   icon: string;
@@ -416,18 +416,18 @@ function ToolsContent() {
 
   return (
     <>
-      <div className="text-center mb-10">
-        <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
-          {TOOLS.length} Free Tools
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold text-white mb-1">
+          {TOOLS.length} Free AI Tools
         </h1>
-        <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-          No signup required for first 5 daily uses. Professional quality.
-          Powered by Groq AI — fast, accurate, and free.
+        <p className="text-gray-500 text-sm">
+          No signup · 5 free uses daily · Powered by Groq AI
         </p>
       </div>
 
-      {/* Category filter pills */}
-      <div className="flex flex-wrap gap-2 mb-8">
+      {/* Category filter pills — sticky */}
+      <div className="sticky top-[68px] z-10 bg-gray-950 py-3 -mx-2 px-2 mb-6 border-b border-gray-900/80 backdrop-blur-sm">
+        <div className="flex flex-wrap gap-1.5">
         {ALL_CATEGORIES.map(c => {
           const params = new URLSearchParams();
           if (c !== 'All') params.set('cat', c);
@@ -437,7 +437,7 @@ function ToolsContent() {
             <Link
               key={c}
               href={href}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+              className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
                 cat === c
                   ? 'bg-violet-600 text-white'
                   : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'
@@ -445,13 +445,14 @@ function ToolsContent() {
             >
               {c}
               {c !== 'All' && (
-                <span className="ml-1.5 text-xs opacity-60">
+                <span className="ml-1 opacity-60">
                   {TOOLS.filter(t => t.category === c).length}
                 </span>
               )}
             </Link>
           );
         })}
+        </div>
       </div>
 
       {/* Search indicator */}
@@ -480,40 +481,27 @@ function ToolsContent() {
           </Link>
         </div>
       ) : (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
           {filtered.map((tool) => (
             <Link
               key={tool.href}
               href={tool.href}
-              className={`group relative flex flex-col p-6 rounded-2xl border bg-gradient-to-br ${tool.color} transition-all duration-300 hover:scale-[1.02] hover:shadow-xl`}
+              className={`group relative flex flex-col p-4 rounded-xl border bg-gradient-to-br ${tool.color} transition-all duration-200 hover:scale-[1.02] hover:shadow-lg`}
             >
               {tool.badge && (
-                <span className="absolute top-4 right-4 badge-pro text-xs">
+                <span className="absolute top-3 right-3 badge-pro text-[10px] px-1.5 py-0.5">
                   {tool.badge}
                 </span>
               )}
 
-              <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-200">
+              <div className="text-2xl mb-2.5 group-hover:scale-110 transition-transform duration-200">
                 {tool.icon}
               </div>
 
-              <div className="flex items-center gap-2 mb-1 flex-wrap">
-                <h2 className="text-lg font-bold text-white">{tool.name}</h2>
-                <span className="text-xs px-2 py-0.5 rounded-md bg-gray-800/60 text-gray-500">
-                  {tool.category}
-                </span>
-              </div>
-              <p className="text-gray-400 text-sm leading-relaxed flex-1">{tool.description}</p>
+              <h2 className="text-sm font-bold text-white mb-1 leading-snug pr-8">{tool.name}</h2>
+              <p className="text-gray-400 text-xs leading-relaxed flex-1 line-clamp-2">{tool.description}</p>
 
-              <div className="mt-4 flex flex-wrap gap-1.5">
-                {tool.tags.map((tag) => (
-                  <span key={tag} className="text-xs px-2 py-0.5 rounded-md bg-gray-800/80 text-gray-500">
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-
-              <div className="mt-4 flex items-center gap-2 text-sm text-violet-400 font-medium group-hover:gap-3 transition-all">
+              <div className="mt-3 flex items-center gap-1.5 text-xs text-violet-400 font-medium group-hover:gap-2 transition-all">
                 Try free <span>→</span>
               </div>
             </Link>
@@ -549,14 +537,24 @@ export default function ToolsPage() {
     <>
       <Header />
       <main className="min-h-screen bg-gray-950 pt-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-          <Suspense fallback={
-            <div className="text-center py-20">
-              <p className="text-gray-400">Loading tools…</p>
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+          <div className="grid lg:grid-cols-[1fr_260px] gap-8">
+            <div>
+              <Suspense fallback={
+                <div className="text-center py-20">
+                  <p className="text-gray-400">Loading tools…</p>
+                </div>
+              }>
+                <ToolsContent />
+              </Suspense>
             </div>
-          }>
-            <ToolsContent />
-          </Suspense>
+            <aside className="hidden lg:flex flex-col gap-4 pt-2">
+              <div className="sticky top-24 space-y-4">
+                <SidebarAd />
+                <SidebarAd />
+              </div>
+            </aside>
+          </div>
         </div>
       </main>
       <Footer />

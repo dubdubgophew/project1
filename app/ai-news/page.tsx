@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
+import { SidebarAd } from '@/components/shared/AdSense';
 import { createAdminClient } from '@/lib/supabase/server';
 import { type AINewsItem } from '@/lib/ai-news-utils';
 import { AIFeed } from './AIFeed';
@@ -110,31 +111,36 @@ export default async function AINewsPage({ searchParams }: PageProps) {
     <>
       <Header />
       <main className="min-h-screen bg-gray-950 pt-24 pb-20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           {/* Hero */}
-          <div className="text-center mb-10">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <span className="w-2.5 h-2.5 rounded-full bg-violet-400 animate-pulse" />
-              <span className="text-violet-400 text-sm font-medium uppercase tracking-widest">
-                Daily
-              </span>
+          <div className="mb-8">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="w-2 h-2 rounded-full bg-violet-400 animate-pulse" />
+              <span className="text-violet-400 text-xs font-medium uppercase tracking-widest">Daily</span>
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-4 tracking-tight">
-              Latest in{' '}
-              <span className="gradient-text">AI</span>
+            <h1 className="text-3xl font-extrabold text-white mb-1">
+              Latest in <span className="gradient-text">AI</span>
             </h1>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              Updated daily &middot; 50 stories &middot; 10 sources
-            </p>
+            <p className="text-gray-500 text-sm">Updated daily · 50 stories · 10 sources</p>
           </div>
 
-          <AIFeed
-            initialItems={items}
-            initialCategory={initialCategory}
-            initialQ={initialQ}
-            initialId={deepLinkId}
-            lastUpdated={lastUpdated}
-          />
+          <div className="grid lg:grid-cols-[1fr_260px] gap-8">
+            <div>
+              <AIFeed
+                initialItems={items}
+                initialCategory={initialCategory}
+                initialQ={initialQ}
+                initialId={deepLinkId}
+                lastUpdated={lastUpdated}
+              />
+            </div>
+            <aside className="hidden lg:flex flex-col gap-4">
+              <div className="sticky top-24 space-y-4">
+                <SidebarAd />
+                <SidebarAd />
+              </div>
+            </aside>
+          </div>
         </div>
       </main>
       <Footer />
