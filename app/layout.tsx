@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google';
+import { Plus_Jakarta_Sans, JetBrains_Mono, DM_Serif_Display } from 'next/font/google';
 import './globals.css';
 import { GoogleAnalytics } from '@/components/shared/GoogleAnalytics';
 import { AdSenseScript } from '@/components/shared/AdSense';
@@ -15,6 +15,14 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-mono',
   display: 'swap',
+});
+
+const dmSerifDisplay = DM_Serif_Display({
+  subsets: ['latin'],
+  variable: '--font-display',
+  display: 'swap',
+  weight: '400',
+  style: ['normal', 'italic'],
 });
 
 export const metadata: Metadata = {
@@ -98,7 +106,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#030712',
+  themeColor: '#F9F7F4',
   width: 'device-width',
   initialScale: 1,
 };
@@ -109,7 +117,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${plusJakartaSans.variable} ${jetbrainsMono.variable} dark`}>
+    <html lang="en" className={`${plusJakartaSans.variable} ${jetbrainsMono.variable} ${dmSerifDisplay.variable}`}>
       <head>
         <meta name="google-adsense-account" content="ca-pub-7233937066598688" />
         <AdSenseScript />
@@ -224,7 +232,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="font-sans antialiased bg-[#09090b] text-zinc-100 min-h-screen">
+      <body className="font-sans antialiased bg-[#F9F7F4] text-stone-900 min-h-screen">
         <GoogleAnalytics />
         {children}
       </body>

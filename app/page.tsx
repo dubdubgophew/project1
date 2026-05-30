@@ -22,7 +22,7 @@ export default function HomePage() {
     <>
       <Header />
       <main>
-        <div className="h-16" />
+        <div className="h-20" />
         <DiagrifBanner />
         <Hero />
         <PopularTools />
@@ -42,14 +42,14 @@ export default function HomePage() {
         <FAQ />
 
         {/* Final CTA */}
-        <section className="section bg-[#09090b]">
+        <section className="section bg-stone-900">
           <div className="max-w-3xl mx-auto px-4 text-center">
-            <div className="rounded-3xl bg-gradient-to-br from-orange-500/8 via-amber-500/4 to-orange-600/8 border border-orange-500/15 p-10 sm:p-12">
+            <div className="rounded-3xl bg-gradient-to-br from-orange-500/10 via-amber-500/5 to-orange-600/10 border border-orange-500/20 p-10 sm:p-12">
               <p className="text-xs font-semibold text-orange-400 uppercase tracking-widest mb-4">Get Started</p>
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 tracking-tight">
                 Ready to Supercharge Your Workflow?
               </h2>
-              <p className="text-zinc-400 mb-8 text-base sm:text-lg max-w-xl mx-auto">
+              <p className="text-stone-400 mb-8 text-base sm:text-lg max-w-xl mx-auto">
                 Join 50,000+ professionals who save hours every week with Formly.
                 Start free — no credit card required.
               </p>
@@ -57,11 +57,11 @@ export default function HomePage() {
                 <a href="/tools" className="btn-primary text-base px-8 py-4 w-full sm:w-auto">
                   Try All 37 Tools Free →
                 </a>
-                <a href="/pricing" className="btn-outline text-base px-8 py-4 w-full sm:w-auto">
+                <a href="/pricing" className="inline-flex items-center justify-center gap-2 text-base px-8 py-4 rounded-xl font-semibold border border-orange-500/40 text-orange-400 hover:bg-orange-500/10 hover:border-orange-500/70 transition-all duration-200 w-full sm:w-auto">
                   View Pro Plans
                 </a>
               </div>
-              <p className="text-xs text-zinc-700 mt-6">
+              <p className="text-xs text-stone-600 mt-6">
                 Free forever · No credit card · Cancel pro anytime
               </p>
             </div>

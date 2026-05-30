@@ -417,7 +417,7 @@ function ToolsContent() {
   return (
     <>
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-white mb-1">
+        <h1 className="text-3xl font-bold text-stone-900 mb-1">
           {TOOLS.length} Free AI Tools
         </h1>
         <p className="text-gray-500 text-sm">
@@ -426,7 +426,7 @@ function ToolsContent() {
       </div>
 
       {/* Category filter pills — sticky */}
-      <div className="sticky top-[68px] z-10 bg-gray-950 py-3 -mx-2 px-2 mb-6 border-b border-gray-900/80 backdrop-blur-sm">
+      <div className="sticky top-[80px] z-10 bg-[#F9F7F4]/95 py-3 -mx-2 px-2 mb-6 border-b border-stone-200 backdrop-blur-sm">
         <div className="flex flex-wrap gap-1.5">
         {ALL_CATEGORIES.map(c => {
           const params = new URLSearchParams();
@@ -440,7 +440,7 @@ function ToolsContent() {
               className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
                 cat === c
                   ? 'bg-violet-600 text-white'
-                  : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'
+                  : 'bg-stone-100 text-stone-600 hover:text-stone-900 hover:bg-stone-200'
               }`}
             >
               {c}
@@ -459,7 +459,7 @@ function ToolsContent() {
       {q && (
         <div className="mb-6 flex items-center gap-3">
           <p className="text-sm text-gray-400">
-            Showing <span className="text-white font-medium">{filtered.length}</span> results for{' '}
+            Showing <span className="text-stone-900 font-medium">{filtered.length}</span> results for{' '}
             <span className="text-violet-400 font-medium">&quot;{q}&quot;</span>
           </p>
           <Link
@@ -474,8 +474,8 @@ function ToolsContent() {
       {filtered.length === 0 ? (
         <div className="text-center py-20">
           <p className="text-4xl mb-4">🔍</p>
-          <p className="text-gray-300 font-medium mb-2">No tools found</p>
-          <p className="text-gray-500 text-sm">Try a different search term or category.</p>
+          <p className="text-stone-700 font-medium mb-2">No tools found</p>
+          <p className="text-stone-500 text-sm">Try a different search term or category.</p>
           <Link href="/tools" className="btn-secondary mt-4 inline-flex">
             Clear filters
           </Link>
@@ -498,10 +498,10 @@ function ToolsContent() {
                 {tool.icon}
               </div>
 
-              <h2 className="text-sm font-bold text-white mb-1 leading-snug pr-8">{tool.name}</h2>
-              <p className="text-gray-400 text-xs leading-relaxed flex-1 line-clamp-2">{tool.description}</p>
+              <h2 className="text-sm font-bold text-stone-900 mb-1 leading-snug pr-8">{tool.name}</h2>
+              <p className="text-stone-600 text-xs leading-relaxed flex-1 line-clamp-2">{tool.description}</p>
 
-              <div className="mt-3 flex items-center gap-1.5 text-xs text-violet-400 font-medium group-hover:gap-2 transition-all">
+              <div className="mt-3 flex items-center gap-1.5 text-xs text-orange-500 font-medium group-hover:gap-2 transition-all">
                 Try free <span>→</span>
               </div>
             </Link>
@@ -514,15 +514,15 @@ function ToolsContent() {
       </div>
 
       {/* SEO content */}
-      <div className="mt-16 prose prose-sm max-w-4xl mx-auto text-gray-400">
-        <h2 className="text-2xl font-bold text-white">Why Formly is Better Than the Alternatives</h2>
+      <div className="mt-16 prose prose-sm max-w-4xl mx-auto text-stone-500">
+        <h2 className="text-2xl font-bold text-stone-900">Why Formly is Better Than the Alternatives</h2>
         <p>
           Most AI tool platforms charge $20-100/month, show intrusive ads, require signups for basic features,
           or produce mediocre AI output. Formly is different: powered by Groq AI — fast, high-quality output
           comparable to GPT-4 — and available free for casual users. Our Pro plan at just $9.99/month gives you 200 daily uses
           and priority processing, making it the most affordable professional AI suite available.
         </p>
-        <h3 className="text-lg font-semibold text-white mt-6">Privacy-First Approach</h3>
+        <h3 className="text-lg font-semibold text-stone-900 mt-6">Privacy-First Approach</h3>
         <p>
           We don&apos;t store your text, PDFs, or any content you process through our tools. Your data is sent
           to our AI, processed, and returned to you. Nothing is saved, sold, or used for training.
@@ -536,13 +536,13 @@ export default function ToolsPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gray-950 pt-24">
+      <main className="min-h-screen bg-[#F9F7F4] pt-24">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pb-20">
           <div className="grid lg:grid-cols-[1fr_260px] gap-8">
             <div>
               <Suspense fallback={
                 <div className="text-center py-20">
-                  <p className="text-gray-400">Loading tools…</p>
+                  <p className="text-stone-500">Loading tools…</p>
                 </div>
               }>
                 <ToolsContent />

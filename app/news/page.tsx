@@ -135,7 +135,7 @@ export default async function NewsPage({ searchParams }: PageProps) {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gray-950 pt-24 pb-20">
+      <main className="min-h-screen bg-[#F9F7F4] pt-24 pb-20">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           {/* Hero */}
           <div className="mb-8">

@@ -29,13 +29,13 @@ export function ToolLayout({
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gray-950 pt-16">
+      <main className="min-h-screen bg-[#F9F7F4] pt-[76px]">
         {/* Tool header */}
-        <div className="border-b border-gray-800 bg-gray-900/50">
+        <div className="border-b border-stone-200 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <Link
               href="/tools"
-              className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-300 transition-colors mb-4"
+              className="inline-flex items-center gap-2 text-sm text-stone-400 hover:text-stone-700 transition-colors mb-4"
             >
               <ArrowLeft className="w-4 h-4" />
               All Tools
@@ -44,15 +44,15 @@ export function ToolLayout({
               <div className="text-4xl">{icon}</div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-3 flex-wrap">
-                  <h1 className="text-2xl font-bold text-white">{title}</h1>
+                  <h1 className="text-2xl font-bold text-stone-900">{title}</h1>
                   {badge && (
                     <span className="badge-free text-xs">{badge}</span>
                   )}
-                  <span className="badge bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs">
+                  <span className="badge bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs">
                     Free to Use
                   </span>
                 </div>
-                <p className="text-gray-400 mt-1 text-sm max-w-2xl">{description}</p>
+                <p className="text-stone-500 mt-1 text-sm max-w-2xl">{description}</p>
               </div>
             </div>
           </div>
@@ -64,41 +64,41 @@ export function ToolLayout({
             <div className="space-y-6">
               {children}
 
-              {/* Usage notice — different for unlimited vs rate-limited tools */}
+              {/* Usage notice */}
               {rateLimited ? (
-                <div className="flex items-start gap-3 p-4 rounded-xl bg-amber-500/5 border border-amber-500/15">
-                  <Zap className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                <div className="flex items-start gap-3 p-4 rounded-xl bg-amber-50 border border-amber-200">
+                  <Zap className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                   <div className="text-sm">
-                    <span className="text-amber-300 font-medium">Daily limits: </span>
-                    <span className="text-gray-400">5/day without account · </span>
-                    <Link href="/signup" className="text-violet-400 hover:text-violet-300 transition-colors">
+                    <span className="text-amber-700 font-medium">Daily limits: </span>
+                    <span className="text-stone-500">5/day without account · </span>
+                    <Link href="/signup" className="text-orange-500 hover:text-orange-600 transition-colors">
                       Free account
                     </Link>
-                    <span className="text-gray-400"> = 10/day · </span>
-                    <Link href="/pricing" className="text-violet-400 hover:text-violet-300 transition-colors">
+                    <span className="text-stone-500"> = 10/day · </span>
+                    <Link href="/pricing" className="text-orange-500 hover:text-orange-600 transition-colors">
                       Pro
                     </Link>
-                    <span className="text-gray-400"> = 200/day · </span>
-                    <Link href="/pricing" className="text-violet-400 hover:text-violet-300 transition-colors">
+                    <span className="text-stone-500"> = 200/day · </span>
+                    <Link href="/pricing" className="text-orange-500 hover:text-orange-600 transition-colors">
                       Unlimited
                     </Link>
-                    <span className="text-gray-400"> = no cap</span>
+                    <span className="text-stone-500"> = no cap</span>
                   </div>
                 </div>
               ) : (
-                <div className="flex items-start gap-3 p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/15">
-                  <Infinity className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                <div className="flex items-start gap-3 p-4 rounded-xl bg-emerald-50 border border-emerald-200">
+                  <Infinity className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                   <div className="text-sm">
-                    <span className="text-emerald-300 font-medium">Free & unlimited — </span>
-                    <span className="text-gray-400">no account needed. </span>
-                    <Link href="/signup" className="text-violet-400 hover:text-violet-300 transition-colors">
+                    <span className="text-emerald-700 font-medium">Free & unlimited — </span>
+                    <span className="text-stone-500">no account needed. </span>
+                    <Link href="/signup" className="text-orange-500 hover:text-orange-600 transition-colors">
                       Sign up
                     </Link>
-                    <span className="text-gray-400"> to save history · </span>
-                    <Link href="/pricing" className="text-violet-400 hover:text-violet-300 transition-colors">
+                    <span className="text-stone-500"> to save history · </span>
+                    <Link href="/pricing" className="text-orange-500 hover:text-orange-600 transition-colors">
                       Go Pro
                     </Link>
-                    <span className="text-gray-400"> for advanced features</span>
+                    <span className="text-stone-500"> for advanced features</span>
                   </div>
                 </div>
               )}
@@ -107,13 +107,13 @@ export function ToolLayout({
             {/* Sidebar */}
             <aside className="space-y-6">
               {/* Upgrade CTA */}
-              <div className="card bg-gradient-to-br from-violet-600/10 to-purple-600/5 border-violet-500/20">
+              <div className="card bg-gradient-to-br from-orange-50 to-amber-50/50 border-orange-200">
                 <div className="flex items-center gap-2 mb-3">
-                  <Lock className="w-4 h-4 text-violet-400" />
-                  <h3 className="text-sm font-semibold text-white">Upgrade to Pro</h3>
+                  <Lock className="w-4 h-4 text-orange-500" />
+                  <h3 className="text-sm font-semibold text-stone-900">Upgrade to Pro</h3>
                 </div>
-                <ul className="text-sm text-gray-400 space-y-1.5 mb-4">
-                  <li>✓ 200 paystub downloads/day</li>
+                <ul className="text-sm text-stone-600 space-y-1.5 mb-4">
+                  <li>✓ 200 requests/day</li>
                   <li>✓ Priority AI processing</li>
                   <li>✓ Usage history & analytics</li>
                   <li>✓ Early access to new tools</li>
@@ -129,16 +129,16 @@ export function ToolLayout({
               {/* Related tools */}
               {relatedTools.length > 0 && (
                 <div className="card">
-                  <h3 className="text-sm font-semibold text-white mb-4">Related Tools</h3>
+                  <h3 className="text-sm font-semibold text-stone-900 mb-4">Related Tools</h3>
                   <div className="space-y-2">
                     {relatedTools.map((tool) => (
                       <Link
                         key={tool.href}
                         href={tool.href}
-                        className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-gray-800 transition-colors group"
+                        className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-stone-50 transition-colors group"
                       >
                         <span className="text-lg">{tool.icon}</span>
-                        <span className="text-sm text-gray-300 group-hover:text-white transition-colors">
+                        <span className="text-sm text-stone-600 group-hover:text-stone-900 transition-colors">
                           {tool.name}
                         </span>
                       </Link>

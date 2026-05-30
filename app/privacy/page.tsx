@@ -12,7 +12,7 @@ export default function PrivacyPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gray-950 pt-24 pb-20">
+      <main className="min-h-screen bg-[#F9F7F4] pt-24 pb-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold text-white mb-2">Privacy Policy</h1>
           <p className="text-gray-500 text-sm mb-10">Last updated: January 15, 2024</p>

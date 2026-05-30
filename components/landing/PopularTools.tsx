@@ -119,21 +119,21 @@ const POPULAR_TOOLS = [
 
 export function PopularTools() {
   return (
-    <section className="py-20 bg-[#09090b]">
+    <section className="py-20 bg-stone-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
           <div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-2">
+            <h2 className="text-3xl sm:text-4xl font-bold text-stone-900 mb-2">
               Most Popular Tools
             </h2>
-            <p className="text-gray-400 text-base">
+            <p className="text-stone-500 text-base">
               Used by 50,000+ professionals every day
             </p>
           </div>
           <Link
             href="/tools"
-            className="text-sm text-orange-400 hover:text-orange-300 font-medium transition-colors whitespace-nowrap self-start sm:self-auto"
+            className="text-sm text-orange-500 hover:text-orange-600 font-medium transition-colors whitespace-nowrap self-start sm:self-auto"
           >
             View all 37 tools →
           </Link>
@@ -147,13 +147,13 @@ export function PopularTools() {
               href={tool.href}
               className={`group relative flex flex-col p-4 rounded-xl border transition-all duration-200 hover:scale-[1.03] hover:shadow-lg ${
                 tool.pinned
-                  ? 'ring-1 ring-orange-500/25 bg-orange-500/[0.04] border-orange-500/20 hover:border-orange-500/40 hover:shadow-orange-500/10'
-                  : 'card border-zinc-800/50 hover:border-zinc-700'
+                  ? 'ring-1 ring-orange-200 bg-orange-50/60 border-orange-200 hover:border-orange-300 hover:shadow-orange-500/10'
+                  : 'bg-white border-stone-200 hover:border-stone-300 hover:shadow-stone-900/5'
               }`}
             >
               {/* Popular badge */}
               {tool.pinned && (
-                <span className="absolute -top-2.5 left-3 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-orange-500/15 border border-orange-500/25 text-orange-400 text-[10px] font-semibold tracking-wide">
+                <span className="absolute -top-2.5 left-3 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-orange-50 border border-orange-200 text-orange-500 text-[10px] font-semibold tracking-wide">
                   🔥 Most Popular
                 </span>
               )}
@@ -164,33 +164,33 @@ export function PopularTools() {
               </div>
 
               {/* Name */}
-              <h3 className="text-sm font-bold text-white leading-tight mb-1">
+              <h3 className="text-sm font-bold text-stone-900 leading-tight mb-1">
                 {tool.name}
               </h3>
 
               {/* Category badge */}
-              <span className="inline-block mb-2 text-[10px] px-1.5 py-0.5 rounded bg-gray-800/80 text-gray-500 w-fit">
+              <span className="inline-block mb-2 text-[10px] px-1.5 py-0.5 rounded bg-stone-100 text-stone-400 w-fit">
                 {tool.category}
               </span>
 
               {/* Description */}
-              <p className="text-gray-400 text-xs leading-relaxed flex-1 mb-3">
+              <p className="text-stone-500 text-xs leading-relaxed flex-1 mb-3">
                 {tool.desc}
               </p>
 
               {/* CTA */}
-              <div className="text-xs text-orange-400 font-medium group-hover:text-orange-300 transition-colors">
+              <div className="text-xs text-orange-500 font-medium group-hover:text-orange-600 transition-colors">
                 Try free →
               </div>
             </Link>
           ))}
         </div>
 
-        {/* Bottom link — visible on mobile where header link is less prominent */}
+        {/* Bottom link — visible on mobile */}
         <div className="mt-8 text-right sm:hidden">
           <Link
             href="/tools"
-            className="text-sm text-orange-400 hover:text-orange-300 font-medium transition-colors"
+            className="text-sm text-orange-500 hover:text-orange-600 font-medium transition-colors"
           >
             View all 37 tools →
           </Link>

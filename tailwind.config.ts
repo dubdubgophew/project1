@@ -59,17 +59,18 @@ const config: Config = {
       fontFamily: {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
         mono: ['var(--font-mono)', 'monospace'],
+        display: ['var(--font-display)', 'Georgia', 'serif'],
       },
       typography: {
         DEFAULT: {
           css: {
-            color: '#d1d5db',
-            a: { color: '#a78bfa' },
-            h1: { color: '#f9fafb' },
-            h2: { color: '#f9fafb' },
-            h3: { color: '#f3f4f6' },
-            strong: { color: '#f3f4f6' },
-            code: { color: '#c4b5fd', backgroundColor: '#1f2937' },
+            color: '#44403C',
+            a: { color: '#F97316' },
+            h1: { color: '#1C1917' },
+            h2: { color: '#1C1917' },
+            h3: { color: '#292524' },
+            strong: { color: '#292524' },
+            code: { color: '#ea580c', backgroundColor: '#FFF7ED' },
           },
         },
       },

@@ -40,149 +40,151 @@ export function Header() {
   }, []);
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-[#09090b]/90 backdrop-blur-xl border-b border-zinc-800/60' : 'bg-transparent'
-      }`}
-    >
-      {/* Top brand accent line */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-500/50 to-transparent" />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center shadow-lg shadow-orange-500/25 group-hover:shadow-orange-500/40 transition-shadow">
-              <Zap className="w-4 h-4 text-white" />
-            </div>
-            <span className="text-xl font-bold tracking-tight">
-              <span className="text-white">form</span>
-              <span className="gradient-text">ly</span>
-            </span>
-          </Link>
+    <header className="fixed top-0 left-0 right-0 z-50 pt-3 px-3 sm:px-4 lg:px-6">
+      {/* Floating pill container */}
+      <div className={`max-w-7xl mx-auto rounded-2xl transition-all duration-300 ${
+        scrolled
+          ? 'bg-white/98 backdrop-blur-xl border border-stone-200 shadow-lg shadow-stone-900/5'
+          : 'bg-white/85 backdrop-blur-md border border-stone-200/70'
+      }`}>
+        <div className="px-4 sm:px-5">
+          <div className="flex items-center justify-between h-14">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center shadow-md shadow-orange-500/25 group-hover:shadow-orange-500/40 transition-shadow">
+                <Zap className="w-4 h-4 text-white" />
+              </div>
+              <span className="text-xl font-bold tracking-tight">
+                <span className="text-stone-900">form</span>
+                <span className="gradient-text">ly</span>
+              </span>
+            </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-1">
-            {/* Tools Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setToolsOpen(!toolsOpen)}
-                onBlur={() => setTimeout(() => setToolsOpen(false), 150)}
-                className="flex items-center gap-1 px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-gray-800/60 transition-all"
-              >
-                Tools <ChevronDown className={`w-4 h-4 transition-transform ${toolsOpen ? 'rotate-180' : ''}`} />
-              </button>
-              {toolsOpen && (
-                <div onMouseDown={(e) => e.preventDefault()} className="absolute top-full left-0 mt-2 w-52 bg-gray-900 border border-gray-800 rounded-xl shadow-2xl overflow-hidden">
-                  {TOOLS_NAV.map((tool) => (
-                    <Link
-                      key={tool.href}
-                      href={tool.href}
-                      className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-gray-800 transition-colors"
-                    >
-                      {tool.name}
-                    </Link>
-                  ))}
-                  <div className="border-t border-gray-800 mt-1 pt-1">
-                    <Link
-                      href="/tools"
-                      className="block px-4 py-2.5 text-sm text-violet-400 hover:text-violet-300 hover:bg-gray-800 transition-colors font-medium"
-                    >
-                      View all tools →
-                    </Link>
+            {/* Desktop Nav */}
+            <nav className="hidden md:flex items-center gap-0.5">
+              <div className="relative">
+                <button
+                  onClick={() => setToolsOpen(!toolsOpen)}
+                  onBlur={() => setTimeout(() => setToolsOpen(false), 150)}
+                  className="flex items-center gap-1 px-3 py-2 rounded-lg text-sm text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition-all"
+                >
+                  Tools <ChevronDown className={`w-3.5 h-3.5 transition-transform ${toolsOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {toolsOpen && (
+                  <div onMouseDown={(e) => e.preventDefault()} className="absolute top-full left-0 mt-2 w-52 bg-white border border-stone-200 rounded-xl shadow-xl overflow-hidden">
+                    {TOOLS_NAV.map((tool) => (
+                      <Link
+                        key={tool.href}
+                        href={tool.href}
+                        className="block px-4 py-2.5 text-sm text-stone-600 hover:text-stone-900 hover:bg-stone-50 transition-colors"
+                      >
+                        {tool.name}
+                      </Link>
+                    ))}
+                    <div className="border-t border-stone-100 mt-1 pt-1">
+                      <Link
+                        href="/tools"
+                        className="block px-4 py-2.5 text-sm text-orange-500 hover:text-orange-600 hover:bg-orange-50 transition-colors font-medium"
+                      >
+                        View all tools →
+                      </Link>
+                    </div>
                   </div>
-                </div>
+                )}
+              </div>
+              <Link href="/pricing" className="px-3 py-2 rounded-lg text-sm text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition-all">
+                Pricing
+              </Link>
+              <Link href="/blog" className="px-3 py-2 rounded-lg text-sm text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition-all">
+                Blog
+              </Link>
+              <Link href="/news" className="px-3 py-2 rounded-lg text-sm text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition-all flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Trending
+              </Link>
+              <Link href="/ai-news" className="px-3 py-2 rounded-lg text-sm text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition-all flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse" />
+                AI News
+              </Link>
+            </nav>
+
+            {/* Search */}
+            <form onSubmit={e => { e.preventDefault(); if (q.trim()) { router.push(`/tools?q=${encodeURIComponent(q.trim())}`); setQ(''); } }}>
+              <div className="relative hidden md:block">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-stone-400" />
+                <input
+                  value={q}
+                  onChange={e => setQ(e.target.value)}
+                  placeholder="Search tools…"
+                  className="bg-stone-100 border border-stone-200 rounded-lg pl-8 pr-3 py-1.5 text-sm text-stone-700 w-32 focus:w-48 focus:border-orange-400 focus:bg-white focus:ring-1 focus:ring-orange-400/30 transition-all duration-200 focus:outline-none placeholder:text-stone-400"
+                />
+              </div>
+            </form>
+
+            {/* Auth Buttons */}
+            <div className="hidden md:flex items-center gap-2">
+              {user ? (
+                <Link href="/dashboard" className="btn-primary py-2 px-4 text-xs">
+                  Dashboard
+                </Link>
+              ) : (
+                <>
+                  <Link href="/login" className="text-sm text-stone-600 hover:text-stone-900 font-medium transition-colors px-2">
+                    Sign In
+                  </Link>
+                  <Link href="/signup" className="btn-primary py-2 px-4 text-xs">
+                    Get Started Free
+                  </Link>
+                </>
               )}
             </div>
-            <Link href="/pricing" className="px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-gray-800/60 transition-all">
-              Pricing
-            </Link>
-            <Link href="/blog" className="px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-gray-800/60 transition-all">
-              Blog
-            </Link>
-            <Link href="/news" className="px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-gray-800/60 transition-all flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Trending
-            </Link>
-            <Link href="/ai-news" className="px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-gray-800/60 transition-all flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
-              Latest in AI
-            </Link>
-          </nav>
 
-          {/* Search */}
-          <form onSubmit={e => { e.preventDefault(); if (q.trim()) { router.push(`/tools?q=${encodeURIComponent(q.trim())}`); setQ(''); } }}>
-            <div className="relative hidden md:block">
-              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-500" />
-              <input
-                value={q}
-                onChange={e => setQ(e.target.value)}
-                placeholder="Search tools…"
-                className="bg-gray-800/50 border border-gray-700 rounded-lg pl-8 pr-3 py-1.5 text-sm text-gray-300 w-36 focus:w-52 focus:border-violet-500 transition-all duration-200 focus:outline-none placeholder:text-gray-600"
-              />
-            </div>
-          </form>
-
-          {/* Auth Buttons */}
-          <div className="hidden md:flex items-center gap-3">
-            {user ? (
-              <Link href="/dashboard" className="btn-primary py-2 px-4 text-xs">
-                Dashboard
-              </Link>
-            ) : (
-              <>
-                <Link href="/login" className="btn-secondary py-2 px-4 text-xs">
-                  Sign In
-                </Link>
-                <Link href="/signup" className="btn-primary py-2 px-4 text-xs">
-                  Get Started Free
-                </Link>
-              </>
-            )}
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="md:hidden p-2 rounded-lg text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-colors"
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
-
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu — also floating */}
       {mobileOpen && (
-        <div className="md:hidden bg-[#09090b]/95 backdrop-blur-xl border-b border-zinc-800">
-          <div className="px-4 py-4 space-y-1">
+        <div className="md:hidden max-w-7xl mx-auto mt-1.5 rounded-2xl bg-white border border-stone-200 shadow-xl overflow-hidden">
+          <div className="px-4 py-4 space-y-0.5">
             {TOOLS_NAV.map((tool) => (
               <Link
                 key={tool.href}
                 href={tool.href}
                 onClick={() => setMobileOpen(false)}
-                className="block px-4 py-2.5 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-gray-800 transition-colors"
+                className="block px-4 py-2.5 rounded-lg text-sm text-stone-600 hover:text-stone-900 hover:bg-stone-50 transition-colors"
               >
                 {tool.name}
               </Link>
             ))}
-            <Link href="/tools" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-violet-400 font-medium hover:bg-gray-800 transition-colors">
-              All Tools
+            <Link href="/tools" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-orange-500 font-medium hover:bg-orange-50 transition-colors">
+              All Tools →
             </Link>
-            <Link href="/pricing" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-gray-800 transition-colors">
+            <div className="h-px bg-stone-100 my-1" />
+            <Link href="/pricing" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-stone-600 hover:text-stone-900 hover:bg-stone-50 transition-colors">
               Pricing
             </Link>
-            <Link href="/blog" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-gray-800 transition-colors">
+            <Link href="/blog" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-stone-600 hover:text-stone-900 hover:bg-stone-50 transition-colors">
               Blog
             </Link>
-            <Link href="/news" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-gray-800 transition-colors flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <Link href="/news" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-stone-600 hover:text-stone-900 hover:bg-stone-50 transition-colors flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               Trending
             </Link>
-            <Link href="/ai-news" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-gray-800 transition-colors flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
-              Latest in AI
+            <Link href="/ai-news" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-stone-600 hover:text-stone-900 hover:bg-stone-50 transition-colors flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse" />
+              AI News
             </Link>
-            <div className="pt-3 flex flex-col gap-2 border-t border-gray-800 mt-2">
+            <div className="h-px bg-stone-100 my-1" />
+            <div className="pt-1 pb-1 flex flex-col gap-2">
               {user ? (
                 <Link href="/dashboard" className="btn-primary w-full justify-center" onClick={() => setMobileOpen(false)}>
                   Dashboard

@@ -38,7 +38,7 @@ const FAQS = [
   },
   {
     q: 'What tools does Formly offer for free?',
-    a: 'Formly offers 28 free AI-powered and utility tools, including a PDF summarizer, paraphraser, grammar checker, AI email writer, pay stub generator, resume builder, contract generator, JSON formatter, base64 encoder, regex tester, diff checker, PDF-to-Markdown converter, expense splitter, loan/EMI calculator, word counter, QR code generator, digital signature creator, and more. All tools are accessible without an account.',
+    a: 'Formly offers 37 free AI-powered and utility tools, including a PDF summarizer, paraphraser, grammar checker, AI email writer, pay stub generator, resume builder, contract generator, JSON formatter, base64 encoder, regex tester, diff checker, PDF-to-Markdown converter, expense splitter, loan/EMI calculator, word counter, QR code generator, digital signature creator, and more. All tools are accessible without an account.',
   },
   {
     q: 'Can I use Formly tools without creating an account?',
@@ -78,11 +78,11 @@ export function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className="section bg-gray-950" id="faq">
+    <section className="section bg-[#F9F7F4]" id="faq">
       <div className="container-narrow">
         <div className="text-center mb-12">
-          <p className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-3">FAQ</p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+          <p className="text-sm font-semibold text-orange-500 uppercase tracking-wider mb-3">FAQ</p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-stone-900 mb-4">
             Frequently Asked Questions
           </h2>
         </div>
@@ -92,22 +92,24 @@ export function FAQ() {
             <div
               key={i}
               className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
-                open === i ? 'bg-gray-900 border-violet-500/30' : 'bg-gray-900/50 border-gray-800 hover:border-gray-700'
+                open === i
+                  ? 'bg-white border-orange-200 shadow-sm'
+                  : 'bg-white border-stone-200 hover:border-stone-300'
               }`}
             >
               <button
                 onClick={() => setOpen(open === i ? null : i)}
                 className="w-full flex items-center justify-between p-6 text-left"
               >
-                <span className="font-semibold text-white pr-4">{faq.q}</span>
+                <span className="font-semibold text-stone-900 pr-4">{faq.q}</span>
                 <ChevronDown
-                  className={`w-5 h-5 text-gray-400 shrink-0 transition-transform duration-200 ${
-                    open === i ? 'rotate-180 text-violet-400' : ''
+                  className={`w-5 h-5 text-stone-400 shrink-0 transition-transform duration-200 ${
+                    open === i ? 'rotate-180 text-orange-500' : ''
                   }`}
                 />
               </button>
               {open === i && (
-                <div className="px-6 pb-6 text-gray-400 text-sm leading-relaxed">
+                <div className="px-6 pb-6 text-stone-600 text-sm leading-relaxed">
                   {faq.a}
                 </div>
               )}
