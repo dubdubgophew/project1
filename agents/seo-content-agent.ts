@@ -73,12 +73,13 @@ export async function generateBlogPost(keyword?: string): Promise<BlogPost | nul
     const titleResponse = await callAI([
       {
         role: 'system',
-        content: `You are an expert SEO content strategist. Generate a compelling, click-worthy blog post title for the given keyword.
-The title should:
+        content: `You are an SEO content strategist. Generate a full, specific blog post title for the given keyword.
+Rules:
+- MUST be a complete sentence or phrase (min 6 words)
 - Include the keyword naturally
-- Be under 65 characters
-- Be actionable and specific
-- Target search intent
+- Under 65 characters
+- Examples of good titles: "How to Summarize a YouTube Video for Free", "Best Free Grammar Checker Better Than Grammarly", "Generate Instagram Hashtags Free with AI"
+- NO generic 2-3 word titles like "Teach Code" or "Free Tool"
 
 Return ONLY valid JSON: {"title": "...", "tags": ["tag1", "tag2", "tag3"]}`,
       },
@@ -181,8 +182,8 @@ export async function runSEOAgent(count = 3): Promise<{ generated: number; posts
   for (let i = 0; i < count; i++) {
     const post = await generateBlogPost();
     if (post) posts.push(post.title);
-    // Small delay between API calls
-    await new Promise((r) => setTimeout(r, 2000));
+    // Delay to avoid Groq rate limits
+    await new Promise((r) => setTimeout(r, 5000));
   }
 
   return { generated: posts.length, posts };

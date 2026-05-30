@@ -193,7 +193,7 @@ export async function runTrafficSEOAgent(trigger = 'cron'): Promise<{
               );
             }
           }
-          await new Promise(r => setTimeout(r, 2000));
+          await new Promise(r => setTimeout(r, 5000));
         } catch (err) {
           console.error(`[SEO Agent] New post generation error:`, err);
         }
@@ -228,7 +228,7 @@ export async function runTrafficSEOAgent(trigger = 'cron'): Promise<{
           newPostsQueued++;
           appliedDetails.push(`content post: "${post.title}"`);
         }
-        await new Promise(r => setTimeout(r, 2000));
+        await new Promise(r => setTimeout(r, 5000));
       } catch (err) {
         console.error('[SEO Agent] Content-only post error:', err);
       }
