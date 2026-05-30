@@ -9,12 +9,12 @@ import {
   Undo2, Redo2, Trash2, Download, Upload, ZoomIn, ZoomOut,
   Maximize2, Sparkles, X, ChevronDown, AlignCenter,
   Bold, Italic, Lock, Unlock, Copy, Settings,
-  Home, ExternalLink,
+  Home, ExternalLink, Image as ImageIcon, Menu,
 } from 'lucide-react';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type ElemType = 'rect' | 'ellipse' | 'diamond' | 'triangle' | 'arrow' | 'line' | 'text' | 'pen' | 'sticky';
+type ElemType = 'rect' | 'ellipse' | 'diamond' | 'triangle' | 'arrow' | 'line' | 'text' | 'pen' | 'sticky' | 'image';
 type Tool     = 'select' | 'hand' | 'rect' | 'ellipse' | 'diamond' | 'triangle' | 'arrow' | 'line' | 'text' | 'pen' | 'sticky' | 'eraser';
 type Mode     = 'clean' | 'sketchy' | 'blueprint';
 interface Pt  { x: number; y: number }
@@ -38,6 +38,7 @@ interface Elem {
   italic?:   boolean;
   locked?:   boolean;
   seed:      number;
+  imageUrl?: string;
 }
 
 interface DragState {
@@ -77,6 +78,9 @@ const DEFAULT_STYLE: Pick<Elem, 'stroke' | 'fill' | 'lineWidth' | 'opacity' | 'f
 
 function uid(): string { return Math.random().toString(36).slice(2, 10); }
 function clamp(v: number, lo: number, hi: number): number { return Math.max(lo, Math.min(hi, v)); }
+
+const imgCache = new Map<string, HTMLImageElement>();
+let _renderTrigger: (() => void) | null = null;
 
 function seededRng(seed: number) {
   let s = seed;
@@ -162,13 +166,13 @@ function getResizeCursor(handle: string): string {
 
 // ─── Canvas Rendering ─────────────────────────────────────────────────────────
 
-function drawBackground(ctx: CanvasRenderingContext2D, w: number, h: number, pan: Pt, zoom: number, mode: Mode) {
+function drawBackground(ctx: CanvasRenderingContext2D, w: number, h: number, pan: Pt, zoom: number, mode: Mode, bgColor = '#ffffff') {
   ctx.clearRect(0, 0, w, h);
   if (mode === 'blueprint') {
     ctx.fillStyle = '#0a1628';
     ctx.fillRect(0, 0, w, h);
   } else {
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = bgColor;
     ctx.fillRect(0, 0, w, h);
   }
 
@@ -264,9 +268,8 @@ function drawLabel(ctx: CanvasRenderingContext2D, label: string, cx: number, cy:
   const fs = el.fontSize ?? 15;
   const weight = el.bold ? 'bold ' : '';
   const style  = el.italic ? 'italic ' : '';
-  const fontFamily = mode === 'sketchy' ? "'Caveat', cursive" : "-apple-system, Inter, sans-serif";
-  const fontSizePx = mode === 'sketchy' ? fs * 1.05 : fs; // Caveat renders at near-normal size
-  ctx.font = `${style}${weight}${fontSizePx}px ${fontFamily}`;
+  const fontSizePx = fs * 1.1;
+  ctx.font = `${style}${weight}${fontSizePx}px 'Caveat', cursive`;
   ctx.fillStyle = mode === 'blueprint' ? '#93c5fd' : '#1e1e2e';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
@@ -429,19 +432,16 @@ function drawElement(ctx: CanvasRenderingContext2D, el: Elem, mode: Mode) {
   }
 
   else if (el.type === 'text') {
-    const { x, y, w, h } = el;
+    const { x, y, w } = el;
     const text = el.text ?? el.label ?? '';
     if (text) {
       const fs = el.fontSize ?? 16;
       const weight = el.bold ? 'bold ' : '';
       const st = el.italic ? 'italic ' : '';
-      const fontFamily = mode === 'sketchy' ? "'Caveat', cursive" : "-apple-system, Inter, sans-serif";
-      const fontSizePx = mode === 'sketchy' ? fs * 1.2 : fs;
-      ctx.font = `${st}${weight}${fontSizePx}px ${fontFamily}`;
+      ctx.font = `${st}${weight}${fs * 1.1}px 'Caveat', cursive`;
       ctx.fillStyle = mode === 'blueprint' ? '#93c5fd' : '#1e1e2e';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      // Word wrap
       const words = text.split(' ');
       const lines: string[] = [];
       let line = '';
@@ -454,6 +454,19 @@ function drawElement(ctx: CanvasRenderingContext2D, el: Elem, mode: Mode) {
       if (line) lines.push(line);
       const lineH = fs * 1.4;
       lines.forEach((l, i) => ctx.fillText(l, x + 4, y + 4 + i * lineH));
+    }
+  }
+
+  else if (el.type === 'image' && el.imageUrl) {
+    let img = imgCache.get(el.imageUrl);
+    if (!img) {
+      img = new Image();
+      imgCache.set(el.imageUrl, img);
+      img.onload = () => _renderTrigger?.();
+      img.src = el.imageUrl;
+    } else if (img.complete && img.naturalWidth > 0) {
+      ctx.globalAlpha = el.opacity;
+      ctx.drawImage(img, el.x, el.y, el.w, el.h);
     }
   }
 
@@ -528,6 +541,9 @@ export function Diagrify() {
   const [editText,   setEditText]   = useState('');
   const [showLayers, setShowLayers] = useState(false);
   const [saveIndicator, setSaveIndicator] = useState(false);
+  const [showMenu,   setShowMenu]   = useState(false);
+  const [canvasBg,   setCanvasBg]   = useState('#ffffff');
+  const [toolLocked, setToolLocked] = useState(false);
 
   // Drawing state (mutable, no re-render needed)
   const drag    = useRef<DragState | null>(null);
@@ -540,7 +556,13 @@ export function Diagrify() {
   const spaceHeld = useRef(false);
   const clipboardRef = useRef<Elem[]>([]);
   const toolRef = useRef<Tool>(tool);
+  const toolLockedRef = useRef(false);
+  const imageFileRef = useRef<HTMLInputElement>(null);
+  const jsonFileRef = useRef<HTMLInputElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const exportPNGRef = useRef<() => void>(() => {});
   useEffect(() => { toolRef.current = tool; }, [tool]);
+  useEffect(() => { toolLockedRef.current = toolLocked; }, [toolLocked]);
 
   // DPR
   const dpr = useRef(typeof window !== 'undefined' ? (window.devicePixelRatio || 1) : 1);
@@ -578,7 +600,7 @@ export function Diagrify() {
 
     ctx.save();
     ctx.scale(dpr.current, dpr.current);
-    drawBackground(ctx, w, h, pan, zoom, mode);
+    drawBackground(ctx, w, h, pan, zoom, mode, canvasBg);
 
     ctx.save();
     ctx.translate(pan.x, pan.y);
@@ -606,6 +628,7 @@ export function Diagrify() {
   }, [elements, selectedIds, pan, zoom, mode]);
 
   useEffect(() => { render(); }, [render]);
+  useEffect(() => { _renderTrigger = render; return () => { _renderTrigger = null; }; }, [render]);
 
   // Load canvas state from localStorage on mount
   useEffect(() => {
@@ -977,13 +1000,11 @@ export function Diagrify() {
       // Discard tiny elements
       const b = getElementBounds(el);
       if (b.w < MIN_SIZE && b.h < MIN_SIZE && el.type !== 'pen') {
-        // Click without drag → create default-sized element
         if (el.type !== 'arrow' && el.type !== 'line') {
           el.w = el.type === 'sticky' ? 140 : 140;
           el.h = el.type === 'sticky' ? 80 : 60;
         }
-        // Auto-switch back to select tool (like Excalidraw)
-        setTool('select');
+        if (!toolLockedRef.current) setTool('select');
       }
       if ((el.type === 'pen') && (!el.pts || el.pts.length < 4)) {
         drawing.current = null;
@@ -992,8 +1013,7 @@ export function Diagrify() {
       drawing.current = null;
       addElements([el]);
 
-      // Auto-switch back to select tool (like Excalidraw)
-      if (el.type !== 'pen') {
+      if (el.type !== 'pen' && !toolLockedRef.current) {
         setTool('select');
       }
 
@@ -1053,6 +1073,8 @@ export function Diagrify() {
       if (mod && e.key === 'z') { e.preventDefault(); e.shiftKey ? redo() : undo(); return; }
       if (mod && e.key === 'y') { e.preventDefault(); redo(); return; }
       if (mod && e.key === 'a') { e.preventDefault(); setSelectedIds(elements.map(el => el.id)); return; }
+      if (mod && e.shiftKey && e.key === 'E') { e.preventDefault(); exportPNGRef.current(); return; }
+      if (e.key === 'i' && !mod) { imageFileRef.current?.click(); return; }
       if (mod && e.key === 'c') {
         e.preventDefault();
         clipboardRef.current = elements.filter(el => selectedIds.includes(el.id)).map(el => ({...el}));
@@ -1242,6 +1264,7 @@ export function Diagrify() {
     const a = document.createElement('a');
     a.href = url; a.download = 'diagrify.png'; a.click();
   }, []);
+  useEffect(() => { exportPNGRef.current = exportPNG; }, [exportPNG]);
 
   const exportSVG = useCallback(() => {
     if (elements.length === 0) return;
@@ -1274,6 +1297,31 @@ export function Diagrify() {
     a.href = url; a.download = 'diagrify.svg'; a.click();
     URL.revokeObjectURL(url);
   }, [elements]);
+
+  const exportJSON = useCallback(() => {
+    const data = JSON.stringify({ elements, pan, zoom }, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'diagrify.json'; a.click();
+    URL.revokeObjectURL(url);
+  }, [elements, pan, zoom]);
+
+  const importJSON = useCallback((file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target?.result as string);
+        if (Array.isArray(data.elements)) {
+          setElements(data.elements);
+          if (data.pan && typeof data.pan.x === 'number') setPan(data.pan);
+          if (typeof data.zoom === 'number' && data.zoom > 0) setZoom(data.zoom);
+          pushHistory(data.elements);
+        }
+      } catch { /* invalid JSON */ }
+    };
+    reader.readAsText(file);
+  }, [pushHistory]);
 
   const clearAll = useCallback(() => {
     setElements([]);
@@ -1348,15 +1396,108 @@ export function Diagrify() {
   return (
     <div className="w-screen h-screen bg-white flex flex-col overflow-hidden" style={{ fontFamily: '-apple-system, Inter, sans-serif' }}>
 
+      {/* Hidden file inputs */}
+      <input ref={imageFileRef} type="file" accept="image/*" className="hidden" onChange={e => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+          const url = ev.target?.result as string;
+          const img = new Image();
+          img.onload = () => {
+            const aspect = img.naturalWidth / (img.naturalHeight || 1);
+            const w = Math.min(400, img.naturalWidth);
+            const h = w / aspect;
+            const canvas = canvasRef.current;
+            const vw = canvas ? canvas.width / dpr.current : 800;
+            const vh = canvas ? canvas.height / dpr.current : 600;
+            const cx = (vw / 2 - pan.x) / zoom;
+            const cy = (vh / 2 - pan.y) / zoom;
+            const el: Elem = {
+              id: uid(), type: 'image',
+              x: cx - w / 2, y: cy - h / 2, w, h,
+              imageUrl: url,
+              stroke: 'transparent', fill: 'transparent',
+              lineWidth: 0, opacity: 1, seed: Math.floor(Math.random() * 100000),
+            };
+            imgCache.set(url, img);
+            addElements([el]);
+          };
+          img.src = url;
+        };
+        reader.readAsDataURL(file);
+        e.target.value = '';
+        setTool('select');
+      }} />
+      <input ref={jsonFileRef} type="file" accept=".json" className="hidden" onChange={e => {
+        const file = e.target.files?.[0];
+        if (file) importJSON(file);
+        (e.target as HTMLInputElement).value = '';
+      }} />
+
       {/* ── Top bar (Excalidraw-style) ── */}
       <div className="flex items-center h-12 border-b border-stone-200 bg-white shrink-0 z-20 px-3 gap-2">
-        {/* Logo left */}
+        {/* Hamburger menu */}
+        <div className="relative shrink-0">
+          <button
+            onClick={() => setShowMenu(v => !v)}
+            className={`flex items-center justify-center w-9 h-8 rounded-lg transition-all ${showMenu ? 'bg-stone-100 text-stone-900' : 'text-stone-500 hover:bg-stone-100 hover:text-stone-900'}`}
+            title="Menu"
+          >
+            <Menu style={{ width: 16, height: 16 }} />
+          </button>
+          {showMenu && (
+            <>
+              <div className="fixed inset-0 z-40" onClick={() => setShowMenu(false)} />
+              <div className="absolute top-full left-0 mt-1 w-60 bg-white border border-stone-200 rounded-xl shadow-xl z-50 py-1.5 overflow-hidden">
+                <button onClick={() => { jsonFileRef.current?.click(); setShowMenu(false); }}
+                  className="w-full flex items-center gap-3 px-4 py-2 text-sm text-stone-700 hover:bg-stone-50 transition-colors">
+                  <Upload style={{ width: 14, height: 14 }} /> Open…
+                </button>
+                <button onClick={() => { exportJSON(); setShowMenu(false); }}
+                  className="w-full flex items-center gap-3 px-4 py-2 text-sm text-stone-700 hover:bg-stone-50 transition-colors">
+                  <Download style={{ width: 14, height: 14 }} /> Save to…
+                </button>
+                <button onClick={() => { exportPNG(); setShowMenu(false); }}
+                  className="w-full flex items-center justify-between px-4 py-2 text-sm text-stone-700 hover:bg-stone-50 transition-colors">
+                  <span className="flex items-center gap-3"><Download style={{ width: 14, height: 14 }} /> Export image</span>
+                  <span className="text-xs text-stone-400 font-mono">⇧⌘E</span>
+                </button>
+                <button onClick={() => { exportSVG(); setShowMenu(false); }}
+                  className="w-full flex items-center gap-3 px-4 py-2 text-sm text-stone-700 hover:bg-stone-50 transition-colors">
+                  <ExternalLink style={{ width: 14, height: 14 }} /> Export SVG
+                </button>
+                <div className="h-px bg-stone-100 my-1" />
+                <button onClick={() => { clearAll(); setShowMenu(false); }}
+                  className="w-full flex items-center gap-3 px-4 py-2 text-sm text-rose-500 hover:bg-rose-50 transition-colors">
+                  <Trash2 style={{ width: 14, height: 14 }} /> Reset the canvas
+                </button>
+                <div className="h-px bg-stone-100 my-1" />
+                <div className="px-4 py-2">
+                  <p className="text-[11px] font-medium text-stone-400 mb-2 uppercase tracking-wide">Canvas background</p>
+                  <div className="flex gap-2">
+                    {['#ffffff', '#f8f9fa', '#f5f0eb', '#fefce8', '#1e1e2e'].map(bg => (
+                      <button key={bg} onClick={() => setCanvasBg(bg)}
+                        className="w-7 h-7 rounded-full border-2 transition-all hover:scale-110"
+                        style={{ backgroundColor: bg, borderColor: canvasBg === bg ? '#f97316' : '#d1d5db' }}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="h-px bg-stone-100 my-1" />
+                <a href="/tools" className="w-full flex items-center gap-3 px-4 py-2 text-sm text-stone-500 hover:bg-stone-50 transition-colors">
+                  <Home style={{ width: 14, height: 14 }} /> All Formly Tools
+                </a>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Logo */}
         <div className="flex items-center gap-2 shrink-0">
-          <a href="/tools" title="All Formly Tools">
-            <div className="w-7 h-7 rounded-md bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-sm hover:shadow-orange-500/30 transition-shadow">
-              <span className="text-white text-xs font-bold">D</span>
-            </div>
-          </a>
+          <div className="w-7 h-7 rounded-md bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-sm">
+            <span className="text-white text-xs font-bold">D</span>
+          </div>
           <span className="text-sm font-semibold text-stone-700 hidden sm:block">Diagrify</span>
           {saveIndicator && <span className="text-[10px] text-emerald-500 font-medium animate-pulse">● saved</span>}
         </div>
@@ -1366,6 +1507,18 @@ export function Diagrify() {
         {/* Center: Horizontal tool bar */}
         <div className="flex flex-1 justify-center overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
           <div className="flex items-center gap-0.5 bg-white border border-stone-200 rounded-xl px-1.5 py-1 shadow-sm shrink-0">
+            {/* Tool lock */}
+            <button
+              onClick={() => setToolLocked(v => !v)}
+              title={toolLocked ? 'Tool locked — click to unlock' : 'Lock tool (keep after drawing)'}
+              className={`group relative flex items-center justify-center w-9 h-8 rounded-lg transition-all ${toolLocked ? 'bg-orange-100 text-orange-600' : 'text-stone-400 hover:bg-stone-100 hover:text-stone-700'}`}
+            >
+              {toolLocked ? <Lock style={{ width: 14, height: 14 }} /> : <Unlock style={{ width: 14, height: 14 }} />}
+              <div className="absolute top-full mt-1.5 px-2 py-1 bg-stone-800 rounded-lg text-[11px] text-white whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 shadow-lg">
+                {toolLocked ? 'Unlock tool' : 'Lock tool'}
+              </div>
+            </button>
+            <div className="w-px h-5 bg-stone-200 mx-0.5 shrink-0" />
             {TOOLS.map(({ id, icon: Icon, label, key }) => (
               <button
                 key={id}
@@ -1383,6 +1536,17 @@ export function Diagrify() {
                 </div>
               </button>
             ))}
+            {/* Image insert */}
+            <button
+              onClick={() => imageFileRef.current?.click()}
+              title="Insert image (I)"
+              className="group relative flex items-center justify-center w-9 h-8 rounded-lg transition-all text-stone-500 hover:bg-stone-100 hover:text-stone-900"
+            >
+              <ImageIcon style={{ width: 16, height: 16 }} />
+              <div className="absolute top-full mt-1.5 px-2 py-1 bg-stone-800 rounded-lg text-[11px] text-white whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 shadow-lg">
+                Image <span className="text-stone-400 font-mono ml-1">I</span>
+              </div>
+            </button>
             <div className="w-px h-5 bg-stone-200 mx-1 shrink-0" />
             {(['clean', 'sketchy'] as Mode[]).map(m => (
               <button
@@ -1469,8 +1633,8 @@ export function Diagrify() {
               }}
               className="w-full h-full resize-none bg-transparent border-none outline-none text-gray-900 text-center"
               style={{
-                fontFamily: mode === 'sketchy' ? "'Caveat', cursive" : "-apple-system, Inter, sans-serif",
-                fontSize: `${(elements.find(e => e.id === editingId)?.fontSize ?? 15) * (mode === 'sketchy' ? 1.2 : 1) * zoom}px`,
+                fontFamily: "'Caveat', cursive",
+                fontSize: `${(elements.find(e => e.id === editingId)?.fontSize ?? 15) * 1.1 * zoom}px`,
                 caretColor: '#f97316',
                 padding: '4px',
               }}
@@ -1502,7 +1666,7 @@ export function Diagrify() {
 
         {/* Shortcuts — bottom right */}
         <div className="absolute bottom-4 right-4 text-[10px] text-stone-400 pointer-events-none select-none">
-          <span className="font-mono">Ctrl+Scroll</span> zoom · <span className="font-mono">H</span> pan · <span className="font-mono">Cmd+Z</span> undo
+          <span className="font-mono">Ctrl+Scroll</span> zoom · <span className="font-mono">Space</span> pan · <span className="font-mono">⇧⌘E</span> export · <span className="font-mono">I</span> image
         </div>
 
         {/* ── Floating style panel (right side, only when element selected and AI panel closed) ── */}
