@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import { ToolSchemas } from '@/components/shared/ToolSchemas';
 
 export const metadata: Metadata = {
-  title: 'HRA Exemption Calculator India 2025 — Section 10(13A) | Formly',
+  title: 'HRA Exemption Calculator India 2026 — Section 10(13A) | Formly',
   description: 'Calculate HRA exemption from income tax under Section 10(13A). Find exempt vs taxable HRA for metro and non-metro cities. Free, instant calculation.',
   keywords: ['hra calculator india', 'hra exemption calculator', 'house rent allowance calculator', 'hra tax exemption calculator', 'section 10 13a calculator', 'hra calculator 2025', 'taxable hra calculator', 'hra exemption formula india'],
   openGraph: {
-    title: 'HRA Exemption Calculator India 2025 | Formly',
+    title: 'HRA Exemption Calculator India 2026 | Formly',
     description: 'Calculate HRA exemption under Section 10(13A). Metro & non-metro cities. Old vs new tax regime. Free, instant.',
     url: 'https://formly.tools/tools/hra-calculator',
     type: 'website',
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'HRA Exemption Calculator India 2025 | Formly',
+    title: 'HRA Exemption Calculator India 2026 | Formly',
     description: 'Free HRA exemption calculator — Section 10(13A), metro & non-metro, old tax regime. No signup.',
   },
   alternates: { canonical: 'https://formly.tools/tools/hra-calculator' },

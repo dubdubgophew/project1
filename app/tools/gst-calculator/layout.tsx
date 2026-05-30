@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import { ToolSchemas } from '@/components/shared/ToolSchemas';
 
 export const metadata: Metadata = {
-  title: 'GST Calculator India 2025 — Add/Remove GST Instantly | Formly',
-  description: 'Calculate GST in India instantly. Add or remove GST from any amount at 5%, 12%, 18%, 28% rates. CGST, SGST, IGST breakdown. Free GST calculator 2025.',
+  title: 'GST Calculator India 2026 — Add/Remove GST Instantly | Formly',
+  description: 'Calculate GST in India instantly. Add or remove GST from any amount at 5%, 12%, 18%, 28% rates. CGST, SGST, IGST breakdown. Free GST calculator 2026.',
   keywords: ['gst calculator india', 'gst calculator online', 'gst calculator 2025', 'add gst calculator', 'remove gst from amount', 'gst inclusive exclusive calculator', 'cgst sgst calculator', 'igst calculator', '18% gst calculator', 'gst amount calculator'],
   openGraph: {
-    title: 'GST Calculator India 2025 | Formly',
+    title: 'GST Calculator India 2026 | Formly',
     description: 'Add or remove GST at any rate. CGST + SGST or IGST breakdown. Rate comparison table. Free.',
     url: 'https://formly.tools/tools/gst-calculator',
     type: 'website',
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'GST Calculator India 2025 | Formly',
+    title: 'GST Calculator India 2026 | Formly',
     description: 'Free GST calculator — add/remove GST, CGST SGST IGST breakdown, rate comparison. No signup.',
   },
   alternates: { canonical: 'https://formly.tools/tools/gst-calculator' },

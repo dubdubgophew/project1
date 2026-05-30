@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import { ToolSchemas } from '@/components/shared/ToolSchemas';
 
 export const metadata: Metadata = {
-  title: 'Gratuity Calculator India 2025 — Gratuity Act Formula | Formly',
+  title: 'Gratuity Calculator India 2026 — Gratuity Act Formula | Formly',
   description: 'Calculate gratuity amount as per Payment of Gratuity Act, 1972. Find taxable and exempt gratuity. Supports both covered and non-covered employees. Free.',
   keywords: ['gratuity calculator india', 'gratuity calculator', 'payment of gratuity act calculator', 'gratuity formula india', 'gratuity calculation 5 years', 'gratuity exemption calculator', 'gratuity 2025 india', 'gratuity calculator online free'],
   openGraph: {
-    title: 'Gratuity Calculator India 2025 | Formly',
+    title: 'Gratuity Calculator India 2026 | Formly',
     description: 'Gratuity calculator as per Gratuity Act, 1972. Covered & non-covered employees. Tax exemption up to ₹20L. Free.',
     url: 'https://formly.tools/tools/gratuity-calculator',
     type: 'website',
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Gratuity Calculator India 2025 | Formly',
+    title: 'Gratuity Calculator India 2026 | Formly',
     description: 'Free gratuity calculator — Payment of Gratuity Act formula, tax exemption, covered & non-covered employees.',
   },
   alternates: { canonical: 'https://formly.tools/tools/gratuity-calculator' },
