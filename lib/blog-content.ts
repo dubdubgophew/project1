@@ -2263,6 +2263,54 @@ export const BLOG_POSTS: BlogPost[] = [
       { q: 'Is YouTube summarizing legal?', a: 'Yes. YouTube provides public transcript data through its API for accessibility purposes. Using publicly available transcripts for summarization falls under fair use. You are creating a derivative summary for personal use, not republishing the full transcript or video content.' },
     ],
   },
+  {
+    slug: 'iron-core-30-day-military-calisthenics',
+    title: 'Iron Core: 30-Day Military Calisthenics Program — Complete Guide for Beginners',
+    metaDescription: 'Complete 30-day military calisthenics workout program. Beginner to advanced progressive training — planks, hollow body, leg raises, flutter kicks. Free tracker with diet plan and ancient wisdom.',
+    category: 'productivity',
+    toolSlug: 'iron-core-workout',
+    toolName: 'Iron Core Workout Tracker',
+    readingTime: 8,
+    publishedAt: '2026-05-30',
+    updatedAt: '2026-05-30',
+    intro: 'Military calisthenics is the world\'s oldest fitness system — used by armies, warriors, and athletes for centuries to build functional strength, endurance, and mental toughness without a single piece of equipment. The Iron Core 30-Day Protocol is a structured, progressive program that takes you from absolute beginner to a strong, disciplined foundation. No gym. No equipment. Just your body, the floor, and discipline.',
+    sections: [
+      {
+        heading: 'What Is Military Calisthenics?',
+        body: 'Military calisthenics refers to bodyweight training systems used by armed forces worldwide — characterized by strict form, timed holds, high-rep endurance work, and progressive overload over weeks. Unlike gym training which often isolates muscles, military calisthenics builds functional fitness: core stability, shoulder endurance, hip flexor strength, and the mental capacity to hold position when everything hurts. The exercises — planks, hollow body holds, leg raises, flutter kicks — are the same ones used in Indian Army, Navy SEAL, and Royal Marines fitness programs.',
+      },
+      {
+        heading: 'The Iron Core 3-Phase Structure',
+        body: 'Phase 1 — Foundation (Days 1-10): Establishes proper form for all core exercises. Volume is low, rest is ample. Many people are humbled by Day 1 — a 20-second plank held with proper form is harder than it looks. Phase 2 — Endurance (Days 11-20): Introduces new exercises (Side Planks, V-Sit Hold, Flutter Kicks). Volume increases significantly. This is where most people quit — and where the real gains happen. Phase 3 — Iron Core (Days 21-30): Maximum volume, longest holds, highest reps. By Day 21, exercises that felt impossible on Day 1 are warm-up territory.',
+      },
+      {
+        heading: 'The 5 Core Exercises and Why They Work',
+        body: 'Plank Hold: The foundational isometric exercise. Activates transverse abdominis (deepest core muscle), erector spinae, glutes, and shoulders simultaneously. Military standard: 2 minutes without form break. Hollow Body Hold: Used by gymnasts and special forces alike. Forces lower back to ground, challenging the entire anterior chain. Leg Raises: Targets hip flexors and lower abs — the muscles most weakened by desk work. The 3-second slow descent builds eccentric strength. Flutter Kicks: Endurance exercise counting military style (1-2-3-ONE). Used in Navy SEAL training as both a conditioning exercise and mental toughness tool. V-Sit Hold: Advanced exercise introduced in Phase 2. Balances on sit bones with both legs and torso at 45° — requires exceptional hip flexor strength and core stability.',
+      },
+      {
+        heading: 'Progressive Overload: The Science Behind the 30 Days',
+        body: 'Progressive overload is the principle that adaptation requires incrementally greater challenge. The Iron Core program implements this systematically: plank hold starts at 3×20 seconds (Day 1) and reaches 6×70 seconds (Day 27). Total plank volume increases from 60 seconds to 420 seconds over 30 days. This progression rate is scientifically calibrated — fast enough to drive adaptation, slow enough to prevent injury. The program tests you on Days 10, 20, and 30 with MAX effort sets — benchmark your progress and set personal records.',
+      },
+      {
+        heading: 'The Diet Component: Fueling Performance',
+        body: 'The Iron Core program includes a 4-week vegetarian Indian meal plan designed to support training adaptation. Week 1 (Detox & Foundation): Whole foods, reduced processed sugar, daily turmeric. Week 2 (Protein Build): Emphasis on legumes, paneer, Greek-style dahi, peanuts. Week 3 (Peak Fuel): Highest calorie week matching peak training volume. Week 4 (Lean Finish): Slight calorie reduction, intermittent start (water only till 8 AM). The plan targets 1800-2100 kcal/day from whole vegetarian foods — no supplements required.',
+      },
+      {
+        heading: 'Ancient Wisdom Integration: Why This Matters',
+        body: 'The Iron Core protocol integrates ancient practices proven to support physical training: Surya Namaskar (12 rounds daily as warmup), Pranayama for breath control, Trataka for concentration training, Vipassana-style body awareness during holds. These aren\'t optional extras — elite athletes worldwide are discovering what Indian and Japanese traditions knew for millennia: physical and mental training are inseparable. The morning protocol (Brahma Muhurta wake, copper water, sunlight exposure, cold shower) is based on Ayurvedic science validated by modern circadian biology research.',
+      },
+      {
+        heading: 'How to Use the Iron Core Tracker on Formly',
+        body: 'Open the Iron Core Workout tool at formly.tools/tools/iron-core-workout. Each day shows your mission: exercises, sets, and targets. Tap 👁 on any exercise for a form diagram and coaching cues. Check off exercises as you complete them. Use the built-in rest timer (adjustable 30-90 seconds between sets). Log personal records on the Records tab — your best plank time, V-sit hold, etc. Your progress is automatically saved in your browser — no account needed. The Calendar tab shows your 30-day journey at a glance.',
+      },
+    ],
+    faqs: [
+      { q: 'Can absolute beginners do this program?', a: 'Yes. Day 1 starts with 3×20-second planks and 2×8 leg raises — designed for someone who has never trained. The program\'s value is the structure and progression, not starting intensity. Most beginners are surprised how challenging proper hollow body holds are even on Day 1.' },
+      { q: 'How many days a week should I train?', a: 'The program has built-in rest days (Days 2, 5, 8, 12, 15, 18, 22, 25, 28) — approximately 2-3 rest days per week. Do not skip rest days or add extra sessions during the first 30 days. Recovery is when adaptation happens.' },
+      { q: 'What if I miss a day?', a: 'Do not try to make up two days in one session. Simply resume where you left off. Completing 30 days in 35-40 calendar days is perfectly fine. The program resets your streak counter — use this as data, not judgment.' },
+      { q: 'Will I see visible abs after 30 days?', a: 'Visible abs depend primarily on body fat percentage, which is determined mostly by diet. 30 days of Iron Core will significantly strengthen your core, improve posture, and build endurance. Combined with the diet plan, visible change is likely — but the core strength improvement will be dramatic regardless.' },
+    ],
+  },
 ];
 
 export const BLOG_CATEGORIES = [

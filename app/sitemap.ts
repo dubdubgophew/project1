@@ -48,6 +48,7 @@ const STATIC_ROUTES = [
   { url: '/tools/gst-calculator', priority: 0.9, changeFrequency: 'monthly' as const },
   { url: '/tools/sip-calculator', priority: 0.9, changeFrequency: 'monthly' as const },
   { url: '/tools/home-loan-emi-calculator', priority: 0.9, changeFrequency: 'monthly' as const },
+  { url: '/tools/iron-core-workout', priority: 0.9, changeFrequency: 'monthly' as const },
   // Comparison / alternatives pages (high-intent SEO)
   { url: '/alternatives', priority: 0.8, changeFrequency: 'monthly' as const },
   // Static marketing & informational pages

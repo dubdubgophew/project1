@@ -387,9 +387,20 @@ const TOOLS: Tool[] = [
     tags: ['home loan', 'emi', 'india', 'mortgage', 'amortization', 'section 24b'],
     category: 'Calculators',
   },
+  // Fitness & Health
+  {
+    icon: '💪',
+    name: 'Iron Core Workout',
+    description: '30-day military calisthenics program with progressive training, rest timer, diet plan, ancient wisdom, and streak tracking. No equipment needed.',
+    href: '/tools/iron-core-workout',
+    badge: 'New',
+    color: 'from-red-900/20 to-orange-900/10 border-red-800/30 hover:border-red-700/50',
+    tags: ['calisthenics', 'workout tracker', 'fitness', 'plank', 'military', '30 day challenge', 'bodyweight'],
+    category: 'Fitness & Health',
+  },
 ];
 
-const ALL_CATEGORIES = ['All', 'Payroll & Legal', 'AI Writing', 'AI Documents', 'Developer', 'Finance', 'Utilities', 'Design & Diagrams', 'Calculators'];
+const ALL_CATEGORIES = ['All', 'Payroll & Legal', 'AI Writing', 'AI Documents', 'Developer', 'Finance', 'Utilities', 'Design & Diagrams', 'Calculators', 'Fitness & Health'];
 
 function ToolsContent() {
   const searchParams = useSearchParams();

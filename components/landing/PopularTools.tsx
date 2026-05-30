@@ -107,6 +107,14 @@ const POPULAR_TOOLS = [
     category: 'Design',
     pinned: true,
   },
+  {
+    icon: '💪',
+    name: 'Iron Core Workout',
+    href: '/tools/iron-core-workout',
+    desc: '30-day military calisthenics with streak tracking, diet plan & ancient wisdom. No equipment.',
+    category: 'Fitness',
+    pinned: true,
+  },
 ];
 
 export function PopularTools() {
@@ -127,7 +135,7 @@ export function PopularTools() {
             href="/tools"
             className="text-sm text-violet-400 hover:text-violet-300 font-medium transition-colors whitespace-nowrap self-start sm:self-auto"
           >
-            View all 36 tools →
+            View all 37 tools →
           </Link>
         </div>
 
@@ -184,7 +192,7 @@ export function PopularTools() {
             href="/tools"
             className="text-sm text-violet-400 hover:text-violet-300 font-medium transition-colors"
           >
-            View all 36 tools →
+            View all 37 tools →
           </Link>
         </div>
       </div>
