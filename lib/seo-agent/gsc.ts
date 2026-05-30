@@ -125,6 +125,21 @@ function daysAgoStr(n: number): string {
   return d.toISOString().split('T')[0];
 }
 
+// ── List all verified GSC properties (for debugging) ─────────────────────────
+
+export async function listGSCSites(): Promise<string[]> {
+  const token = await getAccessToken();
+  const res = await fetch(GSC_API, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`GSC list sites failed ${res.status}: ${text.slice(0, 300)}`);
+  }
+  const data = await res.json() as { siteEntry?: { siteUrl: string }[] };
+  return (data.siteEntry ?? []).map(s => s.siteUrl);
+}
+
 // ── Public API ────────────────────────────────────────────────────────────────
 
 export async function fetchGSCData(windowDays = 14): Promise<{
