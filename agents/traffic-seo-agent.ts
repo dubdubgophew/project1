@@ -28,7 +28,7 @@ import { submitToIndexNow } from '@/lib/indexnow';
 import { generateBlogPost } from './seo-content-agent';
 
 const MAX_IMPROVEMENTS_PER_RUN = 5;
-const MAX_NEW_POSTS_PER_RUN = 2;
+const MAX_NEW_POSTS_PER_RUN = 5;
 
 function pctDelta(current: number, prev: number): number {
   if (prev === 0) return 0;
@@ -218,8 +218,8 @@ export async function runTrafficSEOAgent(trigger = 'cron'): Promise<{
 
   // ── Phase 7: Content generation (always runs) ──────────────────────────────
   // Always publish new posts regardless of GSC — sustain publishing velocity
-  // When GSC connected: generate 1 post/day. Without GSC: 2 posts/day.
-  const contentOnlyPosts = gscConnected ? Math.max(0, 1 - newPostsQueued) : 2;
+  // When GSC connected: generate up to 5 posts/day. Without GSC: 5 posts/day.
+  const contentOnlyPosts = Math.max(0, 5 - newPostsQueued);
   if (contentOnlyPosts > 0) {
     for (let i = 0; i < contentOnlyPosts; i++) {
       try {

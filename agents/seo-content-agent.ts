@@ -106,31 +106,30 @@ Return ONLY valid JSON: {"title": "...", "tags": ["tag1", "tag2", "tag3"]}`,
       return null;
     }
 
-    // Step 2: Generate full article (1200-1800 words)
+    // Step 2: Generate article (600-900 words, scannable format)
     const articleResponse = await callAI([
       {
         role: 'system',
-        content: `You are an expert SEO content writer for Formly (formly.tools), a free AI tools platform.
+        content: `You are an SEO content writer for Formly (formly.tools), a free AI tools platform.
 
-Write a comprehensive, helpful blog post following these rules:
+Write a short, scannable blog post:
 - Target keyword: "${targetKeyword}"
-- Length: 1,200-1,600 words
-- Format: HTML (use <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>, <a> tags)
-- Include the keyword in: first paragraph, one H2, last paragraph
-- Structure: Introduction → Problem → Solution (using Formly's tools) → Step-by-step guide → Tips → Conclusion with CTA
-- Add internal links to Formly tools like: <a href="/tools/pdf-summarizer">PDF Summarizer</a>
-- Include the main CTA at end: link to /tools
-- Be genuinely helpful — not keyword-stuffed
-- Write in friendly, expert tone
-- Include a meta description in the first sentence naturally
+- Length: 600-900 words (people skim — keep it tight)
+- Format: HTML only (<h2>, <h3>, <p>, <ul>, <li>, <strong>, <a> tags)
+- Structure: 1 punchy intro paragraph → 3-4 H2 sections → bullet points wherever possible → short CTA
+- NO long paragraphs — max 3 sentences per paragraph
+- Include keyword in first sentence and one H2
+- Add 2-3 internal links: <a href="/tools/pdf-summarizer">PDF Summarizer</a> etc.
+- End with a single CTA linking to /tools
+- Tone: direct, useful, zero fluff
 
-Do NOT include: <html>, <body>, <head> tags. Just the article content HTML.`,
+Do NOT include <html>, <body>, <head> tags. Article HTML only.`,
       },
       {
         role: 'user',
-        content: `Title: "${title}"\nKeyword: "${targetKeyword}"\nWrite the full article now.`,
+        content: `Title: "${title}"\nKeyword: "${targetKeyword}"\nWrite the article now.`,
       },
-    ], { temperature: 0.6, maxTokens: 3000, model: 'llama-3.3-70b-versatile' });
+    ], { temperature: 0.6, maxTokens: 2000, model: 'llama-3.3-70b-versatile' });
 
     // Step 3: Generate meta description
     const metaResponse = await callAI([
