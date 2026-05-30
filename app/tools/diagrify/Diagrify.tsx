@@ -269,7 +269,7 @@ function drawLabel(ctx: CanvasRenderingContext2D, label: string, cx: number, cy:
   const weight = el.bold ? 'bold ' : '';
   const style  = el.italic ? 'italic ' : '';
   const fontSizePx = fs * 1.1;
-  ctx.font = `${style}${weight}${fontSizePx}px 'Caveat', cursive`;
+  ctx.font = `${style}${weight}${fontSizePx}px 'Patrick Hand', cursive`;
   ctx.fillStyle = mode === 'blueprint' ? '#93c5fd' : '#1e1e2e';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
@@ -438,7 +438,7 @@ function drawElement(ctx: CanvasRenderingContext2D, el: Elem, mode: Mode) {
       const fs = el.fontSize ?? 16;
       const weight = el.bold ? 'bold ' : '';
       const st = el.italic ? 'italic ' : '';
-      ctx.font = `${st}${weight}${fs * 1.1}px 'Caveat', cursive`;
+      ctx.font = `${st}${weight}${fs * 1.1}px 'Patrick Hand', cursive`;
       ctx.fillStyle = mode === 'blueprint' ? '#93c5fd' : '#1e1e2e';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
@@ -629,6 +629,12 @@ export function Diagrify() {
 
   useEffect(() => { render(); }, [render]);
   useEffect(() => { _renderTrigger = render; return () => { _renderTrigger = null; }; }, [render]);
+
+  // Pre-load Patrick Hand font so canvas renders it correctly on first paint
+  useEffect(() => {
+    document.fonts.load("20px 'Patrick Hand'").then(() => render());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Load canvas state from localStorage on mount
   useEffect(() => {
@@ -1493,8 +1499,16 @@ export function Diagrify() {
           )}
         </div>
 
-        {/* Logo */}
+        {/* Logo + back link */}
         <div className="flex items-center gap-2 shrink-0">
+          <a href="/tools" title="Back to Formly Tools"
+            className="flex items-center gap-1.5 text-stone-400 hover:text-orange-500 transition-colors group">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 2L4 7l5 5"/>
+            </svg>
+            <span className="text-xs font-medium hidden md:block">Formly</span>
+          </a>
+          <div className="w-px h-4 bg-stone-200" />
           <div className="w-7 h-7 rounded-md bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-sm">
             <span className="text-white text-xs font-bold">D</span>
           </div>
@@ -1633,7 +1647,7 @@ export function Diagrify() {
               }}
               className="w-full h-full resize-none bg-transparent border-none outline-none text-gray-900 text-center"
               style={{
-                fontFamily: "'Caveat', cursive",
+                fontFamily: "'Patrick Hand', cursive",
                 fontSize: `${(elements.find(e => e.id === editingId)?.fontSize ?? 15) * 1.1 * zoom}px`,
                 caretColor: '#f97316',
                 padding: '4px',
