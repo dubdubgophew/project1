@@ -19,27 +19,27 @@ const STEPS = [
     icon: Upload,
     title: 'Paste or Upload',
     description: 'Enter your text, upload a PDF, fill in a simple form — takes 10 seconds to get started.',
-    color: 'text-violet-400',
-    bg: 'bg-violet-500/10',
-    border: 'border-violet-500/20',
+    color: 'text-orange-400',
+    bg: 'bg-orange-500/10',
+    border: 'border-orange-500/20',
     step: '01',
   },
   {
     icon: Cpu,
     title: 'AI Processes Instantly',
-    description: "Groq AI analyzes your input and generates high-quality output in under 10 seconds.",
-    color: 'text-purple-400',
-    bg: 'bg-purple-500/10',
-    border: 'border-purple-500/20',
+    description: 'Groq AI analyzes your input and generates high-quality output in under 10 seconds.',
+    color: 'text-amber-400',
+    bg: 'bg-amber-500/10',
+    border: 'border-amber-500/20',
     step: '02',
   },
   {
     icon: Download,
     title: 'Copy, Download & Use',
     description: 'Get professional-quality output. Copy with one click or download as a file. Use immediately.',
-    color: 'text-pink-400',
-    bg: 'bg-pink-500/10',
-    border: 'border-pink-500/20',
+    color: 'text-yellow-400',
+    bg: 'bg-yellow-500/10',
+    border: 'border-yellow-500/20',
     step: '03',
   },
 ];
@@ -48,10 +48,10 @@ export function HowItWorks() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
-      <section className="section bg-gray-950">
+      <section className="section bg-[#09090b]">
       <div className="container-wide">
         <div className="text-center mb-16">
-          <p className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-3">Simple Process</p>
+          <p className="text-xs font-semibold text-orange-400 uppercase tracking-widest mb-3">Simple Process</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
             From Input to Output in Under 30 Seconds
           </h2>
@@ -91,7 +91,7 @@ export function HowItWorks() {
             { value: '99.9%', label: 'Uptime SLA' },
             { value: '0', label: 'Data stored (privacy-first)' },
           ].map((stat) => (
-            <div key={stat.label} className="text-center p-6 rounded-2xl bg-gray-900/50 border border-gray-800">
+            <div key={stat.label} className="text-center p-6 rounded-2xl bg-zinc-900/50 border border-zinc-800/60">
               <div className="text-3xl font-bold gradient-text mb-2">{stat.value}</div>
               <div className="text-sm text-gray-500">{stat.label}</div>
             </div>

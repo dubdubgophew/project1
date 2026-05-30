@@ -119,7 +119,7 @@ const POPULAR_TOOLS = [
 
 export function PopularTools() {
   return (
-    <section className="py-20 bg-gray-950">
+    <section className="py-20 bg-[#09090b]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
@@ -133,7 +133,7 @@ export function PopularTools() {
           </div>
           <Link
             href="/tools"
-            className="text-sm text-violet-400 hover:text-violet-300 font-medium transition-colors whitespace-nowrap self-start sm:self-auto"
+            className="text-sm text-orange-400 hover:text-orange-300 font-medium transition-colors whitespace-nowrap self-start sm:self-auto"
           >
             View all 37 tools →
           </Link>
@@ -147,13 +147,13 @@ export function PopularTools() {
               href={tool.href}
               className={`group relative flex flex-col p-4 rounded-xl border transition-all duration-200 hover:scale-[1.03] hover:shadow-lg ${
                 tool.pinned
-                  ? 'ring-1 ring-amber-500/30 bg-amber-500/5 border-amber-500/20 hover:border-amber-500/40 hover:shadow-amber-500/10'
-                  : 'card border-gray-800/60 hover:border-gray-700'
+                  ? 'ring-1 ring-orange-500/25 bg-orange-500/[0.04] border-orange-500/20 hover:border-orange-500/40 hover:shadow-orange-500/10'
+                  : 'card border-zinc-800/50 hover:border-zinc-700'
               }`}
             >
               {/* Popular badge */}
               {tool.pinned && (
-                <span className="absolute -top-2.5 left-3 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-400 text-[10px] font-semibold tracking-wide">
+                <span className="absolute -top-2.5 left-3 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-orange-500/15 border border-orange-500/25 text-orange-400 text-[10px] font-semibold tracking-wide">
                   🔥 Most Popular
                 </span>
               )}
@@ -179,7 +179,7 @@ export function PopularTools() {
               </p>
 
               {/* CTA */}
-              <div className="text-xs text-violet-400 font-medium group-hover:text-violet-300 transition-colors">
+              <div className="text-xs text-orange-400 font-medium group-hover:text-orange-300 transition-colors">
                 Try free →
               </div>
             </Link>
@@ -190,7 +190,7 @@ export function PopularTools() {
         <div className="mt-8 text-right sm:hidden">
           <Link
             href="/tools"
-            className="text-sm text-violet-400 hover:text-violet-300 font-medium transition-colors"
+            className="text-sm text-orange-400 hover:text-orange-300 font-medium transition-colors"
           >
             View all 37 tools →
           </Link>

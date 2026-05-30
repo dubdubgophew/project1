@@ -42,25 +42,26 @@ export default function HomePage() {
         <FAQ />
 
         {/* Final CTA */}
-        <section className="section bg-gray-950">
+        <section className="section bg-[#09090b]">
           <div className="max-w-3xl mx-auto px-4 text-center">
-            <div className="rounded-3xl bg-gradient-to-br from-violet-600/10 via-purple-600/5 to-pink-600/10 border border-violet-500/20 p-12">
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+            <div className="rounded-3xl bg-gradient-to-br from-orange-500/8 via-amber-500/4 to-orange-600/8 border border-orange-500/15 p-10 sm:p-12">
+              <p className="text-xs font-semibold text-orange-400 uppercase tracking-widest mb-4">Get Started</p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 tracking-tight">
                 Ready to Supercharge Your Workflow?
               </h2>
-              <p className="text-gray-400 mb-8 text-lg">
+              <p className="text-zinc-400 mb-8 text-base sm:text-lg max-w-xl mx-auto">
                 Join 50,000+ professionals who save hours every week with Formly.
                 Start free — no credit card required.
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="/tools" className="btn-primary text-base px-8 py-4">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                <a href="/tools" className="btn-primary text-base px-8 py-4 w-full sm:w-auto">
                   Try All 37 Tools Free →
                 </a>
-                <a href="/pricing" className="btn-outline text-base px-8 py-4">
+                <a href="/pricing" className="btn-outline text-base px-8 py-4 w-full sm:w-auto">
                   View Pro Plans
                 </a>
               </div>
-              <p className="text-xs text-gray-600 mt-6">
+              <p className="text-xs text-zinc-700 mt-6">
                 Free forever · No credit card · Cancel pro anytime
               </p>
             </div>

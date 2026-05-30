@@ -59,14 +59,14 @@ const TESTIMONIALS = [
 
 export function Testimonials() {
   return (
-    <section className="section bg-gray-950" id="reviews">
+    <section className="section bg-[#09090b]" id="reviews">
       <div className="container-wide">
         <div className="text-center mb-16">
-          <p className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-3">Testimonials</p>
+          <p className="text-xs font-semibold text-orange-400 uppercase tracking-widest mb-3">Testimonials</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
             Loved by 50,000+ Professionals
           </h2>
-          <p className="text-gray-400 max-w-xl mx-auto">
+          <p className="text-zinc-400 max-w-xl mx-auto">
             From freelancers to Fortune 500 teams — here&apos;s what they say.
           </p>
         </div>
@@ -74,15 +74,15 @@ export function Testimonials() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {TESTIMONIALS.map((t, i) => (
             <div key={i} className="card-hover relative group">
-              <Quote className="absolute top-6 right-6 w-8 h-8 text-violet-500/20 group-hover:text-violet-500/30 transition-colors" />
+              <Quote className="absolute top-6 right-6 w-8 h-8 text-orange-500/15 group-hover:text-orange-500/25 transition-colors" />
 
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center text-sm font-bold text-white">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-sm font-bold text-white">
                   {t.avatar}
                 </div>
                 <div>
                   <div className="font-semibold text-white text-sm">{t.name}</div>
-                  <div className="text-xs text-gray-500">{t.role} · {t.country}</div>
+                  <div className="text-xs text-zinc-500">{t.role} · {t.country}</div>
                 </div>
               </div>
 
@@ -94,7 +94,7 @@ export function Testimonials() {
 
               <p className="text-gray-300 text-sm leading-relaxed mb-4">{t.text}</p>
 
-              <div className="text-xs text-violet-400 font-medium bg-violet-500/10 px-3 py-1.5 rounded-lg inline-block">
+              <div className="text-xs text-orange-400 font-medium bg-orange-500/10 px-3 py-1.5 rounded-lg inline-block">
                 Used: {t.tool}
               </div>
             </div>

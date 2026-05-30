@@ -1,13 +1,14 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, JetBrains_Mono } from 'next/font/google';
+import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { GoogleAnalytics } from '@/components/shared/GoogleAnalytics';
 import { AdSenseScript } from '@/components/shared/AdSense';
 
-const inter = Inter({
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
   variable: '--font-inter',
   display: 'swap',
+  weight: ['300', '400', '500', '600', '700', '800'],
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -108,7 +109,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} dark`}>
+    <html lang="en" className={`${plusJakartaSans.variable} ${jetbrainsMono.variable} dark`}>
       <head>
         <meta name="google-adsense-account" content="ca-pub-7233937066598688" />
         <AdSenseScript />
@@ -223,7 +224,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="font-sans antialiased bg-gray-950 text-gray-100 min-h-screen">
+      <body className="font-sans antialiased bg-[#09090b] text-zinc-100 min-h-screen">
         <GoogleAnalytics />
         {children}
       </body>

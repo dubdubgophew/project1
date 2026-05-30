@@ -42,14 +42,16 @@ export function Header() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-gray-950/90 backdrop-blur-xl border-b border-gray-800/60' : 'bg-transparent'
+        scrolled ? 'bg-[#09090b]/90 backdrop-blur-xl border-b border-zinc-800/60' : 'bg-transparent'
       }`}
     >
+      {/* Top brand accent line */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-500/50 to-transparent" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center shadow-lg shadow-violet-500/30 group-hover:shadow-violet-500/50 transition-shadow">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center shadow-lg shadow-orange-500/25 group-hover:shadow-orange-500/40 transition-shadow">
               <Zap className="w-4 h-4 text-white" />
             </div>
             <span className="text-xl font-bold tracking-tight">
@@ -151,7 +153,7 @@ export function Header() {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="md:hidden bg-gray-950/95 backdrop-blur-xl border-b border-gray-800">
+        <div className="md:hidden bg-[#09090b]/95 backdrop-blur-xl border-b border-zinc-800">
           <div className="px-4 py-4 space-y-1">
             {TOOLS_NAV.map((tool) => (
               <Link
