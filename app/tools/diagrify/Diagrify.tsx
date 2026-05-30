@@ -8,7 +8,7 @@ import {
   Minus, MoveRight, Type, Pen, StickyNote, Eraser,
   Undo2, Redo2, Trash2, Download, Upload, ZoomIn, ZoomOut,
   Maximize2, Sparkles, X, ChevronDown, AlignCenter,
-  Bold, Italic, Lock, Unlock, Copy, Layers, Settings,
+  Bold, Italic, Lock, Unlock, Copy, Settings,
   Home, ExternalLink,
 } from 'lucide-react';
 
@@ -1348,46 +1348,61 @@ export function Diagrify() {
   return (
     <div className="w-screen h-screen bg-white flex flex-col overflow-hidden" style={{ fontFamily: '-apple-system, Inter, sans-serif' }}>
 
-      {/* ── Top bar ── */}
-      <div className="flex items-center justify-between px-3 h-12 border-b border-gray-200 bg-white shrink-0 z-20">
-        {/* Left: logo + title */}
-        <div className="flex items-center gap-3">
-          <a href="/tools" className="flex items-center gap-1.5 text-gray-500 hover:text-gray-700 transition-colors text-xs">
-            <Home className="w-3.5 h-3.5" />
-            <span>Formly</span>
-          </a>
-          <span className="text-gray-400">/</span>
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-md bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center">
+      {/* ── Top bar (Excalidraw-style) ── */}
+      <div className="flex items-center h-12 border-b border-stone-200 bg-white shrink-0 z-20 px-3 gap-2">
+        {/* Logo left */}
+        <div className="flex items-center gap-2 shrink-0">
+          <a href="/tools" title="All Formly Tools">
+            <div className="w-7 h-7 rounded-md bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-sm hover:shadow-orange-500/30 transition-shadow">
               <span className="text-white text-xs font-bold">D</span>
             </div>
-            <span className="text-sm font-semibold text-gray-900">Diagrify</span>
-            <span className="text-[10px] font-semibold text-orange-500 bg-orange-500/10 border border-orange-500/20 px-1.5 py-0.5 rounded-full">BETA</span>
-          </div>
-          {saveIndicator && (
-            <span className="text-[10px] text-emerald-500 font-medium animate-pulse">● saved</span>
-          )}
+          </a>
+          <span className="text-sm font-semibold text-stone-700 hidden sm:block">Diagrify</span>
+          {saveIndicator && <span className="text-[10px] text-emerald-500 font-medium animate-pulse">● saved</span>}
         </div>
 
-        {/* Center: mode selector */}
-        <div className="flex items-center gap-1 bg-gray-100 border border-gray-200 rounded-xl p-1">
-          {(['clean', 'sketchy', 'blueprint'] as Mode[]).map(m => (
-            <button
-              key={m}
-              onClick={() => setMode(m)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
-                mode === m
-                  ? 'bg-orange-500 text-white shadow-orange-500/20'
-                  : 'text-gray-500 hover:text-gray-900 hover:bg-gray-200'
-              }`}
-            >
-              {m === 'clean' ? '✦ Clean' : m === 'sketchy' ? '✏️ Sketchy' : '📐 Blueprint'}
-            </button>
-          ))}
+        <div className="w-px h-6 bg-stone-200 shrink-0" />
+
+        {/* Center: Horizontal tool bar */}
+        <div className="flex flex-1 justify-center overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
+          <div className="flex items-center gap-0.5 bg-white border border-stone-200 rounded-xl px-1.5 py-1 shadow-sm shrink-0">
+            {TOOLS.map(({ id, icon: Icon, label, key }) => (
+              <button
+                key={id}
+                onClick={() => setTool(id)}
+                title={`${label} (${key})`}
+                className={`group relative flex items-center justify-center w-9 h-8 rounded-lg transition-all ${
+                  tool === id
+                    ? 'bg-orange-100 text-orange-600'
+                    : 'text-stone-500 hover:bg-stone-100 hover:text-stone-900'
+                }`}
+              >
+                <Icon style={{ width: 16, height: 16 }} />
+                <div className="absolute top-full mt-1.5 px-2 py-1 bg-stone-800 rounded-lg text-[11px] text-white whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 shadow-lg">
+                  {label} <span className="text-stone-400 font-mono ml-1">{key}</span>
+                </div>
+              </button>
+            ))}
+            <div className="w-px h-5 bg-stone-200 mx-1 shrink-0" />
+            {(['clean', 'sketchy'] as Mode[]).map(m => (
+              <button
+                key={m}
+                onClick={() => setMode(m)}
+                title={m === 'clean' ? 'Clean mode' : 'Sketchy mode'}
+                className={`flex items-center justify-center w-9 h-8 rounded-lg text-sm transition-all ${
+                  mode === m ? 'bg-orange-100 text-orange-600' : 'text-stone-400 hover:bg-stone-100 hover:text-stone-700'
+                }`}
+              >
+                {m === 'clean' ? '✦' : '✏️'}
+              </button>
+            ))}
+          </div>
         </div>
+
+        <div className="w-px h-6 bg-stone-200 shrink-0" />
 
         {/* Right: actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 shrink-0">
           <button
             onClick={() => setShowAI(!showAI)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
@@ -1397,352 +1412,230 @@ export function Diagrify() {
             }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
-            AI Generate
+            <span className="hidden sm:inline">AI Generate</span>
+            <span className="sm:hidden">AI</span>
           </button>
-          <button onClick={undo} disabled={histIdx <= 0} className="p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 disabled:opacity-30 transition-colors" title="Undo (Cmd+Z)">
+          <button onClick={undo} disabled={histIdx <= 0} className="p-2 rounded-lg text-stone-400 hover:text-stone-700 hover:bg-stone-100 disabled:opacity-30 transition-colors" title="Undo (Cmd+Z)">
             <Undo2 className="w-4 h-4" />
           </button>
-          <button onClick={redo} disabled={histIdx >= history.length - 1} className="p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 disabled:opacity-30 transition-colors" title="Redo (Cmd+Shift+Z)">
+          <button onClick={redo} disabled={histIdx >= history.length - 1} className="p-2 rounded-lg text-stone-400 hover:text-stone-700 hover:bg-stone-100 disabled:opacity-30 transition-colors" title="Redo">
             <Redo2 className="w-4 h-4" />
           </button>
-          <div className="w-px h-5 bg-gray-200" />
-          <button onClick={exportPNG} className="p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors" title="Export PNG">
+          <div className="w-px h-5 bg-stone-200" />
+          <button onClick={exportPNG} className="p-2 rounded-lg text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors" title="Export PNG">
             <Download className="w-4 h-4" />
           </button>
-          <button onClick={exportSVG} className="p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors" title="Export SVG">
-            <ExternalLink className="w-4 h-4" />
-          </button>
-          <button onClick={clearAll} className="p-2 rounded-lg text-gray-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors" title="Clear all">
+          <button onClick={clearAll} className="p-2 rounded-lg text-stone-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors" title="Clear all">
             <Trash2 className="w-4 h-4" />
           </button>
         </div>
       </div>
 
-      {/* ── Main area ── */}
-      <div className="flex flex-1 overflow-hidden relative">
+      {/* ── Canvas (full width, no sidebar) ── */}
+      <div ref={wrapRef} className="flex-1 relative overflow-hidden">
+        <canvas
+          ref={canvasRef}
+          style={{ cursor, display: 'block' }}
+          onMouseDown={onMouseDown}
+          onMouseMove={onMouseMoveWrap}
+          onMouseUp={onMouseUp}
+          onMouseLeave={onMouseUp}
+          onWheel={onWheel}
+          onDoubleClick={(e) => {
+            const { sx, sy } = getCanvasXY(e);
+            const { x: wx, y: wy } = toWorld(sx, sy);
+            const el = findElement(wx, wy);
+            if (el && el.type !== 'pen') {
+              setEditingId(el.id);
+              setEditText(el.text ?? el.label ?? '');
+            }
+          }}
+        />
 
-        {/* ── Left toolbar ── */}
-        <div className="flex flex-col items-center gap-1 w-14 py-3 border-r border-stone-200 bg-white shrink-0 z-10 overflow-y-auto">
-          {TOOLS.map(({ id, icon: Icon, label, key }) => (
-            <button
-              key={id}
-              onClick={() => setTool(id)}
-              title={`${label} (${key})`}
-              className={`group relative flex items-center justify-center w-10 h-10 rounded-xl transition-all ${
-                tool === id
-                  ? 'bg-orange-100 text-orange-600 border border-orange-300'
-                  : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
-              }`}
-            >
-              <Icon className="w-4.5 h-4.5" style={{ width: 18, height: 18 }} />
-              {/* Tooltip */}
-              <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 border border-gray-700 rounded-lg text-xs text-white whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 shadow-xl">
-                {label}
-                <span className="ml-1.5 text-gray-500 font-mono">{key}</span>
-              </div>
-            </button>
-          ))}
-
-          <div className="w-8 h-px bg-gray-200 my-1" />
-
-          <button
-            onClick={() => setShowLayers(l => !l)}
-            title="Layers"
-            className={`flex items-center justify-center w-10 h-10 rounded-xl transition-all ${
-              showLayers ? 'bg-orange-100 text-orange-600' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
-            }`}
-          >
-            <Layers style={{ width: 18, height: 18 }} />
-          </button>
-
-          {/* Zoom controls */}
-          <div className="w-8 h-px bg-gray-200 my-1" />
-          <button onClick={() => setZoom(z => clamp(z * 1.2, 0.05, 8))} className="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-all" title="Zoom In (+)">
-            <ZoomIn style={{ width: 18, height: 18 }} />
-          </button>
-          <div className="text-[10px] text-gray-500 font-mono">{Math.round(zoom * 100)}%</div>
-          <button onClick={() => setZoom(z => clamp(z * 0.83, 0.05, 8))} className="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-all" title="Zoom Out (-)">
-            <ZoomOut style={{ width: 18, height: 18 }} />
-          </button>
-          <button onClick={() => { setZoom(1); setPan({ x: 0, y: 0 }); }} className="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-all" title="Reset View (Cmd+0)">
-            <Maximize2 style={{ width: 18, height: 18 }} />
-          </button>
-        </div>
-
-        {/* ── Canvas area ── */}
-        <div ref={wrapRef} className="flex-1 relative overflow-hidden">
-          <canvas
-            ref={canvasRef}
-            style={{ cursor, display: 'block' }}
-            onMouseDown={onMouseDown}
-            onMouseMove={onMouseMoveWrap}
-            onMouseUp={onMouseUp}
-            onMouseLeave={onMouseUp}
-            onWheel={onWheel}
-            onDoubleClick={(e) => {
-              const { sx, sy } = getCanvasXY(e);
-              const { x: wx, y: wy } = toWorld(sx, sy);
-              const el = findElement(wx, wy);
-              if (el && el.type !== 'pen') {
-                setEditingId(el.id);
-                setEditText(el.text ?? el.label ?? '');
-              }
-            }}
-          />
-
-          {/* Inline text editor */}
-          {editingId && (
-            <div style={getEditorStyle()}>
-              <textarea
-                autoFocus
-                value={editText}
-                onChange={e => setEditText(e.target.value)}
-                onBlur={finishEdit}
-                onKeyDown={e => {
-                  if (e.key === 'Escape') { e.preventDefault(); finishEdit(); }
-                  if (e.key === 'Enter' && !e.shiftKey && !(e.currentTarget.closest('[data-text]'))) {
-                    // Allow Enter in text boxes
-                  }
-                  e.stopPropagation();
-                }}
-                className="w-full h-full resize-none bg-transparent border-none outline-none text-gray-900 text-center"
-                style={{
-                  fontFamily: mode === 'sketchy' ? "'Caveat', cursive" : "-apple-system, Inter, sans-serif",
-                  fontSize: `${(elements.find(e => e.id === editingId)?.fontSize ?? 15) * (mode === 'sketchy' ? 1.2 : 1) * zoom}px`,
-                  caretColor: '#f97316',
-                  padding: '4px',
-                }}
-                placeholder="Type here…"
-              />
-            </div>
-          )}
-
-          {/* Status bar */}
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-4 text-xs text-gray-400 pointer-events-none select-none bg-white/80 backdrop-blur-sm rounded-full px-4 py-1.5 border border-gray-200 shadow-sm">
-            <span>{Math.round(zoom * 100)}%</span>
-            <span className="text-gray-300">·</span>
-            <span>{elements.length} element{elements.length !== 1 ? 's' : ''}</span>
-            {selCount > 0 && <><span className="text-gray-300">·</span><span className="text-orange-600">{selCount} selected</span></>}
+        {/* Inline text editor */}
+        {editingId && (
+          <div style={getEditorStyle()}>
+            <textarea
+              autoFocus
+              value={editText}
+              onChange={e => setEditText(e.target.value)}
+              onBlur={finishEdit}
+              onKeyDown={e => {
+                if (e.key === 'Escape') { e.preventDefault(); finishEdit(); }
+                if (e.key === 'Enter' && !e.shiftKey && !(e.currentTarget.closest('[data-text]'))) {
+                  // Allow Enter in text boxes
+                }
+                e.stopPropagation();
+              }}
+              className="w-full h-full resize-none bg-transparent border-none outline-none text-gray-900 text-center"
+              style={{
+                fontFamily: mode === 'sketchy' ? "'Caveat', cursive" : "-apple-system, Inter, sans-serif",
+                fontSize: `${(elements.find(e => e.id === editingId)?.fontSize ?? 15) * (mode === 'sketchy' ? 1.2 : 1) * zoom}px`,
+                caretColor: '#f97316',
+                padding: '4px',
+              }}
+              placeholder="Type here…"
+            />
           </div>
+        )}
+
+        {/* Status bar — bottom center */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3 text-xs text-stone-400 pointer-events-none select-none bg-white/90 backdrop-blur-sm rounded-full px-4 py-1.5 border border-stone-200 shadow-sm">
+          <span>{Math.round(zoom * 100)}%</span>
+          <span className="text-stone-300">·</span>
+          <span>{elements.length} element{elements.length !== 1 ? 's' : ''}</span>
+          {selCount > 0 && <><span className="text-stone-300">·</span><span className="text-orange-600">{selCount} selected</span></>}
         </div>
 
-        {/* ── Right panel (style + properties) ── */}
-        <div className="w-52 border-l border-stone-200 bg-white shrink-0 flex flex-col overflow-y-auto z-10">
+        {/* Zoom controls — bottom left */}
+        <div className="absolute bottom-4 left-4 flex items-center gap-0.5 bg-white border border-stone-200 rounded-xl px-1 py-1 shadow-sm">
+          <button onClick={() => setZoom(z => clamp(z * 0.83, 0.05, 8))} className="flex items-center justify-center w-8 h-7 rounded-lg text-stone-500 hover:bg-stone-100 hover:text-stone-900 transition-all" title="Zoom Out (-)">
+            <ZoomOut style={{ width: 14, height: 14 }} />
+          </button>
+          <button onClick={() => { setZoom(1); setPan({ x: 0, y: 0 }); }} className="flex items-center justify-center w-8 h-7 rounded-lg text-stone-500 hover:bg-stone-100 hover:text-stone-900 transition-all" title="Reset View">
+            <Maximize2 style={{ width: 14, height: 14 }} />
+          </button>
+          <button onClick={() => setZoom(z => clamp(z * 1.2, 0.05, 8))} className="flex items-center justify-center w-8 h-7 rounded-lg text-stone-500 hover:bg-stone-100 hover:text-stone-900 transition-all" title="Zoom In (+)">
+            <ZoomIn style={{ width: 14, height: 14 }} />
+          </button>
+        </div>
 
-          {/* Style panel */}
-          <div className="p-4 border-b border-gray-200">
-            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Style</p>
+        {/* Shortcuts — bottom right */}
+        <div className="absolute bottom-4 right-4 text-[10px] text-stone-400 pointer-events-none select-none">
+          <span className="font-mono">Ctrl+Scroll</span> zoom · <span className="font-mono">H</span> pan · <span className="font-mono">Cmd+Z</span> undo
+        </div>
 
-            {/* Stroke color */}
-            <div className="mb-3">
-              <p className="text-xs text-gray-500 mb-1.5">Stroke</p>
-              <div className="flex flex-wrap gap-1.5 mb-2">
-                {STROKE_PRESETS.map(c => (
-                  <button
-                    key={c}
-                    onClick={() => { setStroke(c); applyStylePatch({ stroke: c }); }}
-                    className="w-6 h-6 rounded-full border-2 transition-transform hover:scale-110"
-                    style={{ backgroundColor: c === 'transparent' ? undefined : c, borderColor: stroke === c ? '#f97316' : '#e5e7eb' }}
-                    title={c}
-                  />
-                ))}
-              </div>
-              <div className="flex items-center gap-2">
-                <input
-                  type="color"
-                  value={stroke === 'transparent' ? '#1e1e2e' : stroke}
+        {/* ── Floating style panel (right side, only when element selected and AI panel closed) ── */}
+        {selEl && !showAI && (
+          <div className="absolute top-3 right-3 w-52 bg-white border border-stone-200 rounded-2xl shadow-lg z-10 overflow-hidden">
+            <div className="p-4 space-y-3">
+              <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-wider">Style</p>
+              {/* Stroke */}
+              <div>
+                <p className="text-xs text-stone-500 mb-1.5">Stroke</p>
+                <div className="flex flex-wrap gap-1.5 mb-1.5">
+                  {STROKE_PRESETS.map(c => (
+                    <button
+                      key={c}
+                      onClick={() => { setStroke(c); applyStylePatch({ stroke: c }); }}
+                      className="w-6 h-6 rounded-full border-2 transition-transform hover:scale-110"
+                      style={{ backgroundColor: c, borderColor: stroke === c ? '#f97316' : '#e5e7eb' }}
+                    />
+                  ))}
+                </div>
+                <input type="color" value={stroke === 'transparent' ? '#1e1e2e' : stroke}
                   onChange={e => { setStroke(e.target.value); applyStylePatch({ stroke: e.target.value }); }}
-                  className="w-7 h-7 rounded cursor-pointer border border-gray-200 bg-transparent"
-                />
+                  className="w-7 h-7 rounded cursor-pointer border border-stone-200 bg-transparent" />
               </div>
-            </div>
-
-            {/* Fill color */}
-            <div className="mb-3">
-              <p className="text-xs text-gray-500 mb-1.5">Fill</p>
-              <div className="flex flex-wrap gap-1.5 mb-2">
-                {FILL_PRESETS.map(c => (
-                  <button
-                    key={c}
-                    onClick={() => { setFill(c); applyStylePatch({ fill: c }); }}
-                    className="w-6 h-6 rounded-full border-2 transition-transform hover:scale-110 relative"
-                    style={{
-                      backgroundColor: c === 'transparent' ? undefined : c,
-                      borderColor: fill === c ? '#f97316' : '#e5e7eb',
-                    }}
-                    title={c}
-                  >
-                    {c === 'transparent' && <span className="absolute inset-0 flex items-center justify-center text-red-400 text-[10px] font-bold">∅</span>}
-                  </button>
-                ))}
-              </div>
-              <div className="flex items-center gap-2">
-                <input
-                  type="color"
-                  value={fill === 'transparent' ? '#000000' : fill.slice(0, 7)}
+              {/* Fill */}
+              <div>
+                <p className="text-xs text-stone-500 mb-1.5">Fill</p>
+                <div className="flex flex-wrap gap-1.5 mb-1.5">
+                  {FILL_PRESETS.map(c => (
+                    <button
+                      key={c}
+                      onClick={() => { setFill(c); applyStylePatch({ fill: c }); }}
+                      className="w-6 h-6 rounded-full border-2 transition-transform hover:scale-110 relative"
+                      style={{ backgroundColor: c === 'transparent' ? undefined : c, borderColor: fill === c ? '#f97316' : '#e5e7eb' }}
+                    >
+                      {c === 'transparent' && <span className="absolute inset-0 flex items-center justify-center text-red-400 text-[10px] font-bold">∅</span>}
+                    </button>
+                  ))}
+                </div>
+                <input type="color" value={fill === 'transparent' ? '#000000' : fill.slice(0, 7)}
                   onChange={e => { const v = e.target.value + '33'; setFill(v); applyStylePatch({ fill: v }); }}
-                  className="w-7 h-7 rounded cursor-pointer border border-gray-200 bg-transparent"
-                />
+                  className="w-7 h-7 rounded cursor-pointer border border-stone-200 bg-transparent" />
               </div>
-            </div>
-
-            {/* Stroke width */}
-            <div className="mb-3">
-              <p className="text-xs text-gray-500 mb-1.5">Stroke width</p>
-              <div className="flex gap-1">
-                {([{ label: 'Thin', w: 1 }, { label: 'Normal', w: 2 }, { label: 'Thick', w: 4 }] as { label: string; w: number }[]).map(({ label, w }) => (
-                  <button
-                    key={w}
-                    onClick={() => { setLineWidth(w); applyStylePatch({ lineWidth: w }); }}
-                    className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
-                      lineWidth === w ? 'bg-orange-500 text-white border-orange-400' : 'text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-900'
-                    }`}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Font size (for text/shapes with labels) */}
-            <div className="mb-3">
-              <p className="text-xs text-gray-500 mb-1.5">Font size</p>
-              <div className="flex gap-1">
-                {[11, 13, 15, 18, 24, 32].map(s => (
-                  <button
-                    key={s}
-                    onClick={() => { setFontSize(s); applyStylePatch({ fontSize: s }); }}
-                    className={`flex items-center justify-center w-8 h-8 rounded-lg text-xs font-bold transition-all border ${
-                      fontSize === s ? 'bg-orange-500 text-white border-orange-400' : 'text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-900'
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
-              {/* Bold / Italic */}
-              <div className="flex gap-1 mt-2">
-                <button onClick={() => { setBold(b => !b); applyStylePatch({ bold: !bold }); }}
-                  className={`flex items-center justify-center w-8 h-8 rounded-lg border transition-all ${bold ? 'bg-orange-500 text-white border-orange-400' : 'text-gray-500 border-gray-200 hover:text-gray-900'}`}>
-                  <Bold style={{ width: 14, height: 14 }} />
-                </button>
-                <button onClick={() => { setItalic(it => !it); applyStylePatch({ italic: !italic }); }}
-                  className={`flex items-center justify-center w-8 h-8 rounded-lg border transition-all ${italic ? 'bg-orange-500 text-white border-orange-400' : 'text-gray-500 border-gray-200 hover:text-gray-900'}`}>
-                  <Italic style={{ width: 14, height: 14 }} />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Selection properties */}
-          {selEl && (
-            <div className="p-4 border-b border-gray-200">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Element</p>
-              <div className="space-y-2 text-xs">
-                <div className="flex gap-2">
-                  <label className="text-gray-500 w-12">Opacity</label>
-                  <input type="range" min="0" max="1" step="0.05" value={selEl.opacity}
-                    onChange={e => { updateElement(selEl.id, { opacity: Number(e.target.value) }); }}
-                    className="flex-1 accent-orange-500" />
-                  <span className="text-gray-500 w-8 text-right">{Math.round(selEl.opacity * 100)}%</span>
+              {/* Stroke width */}
+              <div>
+                <p className="text-xs text-stone-500 mb-1.5">Stroke width</p>
+                <div className="flex gap-1">
+                  {([{ label: 'Thin', w: 1 }, { label: 'Normal', w: 2 }, { label: 'Thick', w: 4 }] as { label: string; w: number }[]).map(({ label, w }) => (
+                    <button
+                      key={w}
+                      onClick={() => { setLineWidth(w); applyStylePatch({ lineWidth: w }); }}
+                      className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                        lineWidth === w ? 'bg-orange-500 text-white border-orange-400' : 'text-stone-500 border-stone-200 hover:border-stone-400 hover:text-stone-900'
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
                 </div>
               </div>
-
+              {/* Font size */}
+              <div>
+                <p className="text-xs text-stone-500 mb-1.5">Font size</p>
+                <div className="flex gap-1 flex-wrap">
+                  {[11, 13, 15, 18, 24, 32].map(s => (
+                    <button
+                      key={s}
+                      onClick={() => { setFontSize(s); applyStylePatch({ fontSize: s }); }}
+                      className={`flex items-center justify-center w-8 h-8 rounded-lg text-xs font-bold transition-all border ${
+                        fontSize === s ? 'bg-orange-500 text-white border-orange-400' : 'text-stone-500 border-stone-200 hover:border-stone-400 hover:text-stone-900'
+                      }`}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+                <div className="flex gap-1 mt-1.5">
+                  <button onClick={() => { setBold(b => !b); applyStylePatch({ bold: !bold }); }}
+                    className={`flex items-center justify-center w-8 h-8 rounded-lg border transition-all ${bold ? 'bg-orange-500 text-white border-orange-400' : 'text-stone-500 border-stone-200 hover:text-stone-900'}`}>
+                    <Bold style={{ width: 14, height: 14 }} />
+                  </button>
+                  <button onClick={() => { setItalic(it => !it); applyStylePatch({ italic: !italic }); }}
+                    className={`flex items-center justify-center w-8 h-8 rounded-lg border transition-all ${italic ? 'bg-orange-500 text-white border-orange-400' : 'text-stone-500 border-stone-200 hover:text-stone-900'}`}>
+                    <Italic style={{ width: 14, height: 14 }} />
+                  </button>
+                </div>
+              </div>
+              {/* Opacity */}
+              <div className="flex items-center gap-2 text-xs">
+                <span className="text-stone-500 shrink-0 w-12">Opacity</span>
+                <input type="range" min="0" max="1" step="0.05" value={selEl.opacity}
+                  onChange={e => { updateElement(selEl.id, { opacity: Number(e.target.value) }); }}
+                  className="flex-1 accent-orange-500" />
+                <span className="text-stone-400 w-8 text-right">{Math.round(selEl.opacity * 100)}%</span>
+              </div>
               {/* Actions */}
-              <div className="flex gap-1 mt-3">
+              <div className="flex gap-1 pt-2 border-t border-stone-100">
                 <button onClick={() => updateElement(selEl.id, { locked: !selEl.locked })}
-                  className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors">
+                  className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-colors">
                   {selEl.locked ? <Unlock style={{ width: 12, height: 12 }} /> : <Lock style={{ width: 12, height: 12 }} />}
                   {selEl.locked ? 'Unlock' : 'Lock'}
                 </button>
                 <button onClick={deleteSelected}
-                  className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs text-gray-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors ml-auto">
+                  className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs text-stone-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors ml-auto">
                   <Trash2 style={{ width: 12, height: 12 }} /> Delete
                 </button>
               </div>
             </div>
-          )}
-
-          {/* Layers panel */}
-          {showLayers && (
-            <div className="p-4">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Layers ({elements.length})</p>
-              <div className="space-y-1 max-h-64 overflow-y-auto">
-                {[...elements].reverse().map((el, i) => (
-                  <div
-                    key={el.id}
-                    onClick={() => setSelectedIds([el.id])}
-                    className={`flex items-center gap-2 px-2 py-1.5 rounded-lg cursor-pointer text-xs transition-colors ${
-                      selectedIds.includes(el.id) ? 'bg-orange-100 text-orange-600 border border-orange-200' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
-                    }`}
-                  >
-                    <span className="text-gray-400 font-mono w-4">{elements.length - i}</span>
-                    <span className="capitalize">{el.type}</span>
-                    <span className="text-gray-600 truncate ml-auto">{el.label ?? el.text ?? ''}</span>
-                    {el.locked && <Lock style={{ width: 10, height: 10 }} className="text-amber-400 shrink-0" />}
-                  </div>
-                ))}
-                {elements.length === 0 && (
-                  <p className="text-gray-400 text-xs text-center py-4">No elements yet</p>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Quick shapes */}
-          {!showLayers && elements.length === 0 && (
-            <div className="p-4">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Quick start</p>
-              <div className="space-y-1.5 text-xs text-gray-400">
-                {[
-                  '⌨️ Press R for rectangle',
-                  '⌨️ Press E for ellipse',
-                  '⌨️ Press A for arrow',
-                  '⌨️ Press P to draw freely',
-                  '⌨️ Press N for sticky note',
-                  '🤖 Click AI Generate above',
-                  '🖱️ Scroll to zoom, drag to pan',
-                ].map(tip => (
-                  <p key={tip} className="leading-relaxed">{tip}</p>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Keyboard shortcuts hint */}
-          <div className="mt-auto p-3 border-t border-gray-200">
-            <p className="text-[10px] text-gray-400 leading-relaxed">
-              <span className="font-semibold text-gray-500">Shortcuts</span><br />
-              V select · H pan · R rect<br />
-              E ellipse · A arrow · P pen<br />
-              N sticky · Del delete<br />
-              Ctrl+Z undo · Space pan
-            </p>
           </div>
-        </div>
+        )}
 
-        {/* ── AI Panel (floating overlay) ── */}
+        {/* ── AI Panel (floating) ── */}
         {showAI && (
-          <div className="absolute top-4 right-[248px] w-80 bg-white border border-gray-200 rounded-2xl shadow-2xl shadow-gray-200/80 z-30 overflow-hidden">
-            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gradient-to-r from-orange-50 to-amber-50">
+          <div className="absolute top-3 right-3 w-80 bg-white border border-stone-200 rounded-2xl shadow-2xl shadow-stone-200/80 z-30 overflow-hidden">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-stone-200 bg-gradient-to-r from-orange-50 to-amber-50">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-orange-500" />
-                <span className="text-sm font-semibold text-gray-900">AI Diagram Generator</span>
+                <span className="text-sm font-semibold text-stone-900">AI Diagram Generator</span>
               </div>
-              <button onClick={() => setShowAI(false)} className="text-gray-400 hover:text-gray-700 transition-colors">
+              <button onClick={() => setShowAI(false)} className="text-stone-400 hover:text-stone-700 transition-colors">
                 <X className="w-4 h-4" />
               </button>
             </div>
             <div className="p-4">
-              <p className="text-xs text-gray-500 mb-3 leading-relaxed">
-                Describe a diagram in plain English — Diagrify&apos;s AI will generate it instantly.
+              <p className="text-xs text-stone-500 mb-3 leading-relaxed">
+                Describe a diagram — AI generates it with proper shapes and connections.
               </p>
               <textarea
                 value={aiPrompt}
                 onChange={e => setAiPrompt(e.target.value)}
                 onKeyDown={e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) generateDiagram(); e.stopPropagation(); }}
-                placeholder="e.g. &quot;User registration flow with email verification&quot;, &quot;Microservices architecture with API gateway&quot;, &quot;Database schema for e-commerce&quot;"
-                className="w-full h-28 bg-gray-50 border border-gray-200 focus:border-orange-400 rounded-xl px-3 py-2.5 text-sm text-gray-800 resize-none outline-none placeholder-gray-400 transition-colors"
+                placeholder="e.g. &quot;User login flow&quot;, &quot;CI/CD pipeline&quot;, &quot;Microservices architecture&quot;"
+                className="w-full h-24 bg-stone-50 border border-stone-200 focus:border-orange-400 rounded-xl px-3 py-2.5 text-sm text-stone-800 resize-none outline-none placeholder-stone-400 transition-colors"
               />
               {aiError && (
                 <p className="text-xs text-rose-400 mt-2 flex items-center gap-1">
@@ -1754,7 +1647,6 @@ export function Diagrify() {
                   'Login flow',
                   'REST API',
                   'CI/CD pipeline',
-                  'Mind map',
                   'ERD schema',
                   'System design',
                 ].map(s => (
@@ -1778,20 +1670,20 @@ export function Diagrify() {
                   <><Sparkles className="w-4 h-4" /> Generate Diagram</>
                 )}
               </button>
-              <p className="text-[10px] text-gray-400 mt-2 text-center">Powered by Groq AI · Cmd+Enter to generate</p>
+              <p className="text-[10px] text-stone-400 mt-2 text-center">Powered by Groq AI · Cmd+Enter to generate</p>
             </div>
           </div>
         )}
 
-        {/* Layers button shortcut */}
-        <div className="absolute bottom-4 left-20 flex items-center gap-1 text-[10px] text-gray-400 pointer-events-none select-none">
-          <span className="font-mono">Ctrl+Scroll</span>
-          <span>zoom ·</span>
-          <span className="font-mono">H</span>
-          <span>pan ·</span>
-          <span className="font-mono">Cmd+Z</span>
-          <span>undo</span>
-        </div>
+        {/* Empty state hint */}
+        {elements.length === 0 && !showAI && (
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+            <div className="text-center">
+              <p className="text-stone-300 text-sm mb-1">Pick a tool & start drawing</p>
+              <p className="text-stone-200 text-xs">or click <span className="text-orange-300 font-medium">✦ AI Generate</span> above</p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

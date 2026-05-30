@@ -61,14 +61,20 @@ export async function POST(req: NextRequest) {
         { role: 'system', content: SYSTEM_PROMPT },
         {
           role: 'user',
-          content: `Create a clean diagram for: "${description.trim()}"
+          content: `Create a clean, connected diagram for: "${description.trim()}"
 
-Requirements:
-- Choose left-to-right OR top-to-bottom layout (not mixed)
-- Calculate exact x,y coordinates for each shape so nothing overlaps
-- For every arrow: set fromX/fromY at the exit edge of its source shape, toX/toY at the entry edge of its target
-- Short labels only (2-4 words)
-- Output valid JSON array only`,
+Choose layout direction first:
+- For linear processes (A→B→C→D): LEFT-TO-RIGHT starting at x=80,y=240, increment x by 230 each step
+- For branching flows (with decisions): TOP-TO-BOTTOM starting at x=480,y=60, increment y by 150
+
+Example LEFT-TO-RIGHT coordinates for 4 shapes + 3 arrows:
+Shape 1: x=80,  y=210, w=150, h=60  → arrow fromX=230, fromY=240, toX=310, toY=240
+Shape 2: x=310, y=210, w=150, h=60  → arrow fromX=460, fromY=240, toX=540, toY=240
+Shape 3: x=540, y=205, w=140, h=70  → arrow fromX=680, fromY=240, toX=710, toY=240
+Shape 4: x=710, y=210, w=150, h=60
+
+Rules: NEVER let shapes overlap (ensure x2 > x1+w1+20), use exactly the right coordinates, short labels only.
+Output valid JSON array only.`,
         },
       ],
       { model: 'llama-3.3-70b-versatile', maxTokens: 2000, temperature: 0.4 }
