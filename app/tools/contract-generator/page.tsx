@@ -284,6 +284,9 @@ ${css}
       </div>
     </div>
   </div>
+  <div style="margin-top:32px;padding-top:12px;border-top:1px solid #e5e7eb;text-align:center;font-size:10px;color:#9ca3af;">
+    Generated free on Formly Tools · formly.tools · No signup required
+  </div>
 </div>
 </body>
 </html>`;
@@ -322,6 +325,9 @@ ${css}
         <div class="sig-date"><div class="sig-line"></div><div class="sig-caption">Printed Name &amp; Title</div></div>
       </div>
     </div>
+  </div>
+  <div style="margin-top:32px;padding-top:12px;border-top:1px solid #e5e7eb;text-align:center;font-size:10px;color:#9ca3af;">
+    Generated free on Formly Tools · formly.tools · No signup required
   </div>
 </div>
 </body>
@@ -387,6 +393,15 @@ export default function ContractGeneratorPage() {
       description="Generate professional legal contracts in minutes — freelance agreements, NDAs, consulting contracts & more. Saves thousands in legal fees."
       icon="📜"
       relatedTools={RELATED}
+      faqs={[
+        { q: 'Is the contract generator free?', a: 'Yes. Formly\'s contract generator is completely free. Enter your details and download a professionally formatted contract without signup or payment.' },
+        { q: 'What types of contracts can it generate?', a: 'The generator covers freelance service agreements, NDAs (non-disclosure agreements), consulting contracts, independent contractor agreements, website design contracts, photography contracts, and general business agreements.' },
+        { q: 'Are AI-generated contracts legally binding?', a: 'AI-generated contracts can be legally binding when signed by both parties, but they are a starting point, not a substitute for legal counsel. For high-value or complex agreements, have a licensed attorney review the contract before signing.' },
+        { q: 'How do I create a freelance contract?', a: 'Select "Freelance Service Agreement", enter your name, the client\'s name, service description, payment terms, and deadline. The AI generates a complete contract with deliverables, payment schedule, revision policy, and termination clauses.' },
+        { q: 'What is an NDA and when do I need one?', a: 'An NDA (Non-Disclosure Agreement) is a legal contract preventing parties from sharing confidential information with third parties. You need one when sharing proprietary business ideas, trade secrets, client lists, or technical details with employees, contractors, or partners.' },
+        { q: 'Can I edit the generated contract?', a: 'Yes. The contract is generated as editable text you can copy, modify in any word processor, and save as a PDF. You retain full control to adjust any clause to fit your specific situation.' },
+        { q: 'Is this a replacement for hiring a lawyer?', a: 'No. The contract generator produces a solid starting point that covers common clauses, but complex, high-value, or jurisdiction-specific contracts should be reviewed by a licensed attorney in your region.' },
+      ]}
     >
       <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/20 text-sm text-amber-300 mb-6">
         ⚠️ <strong>Disclaimer:</strong> AI-generated contracts are a starting point. For binding legal agreements,

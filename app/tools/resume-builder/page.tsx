@@ -334,6 +334,14 @@ export default function ResumeBuilderPage() {
       description="Build a professional, ATS-optimized resume in minutes. Fill in your details and let AI craft compelling bullet points and a strong summary."
       icon="📋"
       relatedTools={RELATED}
+      faqs={[
+        { q: 'Is the AI resume builder free?', a: 'Yes. Building, editing, and downloading your resume as a PDF is completely free — no subscription required. Unlike Resume.io or Zety which charge $20-30/month for PDF downloads, Formly is free.' },
+        { q: 'What is an ATS score and why does it matter?', a: 'ATS (Applicant Tracking System) score shows how well your resume passes employer software filters. 99% of Fortune 500 companies use ATS to screen resumes before a human reads them. A score above 80 is considered strong.' },
+        { q: 'How do I optimize my resume for ATS in 2026?', a: 'Use keywords from the job description (match 60-70% of required skills), use standard section headings (Work Experience, Education, Skills), avoid tables, graphics, and columns — ATS parsers cannot read them. Quantify achievements with numbers.' },
+        { q: 'Can the AI write resume bullet points for me?', a: 'Yes. Enter your job title, company, and a rough description of your role — the AI transforms it into strong action-verb bullet points using the "accomplished X by doing Y resulting in Z" formula used by top tech companies.' },
+        { q: 'What format does the resume download in?', a: 'Resumes download as clean, print-ready PDFs formatted to render correctly in ATS systems. The PDF is simple and structured — no graphics, tables, or design elements that break ATS parsing.' },
+        { q: 'How is Formly better than Resume.io, Zety, and Kickresume?', a: 'Formly is completely free including PDF download. Resume.io, Zety, and Kickresume charge $20-30/month just to download your own resume. Formly also provides an actual ATS compatibility score and works without creating an account.' },
+      ]}
     >
       <form onSubmit={handleSubmit} className="space-y-6">
 

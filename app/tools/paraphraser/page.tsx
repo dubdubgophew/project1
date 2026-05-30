@@ -69,6 +69,14 @@ export default function ParaphraserPage() {
       icon="✍️"
       badge="Top Rated"
       relatedTools={RELATED}
+      faqs={[
+        { q: 'Is this paraphraser completely free?', a: 'Yes. The AI paraphraser is free with no character limits and no premium paywall. No account or credit card required.' },
+        { q: 'What paraphrasing styles are available?', a: 'The tool offers 5 styles: Standard (neutral rewrite), Fluent (improved flow), Formal (professional/academic tone), Simple (plain language for broad audiences), and Creative (varied vocabulary and structure).' },
+        { q: 'Does paraphrasing eliminate plagiarism?', a: 'Paraphrasing significantly reduces plagiarism by replacing original wording with new phrasing. However, for academic work, always cite the original source even after paraphrasing — the idea remains borrowed even if the words change.' },
+        { q: 'How does this compare to QuillBot?', a: 'Formly\'s paraphraser is completely free with no word limit — QuillBot\'s free plan limits you to 125 words per request and locks most modes behind a $9.95/month subscription. Formly supports up to 2,000 characters free.' },
+        { q: 'Can I use it for academic essays?', a: 'Yes — use the Formal mode for academic writing. It maintains technical terminology while rephrasing sentence structure. Always verify the output preserves the original meaning accurately before submission.' },
+        { q: 'Is my text data private?', a: 'Your text is sent only for AI processing and is never stored or logged. The connection is HTTPS-encrypted and no account is needed.' },
+      ]}
     >
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Mode selector */}
