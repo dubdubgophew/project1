@@ -121,7 +121,7 @@ Do NOT include: <html>, <body>, <head> tags. Just the article content HTML.`,
         role: 'user',
         content: `Title: "${title}"\nKeyword: "${targetKeyword}"\nWrite the full article now.`,
       },
-    ], { temperature: 0.6, maxTokens: 3000, model: 'llama-3.1-70b-versatile' });
+    ], { temperature: 0.6, maxTokens: 3000, model: 'llama-3.3-70b-versatile' });
 
     // Step 3: Generate meta description
     const metaResponse = await callAI([
