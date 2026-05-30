@@ -62,8 +62,8 @@ const MIN_SIZE      = 10;
 const GRID_SIZE     = 20;
 const SNAP_DIST     = 8;
 
-const STROKE_PRESETS = ['#1e1e2e', '#5c7cfa', '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#a855f7', '#64748b'];
-const FILL_PRESETS   = ['transparent', '#ede9fe', '#dbeafe', '#d1fae5', '#fef3c7', '#fee2e2', '#fce7f3', '#f1f5f9'];
+const STROKE_PRESETS = ['#1e1e2e', '#5c7cfa', '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#f97316', '#64748b'];
+const FILL_PRESETS   = ['transparent', '#fff7ed', '#dbeafe', '#d1fae5', '#fef3c7', '#fee2e2', '#fce7f3', '#f1f5f9'];
 
 const DEFAULT_STYLE: Pick<Elem, 'stroke' | 'fill' | 'lineWidth' | 'opacity' | 'fontSize'> = {
   stroke:    '#1e1e2e',
@@ -264,8 +264,8 @@ function drawLabel(ctx: CanvasRenderingContext2D, label: string, cx: number, cy:
   const fs = el.fontSize ?? 15;
   const weight = el.bold ? 'bold ' : '';
   const style  = el.italic ? 'italic ' : '';
-  const fontFamily = mode === 'sketchy' ? "'Kalam', cursive" : "-apple-system, Inter, sans-serif";
-  const fontSizePx = mode === 'sketchy' ? fs * 1.05 : fs; // Kalam renders at near-normal size
+  const fontFamily = mode === 'sketchy' ? "'Caveat', cursive" : "-apple-system, Inter, sans-serif";
+  const fontSizePx = mode === 'sketchy' ? fs * 1.05 : fs; // Caveat renders at near-normal size
   ctx.font = `${style}${weight}${fontSizePx}px ${fontFamily}`;
   ctx.fillStyle = mode === 'blueprint' ? '#93c5fd' : '#1e1e2e';
   ctx.textAlign = 'center';
@@ -435,7 +435,7 @@ function drawElement(ctx: CanvasRenderingContext2D, el: Elem, mode: Mode) {
       const fs = el.fontSize ?? 16;
       const weight = el.bold ? 'bold ' : '';
       const st = el.italic ? 'italic ' : '';
-      const fontFamily = mode === 'sketchy' ? "'Kalam', cursive" : "-apple-system, Inter, sans-serif";
+      const fontFamily = mode === 'sketchy' ? "'Caveat', cursive" : "-apple-system, Inter, sans-serif";
       const fontSizePx = mode === 'sketchy' ? fs * 1.2 : fs;
       ctx.font = `${st}${weight}${fontSizePx}px ${fontFamily}`;
       ctx.fillStyle = mode === 'blueprint' ? '#93c5fd' : '#1e1e2e';
@@ -465,7 +465,7 @@ function drawSelectionBox(ctx: CanvasRenderingContext2D, el: Elem, zoom: number)
   const b = getElementBounds(el);
   const pad = 4;
   ctx.save();
-  ctx.strokeStyle = '#a855f7';
+  ctx.strokeStyle = '#f97316';
   ctx.lineWidth = 1.5;
   ctx.setLineDash([5, 3]);
   ctx.strokeRect(b.x - pad, b.y - pad, b.w + pad * 2, b.h + pad * 2);
@@ -473,7 +473,7 @@ function drawSelectionBox(ctx: CanvasRenderingContext2D, el: Elem, zoom: number)
 
   const hs = HANDLE_SIZE / zoom;
   ctx.fillStyle = '#ffffff';
-  ctx.strokeStyle = '#7c3aed';
+  ctx.strokeStyle = '#ea580c';
   ctx.lineWidth = 1.5;
   getHandles(el).forEach(h => {
     ctx.beginPath();
@@ -486,8 +486,8 @@ function drawSelectionBox(ctx: CanvasRenderingContext2D, el: Elem, zoom: number)
 
 function drawSelectRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number) {
   ctx.save();
-  ctx.fillStyle = '#7c3aed18';
-  ctx.strokeStyle = '#7c3aed';
+  ctx.fillStyle = '#f9731618';
+  ctx.strokeStyle = '#f97316';
   ctx.lineWidth = 1;
   ctx.setLineDash([4, 2]);
   ctx.fillRect(x, y, w, h);
@@ -505,7 +505,7 @@ export function Diagrify() {
   const [elements, setElements] = useState<Elem[]>([]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [tool,    setTool]    = useState<Tool>('select');
-  const [mode,    setMode]    = useState<Mode>('clean');
+  const [mode,    setMode]    = useState<Mode>('sketchy');
   const [pan,     setPan]     = useState<Pt>({ x: 0, y: 0 });
   const [zoom,    setZoom]    = useState(1);
   const [history, setHistory] = useState<Elem[][]>([[]]);
@@ -1358,11 +1358,11 @@ export function Diagrify() {
           </a>
           <span className="text-gray-400">/</span>
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-md bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+            <div className="w-6 h-6 rounded-md bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center">
               <span className="text-white text-xs font-bold">D</span>
             </div>
             <span className="text-sm font-semibold text-gray-900">Diagrify</span>
-            <span className="text-[10px] font-semibold text-violet-400 bg-violet-500/15 border border-violet-500/30 px-1.5 py-0.5 rounded-full">BETA</span>
+            <span className="text-[10px] font-semibold text-orange-500 bg-orange-500/10 border border-orange-500/20 px-1.5 py-0.5 rounded-full">BETA</span>
           </div>
           {saveIndicator && (
             <span className="text-[10px] text-emerald-500 font-medium animate-pulse">● saved</span>
@@ -1377,7 +1377,7 @@ export function Diagrify() {
               onClick={() => setMode(m)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
                 mode === m
-                  ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/20'
+                  ? 'bg-orange-500 text-white shadow-orange-500/20'
                   : 'text-gray-500 hover:text-gray-900 hover:bg-gray-200'
               }`}
             >
@@ -1392,8 +1392,8 @@ export function Diagrify() {
             onClick={() => setShowAI(!showAI)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
               showAI
-                ? 'bg-violet-600 text-white'
-                : 'bg-violet-500/15 border border-violet-500/30 text-violet-400 hover:bg-violet-500/25'
+                ? 'bg-orange-500 text-white'
+                : 'bg-orange-500/10 border border-orange-500/20 text-orange-500 hover:bg-orange-500/20'
             }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
@@ -1422,7 +1422,7 @@ export function Diagrify() {
       <div className="flex flex-1 overflow-hidden relative">
 
         {/* ── Left toolbar ── */}
-        <div className="flex flex-col items-center gap-1 w-14 py-3 border-r border-gray-200 bg-gray-50 shrink-0 z-10 overflow-y-auto">
+        <div className="flex flex-col items-center gap-1 w-14 py-3 border-r border-stone-200 bg-white shrink-0 z-10 overflow-y-auto">
           {TOOLS.map(({ id, icon: Icon, label, key }) => (
             <button
               key={id}
@@ -1430,7 +1430,7 @@ export function Diagrify() {
               title={`${label} (${key})`}
               className={`group relative flex items-center justify-center w-10 h-10 rounded-xl transition-all ${
                 tool === id
-                  ? 'bg-violet-100 text-violet-700 border border-violet-300'
+                  ? 'bg-orange-100 text-orange-600 border border-orange-300'
                   : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
               }`}
             >
@@ -1449,7 +1449,7 @@ export function Diagrify() {
             onClick={() => setShowLayers(l => !l)}
             title="Layers"
             className={`flex items-center justify-center w-10 h-10 rounded-xl transition-all ${
-              showLayers ? 'bg-gray-200 text-violet-600' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
+              showLayers ? 'bg-orange-100 text-orange-600' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
             }`}
           >
             <Layers style={{ width: 18, height: 18 }} />
@@ -1507,9 +1507,9 @@ export function Diagrify() {
                 }}
                 className="w-full h-full resize-none bg-transparent border-none outline-none text-gray-900 text-center"
                 style={{
-                  fontFamily: mode === 'sketchy' ? "'Kalam', cursive" : "-apple-system, Inter, sans-serif",
+                  fontFamily: mode === 'sketchy' ? "'Caveat', cursive" : "-apple-system, Inter, sans-serif",
                   fontSize: `${(elements.find(e => e.id === editingId)?.fontSize ?? 15) * (mode === 'sketchy' ? 1.2 : 1) * zoom}px`,
-                  caretColor: '#a855f7',
+                  caretColor: '#f97316',
                   padding: '4px',
                 }}
                 placeholder="Type here…"
@@ -1522,12 +1522,12 @@ export function Diagrify() {
             <span>{Math.round(zoom * 100)}%</span>
             <span className="text-gray-300">·</span>
             <span>{elements.length} element{elements.length !== 1 ? 's' : ''}</span>
-            {selCount > 0 && <><span className="text-gray-300">·</span><span className="text-violet-600">{selCount} selected</span></>}
+            {selCount > 0 && <><span className="text-gray-300">·</span><span className="text-orange-600">{selCount} selected</span></>}
           </div>
         </div>
 
         {/* ── Right panel (style + properties) ── */}
-        <div className="w-52 border-l border-gray-200 bg-gray-50 shrink-0 flex flex-col overflow-y-auto z-10">
+        <div className="w-52 border-l border-stone-200 bg-white shrink-0 flex flex-col overflow-y-auto z-10">
 
           {/* Style panel */}
           <div className="p-4 border-b border-gray-200">
@@ -1542,7 +1542,7 @@ export function Diagrify() {
                     key={c}
                     onClick={() => { setStroke(c); applyStylePatch({ stroke: c }); }}
                     className="w-6 h-6 rounded-full border-2 transition-transform hover:scale-110"
-                    style={{ backgroundColor: c === 'transparent' ? undefined : c, borderColor: stroke === c ? '#7c3aed' : '#e5e7eb' }}
+                    style={{ backgroundColor: c === 'transparent' ? undefined : c, borderColor: stroke === c ? '#f97316' : '#e5e7eb' }}
                     title={c}
                   />
                 ))}
@@ -1568,7 +1568,7 @@ export function Diagrify() {
                     className="w-6 h-6 rounded-full border-2 transition-transform hover:scale-110 relative"
                     style={{
                       backgroundColor: c === 'transparent' ? undefined : c,
-                      borderColor: fill === c ? '#7c3aed' : '#e5e7eb',
+                      borderColor: fill === c ? '#f97316' : '#e5e7eb',
                     }}
                     title={c}
                   >
@@ -1595,7 +1595,7 @@ export function Diagrify() {
                     key={w}
                     onClick={() => { setLineWidth(w); applyStylePatch({ lineWidth: w }); }}
                     className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
-                      lineWidth === w ? 'bg-violet-600 text-white border-violet-500' : 'text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-900'
+                      lineWidth === w ? 'bg-orange-500 text-white border-orange-400' : 'text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-900'
                     }`}
                   >
                     {label}
@@ -1613,7 +1613,7 @@ export function Diagrify() {
                     key={s}
                     onClick={() => { setFontSize(s); applyStylePatch({ fontSize: s }); }}
                     className={`flex items-center justify-center w-8 h-8 rounded-lg text-xs font-bold transition-all border ${
-                      fontSize === s ? 'bg-violet-600 text-white border-violet-500' : 'text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-900'
+                      fontSize === s ? 'bg-orange-500 text-white border-orange-400' : 'text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-900'
                     }`}
                   >
                     {s}
@@ -1623,11 +1623,11 @@ export function Diagrify() {
               {/* Bold / Italic */}
               <div className="flex gap-1 mt-2">
                 <button onClick={() => { setBold(b => !b); applyStylePatch({ bold: !bold }); }}
-                  className={`flex items-center justify-center w-8 h-8 rounded-lg border transition-all ${bold ? 'bg-violet-600 text-white border-violet-500' : 'text-gray-500 border-gray-200 hover:text-gray-900'}`}>
+                  className={`flex items-center justify-center w-8 h-8 rounded-lg border transition-all ${bold ? 'bg-orange-500 text-white border-orange-400' : 'text-gray-500 border-gray-200 hover:text-gray-900'}`}>
                   <Bold style={{ width: 14, height: 14 }} />
                 </button>
                 <button onClick={() => { setItalic(it => !it); applyStylePatch({ italic: !italic }); }}
-                  className={`flex items-center justify-center w-8 h-8 rounded-lg border transition-all ${italic ? 'bg-violet-600 text-white border-violet-500' : 'text-gray-500 border-gray-200 hover:text-gray-900'}`}>
+                  className={`flex items-center justify-center w-8 h-8 rounded-lg border transition-all ${italic ? 'bg-orange-500 text-white border-orange-400' : 'text-gray-500 border-gray-200 hover:text-gray-900'}`}>
                   <Italic style={{ width: 14, height: 14 }} />
                 </button>
               </div>
@@ -1643,7 +1643,7 @@ export function Diagrify() {
                   <label className="text-gray-500 w-12">Opacity</label>
                   <input type="range" min="0" max="1" step="0.05" value={selEl.opacity}
                     onChange={e => { updateElement(selEl.id, { opacity: Number(e.target.value) }); }}
-                    className="flex-1 accent-violet-500" />
+                    className="flex-1 accent-orange-500" />
                   <span className="text-gray-500 w-8 text-right">{Math.round(selEl.opacity * 100)}%</span>
                 </div>
               </div>
@@ -1673,7 +1673,7 @@ export function Diagrify() {
                     key={el.id}
                     onClick={() => setSelectedIds([el.id])}
                     className={`flex items-center gap-2 px-2 py-1.5 rounded-lg cursor-pointer text-xs transition-colors ${
-                      selectedIds.includes(el.id) ? 'bg-violet-100 text-violet-700 border border-violet-200' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
+                      selectedIds.includes(el.id) ? 'bg-orange-100 text-orange-600 border border-orange-200' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
                     }`}
                   >
                     <span className="text-gray-400 font-mono w-4">{elements.length - i}</span>
@@ -1724,9 +1724,9 @@ export function Diagrify() {
         {/* ── AI Panel (floating overlay) ── */}
         {showAI && (
           <div className="absolute top-4 right-[248px] w-80 bg-white border border-gray-200 rounded-2xl shadow-2xl shadow-gray-200/80 z-30 overflow-hidden">
-            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gradient-to-r from-violet-50 to-purple-50">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gradient-to-r from-orange-50 to-amber-50">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-violet-500" />
+                <Sparkles className="w-4 h-4 text-orange-500" />
                 <span className="text-sm font-semibold text-gray-900">AI Diagram Generator</span>
               </div>
               <button onClick={() => setShowAI(false)} className="text-gray-400 hover:text-gray-700 transition-colors">
@@ -1742,7 +1742,7 @@ export function Diagrify() {
                 onChange={e => setAiPrompt(e.target.value)}
                 onKeyDown={e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) generateDiagram(); e.stopPropagation(); }}
                 placeholder="e.g. &quot;User registration flow with email verification&quot;, &quot;Microservices architecture with API gateway&quot;, &quot;Database schema for e-commerce&quot;"
-                className="w-full h-28 bg-gray-50 border border-gray-200 focus:border-violet-400 rounded-xl px-3 py-2.5 text-sm text-gray-800 resize-none outline-none placeholder-gray-400 transition-colors"
+                className="w-full h-28 bg-gray-50 border border-gray-200 focus:border-orange-400 rounded-xl px-3 py-2.5 text-sm text-gray-800 resize-none outline-none placeholder-gray-400 transition-colors"
               />
               {aiError && (
                 <p className="text-xs text-rose-400 mt-2 flex items-center gap-1">
@@ -1761,7 +1761,7 @@ export function Diagrify() {
                   <button
                     key={s}
                     onClick={() => setAiPrompt(s)}
-                    className="text-[11px] px-2 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-400 hover:bg-violet-500/20 transition-colors"
+                    className="text-[11px] px-2 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-500 hover:bg-orange-500/20 transition-colors"
                   >
                     {s}
                   </button>
@@ -1770,7 +1770,7 @@ export function Diagrify() {
               <button
                 onClick={generateDiagram}
                 disabled={aiLoading || !aiPrompt.trim()}
-                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white text-sm font-semibold transition-colors"
+                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-400 disabled:opacity-50 text-white text-sm font-semibold transition-colors"
               >
                 {aiLoading ? (
                   <><span className="animate-spin">⟳</span> Generating…</>

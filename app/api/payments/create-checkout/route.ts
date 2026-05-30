@@ -19,20 +19,33 @@ function isCheckoutRateLimited(userId: string): boolean {
   return false;
 }
 
-const ALLOWED_ORIGINS = new Set(
-  [
-    process.env.NEXT_PUBLIC_SITE_URL,
-    process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : null,
-  ]
-    .filter(Boolean)
-    .map(o => (o as string).replace(/\/$/, ''))
-);
+const SITE_HOSTNAME = (() => {
+  try {
+    return new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://formly.tools').hostname;
+  } catch {
+    return 'formly.tools';
+  }
+})();
+
+function isAllowedOrigin(origin: string): boolean {
+  if (!origin) return true; // server-to-server or missing origin
+  try {
+    const host = new URL(origin).hostname;
+    // Allow the exact hostname and www subdomain
+    if (host === SITE_HOSTNAME || host === `www.${SITE_HOSTNAME}`) return true;
+    // Allow localhost in development
+    if (process.env.NODE_ENV === 'development' && (host === 'localhost' || host === '127.0.0.1')) return true;
+    return false;
+  } catch {
+    return false;
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {
-    // Validate exact origin to prevent CSRF
-    const origin = (req.headers.get('origin') ?? '').replace(/\/$/, '');
-    if (ALLOWED_ORIGINS.size > 0 && !ALLOWED_ORIGINS.has(origin)) {
+    // Validate origin to prevent CSRF (hostname-based, handles www variants)
+    const origin = req.headers.get('origin') ?? '';
+    if (origin && !isAllowedOrigin(origin)) {
       return NextResponse.json({ error: 'Forbidden.' }, { status: 403 });
     }
 
