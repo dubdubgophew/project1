@@ -12,14 +12,25 @@ function checkAuth(req: NextRequest): boolean {
   return auth === secret || auth === `Bearer ${secret}`;
 }
 
-// GET /api/admin/seo-agent — dashboard data + config status
+// GET /api/admin/seo-agent?secret=X        — dashboard data
+// GET /api/admin/seo-agent?secret=X&run=1  — trigger agent run (browser-friendly)
 export async function GET(req: NextRequest) {
   if (!checkAuth(req)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
+  const run = req.nextUrl.searchParams.get('run');
+  if (run === '1' || run === 'true') {
+    try {
+      const result = await runTrafficSEOAgent('manual');
+      return NextResponse.json({ success: true, ...result });
+    } catch (err) {
+      return NextResponse.json({ error: String(err) }, { status: 500 });
+    }
+  }
+
   try {
-    const [data] = await Promise.all([getDashboardData()]);
+    const data = await getDashboardData();
     return NextResponse.json({
       gscConfigured: isGSCConfigured(),
       gscSiteUrl: process.env.GSC_SITE_URL ?? null,
