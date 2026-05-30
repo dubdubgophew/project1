@@ -4,6 +4,9 @@ import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
 import { BannerAd } from '@/components/shared/AdSense';
 import { BLOG_POSTS } from '@/lib/blog-content';
+import { createAdminClient } from '@/lib/supabase/server';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'AI Tool Guides & Tutorials — Formly Blog',
@@ -23,11 +26,41 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 const PINNED_SLUGS = ['paystub-generator', 'resume-builder', 'contract-generator'];
 
-const pinned = BLOG_POSTS.filter(p => PINNED_SLUGS.includes(p.slug));
-const rest = BLOG_POSTS.filter(p => !PINNED_SLUGS.includes(p.slug));
-const ordered = [...pinned, ...rest];
+interface DynamicPost {
+  slug: string;
+  title: string;
+  meta_description: string;
+  tags: string[];
+  read_time: number;
+  created_at: string;
+  updated_at: string;
+  dynamic: true;
+}
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  // Fetch dynamic posts from Supabase
+  let dynamicPosts: DynamicPost[] = [];
+  try {
+    const supabase = createAdminClient();
+    const { data } = await supabase
+      .from('blog_posts')
+      .select('slug, title, meta_description, tags, read_time, created_at, updated_at')
+      .eq('published', true)
+      .order('created_at', { ascending: false })
+      .limit(200);
+
+    const staticSlugs = new Set(BLOG_POSTS.map(p => p.slug));
+    dynamicPosts = (data ?? [])
+      .filter(p => !staticSlugs.has(p.slug))
+      .map(p => ({ ...p, dynamic: true as const }));
+  } catch {
+    // Supabase unavailable — show static only
+  }
+
+  const pinned = BLOG_POSTS.filter(p => PINNED_SLUGS.includes(p.slug));
+  const staticRest = BLOG_POSTS.filter(p => !PINNED_SLUGS.includes(p.slug));
+  const allPosts = [...pinned, ...staticRest, ...dynamicPosts];
+
   return (
     <>
       <Header />
@@ -42,6 +75,7 @@ export default function BlogPage() {
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
               Step-by-step guides for every Formly tool — with geo-specific tips for USA, UK, India, Canada, Australia, and more.
             </p>
+            <p className="text-gray-600 text-sm mt-3">{allPosts.length} guides published</p>
           </div>
 
           {/* Category pills */}
@@ -55,8 +89,20 @@ export default function BlogPage() {
 
           {/* Guide cards */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {ordered.map((post) => {
-              const isPinned = PINNED_SLUGS.includes(post.slug);
+            {allPosts.map((post) => {
+              const isPinned = !('dynamic' in post) && PINNED_SLUGS.includes(post.slug);
+              const isDynamic = 'dynamic' in post;
+              const meta = isDynamic
+                ? (post as DynamicPost).meta_description
+                : (post as typeof BLOG_POSTS[0]).metaDescription;
+              const date = isDynamic
+                ? (post as DynamicPost).created_at
+                : (post as typeof BLOG_POSTS[0]).publishedAt;
+              const readTime = isDynamic
+                ? (post as DynamicPost).read_time
+                : (post as typeof BLOG_POSTS[0]).readingTime;
+              const category = isDynamic ? 'ai-tools' : (post as typeof BLOG_POSTS[0]).category;
+
               return (
                 <Link
                   key={post.slug}
@@ -71,17 +117,17 @@ export default function BlogPage() {
                     <span className="text-xs font-semibold text-amber-400 mb-2">🔥 Most Popular</span>
                   )}
                   <span className="text-xs px-2 py-0.5 rounded-md bg-gray-800 text-gray-500 w-fit mb-3">
-                    {CATEGORY_LABELS[post.category] ?? post.category}
+                    {CATEGORY_LABELS[category] ?? category}
                   </span>
                   <h2 className="text-base font-bold text-white mb-2 group-hover:text-violet-300 transition-colors leading-snug">
                     {post.title}
                   </h2>
                   <p className="text-gray-500 text-sm leading-relaxed flex-1 line-clamp-2">
-                    {post.metaDescription}
+                    {meta}
                   </p>
                   <div className="flex items-center justify-between mt-4 text-xs text-gray-600">
-                    <span>{new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                    <span>{post.readingTime} min read</span>
+                    <span>{new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                    <span>{readTime} min read</span>
                   </div>
                 </Link>
               );
@@ -90,7 +136,6 @@ export default function BlogPage() {
 
           <BannerAd className="mt-10" />
 
-          {/* JSON-LD ItemList */}
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
@@ -98,9 +143,8 @@ export default function BlogPage() {
                 '@context': 'https://schema.org',
                 '@type': 'ItemList',
                 name: 'Formly AI Tool Guides',
-                description: 'Complete guides for 28 free AI tools covering pay stubs, resumes, contracts, writing, coding, and more.',
-                numberOfItems: BLOG_POSTS.length,
-                itemListElement: ordered.map((post, i) => ({
+                numberOfItems: allPosts.length,
+                itemListElement: allPosts.map((post, i) => ({
                   '@type': 'ListItem',
                   position: i + 1,
                   name: post.title,
