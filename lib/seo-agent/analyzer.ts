@@ -46,10 +46,10 @@ export function scoreOpportunities(
     const ctrGap = expCtr - page.ctr;
 
     // Need at least minimal signal
-    if (page.impressions < 20) continue;
+    if (page.impressions < 3) continue;
 
-    // 1. Fix meta description — high impressions, CTR well below expected
-    if (page.impressions >= 100 && ctrGap > 0.025) {
+    // 1. Fix meta description — CTR well below expected
+    if (page.impressions >= 10 && ctrGap > 0.025) {
       const score = page.impressions * ctrGap * 12;
       opportunities.push({
         page: page.page,
@@ -60,8 +60,8 @@ export function scoreOpportunities(
       });
     }
 
-    // 2. Title tweak — positions 4-10, good impressions (just off the top 3)
-    if (page.position >= 4 && page.position <= 10 && page.impressions >= 150) {
+    // 2. Title tweak — positions 4-10, just off the top 3
+    if (page.position >= 4 && page.position <= 10 && page.impressions >= 10) {
       const score = page.impressions * (11 - page.position) * 2.5;
       opportunities.push({
         page: page.page,
@@ -86,8 +86,8 @@ export function scoreOpportunities(
       });
     }
 
-    // 4. Add FAQ — top 10, high impressions on non-blog tool pages
-    if (page.position <= 10 && page.impressions >= 300 && page.page.includes('/tools/')) {
+    // 4. Add FAQ — top 10 tool pages
+    if (page.position <= 10 && page.impressions >= 20 && page.page.includes('/tools/')) {
       const score = page.impressions * 0.6;
       opportunities.push({
         page: page.page,
@@ -98,8 +98,8 @@ export function scoreOpportunities(
       });
     }
 
-    // 5. GEO markup — any high-traffic tool page missing rich results
-    if (page.position <= 5 && page.impressions >= 500 && page.page.includes('/tools/')) {
+    // 5. GEO markup — ranking tool pages
+    if (page.position <= 5 && page.impressions >= 30 && page.page.includes('/tools/')) {
       opportunities.push({
         page: page.page,
         type: 'geo_markup',
@@ -131,7 +131,7 @@ export function scoreOpportunities(
   }
 
   for (const [topic, data] of clusters) {
-    if (data.queries.length >= 4 && data.impressions >= 300 && data.clicks < data.impressions * 0.02) {
+    if (data.queries.length >= 2 && data.impressions >= 20 && data.clicks < data.impressions * 0.05) {
       opportunities.push({
         page: '(new)',
         type: 'new_post',

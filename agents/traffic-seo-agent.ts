@@ -216,9 +216,10 @@ export async function runTrafficSEOAgent(trigger = 'cron'): Promise<{
     console.log('[SEO Agent] GSC not configured — running in content-only mode');
   }
 
-  // ── Phase 7: Content-only generation (always runs) ─────────────────────────
-  // Generate additional posts even without GSC — sustain publishing velocity
-  const contentOnlyPosts = gscConnected ? 0 : 2;
+  // ── Phase 7: Content generation (always runs) ──────────────────────────────
+  // Always publish new posts regardless of GSC — sustain publishing velocity
+  // When GSC connected: generate 1 post/day. Without GSC: 2 posts/day.
+  const contentOnlyPosts = gscConnected ? Math.max(0, 1 - newPostsQueued) : 2;
   if (contentOnlyPosts > 0) {
     for (let i = 0; i < contentOnlyPosts; i++) {
       try {
