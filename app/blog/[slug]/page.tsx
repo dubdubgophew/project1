@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
-import { SidebarAd, BannerAd } from '@/components/shared/AdSense';
+import { SidebarAd, BannerAd, InArticleAd } from '@/components/shared/AdSense';
 import { BLOG_POSTS } from '@/lib/blog-content';
 import { createAdminClient } from '@/lib/supabase/server';
 import { ArrowLeft, Clock, Calendar } from 'lucide-react';
@@ -64,7 +64,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function BlogPostPage({ params }: Props) {
   const staticPost = BLOG_POSTS.find(p => p.slug === params.slug);
 
-  // ── Static post (rich format) ────────────────────────────────────────────────
+  // ── Static post (rich format) ─────────────────────────────────────────────
   if (staticPost) {
     const post = staticPost;
     const related = BLOG_POSTS.filter(p => p.category === post.category && p.slug !== post.slug).slice(0, 3);
@@ -106,9 +106,11 @@ export default async function BlogPostPage({ params }: Props) {
                     {section.body.split('\n\n').map((para, j) => (
                       <p key={j} className="text-stone-600 leading-relaxed mb-3">{para}</p>
                     ))}
+                    {i === 1 && <InArticleAd className="my-6" />}
                     {i === 2 && <BannerAd className="my-6" />}
                   </section>
                 ))}
+                <InArticleAd variant={2} className="my-6" />
                 <div className="mt-10 mb-8">
                   <h2 className="text-2xl font-bold text-stone-900 mb-6">Frequently Asked Questions</h2>
                   <div className="space-y-3">
@@ -152,7 +154,7 @@ export default async function BlogPostPage({ params }: Props) {
     );
   }
 
-  // ── Dynamic post (from Supabase) ─────────────────────────────────────────────
+  // ── Dynamic post (from Supabase) ──────────────────────────────────────────
   const post = await getDBPost(params.slug);
   if (!post) notFound();
 
@@ -190,7 +192,10 @@ export default async function BlogPostPage({ params }: Props) {
 
               <SocialShare url={`https://formly.tools/blog/${post.slug}`} title={post.title} />
 
-              {/* Render HTML content from AI */}
+              {/* Top in-article ad — above fold of content */}
+              <InArticleAd className="my-6" />
+
+              {/* AI-generated article HTML */}
               <div
                 className="prose prose-sm max-w-none mt-6
                   prose-headings:text-stone-900 prose-headings:font-bold
@@ -204,7 +209,10 @@ export default async function BlogPostPage({ params }: Props) {
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />
 
-              <div className="mt-10 p-8 rounded-2xl bg-gradient-to-br from-violet-600/10 to-purple-600/5 border border-violet-500/20 text-center">
+              {/* Mid-article ad — after content, before CTA */}
+              <InArticleAd variant={2} className="my-8" />
+
+              <div className="mt-6 p-8 rounded-2xl bg-gradient-to-br from-violet-600/10 to-purple-600/5 border border-violet-500/20 text-center">
                 <h3 className="text-xl font-bold text-stone-900 mb-2">Try Formly Tools — Free</h3>
                 <p className="text-stone-500 text-sm mb-4">No signup needed. 37 free AI tools.</p>
                 <Link href="/tools" className="btn-primary inline-flex">Explore All Tools →</Link>

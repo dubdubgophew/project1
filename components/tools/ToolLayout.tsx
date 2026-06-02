@@ -1,6 +1,6 @@
 import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
-import { SidebarAd } from '@/components/shared/AdSense';
+import { SidebarAd, InArticleAd } from '@/components/shared/AdSense';
 import { ToolFAQ } from '@/components/tools/ToolFAQ';
 import Link from 'next/link';
 import { ArrowLeft, Lock, Zap, Infinity } from 'lucide-react';
@@ -70,6 +70,9 @@ export function ToolLayout({
             <div className="space-y-6">
               {children}
 
+              {/* In-article ad between tool output and FAQs */}
+              {showAds !== false && <InArticleAd className="my-2" />}
+
               {faqs && faqs.length > 0 && <ToolFAQ faqs={faqs} />}
 
               {/* Usage notice */}
@@ -131,7 +134,6 @@ export function ToolLayout({
                 </Link>
               </div>
 
-              {/* AdSense — sidebar */}
               {showAds !== false && <SidebarAd />}
 
               {/* Related tools */}
@@ -154,6 +156,9 @@ export function ToolLayout({
                   </div>
                 </div>
               )}
+
+              {/* Second sidebar ad below related tools */}
+              {showAds !== false && relatedTools.length > 0 && <SidebarAd />}
             </aside>
           </div>
         </div>
