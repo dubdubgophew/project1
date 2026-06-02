@@ -2322,7 +2322,161 @@ export const BLOG_CATEGORIES = [
   { id: 'productivity', label: 'Productivity' },
 ] as const;
 
-export type BlogCategory = (typeof BLOG_CATEGORIES)[number]['id'];
+export type BlogCategory = (typeof BLOG_CATEGORIES)[number]['id'
+  // ─── Vibe Check — Mental Wellness ──────────────────────────────────────
+  {
+    slug: 'vibe-check-daily-emotional-check-in',
+    title: 'Vibe Check: How to Do a 60-Second Daily Emotional Check-In (Free)',
+    category: 'productivity',
+    toolSlug: 'vibe-check',
+    toolName: 'Vibe Check',
+    readingTime: 5,
+    publishedAt: '2026-06-02',
+    updatedAt: '2026-06-02',
+    metaDescription: 'Learn how to do a daily vibe check on yourself in 60 seconds. Free AI emotional check-in with mood tracking, personalized insights and micro-exercises. No signup.',
+    intro: "Checking in with yourself daily is one of the highest-leverage mental health habits you can build — and it takes less time than making tea. A vibe check is a micro-practice backed by CBT and mindfulness research that catches small emotional shifts before they become big problems.",
+    sections: [
+      {
+        heading: "What Is a Vibe Check (Beyond the Slang)?",
+        body: "The phrase 'vibe check' started as internet slang for assessing mood or energy. As a personal practice, it's a structured moment of emotional self-awareness.\n\nPsychologists call this 'affect labeling': naming an emotion reduces its intensity. Brain scans show labeling feelings activates the prefrontal cortex and calms the amygdala. Naming your emotion literally makes you calmer.",
+      },
+      {
+        heading: 'Why Daily? The Compound Effect of Emotional Awareness',
+        body: "Thirty days of daily check-ins creates pattern recognition: anxiety every Sunday evening, energy after exercise, irritability when skipping meals. This self-knowledge takes therapists months to build. A 60-second daily check-in fast-tracks it for free.",
+      },
+      {
+        heading: "How to Use Formly's Free Vibe Check Tool",
+        body: "1. Open Vibe Check — free, no account needed.\n2. Pick your emotion from 20 options across 5 groups.\n3. Select the life area: Work, Relationships, Health, Money, Family, or Self.\n4. Optionally share one sentence about what's going on.\n5. Choose your country for culturally tailored advice.\n6. Get a personalized AI insight, a reframe, and a 2-5 minute micro-exercise.",
+      },
+      {
+        heading: 'Vibe Check vs. Journaling vs. Meditation',
+        body: "Journaling needs time and motivation. Meditation needs practice. A vibe check needs neither — 60 seconds, structured, more actionable than a blank page, less friction than a 20-minute sit. Think of it as the gateway habit that makes bigger practices accessible.",
+      },
+    ],
+    faqs: [
+      { q: 'Is the Vibe Check tool really free?', a: 'Yes — completely free with no account required. 5 AI insights per day without signup, 10 with a free account, 200 per day on Pro.' },
+      { q: 'Does it store my personal data?', a: 'Your mood history is stored only on your device (browser localStorage). Nothing beyond the current check-in text is sent to our servers.' },
+      { q: 'Can it replace therapy?', a: "No — and it doesn't try to. It's a self-awareness tool for everyday wellness. For mental health conditions or crisis, please seek professional support." },
+      { q: 'How long does a vibe check take?', a: '60 seconds for the check-in. The micro-exercise that follows takes 2-5 minutes if you choose to do it.' },
+      { q: 'Does it work on mobile?', a: 'Yes — fully responsive, works on any phone browser. No app download needed.' },
+    ],
+    countriesServed: ['Global', 'USA', 'UK', 'India', 'Canada', 'Australia', 'Nigeria'],
+  },
+  {
+    slug: 'free-mental-health-app-india',
+    title: 'Free Mental Health App Alternative for India: Daily Mood Check-In Tool',
+    category: 'productivity',
+    toolSlug: 'vibe-check',
+    toolName: 'Vibe Check',
+    readingTime: 6,
+    publishedAt: '2026-06-02',
+    updatedAt: '2026-06-02',
+    metaDescription: 'Free mental health tool for India with culturally aware AI insights — family pressure, career stress, Indian context. No signup. Includes iCall and crisis resources.',
+    intro: "Mental health care in India remains inaccessible for most people — sessions cost Rs 1,500–3,000 per hour, waiting lists are long, and stigma runs deep. Yet anxiety, burnout, and loneliness have never been more prevalent. A free, private daily check-in genuinely helps.",
+    sections: [
+      {
+        heading: 'The Mental Health Gap in India',
+        body: "India has roughly 9,000 psychiatrists for 1.4 billion people — 1:156,000 versus the WHO recommendation of 3 per 100,000. Most Indians who need support can't afford it, can't find it, or avoid it due to stigma. Research shows structured micro-practices can significantly reduce stress and anxiety.",
+      },
+      {
+        heading: 'What Makes Indian Mental Health Challenges Unique',
+        body: "Indian stressors differ from Western ones: joint-family dynamics, intense academic competition (boards, UPSC, CAT), supporting parents and children simultaneously, arranged marriage pressures, and the cultural norm of suppressing emotions for the family's sake.\n\nA good wellness tool needs to understand these realities — not suggest 'set boundaries with your parents' without acknowledging that boundaries look different in a collectivist culture.",
+      },
+      {
+        heading: 'How Vibe Check Is Built for Indian Users',
+        body: "Selecting India calibrates the AI for Indian cultural context: family-centeredness (your wellbeing links to your family's), spiritual frameworks (yoga, pranayama, dharmic perspectives), realistic pressures (career expectations, parental duty acknowledged without judgment). You still get CBT, DBT, and mindfulness rigor — framed for your actual life.",
+      },
+      {
+        heading: 'Free Mental Health Resources in India',
+        body: "Beyond daily check-ins: iCall (TISS): 9152987821, Vandrevala Foundation: 1860-2662-345 (24/7, free), NIMHANS Connect (government resources), Vibe Check: formly.tools/tools/vibe-check. For crisis, please call iCall or Vandrevala Foundation immediately.",
+      },
+    ],
+    faqs: [
+      { q: 'Is this tool useful for Indian users specifically?', a: 'Yes — selecting India calibrates AI insights for Indian cultural context: family dynamics, career pressures, collectivist values, and spiritual frameworks.' },
+      { q: 'Is it available in Hindi?', a: 'Currently English only, written in accessible plain English. Hindi and regional language support is planned.' },
+      { q: 'Is it really free with no hidden charges?', a: 'Completely free. No credit card, no subscription. 5 check-ins per day without an account.' },
+      { q: "What if I'm in crisis?", a: 'Call iCall at 9152987821 or Vandrevala Foundation at 1860-2662-345. Vibe Check shows crisis resources automatically when distress is detected.' },
+      { q: 'Does it work on basic Android phones?', a: 'Yes — lightweight web app, any Android or iOS browser, no download needed.' },
+    ],
+    countriesServed: ['India'],
+  },
+  {
+    slug: 'free-mood-tracker-no-signup',
+    title: 'Free Online Mood Tracker — No Signup, AI Insights, 20 Emotions',
+    category: 'productivity',
+    toolSlug: 'vibe-check',
+    toolName: 'Vibe Check',
+    readingTime: 5,
+    publishedAt: '2026-06-02',
+    updatedAt: '2026-06-02',
+    metaDescription: 'Best free online mood tracker with no signup. Track emotional wellbeing daily, see patterns, get AI insights. Privacy-first — history stays on your device. Works in 25+ countries.',
+    intro: "Most mood tracking apps require an email, a download, a subscription, or all three. Vibe Check does none of this — free, browser-based, works instantly, stores history privately on your device, and gives AI-powered insights instead of empty charts.",
+    sections: [
+      {
+        heading: 'Why Most Mood Trackers Fail',
+        body: "Apps like Daylio, Moodfit, and Bearable are well-designed but retention drops sharply after week one. Reasons: download and signup friction, data collection anxiety, charts that don't tell you what to do, and generic advice. The best mood tracker is the one you actually use every day.",
+      },
+      {
+        heading: 'What Vibe Check Does Differently',
+        body: "Instead of a graph you're unsure how to interpret, Vibe Check gives a specific personalized insight for your exact mood and situation, a cognitive reframe, and a concrete micro-action you can do in 2-5 minutes right now. History is stored in your browser — not on any server.",
+      },
+      {
+        heading: 'How Mood Tracking Builds Emotional Intelligence',
+        body: "Consistent tracking over 2-4 weeks creates useful pattern recognition: 'I feel drained every Monday' — examine Sunday habits. 'Anxious when money is tight' — financial stress identified. 'Best days follow exercise' — exercise is a mood lever. Vibe Check's emoji history makes these patterns visible at a glance.",
+      },
+      {
+        heading: 'Vibe Check vs. Other Free Mood Trackers (2026)',
+        body: "Daylio: simple logging, no AI insights, requires app download. Moodfit: comprehensive but overwhelming, requires signup. Bearable: excellent for health conditions, complex setup. Vibe Check: 60-second check-in, AI insight, culturally aware, no download, no signup, 25+ countries. Free forever.",
+      },
+    ],
+    faqs: [
+      { q: 'Does it work without an account?', a: 'Yes — mood history is stored locally on your device. Create a free account only to sync history across devices.' },
+      { q: 'How many emotions can I track?', a: '20 distinct emotions across 5 groups: Thriving, Calm, Unsettled, Hurting, and Stressed — far more nuanced than a happy/sad scale.' },
+      { q: 'Is my mood data private?', a: 'Yes. History stored only in browser localStorage. Only your current check-in text is sent to the AI — no history stored on our servers.' },
+      { q: 'How far back can I see history?', a: 'Up to 14 days as an emoji timeline with a streak counter. Sign up free for extended history.' },
+      { q: 'What if I clear my browser cache?', a: 'Local history will be cleared. Create a free Formly account for persistent cross-session history.' },
+    ],
+    countriesServed: ['Global', 'USA', 'UK', 'Canada', 'Australia', 'Germany', 'France'],
+  },
+  {
+    slug: 'what-is-a-vibe-check-emotional-awareness',
+    title: 'What Is a Vibe Check? The Psychology of Daily Emotional Awareness',
+    category: 'productivity',
+    toolSlug: 'vibe-check',
+    toolName: 'Vibe Check',
+    readingTime: 6,
+    publishedAt: '2026-06-02',
+    updatedAt: '2026-06-02',
+    metaDescription: "What is a vibe check? Learn the psychology behind daily emotional check-ins, why naming emotions matters, and how a 60-second vibe check improves mental wellbeing. Science-backed, free tool.",
+    intro: "A 'vibe check' is both internet slang and a surprisingly evidence-backed mental health practice. At its core, it's the act of pausing to honestly assess your emotional state — and that single act has measurable psychological benefits backed by two decades of research.",
+    sections: [
+      {
+        heading: 'The Science of Affect Labeling',
+        body: "In 2007, UCLA researchers showed that simply naming an emotion reduces its intensity. Brain scans showed that labeling feelings reduced amygdala activity (threat response) and increased prefrontal cortex activity (rational thinking).\n\nThis is 'affect labeling' — the mechanism behind CBT, DBT, and virtually every evidence-based therapy. A daily vibe check applies this intentionally.",
+      },
+      {
+        heading: 'Emotional Granularity: The Difference Between Fine and Actually Fine',
+        body: "Most people operate with limited emotional vocabulary — saying 'fine,' 'stressed,' or 'okay.' Research by psychologist Lisa Feldman Barrett shows people with greater emotional granularity (ability to distinguish subtly different states) have better mental health, lower anxiety, and more adaptive coping strategies.\n\nKnowing the difference between frustrated and overwhelmed isn't semantic — it determines what intervention will actually help.",
+      },
+      {
+        heading: 'Vibe Check as a Therapeutic Micro-Practice',
+        body: "Therapists use structured check-ins at the start of every session to activate rational thinking. You can replicate this daily:\n\n1. Name the emotion precisely.\n2. Identify the trigger or context.\n3. Notice where you feel it physically.\n4. Choose one small action.\n\nFormly's Vibe Check walks you through this automatically, adding an AI insight personalized to your situation and cultural context.",
+      },
+      {
+        heading: 'How Often Should You Do a Vibe Check?',
+        body: "Once daily at a consistent time. Morning check-ins set intention. Evening check-ins process emotions before sleep. The key is consistency: 14 days of 60-second check-ins reveals more about your emotional patterns than years of vague self-reflection. Vibe Check's streak tracker makes this habit concrete and rewarding.",
+      },
+    ],
+    faqs: [
+      { q: "What does 'vibe check' actually mean?", a: "Originally internet slang for assessing someone's energy. As a personal practice, a structured moment of emotional self-assessment — identifying how you feel, why, and what you need." },
+      { q: 'Is a vibe check the same as journaling?', a: "Related but different. Journaling is open-ended and takes 10-20 minutes. A check-in is structured and takes 60 seconds. Both are valuable; check-ins win on daily consistency." },
+      { q: 'Do I need to be in therapy for this to help?', a: "No — daily emotional awareness is beneficial for anyone. It's a wellness practice like exercise or sleep hygiene, not a treatment." },
+      { q: 'What is emotional granularity?', a: "The ability to distinguish subtly different emotional states. Research shows higher granularity correlates with better mental health, lower anxiety, and more adaptive coping." },
+      { q: 'How does AI personalize the insight?', a: "The AI receives your mood, context, area of life, country, and recent check-in history — then applies CBT and mindfulness principles to generate a reframe and concrete micro-action." },
+    ],
+    countriesServed: ['Global', 'USA', 'UK', 'India', 'Australia', 'Canada', 'Japan'],
+  },
+];
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
   return BLOG_POSTS.find((p) => p.slug === slug);
