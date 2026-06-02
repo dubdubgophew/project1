@@ -4,6 +4,7 @@
 CREATE TABLE IF NOT EXISTS vibe_checkins (
   id           UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   user_id      UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
+  checkin_date DATE NOT NULL DEFAULT CURRENT_DATE,
   mood         TEXT NOT NULL,
   mood_group   TEXT,
   area         TEXT,
@@ -18,9 +19,9 @@ CREATE TABLE IF NOT EXISTS vibe_checkins (
 CREATE INDEX IF NOT EXISTS idx_vibe_checkins_user_created
   ON vibe_checkins(user_id, created_at DESC);
 
--- One check-in per user per calendar day (UTC) — prevents duplicate entries
+-- One check-in per user per calendar day (explicit date column — IMMUTABLE-safe)
 CREATE UNIQUE INDEX IF NOT EXISTS idx_vibe_checkins_user_day
-  ON vibe_checkins(user_id, DATE(created_at));
+  ON vibe_checkins(user_id, checkin_date);
 
 ALTER TABLE vibe_checkins ENABLE ROW LEVEL SECURITY;
 
