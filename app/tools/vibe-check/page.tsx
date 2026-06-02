@@ -16,6 +16,36 @@ interface VibeResult {
   crisis: Crisis; remaining: number;
 }
 
+// ── FAQ data ──────────────────────────────────────────────────────────────────
+const FAQS = [
+  { q: 'Is Vibe Check free to use?', a: '5 free AI check-ins per day — no account needed. Create a free account for 10/day, or go Pro for 200/day. No credit card ever required.' },
+  { q: 'Does it replace therapy?', a: 'No. Vibe Check is a self-reflection tool for everyday emotional wellness, not a clinical substitute. For mental health conditions or crisis situations, please seek professional support.' },
+  { q: 'Which countries are supported?', a: '25+ countries including India, USA, UK, Canada, Australia, Nigeria, Philippines, Japan, South Korea, Brazil, and UAE — each with culturally tailored AI insights unique to local stressors and values.' },
+  { q: 'Is my mood history private?', a: "Your history is stored only in your browser's localStorage — nothing is saved on our servers. Only your current check-in text is sent to the AI to generate your insight." },
+  { q: 'What micro-exercises are included?', a: 'Depending on your mood and AI recommendation you get: animated box breathing (4-4-4-4 cycle with a live timer), interactive 5-4-3-2-1 grounding, movement prompts, journaling questions, or cognitive reframing.' },
+  { q: 'How does country selection personalize my insight?', a: 'The AI uses cultural frameworks for your context — Indian users get family-centered and yoga-informed advice; Korean users get acknowledgment of achievement pressure; Nigerian users get ubuntu community framing. Real cultural nuance, not just translation.' },
+  { q: 'Can I use it every day?', a: 'Yes — daily use is the whole point. Consistent check-ins build emotional pattern awareness over time. Your streak counter and 14-day emoji history make the habit visible and rewarding.' },
+  { q: 'What happens if I am having dark or harmful thoughts?', a: 'Vibe Check is safety-first. If the AI detects distress signals it shows crisis resources for your country — iCall (9152987821) for India, 988 Lifeline for USA, Samaritans (116 123) for UK. Please reach out.' },
+];
+
+function FaqSection() {
+  return (
+    <div className="bg-white rounded-2xl shadow-sm border border-stone-200 p-5">
+      <h2 className="text-sm font-semibold text-stone-700 mb-3">Frequently Asked Questions</h2>
+      <div className="space-y-2">
+        {FAQS.map((faq, i) => (
+          <details key={i} className="group rounded-xl border border-stone-100 bg-stone-50">
+            <summary className="flex items-center justify-between px-4 py-3 cursor-pointer text-stone-800 font-medium text-sm list-none select-none">
+              <span>{faq.q}</span>
+              <span className="text-stone-400 group-open:rotate-180 transition-transform duration-200 shrink-0 ml-2">⌄</span>
+            </summary>
+            <p className="px-4 pb-4 text-stone-500 text-sm leading-relaxed">{faq.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  );
+}
 // ── Mood data ─────────────────────────────────────────────────────────────────
 const GROUPS: { label: string; icon: string; tc: string; bg: string; border: string; ring: string; moods: Mood[] }[] = [
   { label: 'Thriving', icon: '🌟', tc: 'text-emerald-700', bg: 'bg-emerald-50', border: 'border-emerald-200', ring: 'ring-emerald-400',
@@ -275,6 +305,8 @@ export default function VibeCheck() {
               </div>
             </div>
           )}
+
+          <FaqSection />
           <p className="text-center text-xs text-stone-400 mt-5 px-4">
             Vibe Check is for self-reflection and wellness only — not a substitute for professional mental health care.
           </p>
