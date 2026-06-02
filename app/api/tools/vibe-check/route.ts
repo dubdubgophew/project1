@@ -102,6 +102,7 @@ Respond ONLY with this exact JSON (no markdown):
       const admin = createAdminClient();
       await admin.from('vibe_checkins').upsert({
         user_id: user.id,
+        checkin_date: new Date().toISOString().split('T')[0],
         mood,
         mood_group: moodGroup ?? null,
         area: area ?? null,
@@ -109,9 +110,7 @@ Respond ONLY with this exact JSON (no markdown):
         insight: parsed.insight as string,
         affirmation: parsed.affirmation as string,
         action_type: parsed.actionType as string,
-        // upsert on today's date so re-check-ins update the row rather than fail
-        created_at: new Date().toISOString(),
-      }, { onConflict: 'user_id,DATE(created_at)', ignoreDuplicates: false });
+      }, { onConflict: 'user_id,checkin_date' });
       savedToAccount = true;
     }
   } catch {
