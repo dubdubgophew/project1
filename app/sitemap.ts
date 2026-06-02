@@ -49,6 +49,7 @@ const STATIC_ROUTES: Array<{ url: string; priority: number; changeFrequency: Met
   { url: '/tools/gst-calculator', priority: 0.9, changeFrequency: 'monthly', lastModified: '2026-05-31' },
   { url: '/tools/sip-calculator', priority: 0.9, changeFrequency: 'monthly', lastModified: '2026-05-31' },
   { url: '/tools/home-loan-emi-calculator', priority: 0.9, changeFrequency: 'monthly', lastModified: '2026-05-31' },
+  { url: '/tools/vibe-check', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-06-02' },
   { url: '/tools/iron-core-workout', priority: 0.9, changeFrequency: 'monthly', lastModified: '2026-05-31' },
   // Comparison / alternatives pages (high-intent SEO)
   { url: '/alternatives', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-05-31' },
