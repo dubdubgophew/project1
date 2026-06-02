@@ -178,9 +178,35 @@ export default function VibeCheck() {
   const [result, setResult] = useState<VibeResult | null>(null);
   const [error, setError] = useState('');
   const [history, setHistory] = useState<Entry[]>([]);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => { setHistory(loadHistory()); }, []);
+  useEffect(() => {
+    setHistory(loadHistory());
+    // Check login status and load server-side history for logged-in users
+    import('@/lib/supabase/client').then(({ createClient }) => {
+      const supabase = createClient();
+      supabase.auth.getUser().then(async ({ data: { user } }) => {
+        setIsLoggedIn(!!user);
+        if (!user) return;
+        const { data } = await supabase
+          .from('vibe_checkins')
+          .select('created_at, mood, mood_group, affirmation')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false })
+          .limit(30);
+        if (data?.length) {
+          const dbEntries: Entry[] = data.map((row: { created_at: string; mood: string; affirmation?: string }) => ({
+            date: row.created_at.split('T')[0],
+            mood: row.mood,
+            emoji: GROUPS.flatMap(g => g.moods).find(m => m.label === row.mood)?.emoji ?? '✨',
+          }));
+          setHistory(dbEntries);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(dbEntries.slice(0, 14)));
+        }
+      });
+    });
+  }, []);
 
   const streak = getStreak(history);
 
@@ -200,6 +226,24 @@ export default function VibeCheck() {
       setHistory(loadHistory());
       setResult(data);
       setStep('result');
+      if (data.savedToAccount) {
+        // Refresh DB history in background after successful server save
+        import('@/lib/supabase/client').then(({ createClient }) => {
+          createClient().from('vibe_checkins')
+            .select('created_at, mood')
+            .order('created_at', { ascending: false })
+            .limit(30)
+            .then(({ data: rows }) => {
+              if (rows?.length) {
+                const updated = rows.map((r: { created_at: string; mood: string }) => ({
+                  date: r.created_at.split('T')[0], mood: r.mood,
+                  emoji: GROUPS.flatMap(g => g.moods).find(m => m.label === r.mood)?.emoji ?? '✨',
+                }));
+                setHistory(updated);
+              }
+            });
+        });
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch { setError('Network error. Please try again.'); setStep('checkin'); }
   }
@@ -307,8 +351,15 @@ export default function VibeCheck() {
           )}
 
           <FaqSection />
-          <p className="text-center text-xs text-stone-400 mt-5 px-4">
-            Vibe Check is for self-reflection and wellness only — not a substitute for professional mental health care.
+          {isLoggedIn === false && (
+            <div className="mt-4 p-3 rounded-xl bg-violet-50 border border-violet-100 text-center">
+              <p className="text-xs text-violet-700 font-medium mb-1">Your history only lives in this browser</p>
+              <p className="text-xs text-violet-500 mb-2">Sign up free to sync your mood history and streaks across all your devices.</p>
+              <a href="/signup" className="inline-block px-4 py-1.5 rounded-full bg-violet-600 text-white text-xs font-semibold hover:bg-violet-700 transition-colors">Create free account →</a>
+            </div>
+          )}
+          <p className="text-center text-xs text-stone-400 mt-4 px-4">
+            For self-reflection only — not a substitute for professional mental health care.
           </p>
         </div>
       </main>
@@ -379,7 +430,14 @@ export default function VibeCheck() {
 
           {history.length > 0 && (
             <div className="bg-white rounded-2xl shadow-sm border border-stone-200 p-4">
-              <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide mb-3">Your mood journey</p>
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide">Your mood journey</p>
+                {isLoggedIn === true
+                  ? <span className="text-[10px] text-emerald-600 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">☁️ Synced</span>
+                  : isLoggedIn === false
+                    ? <a href="/signup" className="text-[10px] text-violet-600 hover:underline">Sign up to save →</a>
+                    : null}
+              </div>
               <div className="flex flex-wrap gap-2">
                 {history.slice(0, 12).map((h, i) => (
                   <div key={i} title={`${h.date}: ${h.mood}`} className="flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-lg bg-stone-50 border border-stone-100">
