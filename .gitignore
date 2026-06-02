@@ -1,5 +1,6 @@
-# Claude Code session data
-.claude/
+# Claude Code session data — keep settings.json tracked
+.claude/*
+!.claude/settings.json
 
 # Dependencies
 node_modules/
