@@ -389,6 +389,16 @@ const TOOLS: Tool[] = [
   },
   // Fitness & Health
   {
+    icon: '✨',
+    name: 'Vibe Check',
+    description: 'A 60-second AI mood check-in. Understand your feelings, track patterns, get personalized insights and micro-exercises. Works in 25+ countries. Private & free.',
+    href: '/tools/vibe-check',
+    badge: 'New',
+    color: 'from-violet-500/10 to-purple-600/5 border-violet-500/20 hover:border-violet-500/40',
+    tags: ['mental wellness', 'mood tracker', 'mindfulness', 'emotional check-in', 'mental health', 'meditation'],
+    category: 'Fitness & Health',
+  },
+  {
     icon: '💪',
     name: 'Iron Core Workout',
     description: '30-day military calisthenics program with progressive training, rest timer, diet plan, ancient wisdom, and streak tracking. No equipment needed.',
