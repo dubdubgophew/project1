@@ -6,6 +6,11 @@ import { createClient } from '@/lib/supabase/client';
 
 const ADSENSE_CLIENT = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID ?? 'ca-pub-7233937066598688';
 
+// Real ad slot IDs from AdSense dashboard → Ad units → copy "data-ad-slot" value.
+// Without these env vars manual ad units won't render — Auto Ads (from the script) still runs.
+const BANNER_SLOT = process.env.NEXT_PUBLIC_ADSENSE_BANNER_SLOT ?? '';
+const SIDEBAR_SLOT = process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT ?? '';
+
 const FREE_PLANS = new Set(['free', null, undefined]);
 
 /** Returns true only for anonymous visitors and free-plan users. null while loading. */
@@ -51,17 +56,17 @@ export function AdUnit({ slot, format = 'auto', responsive = true, className = '
   const showAds = useShowAds();
 
   useEffect(() => {
-    if (!ADSENSE_CLIENT || !showAds) return;
+    if (!ADSENSE_CLIENT || !showAds || !slot) return;
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
     } catch {
       // AdSense not loaded yet
     }
-  }, [showAds]);
+  }, [showAds, slot]);
 
-  // Hide while loading or for paid users — no flash
-  if (!showAds) return null;
+  // No slot configured or paid user — render nothing (Auto Ads still runs via script)
+  if (!showAds || !slot) return null;
 
   return (
     <div ref={adRef} className={`adsense-container ${className}`}>
@@ -82,10 +87,10 @@ export function AdUnit({ slot, format = 'auto', responsive = true, className = '
 
 /** Banner ad — hidden for pro/unlimited/day_pass users */
 export function BannerAd({ className }: { className?: string }) {
-  return <AdUnit slot="1234567890" format="horizontal" className={className} />;
+  return <AdUnit slot={BANNER_SLOT} format="horizontal" className={className} />;
 }
 
 /** Sidebar ad — hidden for pro/unlimited/day_pass users */
 export function SidebarAd({ className }: { className?: string }) {
-  return <AdUnit slot="0987654321" format="rectangle" className={className} />;
+  return <AdUnit slot={SIDEBAR_SLOT} format="rectangle" className={className} />;
 }
