@@ -43,7 +43,7 @@ export function Hero() {
 
         {/* Headline — editorial serif */}
         <h1 className="font-display text-[2.8rem] sm:text-6xl lg:text-[5.5rem] font-normal tracking-[-0.02em] mb-5 sm:mb-6 leading-[1.08] text-stone-900">
-          37 Free AI Tools,
+          38 Free AI Tools,
           <br />
           <em className="text-orange-500">Zero Signup</em>
           <br />
@@ -64,7 +64,7 @@ export function Hero() {
             href="/tools"
             className="btn-primary text-sm sm:text-base px-7 py-3.5 sm:px-8 sm:py-4 shadow-xl shadow-orange-500/20 group w-full sm:w-auto"
           >
-            Try All 37 Tools Free
+            Try All 38 Tools Free
             <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
           </Link>
           <Link
