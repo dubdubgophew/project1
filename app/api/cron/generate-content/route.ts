@@ -1,21 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { runSEOAgent } from '@/agents/seo-content-agent';
 
-export const maxDuration = 300; // 5 min max for content generation
+export const maxDuration = 300;
 
 /**
  * Cron: /api/cron/generate-content
- * Schedule: 0 6 * * 2,5  (Tuesdays and Fridays at 6am UTC)
+ * Schedule: 0 6 * * *  (daily at 6am UTC)
  * Secured by CRON_SECRET header (enforced in middleware.ts)
  *
- * Generates 2 SEO-optimized blog posts automatically.
- * No human input needed.
+ * Generates 3 SEO-optimized blog posts per day targeting AI Overviews + PAA.
  */
 export async function POST(req: NextRequest) {
   console.log('[Cron] SEO content generation started');
 
   try {
-    const result = await runSEOAgent(2);
+    const result = await runSEOAgent(3);
     console.log(`[Cron] Generated ${result.generated} posts:`, result.posts);
 
     return NextResponse.json({
@@ -29,7 +28,6 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// Also allow GET for manual trigger from admin
 export async function GET(req: NextRequest) {
   return POST(req);
 }
