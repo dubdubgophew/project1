@@ -8,27 +8,30 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
   variable: '--font-inter',
   display: 'swap',
-  weight: ['300', '400', '500', '600', '700', '800'],
+  preload: true,
+  weight: ['400', '500', '600', '700', '800'], // dropped 300 (light) — unused
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-mono',
   display: 'swap',
+  preload: false, // only used in code-display pages, defer
 });
 
 const dmSerifDisplay = DM_Serif_Display({
   subsets: ['latin'],
   variable: '--font-display',
   display: 'swap',
+  preload: false, // only used in Hero headline, defer
   weight: '400',
-  style: ['normal', 'italic'],
+  style: 'normal', // dropped italic — only normal weight used in Hero
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://formly.tools'),
   title: {
-    default: 'Formly Tools — 37 Free AI Tools Online | No Signup Required',
+    default: 'Formly Tools — 42 Free AI Tools Online | No Signup Required',
     template: '%s | Formly Tools',
   },
   description:
@@ -68,7 +71,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://formly.tools',
     siteName: 'Formly Tools',
-    title: 'Formly Tools — 37 Free AI Tools Online | No Signup',
+    title: 'Formly Tools — 42 Free AI Tools Online | No Signup',
     description:
       'Free AI tools: pay stub generator, resume builder, grammar checker, paraphraser, contract generator, PDF summarizer, AI diagrams & 30 more. No signup required.',
     images: [
@@ -76,13 +79,13 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Formly Tools — 37 Free AI Tools Online',
+        alt: 'Formly Tools — 42 Free AI Tools Online',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Formly Tools — 37 Free AI Tools Online',
+    title: 'Formly Tools — 42 Free AI Tools Online',
     description: 'Free AI tools: pay stubs, resume builder, grammar checker, diagrams, contracts & 32 more. No signup required.',
     images: ['/og-image.png'],
     creator: '@formlytools',
@@ -130,8 +133,6 @@ export default function RootLayout({
         <meta name="google-adsense-account" content="ca-pub-7233937066598688" />
         <AdSenseScript />
         <meta name="monetag" content="701dad6c34191d949e21404ca1901f4f" />
-        {/* Monetag ads */}
-        <script src="https://quge5.com/88/tag.min.js" data-zone="242055" async data-cfasync="false" />
         {/* hreflang — geo targeting for English-speaking markets */}
         <link rel="alternate" hrefLang="en" href="https://formly.tools" />
         <link rel="alternate" hrefLang="en-US" href="https://formly.tools" />
@@ -179,7 +180,7 @@ export default function RootLayout({
           hasOfferCatalog: {
             '@type': 'OfferCatalog',
             name: 'Free AI Tools — No Signup Required',
-            numberOfItems: 37,
+            numberOfItems: 42,
             itemListElement: [
               { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Free Pay Stub Generator', description: 'Generate pay stubs for USA, UK, Canada, India, Australia. 2026 tax tables.', url: 'https://formly.tools/tools/paystub-generator' } },
               { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'AI Resume Builder', description: 'Build ATS-optimized resumes with AI. Free, no signup.', url: 'https://formly.tools/tools/resume-builder' } },
@@ -229,7 +230,7 @@ export default function RootLayout({
           name: 'Formly Tools — Free AI Tool Categories',
           description: 'Browse 37 free AI tools organized by category: AI Writing, Payroll & Legal, Developer Tools, Finance, Utilities, and more.',
           url: 'https://formly.tools/tools',
-          numberOfItems: 37,
+          numberOfItems: 42,
           itemListElement: [
             { '@type': 'ListItem', position: 1, name: 'AI Writing Tools', item: 'https://formly.tools/tools#writing' },
             { '@type': 'ListItem', position: 2, name: 'Payroll & Legal Tools', item: 'https://formly.tools/tools#payroll' },
@@ -260,6 +261,13 @@ export default function RootLayout({
       <body className="font-sans antialiased bg-[#F9F7F4] text-stone-900 min-h-screen">
         <GoogleAnalytics />
         {children}
+        {/* Monetag — lazyOnload so it never blocks initial render */}
+        <Script
+          src="https://quge5.com/88/tag.min.js"
+          data-zone="242055"
+          data-cfasync="false"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );
