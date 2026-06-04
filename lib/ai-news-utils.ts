@@ -10,20 +10,29 @@ export interface AINewsItem {
   image_url: string | null;
   fetched_at: string;
   rank: number;
+  country_code: string;
+  country_name: string;
+  language_code: string;
+  language_name: string;
 }
 
 export const AI_SOURCES = [
-  { key: 'techcrunch',  name: 'TechCrunch AI',       url: 'https://techcrunch.com/category/artificial-intelligence/feed/' },
-  { key: 'venturebeat', name: 'VentureBeat AI',       url: 'https://venturebeat.com/category/ai/feed/' },
-  { key: 'theverge',    name: 'The Verge AI',         url: 'https://www.theverge.com/ai-artificial-intelligence/rss/index.xml' },
-  { key: 'arstechnica', name: 'Ars Technica',         url: 'https://feeds.arstechnica.com/arstechnica/technology-lab' },
-  { key: 'mitreview',   name: 'MIT Tech Review',      url: 'https://www.technologyreview.com/feed/' },
-  { key: 'googleai',    name: 'Google AI Blog',       url: 'https://blog.google/technology/ai/rss/' },
-  { key: 'huggingface', name: 'Hugging Face Blog',    url: 'https://huggingface.co/blog/feed.xml' },
-  { key: 'ainews',      name: 'AI News',              url: 'https://artificialintelligence-news.com/feed/' },
-  { key: 'reddit_ai',   name: 'Reddit r/artificial',  url: 'https://www.reddit.com/r/artificial/.rss' },
-  { key: 'reddit_ml',   name: 'Reddit r/MachineLearning', url: 'https://www.reddit.com/r/MachineLearning/.rss' },
-] as const;
+  { key: 'techcrunch',  name: 'TechCrunch AI',            url: 'https://techcrunch.com/category/artificial-intelligence/feed/',     countryCode: 'GLOBAL', countryName: 'Global', langCode: 'en', langName: 'English' },
+  { key: 'venturebeat', name: 'VentureBeat AI',            url: 'https://venturebeat.com/category/ai/feed/',                          countryCode: 'GLOBAL', countryName: 'Global', langCode: 'en', langName: 'English' },
+  { key: 'theverge',    name: 'The Verge AI',              url: 'https://www.theverge.com/ai-artificial-intelligence/rss/index.xml',   countryCode: 'GLOBAL', countryName: 'Global', langCode: 'en', langName: 'English' },
+  { key: 'arstechnica', name: 'Ars Technica',              url: 'https://feeds.arstechnica.com/arstechnica/technology-lab',            countryCode: 'US',     countryName: 'United States', langCode: 'en', langName: 'English' },
+  { key: 'mitreview',   name: 'MIT Tech Review',           url: 'https://www.technologyreview.com/feed/',                             countryCode: 'US',     countryName: 'United States', langCode: 'en', langName: 'English' },
+  { key: 'googleai',    name: 'Google AI Blog',            url: 'https://blog.google/technology/ai/rss/',                             countryCode: 'US',     countryName: 'United States', langCode: 'en', langName: 'English' },
+  { key: 'huggingface', name: 'Hugging Face Blog',         url: 'https://huggingface.co/blog/feed.xml',                               countryCode: 'GLOBAL', countryName: 'Global', langCode: 'en', langName: 'English' },
+  { key: 'ainews',      name: 'AI News',                   url: 'https://artificialintelligence-news.com/feed/',                      countryCode: 'GB',     countryName: 'United Kingdom', langCode: 'en', langName: 'English' },
+  { key: 'reddit_ai',   name: 'Reddit r/artificial',       url: 'https://www.reddit.com/r/artificial/.rss',                           countryCode: 'GLOBAL', countryName: 'Global', langCode: 'en', langName: 'English' },
+  { key: 'reddit_ml',   name: 'Reddit r/MachineLearning',  url: 'https://www.reddit.com/r/MachineLearning/.rss',                      countryCode: 'GLOBAL', countryName: 'Global', langCode: 'en', langName: 'English' },
+  // Regional AI sources
+  { key: 'aim_india',   name: 'Analytics India Mag',       url: 'https://analyticsindiamag.com/feed/',                               countryCode: 'IN',     countryName: 'India', langCode: 'en', langName: 'English' },
+  { key: 'inc42',       name: 'Inc42 AI',                  url: 'https://inc42.com/tag/artificial-intelligence/feed/',               countryCode: 'IN',     countryName: 'India', langCode: 'en', langName: 'English' },
+  { key: 'heise_ai',    name: 'Heise KI',                  url: 'https://www.heise.de/thema/KI/feed/rss.xml',                        countryCode: 'DE',     countryName: 'Germany', langCode: 'de', langName: 'Deutsch' },
+  { key: 'silicon_fr',  name: 'Silicon.fr',                url: 'https://www.silicon.fr/feed/',                                      countryCode: 'FR',     countryName: 'France', langCode: 'fr', langName: 'Français' },
+];
 
 export type AISourceKey = (typeof AI_SOURCES)[number]['key'];
 
