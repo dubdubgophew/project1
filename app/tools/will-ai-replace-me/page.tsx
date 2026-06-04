@@ -27,23 +27,21 @@ interface AIReplaceResult {
 // ── Risk Gauge ────────────────────────────────────────────────────────────────
 function RiskGauge({ pct }: { pct: number }) {
   const clamp = Math.min(100, Math.max(0, pct));
-  const color = clamp >= 70 ? '#ef4444' : clamp >= 45 ? '#f59e0b' : '#22c55e';
-  const emoji = clamp >= 80 ? '💀' : clamp >= 60 ? '🔴' : clamp >= 40 ? '🟡' : '🟢';
+  const color = clamp >= 70 ? '#f87171' : clamp >= 45 ? '#fbbf24' : '#4ade80';
   const label = clamp >= 80 ? 'Critical Risk' : clamp >= 60 ? 'High Risk' : clamp >= 40 ? 'Medium Risk' : clamp >= 20 ? 'Low Risk' : 'Very Safe';
   const r = 70, cx = 90, cy = 90;
   const circ = Math.PI * r;
   const offset = circ * (1 - clamp / 100);
   return (
-    <div className="flex flex-col items-center gap-2">
-      <svg width={180} height={100} className="drop-shadow-lg overflow-visible">
-        <path d={`M ${cx-r} ${cy} A ${r} ${r} 0 0 1 ${cx+r} ${cy}`} fill="none" stroke="#e5e7eb" strokeWidth={16} strokeLinecap="round" />
-        <path d={`M ${cx-r} ${cy} A ${r} ${r} 0 0 1 ${cx+r} ${cy}`} fill="none" stroke={color} strokeWidth={16}
+    <div className="flex flex-col items-center">
+      <svg width={180} height={108} className="overflow-visible">
+        <path d={`M ${cx-r} ${cy} A ${r} ${r} 0 0 1 ${cx+r} ${cy}`} fill="none" stroke="#374151" strokeWidth={14} strokeLinecap="round" />
+        <path d={`M ${cx-r} ${cy} A ${r} ${r} 0 0 1 ${cx+r} ${cy}`} fill="none" stroke={color} strokeWidth={14}
           strokeLinecap="round" strokeDasharray={circ} strokeDashoffset={offset}
           style={{ transition: 'stroke-dashoffset 1.2s ease' }} />
-        <text x={cx} y={cy - 10} textAnchor="middle" fontSize={36} fontWeight="900" fill={color}>{clamp}%</text>
-        <text x={cx} y={cy + 16} textAnchor="middle" fontSize={13} fill="#6b7280">{label}</text>
+        <text x={cx} y={cy - 8} textAnchor="middle" fontSize={38} fontWeight="900" fill={color}>{clamp}%</text>
+        <text x={cx} y={cy + 18} textAnchor="middle" fontSize={13} fontWeight="600" fill="#d1d5db">{label}</text>
       </svg>
-      <span className="text-4xl">{emoji}</span>
     </div>
   );
 }
@@ -61,12 +59,20 @@ const EXPERIENCE_OPTIONS = [
   'Less than 1 year', '1–3 years', '3–5 years', '5–10 years', '10–20 years', '20+ years',
 ];
 
-const RISK_COLORS: Record<string, string> = {
-  VERY_LOW:  'from-green-500 to-emerald-600',
-  LOW:       'from-green-400 to-teal-500',
-  MEDIUM:    'from-amber-400 to-orange-500',
-  HIGH:      'from-orange-500 to-red-500',
-  VERY_HIGH: 'from-red-500 to-red-700',
+const RISK_BORDER: Record<string, string> = {
+  VERY_LOW:  'border-emerald-500/40',
+  LOW:       'border-teal-500/40',
+  MEDIUM:    'border-amber-500/40',
+  HIGH:      'border-orange-500/40',
+  VERY_HIGH: 'border-red-500/40',
+};
+
+const RISK_ACCENT: Record<string, string> = {
+  VERY_LOW:  'text-emerald-400',
+  LOW:       'text-teal-400',
+  MEDIUM:    'text-amber-400',
+  HIGH:      'text-orange-400',
+  VERY_HIGH: 'text-red-400',
 };
 
 const FAQS = [
@@ -119,7 +125,8 @@ export default function WillAIReplaceMePage() {
     navigator.clipboard.writeText(text).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2500); });
   }
 
-  const gradClass = result ? (RISK_COLORS[result.risk_level] ?? 'from-stone-500 to-stone-700') : '';
+  const borderClass = result ? (RISK_BORDER[result.risk_level] ?? 'border-stone-700') : '';
+  const accentClass = result ? (RISK_ACCENT[result.risk_level] ?? 'text-stone-400') : '';
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -224,21 +231,21 @@ export default function WillAIReplaceMePage() {
             <div ref={resultRef} className="space-y-6">
 
               {/* Hero result card */}
-              <div className={`bg-gradient-to-br ${gradClass} rounded-3xl p-8 text-white text-center shadow-xl`}>
+              <div className={`bg-stone-950 border-2 ${borderClass} rounded-3xl p-8 text-center`}>
                 <RiskGauge pct={result.risk_percentage} />
-                <h2 className="text-2xl font-black mt-4 mb-1">{result.survival_title}</h2>
-                <p className="text-white/80 text-sm leading-relaxed max-w-md mx-auto mb-4">{result.survival_description}</p>
-                <div className="inline-flex items-center gap-2 bg-white/20 rounded-xl px-4 py-2 text-sm font-semibold mb-5">
-                  ⏰ Replacement Timeline: {result.replacement_year_range}
+                <h2 className={`text-2xl font-black mt-5 mb-2 ${accentClass}`}>{result.survival_title}</h2>
+                <p className="text-stone-400 text-sm leading-relaxed max-w-md mx-auto mb-4">{result.survival_description}</p>
+                <div className={`inline-flex items-center gap-2 bg-stone-800 border border-stone-700 rounded-xl px-4 py-2 text-sm font-semibold text-stone-200 mb-5`}>
+                  ⏰ Timeline: {result.replacement_year_range}
                 </div>
-                <div className="bg-white/10 rounded-2xl p-4 text-left text-sm italic leading-relaxed mb-5">
+                <div className="bg-stone-900 border border-stone-800 rounded-2xl p-4 text-left text-sm text-stone-300 italic leading-relaxed mb-5">
                   &ldquo;{result.fun_verdict}&rdquo;
                 </div>
                 <button
                   onClick={handleShare}
-                  className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 px-5 py-2.5 rounded-xl text-sm font-bold transition-colors"
+                  className="inline-flex items-center gap-2 bg-stone-800 hover:bg-stone-700 border border-stone-700 text-stone-200 px-5 py-2.5 rounded-xl text-sm font-bold transition-colors"
                 >
-                  {copied ? <><Check className="w-4 h-4" /> Copied to clipboard!</> : <><Share2 className="w-4 h-4" /> Share My Result</>}
+                  {copied ? <><Check className="w-4 h-4 text-green-400" /> Copied!</> : <><Share2 className="w-4 h-4" /> Share My Result</>}
                 </button>
               </div>
 

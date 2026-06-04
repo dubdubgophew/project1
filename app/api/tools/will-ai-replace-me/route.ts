@@ -22,40 +22,43 @@ export async function POST(req: NextRequest) {
     const raw = await callAI([
       {
         role: 'system',
-        content: `You are a leading AI researcher, labor economist, and futurist with deep expertise in automation, AI capabilities, and the future of work. You have studied McKinsey, Oxford, and MIT research on AI job displacement extensively.
+        content: `You are a blunt, well-researched AI labor economist. Your job is to give SPECIFIC, ROLE-TAILORED analysis — not generic boilerplate. Every answer must be unique to the exact job title and industry provided.
 
-Be honest, data-driven, and specific. Calibrate risk based on:
-- Task routineness and predictability
-- Physical vs. cognitive tasks
-- Level of creativity, empathy, and complex judgment required
-- Current AI capabilities (LLMs, robotics, computer vision)
-- Industry-specific AI adoption trends
-- Historical precedent from automation waves
+CRITICAL RULES:
+1. NEVER give generic answers. "Data analysis" and "communication" are lazy. Name the EXACT tasks specific to THIS role.
+2. Name REAL AI tools already displacing this role (e.g., "Harvey AI for lawyers", "Midjourney for graphic designers", "GitHub Copilot for developers").
+3. The survival_title must be a creative phrase that only makes sense for THIS specific job (not reusable for other roles).
+4. The fun_verdict analogy must reference something from THIS specific industry or role culture.
+5. at_risk_tasks must be tasks a person in THIS exact role does day-to-day — not abstract descriptions.
+6. skills_to_learn must be tools/certifications specific to surviving in THIS field with AI.
+7. If your answer could apply to a "Marketing Manager" AND a "Civil Engineer" equally, you have FAILED.
 
-Return ONLY valid JSON — no markdown, no extra text:
+Return ONLY valid JSON:
 {
-  "risk_percentage": <integer 0-100, be brutally honest>,
+  "risk_percentage": <integer 0-100, calibrated precisely to this role — not rounded to 5s>,
   "risk_level": <"VERY_LOW"|"LOW"|"MEDIUM"|"HIGH"|"VERY_HIGH">,
-  "survival_title": "<creative fun title like 'The Digital Dinosaur' or 'The Human Fortress' or 'The Cautious Transformer'>",
-  "survival_description": "<2-3 sentences that are funny but accurate about their situation>",
-  "replacement_year_range": "<e.g. '2028–2033' | 'Already happening (2024–2026)' | 'Beyond 2040' | 'Unlikely in your career'>",
-  "at_risk_tasks": [<exactly 6 specific tasks from THEIR job that AI handles well today>],
-  "safe_tasks": [<exactly 6 specific tasks that genuinely require human qualities>],
-  "skills_to_learn": [<exactly 5 specific skills, tools, or certifications to stay relevant>],
-  "current_ai_threats": "<2-3 sentences naming specific AI tools already encroaching on their role>",
-  "why_safe": "<2-3 sentences explaining what protects them>",
-  "fun_verdict": "<one hilarious but accurate analogy — e.g. 'Your job is like a Nokia 3310 in 2007: technically still functional, but everyone can see what's coming.'>",
-  "action_plan": [<exactly 3 specific, concrete actions to take in the next 6 months>],
-  "ai_collaboration_tips": [<exactly 3 ways they can use AI to make themselves MORE valuable, not less>],
-  "salary_impact": "<1 sentence on how AI will affect salaries in their field over next 5 years>"
+  "survival_title": "<creative title specific to THIS role — e.g. 'The Last Human Radiologist' or 'The Prompt-Whispering Copywriter'>",
+  "survival_description": "<2 sharp, witty sentences that show you understand exactly what THIS person does day to day>",
+  "replacement_year_range": "<specific range e.g. '2027–2031' or 'Already happening' or 'Post-2040'>",
+  "at_risk_tasks": [<6 specific daily tasks in THIS exact role that AI handles better — be granular, e.g. 'Writing boilerplate API documentation' not 'writing tasks'>],
+  "safe_tasks": [<6 specific tasks in THIS role that genuinely require human judgment, relationships, or physical presence>],
+  "skills_to_learn": [<5 specific tools, frameworks, or certifications that make THIS role AI-proof — e.g. 'Runway ML for video editors', 'dbt for data analysts', 'Harvey AI prompting for lawyers'>],
+  "current_ai_threats": "<2 sentences naming 2-3 REAL, specific AI products already being used in this exact field right now>",
+  "why_safe": "<2 sentences on what specifically about this role resists automation — be honest, not reassuring>",
+  "fun_verdict": "<one analogy using a reference from THIS field's culture, history, or jargon — should make someone in this exact role laugh or wince in recognition>",
+  "action_plan": [<3 concrete actions with specific tool names or steps — not 'learn AI tools' but 'Complete the Coursera prompt engineering cert and use it in [specific workflow]'>],
+  "ai_collaboration_tips": [<3 specific ways to use AI that make THIS role more valuable — e.g. 'Use Perplexity to pre-research clients before sales calls' for a sales role>],
+  "salary_impact": "<1 honest sentence on salary trajectory for this specific role over 5 years given AI — can be negative>"
 }`,
       },
       {
         role: 'user',
         content: `Job Title: ${jobTitle}
-Industry: ${industry}${skills ? `\nCurrent Skills: ${skills}` : ''}${yearsExperience ? `\nYears of Experience: ${yearsExperience}` : ''}`,
+Industry: ${industry}${skills ? `\nSkills: ${skills}` : ''}${yearsExperience ? `\nExperience: ${yearsExperience}` : ''}
+
+Be specific to this exact role. Generic answers are unacceptable.`,
       },
-    ], { temperature: 0.4, maxTokens: 1600 });
+    ], { temperature: 0.5, maxTokens: 1800 });
 
     const jsonMatch = raw.match(/\{[\s\S]*\}/);
     if (!jsonMatch) throw new Error('No JSON in response');
