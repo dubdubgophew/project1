@@ -10,6 +10,7 @@ import {
 import { AI_CATEGORIES, type AINewsItem } from '@/lib/ai-news-utils';
 import { COUNTRIES } from '@/lib/trending-utils';
 import { LANGUAGES } from '@/lib/regional-news-utils';
+import { ArrowUpDown, TrendingUp, Calendar } from 'lucide-react';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -402,6 +403,7 @@ export function AIFeed({
   const [category,    setCategory]    = useState(initialCategory);
   const [country,     setCountry]     = useState('all');
   const [language,    setLanguage]    = useState('all');
+  const [sort,        setSort]        = useState('latest');
   const [q,           setQ]           = useState(initialQ);
   const [page,        setPage]        = useState(1);
   const [hasMore,     setHasMore]     = useState(initialItems.length === 50);
@@ -412,21 +414,22 @@ export function AIFeed({
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const updateURL = useCallback((ca: string, sq: string, co: string, lang: string) => {
+  const updateURL = useCallback((ca: string, sq: string, co: string, lang: string, s: string) => {
     const p = new URLSearchParams();
-    if (ca   && ca   !== 'all') p.set('category', ca);
-    if (co   && co   !== 'all') p.set('country', co);
-    if (lang && lang !== 'all') p.set('language', lang);
-    if (sq.trim())              p.set('q', sq.trim());
+    if (ca   && ca   !== 'all')    p.set('category', ca);
+    if (co   && co   !== 'all')    p.set('country', co);
+    if (lang && lang !== 'all')    p.set('language', lang);
+    if (sq.trim())                 p.set('q', sq.trim());
+    if (s    && s    !== 'latest') p.set('sort', s);
     router.push(`/ai-news${p.size ? `?${p}` : ''}`, { scroll: false });
   }, [router]);
 
   const fetchPage = useCallback(async (opts: {
-    category: string; country: string; language: string; q: string; page: number; append: boolean;
+    category: string; country: string; language: string; sort: string; q: string; page: number; append: boolean;
   }) => {
     const p = new URLSearchParams({
       category: opts.category, country: opts.country,
-      language: opts.language, q: opts.q,
+      language: opts.language, sort: opts.sort, q: opts.q,
       page: String(opts.page), limit: '20',
     });
     try {
@@ -445,31 +448,18 @@ export function AIFeed({
     }
   }, []);
 
-  const handleCategoryChange = (cat: string) => {
-    setCategory(cat); setPage(1); setLoading(true);
-    updateURL(cat, q, country, language);
-    fetchPage({ category: cat, country, language, q, page: 1, append: false }).finally(() => setLoading(false));
-  };
-
-  const handleCountryChange = (co: string) => {
-    setCountry(co); setPage(1); setLoading(true);
-    updateURL(category, q, co, language);
-    fetchPage({ category, country: co, language, q, page: 1, append: false }).finally(() => setLoading(false));
-  };
-
-  const handleLanguageChange = (lang: string) => {
-    setLanguage(lang); setPage(1); setLoading(true);
-    updateURL(category, q, country, lang);
-    fetchPage({ category, country, language: lang, q, page: 1, append: false }).finally(() => setLoading(false));
-  };
+  const handleCategoryChange = (cat: string)  => { setCategory(cat);  setPage(1); setLoading(true); updateURL(cat,      q, country,    language, sort); fetchPage({ category: cat,       country, language, sort, q, page: 1, append: false }).finally(() => setLoading(false)); };
+  const handleCountryChange  = (co: string)   => { setCountry(co);    setPage(1); setLoading(true); updateURL(category, q, co,         language, sort); fetchPage({ category, country: co,       language, sort, q, page: 1, append: false }).finally(() => setLoading(false)); };
+  const handleLanguageChange = (lang: string) => { setLanguage(lang); setPage(1); setLoading(true); updateURL(category, q, country,    lang,     sort); fetchPage({ category, country, language: lang,  sort, q, page: 1, append: false }).finally(() => setLoading(false)); };
+  const handleSortChange     = (s: string)    => { setSort(s);        setPage(1); setLoading(true); updateURL(category, q, country,    language, s);    fetchPage({ category, country, language, sort: s,       q, page: 1, append: false }).finally(() => setLoading(false)); };
 
   const handleSearchChange = (val: string) => {
     setSearchInput(val);
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       setQ(val); setPage(1); setLoading(true);
-      updateURL(category, val, country, language);
-      fetchPage({ category, country, language, q: val, page: 1, append: false }).finally(() => setLoading(false));
+      updateURL(category, val, country, language, sort);
+      fetchPage({ category, country, language, sort, q: val, page: 1, append: false }).finally(() => setLoading(false));
     }, 400);
   };
 
@@ -477,22 +467,23 @@ export function AIFeed({
     setLoadingMore(true);
     const next = page + 1; setPage(next);
     const scrollY = window.scrollY;
-    await fetchPage({ category, country, language, q, page: next, append: true });
+    await fetchPage({ category, country, language, sort, q, page: next, append: true });
     setLoadingMore(false);
     requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, scrollY)));
   };
 
   const handleRefresh = () => {
     setLoading(true);
-    fetchPage({ category, country, language, q, page: 1, append: false }).finally(() => setLoading(false));
+    fetchPage({ category, country, language, sort, q, page: 1, append: false }).finally(() => setLoading(false));
   };
 
   useEffect(() => {
     const ca   = searchParams.get('category') ?? 'all';
     const co   = searchParams.get('country')  ?? 'all';
     const lang = searchParams.get('language') ?? 'all';
+    const s    = searchParams.get('sort')     ?? 'latest';
     const sq   = searchParams.get('q')        ?? '';
-    setCategory(ca); setCountry(co); setLanguage(lang); setQ(sq); setSearchInput(sq);
+    setCategory(ca); setCountry(co); setLanguage(lang); setSort(s); setQ(sq); setSearchInput(sq);
   }, [searchParams]);
 
   // Instant jump to deep-linked card
@@ -533,17 +524,31 @@ export function AIFeed({
             className="input pl-9 w-full text-sm py-2"
           />
         </div>
-        <div className="relative">
-          <select
-            value={category}
-            onChange={e => handleCategoryChange(e.target.value)}
-            className="input appearance-none pr-8 text-sm py-2 cursor-pointer"
-          >
-            {AI_CATEGORIES.map(c => (
-              <option key={c.value} value={c.value}>{c.label}</option>
-            ))}
-          </select>
-          <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 pointer-events-none" />
+        <div className="flex items-center gap-2">
+          <div className="relative">
+            <select
+              value={category}
+              onChange={e => handleCategoryChange(e.target.value)}
+              className="input appearance-none pr-8 text-sm py-2 cursor-pointer"
+            >
+              {AI_CATEGORIES.map(c => (
+                <option key={c.value} value={c.value}>{c.label}</option>
+              ))}
+            </select>
+            <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 pointer-events-none" />
+          </div>
+          {/* Sort toggle */}
+          <div className="flex items-center gap-0.5 bg-stone-100 p-1 rounded-xl">
+            <ArrowUpDown className="w-3.5 h-3.5 text-stone-400 ml-1" />
+            <button onClick={() => handleSortChange('latest')}
+              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${sort === 'latest' ? 'bg-white text-violet-600 shadow-sm' : 'text-stone-500 hover:text-stone-700'}`}>
+              <Calendar className="w-3 h-3" /> Latest
+            </button>
+            <button onClick={() => handleSortChange('popular')}
+              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${sort === 'popular' ? 'bg-white text-violet-600 shadow-sm' : 'text-stone-500 hover:text-stone-700'}`}>
+              <TrendingUp className="w-3 h-3" /> Popular
+            </button>
+          </div>
         </div>
         {lastUpdated && (
           <p className="text-xs text-stone-500 flex items-center gap-1 shrink-0">
