@@ -18,6 +18,7 @@ export async function GET(req: NextRequest) {
   const country  = searchParams.get('country')  ?? 'all';
   const category = searchParams.get('category') ?? 'all';
   const language = searchParams.get('language') ?? 'all';
+  const sort     = searchParams.get('sort')     ?? 'latest'; // 'latest' | 'popular'
   const q        = searchParams.get('q')        ?? '';
   const page     = Math.max(1, parseInt(searchParams.get('page') ?? '1', 10));
   const limit    = Math.min(50, Math.max(1, parseInt(searchParams.get('limit') ?? '20', 10)));
@@ -63,8 +64,8 @@ export async function GET(req: NextRequest) {
     let dataQuery = supabase
       .from('trending_news')
       .select('id,country_code,country_name,topic,summary,traffic_volume,category,source_url,source_name,source_title,image_url,fetched_at,rank,language_code,language_name')
-      .order('fetched_at', { ascending: false })
-      .order('rank', { ascending: true })
+      .order(sort === 'popular' ? 'rank' : 'fetched_at', { ascending: sort === 'popular' })
+      .order(sort === 'popular' ? 'fetched_at' : 'rank', { ascending: sort !== 'popular' })
       .range(offset, offset + limit - 1);
 
     if (country !== 'all' && country.length === 2) {

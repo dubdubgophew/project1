@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import {
   Search, ChevronDown, RefreshCw, Share2, Check,
-  ExternalLink, Clock, Mail,
+  ExternalLink, Clock, Mail, ArrowUpDown, TrendingUp, Calendar,
 } from 'lucide-react';
 import { COUNTRIES, type TrendingNews } from '@/lib/trending-utils';
 import { LANGUAGES } from '@/lib/regional-news-utils';
@@ -475,6 +475,7 @@ export function TrendingFeed({
   const [country,     setCountry]     = useState(initialCountry);
   const [category,    setCategory]    = useState(initialCategory);
   const [language,    setLanguage]    = useState('all');
+  const [sort,        setSort]        = useState('latest');
   const [q,           setQ]           = useState(initialQ);
   const [page,        setPage]        = useState(1);
   const [hasMore,     setHasMore]     = useState(initialItems.length === 20);
@@ -485,21 +486,22 @@ export function TrendingFeed({
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const updateURL = useCallback((c: string, ca: string, sq: string, lang: string) => {
+  const updateURL = useCallback((c: string, ca: string, sq: string, lang: string, s: string) => {
     const p = new URLSearchParams();
-    if (c    && c    !== 'all') p.set('country', c);
-    if (ca   && ca   !== 'all') p.set('category', ca);
-    if (lang && lang !== 'all') p.set('language', lang);
-    if (sq.trim())              p.set('q', sq.trim());
+    if (c    && c    !== 'all')    p.set('country', c);
+    if (ca   && ca   !== 'all')    p.set('category', ca);
+    if (lang && lang !== 'all')    p.set('language', lang);
+    if (sq.trim())                 p.set('q', sq.trim());
+    if (s    && s    !== 'latest') p.set('sort', s);
     router.push(`/news${p.size ? `?${p}` : ''}`, { scroll: false });
   }, [router]);
 
   const fetchPage = useCallback(async (opts: {
-    country: string; category: string; language: string; q: string; page: number; append: boolean;
+    country: string; category: string; language: string; sort: string; q: string; page: number; append: boolean;
   }) => {
     const p = new URLSearchParams({
       country: opts.country, category: opts.category,
-      language: opts.language, q: opts.q,
+      language: opts.language, sort: opts.sort, q: opts.q,
       page: String(opts.page), limit: '20',
     });
     try {
@@ -518,31 +520,18 @@ export function TrendingFeed({
     }
   }, []);
 
-  const handleCountryChange = (code: string) => {
-    setCountry(code); setPage(1); setLoading(true);
-    updateURL(code, category, q, language);
-    fetchPage({ country: code, category, language, q, page: 1, append: false }).finally(() => setLoading(false));
-  };
-
-  const handleCategoryChange = (cat: string) => {
-    setCategory(cat); setPage(1); setLoading(true);
-    updateURL(country, cat, q, language);
-    fetchPage({ country, category: cat, language, q, page: 1, append: false }).finally(() => setLoading(false));
-  };
-
-  const handleLanguageChange = (lang: string) => {
-    setLanguage(lang); setPage(1); setLoading(true);
-    updateURL(country, category, q, lang);
-    fetchPage({ country, category, language: lang, q, page: 1, append: false }).finally(() => setLoading(false));
-  };
+  const handleCountryChange  = (code: string) => { setCountry(code);   setPage(1); setLoading(true); updateURL(code,    category, q, language, sort);   fetchPage({ country: code,    category, language, sort, q, page: 1, append: false }).finally(() => setLoading(false)); };
+  const handleCategoryChange = (cat: string)  => { setCategory(cat);   setPage(1); setLoading(true); updateURL(country, cat,      q, language, sort);   fetchPage({ country, category: cat,  language, sort, q, page: 1, append: false }).finally(() => setLoading(false)); };
+  const handleLanguageChange = (lang: string) => { setLanguage(lang);  setPage(1); setLoading(true); updateURL(country, category, q, lang,     sort);   fetchPage({ country, category, language: lang, sort, q, page: 1, append: false }).finally(() => setLoading(false)); };
+  const handleSortChange     = (s: string)    => { setSort(s);         setPage(1); setLoading(true); updateURL(country, category, q, language,  s);      fetchPage({ country, category, language, sort: s,    q, page: 1, append: false }).finally(() => setLoading(false)); };
 
   const handleSearchChange = (val: string) => {
     setSearchInput(val);
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       setQ(val); setPage(1); setLoading(true);
-      updateURL(country, category, val, language);
-      fetchPage({ country, category, language, q: val, page: 1, append: false }).finally(() => setLoading(false));
+      updateURL(country, category, val, language, sort);
+      fetchPage({ country, category, language, sort, q: val, page: 1, append: false }).finally(() => setLoading(false));
     }, 400);
   };
 
@@ -550,23 +539,23 @@ export function TrendingFeed({
     setLoadingMore(true);
     const next = page + 1; setPage(next);
     const scrollY = window.scrollY;
-    await fetchPage({ country, category, language, q, page: next, append: true });
+    await fetchPage({ country, category, language, sort, q, page: next, append: true });
     setLoadingMore(false);
-    // double-rAF: wait for React re-render + browser paint before restoring position
     requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, scrollY)));
   };
 
   const handleRefresh = () => {
     setLoading(true);
-    fetchPage({ country, category, language, q, page: 1, append: false }).finally(() => setLoading(false));
+    fetchPage({ country, category, language, sort, q, page: 1, append: false }).finally(() => setLoading(false));
   };
 
   useEffect(() => {
     const c    = searchParams.get('country')  ?? 'all';
     const ca   = searchParams.get('category') ?? 'all';
     const lang = searchParams.get('language') ?? 'all';
+    const s    = searchParams.get('sort')     ?? 'latest';
     const sq   = searchParams.get('q')        ?? '';
-    setCountry(c); setCategory(ca); setLanguage(lang); setQ(sq); setSearchInput(sq);
+    setCountry(c); setCategory(ca); setLanguage(lang); setSort(s); setQ(sq); setSearchInput(sq);
   }, [searchParams]);
 
   // Scroll to deep-linked card — element is guaranteed in SSR HTML so this is reliable
@@ -611,17 +600,32 @@ export function TrendingFeed({
           />
         </div>
 
-        <div className="relative">
-          <select
-            value={category}
-            onChange={e => handleCategoryChange(e.target.value)}
-            className="input appearance-none pr-8 text-sm py-2 cursor-pointer"
-          >
-            {CATEGORIES.map(c => (
-              <option key={c.value} value={c.value}>{c.label}</option>
-            ))}
-          </select>
-          <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 pointer-events-none" />
+        <div className="flex items-center gap-2">
+          <div className="relative">
+            <select
+              value={category}
+              onChange={e => handleCategoryChange(e.target.value)}
+              className="input appearance-none pr-8 text-sm py-2 cursor-pointer"
+            >
+              {CATEGORIES.map(c => (
+                <option key={c.value} value={c.value}>{c.label}</option>
+              ))}
+            </select>
+            <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 pointer-events-none" />
+          </div>
+
+          {/* Sort toggle */}
+          <div className="flex items-center gap-0.5 bg-stone-100 p-1 rounded-xl">
+            <ArrowUpDown className="w-3.5 h-3.5 text-stone-400 ml-1" />
+            <button onClick={() => handleSortChange('latest')}
+              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${sort === 'latest' ? 'bg-white text-orange-600 shadow-sm' : 'text-stone-500 hover:text-stone-700'}`}>
+              <Calendar className="w-3 h-3" /> Latest
+            </button>
+            <button onClick={() => handleSortChange('popular')}
+              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${sort === 'popular' ? 'bg-white text-orange-600 shadow-sm' : 'text-stone-500 hover:text-stone-700'}`}>
+              <TrendingUp className="w-3 h-3" /> Popular
+            </button>
+          </div>
         </div>
 
         {lastUpdated && (

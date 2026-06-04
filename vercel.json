@@ -39,6 +39,10 @@
     {
       "path": "/api/cron/fetch-regional-news",
       "schedule": "0 11 * * *"
+    },
+    {
+      "path": "/api/cron/fetch-politics-news",
+      "schedule": "0 13 * * *"
     }
   ],
   "functions": {
@@ -76,6 +80,9 @@
       "maxDuration": 300
     },
     "app/api/cron/fetch-regional-news/route.ts": {
+      "maxDuration": 300
+    },
+    "app/api/cron/fetch-politics-news/route.ts": {
       "maxDuration": 300
     }
   }

@@ -8,6 +8,7 @@ export async function GET(req: NextRequest) {
     const category = searchParams.get('category') ?? 'all';
     const country  = searchParams.get('country')  ?? 'all';
     const language = searchParams.get('language') ?? 'all';
+    const sort     = searchParams.get('sort')     ?? 'latest';
     const q        = searchParams.get('q')        ?? '';
     const page     = Math.max(1, parseInt(searchParams.get('page') ?? '1', 10));
     const limit    = Math.min(50, parseInt(searchParams.get('limit') ?? '20', 10));
@@ -25,8 +26,8 @@ export async function GET(req: NextRequest) {
     let query = supabase
       .from('ai_news')
       .select('id,source_key,source_name,topic,summary,category,source_url,source_title,image_url,fetched_at,rank,country_code,country_name,language_code,language_name', { count: 'exact' })
-      .order('fetched_at', { ascending: false })
-      .order('rank', { ascending: true })
+      .order(sort === 'popular' ? 'rank' : 'fetched_at', { ascending: sort === 'popular' })
+      .order(sort === 'popular' ? 'fetched_at' : 'rank', { ascending: sort !== 'popular' })
       .range(offset, offset + limit - 1);
 
     if (category && category !== 'all') query = query.eq('category', category);
