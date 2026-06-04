@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { callAI } from '@/lib/ai';
 import { createAdminClient } from '@/lib/supabase/server';
 import { AI_SOURCES, parseAIFeedRSS, type AIRawItem } from '@/lib/ai-news-utils';
+import { fetchOGImage } from '@/lib/trending-utils';
 
 export const maxDuration = 300;
 
@@ -39,12 +40,22 @@ async function generateAISummaries(sourceName: string, items: AIRawItem[]): Prom
     })
     .join('\n\n');
 
-  const prompt = `You are an AI news curator for ${sourceName}. Given these AI-related headlines, produce a JSON array with exactly ${items.length} objects in the SAME ORDER.
+  const prompt = `You are a senior AI industry analyst writing for ${sourceName}. For each headline, deliver a proper multi-angle analysis — not a description. Give readers real understanding of what this means for the AI field.
+
+Produce a JSON array with exactly ${items.length} objects in the SAME ORDER.
 
 Each object:
 - "topic": restate the headline clearly (max 12 words)
-- "summary": 150-200 words. Explain what it means technically, why it matters for AI/ML practitioners, developers or enthusiasts. Include key details like model names, benchmark numbers, company names where relevant.
-- "key_points": array of exactly 4 short bullet points (each max 15 words), capturing the most important facts
+- "summary": 230-270 words across 3 paragraphs:
+  Para 1 — WHAT: Specific facts — what was announced/released/happened, key numbers, model names, benchmarks, company names.
+  Para 2 — WHY: Why now? What drove this development? Technical context, competitive dynamics, funding, research trends.
+  Para 3 — SO WHAT: Concrete impact on developers, businesses, or end users. Who wins, who is threatened, what shifts. End with a direct editorial take on the true significance for AI's trajectory.
+- "key_points": exactly 5 strings, EACH in the format "emoji Label | content (max 20 words)":
+  "📍 What Happened | [concise factual one-liner]"
+  "💡 Why It Happened | [technical or strategic root cause]"
+  "📈 Possible Upside | [who benefits, what opportunities open up]"
+  "⚠️ Possible Downside | [risks, limitations, who is disrupted]"
+  "🔮 Outlook | [what to watch — near-term and longer-term]"
 - "category": exactly one of Tools | Research | Companies | Hardware | Learning | Open Source | Industry
 
 Category guide:
@@ -63,10 +74,10 @@ Respond ONLY with a valid JSON array. No markdown, no extra text.`;
 
   const raw = await callAI(
     [
-      { role: 'system', content: 'You are a professional AI news editor. Always respond with valid JSON only.' },
+      { role: 'system', content: 'You are a professional AI industry analyst. Always respond with valid JSON only.' },
       { role: 'user', content: prompt },
     ],
-    { model: 'llama-3.1-8b-instant', maxTokens: 2200, temperature: 0.3 }
+    { model: 'llama-3.3-70b-versatile', maxTokens: 3500, temperature: 0.35 }
   );
 
   const jsonMatch = raw.match(/\[[\s\S]*\]/);
@@ -111,6 +122,14 @@ export async function POST(_req: NextRequest) {
         results.push({ source: source.key, inserted: 0, skipped, error: skipped ? undefined : 'No items in feed' });
         await sleep(400);
         continue;
+      }
+
+      // Best-effort: fetch OG images for articles without RSS images (max 3, parallel)
+      const noImageItems = newItems.filter(t => !t.imageUrl);
+      if (noImageItems.length > 0) {
+        const toFetch = noImageItems.slice(0, 3);
+        const ogImages = await Promise.all(toFetch.map(t => fetchOGImage(t.newsUrl)));
+        toFetch.forEach((t, i) => { if (ogImages[i]) t.imageUrl = ogImages[i]!; });
       }
 
       let summaries: AISummaryItem[];

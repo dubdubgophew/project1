@@ -1,7 +1,7 @@
 ﻿import { NextRequest, NextResponse } from 'next/server';
 import { callAI } from '@/lib/ai';
 import { createAdminClient } from '@/lib/supabase/server';
-import { parseStandardRSS, type RawTrendItem } from '@/lib/trending-utils';
+import { parseStandardRSS, fetchOGImage, type RawTrendItem } from '@/lib/trending-utils';
 
 export const maxDuration = 300;
 
@@ -31,12 +31,20 @@ async function generatePoliticsSummaries(sourceName: string, country: string, it
     })
     .join('\n\n');
 
-  const prompt = `You are a political news analyst covering ${country} politics via ${sourceName}. Summarize these political headlines for a global audience.
+  const prompt = `You are a senior political analyst covering ${country} politics. Your reader is an educated global audience. For each headline, deliver a proper analytical piece — not a summary. Give real understanding of the political dynamics at play.
 
 Each object in your JSON array:
 - "topic": restate headline clearly (max 12 words)
-- "summary": 140-180 words covering: what happened, who are the key political actors, what does it mean for citizens or policy, and why it matters globally
-- "key_points": array of exactly 4 short bullet points (each max 15 words), capturing the most important facts
+- "summary": 230-270 words across 3 paragraphs:
+  Para 1 — WHAT: Specific facts — what happened, key actors, dates, policy details, vote counts, or quotes.
+  Para 2 — WHY: Political causes — what drove this event? Party dynamics, public pressure, historical context, international factors.
+  Para 3 — SO WHAT: Real impact on citizens, governance, opposition, or international relations. Who benefits politically, who is weakened, what policy shifts. End with a direct editorial assessment of the political significance.
+- "key_points": exactly 5 strings, EACH in the format "emoji Label | content (max 20 words)":
+  "📍 What Happened | [factual political one-liner]"
+  "💡 Why It Happened | [political cause or context]"
+  "📈 Possible Upside | [who benefits, positive outcomes for governance/citizens]"
+  "⚠️ Possible Downside | [risks, opposition, who loses, democratic concerns]"
+  "🔮 Outlook | [what to watch — upcoming elections, legislation, or fallout]"
 - "category": always "Politics"
 
 Headlines:
@@ -46,10 +54,10 @@ Return ONLY a valid JSON array with exactly ${items.length} objects. No markdown
 
   const raw = await callAI(
     [
-      { role: 'system', content: 'You are a professional political news editor. Always respond with valid JSON only.' },
+      { role: 'system', content: 'You are a professional political analyst. Always respond with valid JSON only.' },
       { role: 'user', content: prompt },
     ],
-    { model: 'llama-3.3-70b-versatile', maxTokens: 2400, temperature: 0.25 }
+    { model: 'llama-3.3-70b-versatile', maxTokens: 4500, temperature: 0.3 }
   );
 
   const match = raw.match(/\[[\s\S]*\]/);
@@ -101,6 +109,14 @@ export async function POST(_req: NextRequest) {
         results.push({ key: feed.key, inserted: 0, skipped, error: skipped ? undefined : 'No items' });
         await sleep(300);
         continue;
+      }
+
+      // Best-effort: fetch OG images for articles without RSS images (max 3, parallel)
+      const noImageItems = newItems.filter(t => !t.imageUrl);
+      if (noImageItems.length > 0) {
+        const toFetch = noImageItems.slice(0, 3);
+        const ogImages = await Promise.all(toFetch.map(t => fetchOGImage(t.newsUrl)));
+        toFetch.forEach((t, i) => { if (ogImages[i]) t.imageUrl = ogImages[i]!; });
       }
 
       let summaries: { topic: string; summary: string; key_points: string[]; category: string }[];

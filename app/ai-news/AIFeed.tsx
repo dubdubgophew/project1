@@ -61,6 +61,16 @@ const CATEGORY_EMOJIS: Record<string, string> = {
   Industry:     '💼',
 };
 
+const CATEGORY_GRADIENTS: Record<string, string> = {
+  Tools:        'bg-gradient-to-br from-violet-100 to-violet-200',
+  Research:     'bg-gradient-to-br from-blue-100 to-blue-200',
+  Companies:    'bg-gradient-to-br from-emerald-100 to-emerald-200',
+  Hardware:     'bg-gradient-to-br from-orange-100 to-orange-200',
+  Learning:     'bg-gradient-to-br from-amber-100 to-amber-200',
+  'Open Source':'bg-gradient-to-br from-teal-100 to-teal-200',
+  Industry:     'bg-gradient-to-br from-red-100 to-red-200',
+};
+
 const TOOL_PROMOS = [
   { icon: '📄', name: 'PDF Summarizer',    href: '/tools/pdf-summarizer',    blurb: 'Summarize any AI research paper or whitepaper in seconds. Free, no signup.' },
   { icon: '✍️', name: 'AI Email Writer',   href: '/tools/email-writer',      blurb: 'Reach out to AI companies, researchers, or teams with a perfectly crafted email.' },
@@ -154,9 +164,10 @@ function AICard({ item }: { item: AINewsItem }) {
   const [highlighted, setHighlighted] = useState(false);
 
   const hasUniqueImage = Boolean(item.image_url);
-  const catColor = CATEGORY_COLORS[item.category] ?? 'bg-stone-50 text-stone-600 border-stone-200';
-  const catBar   = CATEGORY_BAR[item.category]   ?? 'bg-stone-400';
-  const catEmoji = CATEGORY_EMOJIS[item.category] ?? '🤖';
+  const catColor    = CATEGORY_COLORS[item.category]    ?? 'bg-stone-50 text-stone-600 border-stone-200';
+  const catBar      = CATEGORY_BAR[item.category]       ?? 'bg-stone-400';
+  const catEmoji    = CATEGORY_EMOJIS[item.category]    ?? '🤖';
+  const catGradient = CATEGORY_GRADIENTS[item.category] ?? 'bg-gradient-to-br from-stone-100 to-stone-200';
 
   useEffect(() => {
     const id = new URLSearchParams(window.location.search).get('id');
@@ -255,20 +266,27 @@ function AICard({ item }: { item: AINewsItem }) {
           </div>
         </div>
 
-        {/* Thumbnail — only if RSS provided a real unique image */}
-        {hasUniqueImage && (
-          <div className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden bg-stone-100 self-start mt-0.5">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+        {/* Thumbnail — real image if available, category gradient otherwise */}
+        <div className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden self-start mt-0.5">
+          {hasUniqueImage ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
             <img
               src={item.image_url!}
               alt=""
               loading="lazy"
               className="w-full h-full object-cover"
-              onError={(e) => { (e.target as HTMLImageElement).parentElement!.style.display = 'none'; }}
+              onError={(e) => {
+                const parent = (e.target as HTMLImageElement).parentElement!;
+                parent.innerHTML = `<div class="w-full h-full flex items-center justify-center ${catGradient}"><span class="text-2xl">${catEmoji}</span></div>`;
+              }}
               itemProp="image"
             />
-          </div>
-        )}
+          ) : (
+            <div className={`w-full h-full flex items-center justify-center ${catGradient}`}>
+              <span className="text-2xl">{catEmoji}</span>
+            </div>
+          )}
+        </div>
       </div>
     </article>
   );

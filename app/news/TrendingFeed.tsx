@@ -72,6 +72,16 @@ const CATEGORY_EMOJIS: Record<string, string> = {
   General:       '📰',
 };
 
+const CATEGORY_GRADIENTS: Record<string, string> = {
+  Sports:        'bg-gradient-to-br from-blue-100 to-blue-200',
+  Tech:          'bg-gradient-to-br from-violet-100 to-violet-200',
+  Politics:      'bg-gradient-to-br from-red-100 to-red-200',
+  Entertainment: 'bg-gradient-to-br from-amber-100 to-amber-200',
+  Business:      'bg-gradient-to-br from-emerald-100 to-emerald-200',
+  Health:        'bg-gradient-to-br from-teal-100 to-teal-200',
+  General:       'bg-gradient-to-br from-stone-100 to-stone-200',
+};
+
 const TOOL_PROMOS = [
   { icon: '📄', name: 'PDF Summarizer',    href: '/tools/pdf-summarizer',   blurb: 'Upload any document from today\'s news and get the key points in seconds.' },
   { icon: '📧', name: 'AI Email Writer',   href: '/tools/email-writer',     blurb: 'Draft a professional response to any news story or business update instantly.' },
@@ -179,10 +189,11 @@ function NewsCard({ item }: { item: TrendingNews }) {
   // Only show image if it's a real unique URL from the RSS feed (not a generic fallback)
   const hasUniqueImage = Boolean(item.image_url);
 
-  const catColor = CATEGORY_COLORS[item.category] ?? CATEGORY_COLORS.General;
-  const catBar   = CATEGORY_BAR[item.category]   ?? CATEGORY_BAR.General;
-  const catEmoji = CATEGORY_EMOJIS[item.category] ?? '📰';
-  const flag     = getCountryFlag(item.country_code);
+  const catColor    = CATEGORY_COLORS[item.category]    ?? CATEGORY_COLORS.General;
+  const catBar      = CATEGORY_BAR[item.category]       ?? CATEGORY_BAR.General;
+  const catEmoji    = CATEGORY_EMOJIS[item.category]    ?? '📰';
+  const catGradient = CATEGORY_GRADIENTS[item.category] ?? CATEGORY_GRADIENTS.General;
+  const flag        = getCountryFlag(item.country_code);
 
   useEffect(() => {
     const id = new URLSearchParams(window.location.search).get('id');
@@ -281,20 +292,27 @@ function NewsCard({ item }: { item: TrendingNews }) {
           </div>
         </div>
 
-        {/* Thumbnail — only shown when the RSS feed provided a real unique image */}
-        {hasUniqueImage && (
-          <div className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden bg-stone-100 self-start mt-0.5">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+        {/* Thumbnail — real image if available, category gradient otherwise */}
+        <div className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden self-start mt-0.5">
+          {hasUniqueImage ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
             <img
               src={item.image_url!}
               alt=""
               loading="lazy"
               className="w-full h-full object-cover"
-              onError={(e) => { (e.target as HTMLImageElement).parentElement!.style.display = 'none'; }}
+              onError={(e) => {
+                const parent = (e.target as HTMLImageElement).parentElement!;
+                parent.innerHTML = `<div class="w-full h-full flex items-center justify-center ${catGradient}"><span class="text-2xl">${catEmoji}</span></div>`;
+              }}
               itemProp="image"
             />
-          </div>
-        )}
+          ) : (
+            <div className={`w-full h-full flex items-center justify-center ${catGradient}`}>
+              <span className="text-2xl">{catEmoji}</span>
+            </div>
+          )}
+        </div>
       </div>
     </article>
   );

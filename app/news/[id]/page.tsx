@@ -1,12 +1,14 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Clock, ExternalLink, Share2 } from 'lucide-react';
+import { ArrowLeft, Clock, ExternalLink } from 'lucide-react';
 import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
 import { InArticleAd } from '@/components/shared/AdSense';
 import { ArticleImage } from '@/components/shared/ArticleImage';
 import { createAdminClient } from '@/lib/supabase/server';
 import type { TrendingNews } from '@/lib/trending-utils';
+
+export const revalidate = 3600; // Cache article pages for 1 hour
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -170,32 +172,44 @@ export default async function ArticlePage({ params }: { params: { id: string } }
               <ArticleImage src={article.image_url} alt={article.topic} />
             )}
 
-            {/* AI Summary */}
+            {/* Analysis narrative */}
             <div className="bg-white border border-stone-200 rounded-2xl p-5 sm:p-6 mb-5">
               <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-3">
-                🤖 AI Summary
+                📰 Analysis
               </p>
-              <p className="text-stone-800 text-base leading-relaxed" itemProp="description">
+              <p className="text-stone-800 text-base leading-relaxed whitespace-pre-line" itemProp="description">
                 {article.summary}
               </p>
             </div>
 
-            {/* Key Takeaways */}
+            {/* Deep Analysis — structured key_points */}
             {keyPoints.length > 0 && (
-              <div className="bg-orange-50 border border-orange-100 rounded-2xl p-5 sm:p-6 mb-5">
-                <p className="text-[10px] font-bold text-orange-600 uppercase tracking-widest mb-4">
-                  📌 Key Takeaways
+              <div className="mb-5">
+                <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-3">
+                  🔍 Deep Analysis
                 </p>
-                <ol className="space-y-3">
-                  {keyPoints.map((pt, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-orange-500 text-white text-xs font-bold flex items-center justify-center mt-0.5">
-                        {i + 1}
-                      </span>
-                      <span className="text-stone-800 text-sm leading-relaxed">{pt}</span>
-                    </li>
-                  ))}
-                </ol>
+                <div className="space-y-2.5">
+                  {keyPoints.map((pt, i) => {
+                    const sepIdx = pt.indexOf(' | ');
+                    const label   = sepIdx > 0 ? pt.slice(0, sepIdx) : null;
+                    const content = sepIdx > 0 ? pt.slice(sepIdx + 3) : pt;
+                    const sectionColors = [
+                      'bg-slate-50 border-slate-200',
+                      'bg-amber-50 border-amber-200',
+                      'bg-emerald-50 border-emerald-200',
+                      'bg-red-50 border-red-200',
+                      'bg-violet-50 border-violet-200',
+                    ];
+                    return (
+                      <div key={i} className={`border rounded-xl p-4 ${sectionColors[i] ?? 'bg-stone-50 border-stone-200'}`}>
+                        {label && (
+                          <p className="text-[10px] font-bold text-stone-500 uppercase tracking-wider mb-1.5">{label}</p>
+                        )}
+                        <p className="text-stone-800 text-sm leading-relaxed">{content}</p>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             )}
 

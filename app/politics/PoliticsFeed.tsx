@@ -99,6 +99,8 @@ function ShareDropdown({ item, onClose }: { item: TrendingNews; onClose: () => v
 
 // ── News Card ─────────────────────────────────────────────────────────────────
 
+const POLITICS_GRADIENT = 'bg-gradient-to-br from-red-100 to-rose-200';
+
 function PoliticsCard({ item }: { item: TrendingNews }) {
   const [shareOpen, setShareOpen] = useState(false);
   const [highlighted, setHighlighted] = useState(false);
@@ -201,20 +203,27 @@ function PoliticsCard({ item }: { item: TrendingNews }) {
           </div>
         </div>
 
-        {/* Thumbnail — only if RSS provided a real unique image */}
-        {hasUniqueImage && (
-          <div className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden bg-stone-100 self-start mt-0.5">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+        {/* Thumbnail — real image if available, category gradient otherwise */}
+        <div className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden self-start mt-0.5">
+          {hasUniqueImage ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
             <img
               src={item.image_url!}
               alt=""
               loading="lazy"
               className="w-full h-full object-cover"
-              onError={(e) => { (e.target as HTMLImageElement).parentElement!.style.display = 'none'; }}
+              onError={(e) => {
+                const parent = (e.target as HTMLImageElement).parentElement!;
+                parent.innerHTML = `<div class="w-full h-full flex items-center justify-center ${POLITICS_GRADIENT}"><span class="text-2xl">🏛️</span></div>`;
+              }}
               itemProp="image"
             />
-          </div>
-        )}
+          ) : (
+            <div className={`w-full h-full flex items-center justify-center ${POLITICS_GRADIENT}`}>
+              <span className="text-2xl">🏛️</span>
+            </div>
+          )}
+        </div>
       </div>
     </article>
   );

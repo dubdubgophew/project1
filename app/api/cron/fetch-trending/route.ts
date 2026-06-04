@@ -5,6 +5,7 @@ import {
   COUNTRIES,
   parseStandardRSS,
   detectCategory,
+  fetchOGImage,
   type RawTrendItem,
 } from '@/lib/trending-utils';
 
@@ -67,12 +68,22 @@ async function generateSummariesBatch(
     })
     .join('\n\n');
 
-  const prompt = `You are a news summarizer for ${countryName}. Given these top news headlines, produce a JSON array with exactly ${trends.length} objects in the SAME ORDER.
+  const prompt = `You are a sharp investigative journalist covering ${countryName}. For each headline below, write a proper multi-angle analysis — not a summary. Your job is to give readers real understanding, not just facts.
+
+Produce a JSON array with exactly ${trends.length} objects in the SAME ORDER.
 
 Each object:
 - "topic": restate the headline clearly (max 12 words)
-- "summary": 150-200 words explaining what happened and why it matters, in plain English
-- "key_points": array of exactly 4 short bullet points (each max 15 words), capturing the most important facts
+- "summary": 230-270 words across 3 paragraphs:
+  Para 1 — WHAT: Specific facts (who, what, when, where, key numbers or quotes).
+  Para 2 — WHY: Root causes, historical context, key actors and their motivations, contributing factors.
+  Para 3 — SO WHAT: Who benefits, who loses out, what concretely changes. End with a direct editorial opinion on what this story really means.
+- "key_points": exactly 5 strings, EACH in the format "emoji Label | content (max 20 words)":
+  "📍 What Happened | [one-liner factual summary]"
+  "💡 Why It Happened | [root cause or background context]"
+  "📈 Possible Upside | [positive outcomes or who benefits]"
+  "⚠️ Possible Downside | [risks, negative consequences, who loses]"
+  "🔮 Outlook | [what to watch short-term and long-term]"
 - "category": exactly one of Sports | Tech | Politics | Entertainment | Business | Health | General
 
 Headlines:
@@ -82,10 +93,10 @@ Respond ONLY with a valid JSON array. No markdown, no extra text.`;
 
   const raw = await callAI(
     [
-      { role: 'system', content: 'You are a professional news editor. Always respond with valid JSON only.' },
+      { role: 'system', content: 'You are a professional investigative journalist. Always respond with valid JSON only.' },
       { role: 'user', content: prompt },
     ],
-    { model: 'llama-3.1-8b-instant', maxTokens: 2200, temperature: 0.3 }
+    { model: 'llama-3.3-70b-versatile', maxTokens: 3500, temperature: 0.35 }
   );
 
   const jsonMatch = raw.match(/\[[\s\S]*\]/);
@@ -130,6 +141,14 @@ export async function POST(_req: NextRequest) {
         results.push({ country: country.code, inserted: 0, skipped, error: skipped ? undefined : 'No items in feed' });
         await sleep(400);
         continue;
+      }
+
+      // Best-effort: fetch OG images for articles that have no RSS image (max 3, parallel)
+      const noImageItems = newTrends.filter(t => !t.imageUrl);
+      if (noImageItems.length > 0) {
+        const toFetch = noImageItems.slice(0, 3);
+        const ogImages = await Promise.all(toFetch.map(t => fetchOGImage(t.newsUrl)));
+        toFetch.forEach((t, i) => { if (ogImages[i]) t.imageUrl = ogImages[i]!; });
       }
 
       let summaries: AISummaryItem[];

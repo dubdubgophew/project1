@@ -110,6 +110,34 @@ export function parseStandardRSS(xml: string, defaultSource: string, limit = 5):
   return items;
 }
 
+// Best-effort OG image fetch from an article URL (2s timeout, used at ingest time)
+export async function fetchOGImage(url: string): Promise<string | null> {
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 2000);
+    const res = await fetch(url, {
+      signal: ctrl.signal,
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36' },
+    });
+    clearTimeout(timer);
+    if (!res.ok) return null;
+    const html = await res.text();
+    const patterns = [
+      /<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i,
+      /<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i,
+      /<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']/i,
+      /<meta[^>]+content=["']([^"']+)["'][^>]+name=["']twitter:image["']/i,
+    ];
+    for (const p of patterns) {
+      const m = html.match(p);
+      if (m?.[1]?.startsWith('http')) return m[1];
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 export function parseGTrendsRSS(xml: string): RawTrendItem[] {
   const items: RawTrendItem[] = [];
   const blocks = xml.match(/<item>([\s\S]*?)<\/item>/g) ?? [];
