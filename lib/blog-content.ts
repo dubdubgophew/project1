@@ -1887,13 +1887,13 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     slug: 'sip-calculator-india',
     title: 'SIP Calculator India 2025: How to Calculate Mutual Fund Returns (with Step-Up SIP)',
-    description: 'Use our free SIP calculator to estimate mutual fund returns, see year-by-year growth, plan with step-up SIP, and find your required SIP amount for any financial goal.',
+    metaDescription: 'Use our free SIP calculator to estimate mutual fund returns, see year-by-year growth, plan with step-up SIP, and find your required SIP amount for any financial goal.',
     category: 'finance',
     toolSlug: 'sip-calculator',
-    readTime: '6 min read',
+    toolName: 'SIP Calculator',
+    readingTime: 6,
     publishedAt: '2026-05-28',
     updatedAt: '2026-05-28',
-    heroEmoji: '📈',
     intro: 'A Systematic Investment Plan (SIP) is the most popular way Indians invest in mutual funds — and for good reason. Small monthly amounts compounded over decades create substantial wealth. But how much will your SIP actually return? This guide explains exactly how SIP returns are calculated and how to use our free SIP calculator to plan your investments.',
     sections: [
       {

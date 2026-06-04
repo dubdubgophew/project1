@@ -20,16 +20,17 @@ export async function runMaintenanceAgent(): Promise<HealthReport> {
   // 1. Clean up usage logs older than 90 days
   try {
     const ninetyDaysAgo = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString();
-    const { count } = await admin
+    const { data: deleted } = await admin
       .from('usage_logs')
       .delete()
       .lt('created_at', ninetyDaysAgo)
-      .select('id', { count: 'exact', head: true });
+      .select('id');
 
-    if ((count ?? 0) > 0) {
+    const count = deleted?.length ?? 0;
+    if (count > 0) {
       actionsPerformed.push(`Cleaned ${count} usage logs older than 90 days`);
     }
-    checks.push({ name: 'Usage log cleanup', status: 'ok', detail: `${count ?? 0} old records removed` });
+    checks.push({ name: 'Usage log cleanup', status: 'ok', detail: `${count} old records removed` });
   } catch (err) {
     checks.push({ name: 'Usage log cleanup', status: 'fail', detail: String(err) });
   }
