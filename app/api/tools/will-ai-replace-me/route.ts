@@ -12,7 +12,7 @@ const schema = z.object({
 
 export async function POST(req: NextRequest) {
   const rl = await checkRateLimit(req, 'will-ai-replace-me');
-  if (rl) return rl;
+  if (!rl.allowed) return NextResponse.json({ error: rl.reason }, { status: 429 });
   void logUsage(req, 'will-ai-replace-me');
 
   try {
