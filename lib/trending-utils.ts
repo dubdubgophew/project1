@@ -12,6 +12,8 @@ export interface TrendingNews {
   image_url: string | null;
   fetched_at: string;
   rank: number;
+  language_code: string;
+  language_name: string;
 }
 
 export const COUNTRIES = [
@@ -64,11 +66,11 @@ export interface RawTrendItem {
 }
 
 // Standard RSS 2.0 parser — used for country news feeds (BBC, NPR, etc.)
-export function parseStandardRSS(xml: string, defaultSource: string): RawTrendItem[] {
+export function parseStandardRSS(xml: string, defaultSource: string, limit = 5): RawTrendItem[] {
   const items: RawTrendItem[] = [];
   const blocks = xml.match(/<item>([\s\S]*?)<\/item>/g) ?? [];
 
-  for (const block of blocks.slice(0, 5)) {
+  for (const block of blocks.slice(0, limit)) {
     const topic = decodeXML(block.match(/<title>([\s\S]*?)<\/title>/)?.[1] ?? '');
 
     // <link> can be plain text or atom:link href attribute

@@ -17,6 +17,7 @@ export async function GET(req: NextRequest) {
 
   const country  = searchParams.get('country')  ?? 'all';
   const category = searchParams.get('category') ?? 'all';
+  const language = searchParams.get('language') ?? 'all';
   const q        = searchParams.get('q')        ?? '';
   const page     = Math.max(1, parseInt(searchParams.get('page') ?? '1', 10));
   const limit    = Math.min(50, Math.max(1, parseInt(searchParams.get('limit') ?? '20', 10)));
@@ -46,6 +47,9 @@ export async function GET(req: NextRequest) {
     if (category !== 'all' && category) {
       countQuery = countQuery.eq('category', category);
     }
+    if (language !== 'all' && language) {
+      countQuery = countQuery.eq('language_code', language);
+    }
     if (q.trim()) {
       countQuery = countQuery.or(
         `topic.ilike.%${q.trim()}%,summary.ilike.%${q.trim()}%`
@@ -58,7 +62,7 @@ export async function GET(req: NextRequest) {
     // Build the data query
     let dataQuery = supabase
       .from('trending_news')
-      .select('id,country_code,country_name,topic,summary,traffic_volume,category,source_url,source_name,source_title,image_url,fetched_at,rank')
+      .select('id,country_code,country_name,topic,summary,traffic_volume,category,source_url,source_name,source_title,image_url,fetched_at,rank,language_code,language_name')
       .order('fetched_at', { ascending: false })
       .order('rank', { ascending: true })
       .range(offset, offset + limit - 1);
@@ -68,6 +72,9 @@ export async function GET(req: NextRequest) {
     }
     if (category !== 'all' && category) {
       dataQuery = dataQuery.eq('category', category);
+    }
+    if (language !== 'all' && language) {
+      dataQuery = dataQuery.eq('language_code', language);
     }
     if (q.trim()) {
       dataQuery = dataQuery.or(
