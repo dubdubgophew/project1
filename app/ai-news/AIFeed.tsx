@@ -1,16 +1,15 @@
 'use client';
 
-import { Fragment, useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import {
   Search, ChevronDown, RefreshCw, Share2, Check,
-  ExternalLink, Clock, Mail,
+  ExternalLink, Clock, Mail, ArrowUpDown, TrendingUp, Calendar,
 } from 'lucide-react';
 import { AI_CATEGORIES, type AINewsItem } from '@/lib/ai-news-utils';
 import { COUNTRIES } from '@/lib/trending-utils';
 import { LANGUAGES } from '@/lib/regional-news-utils';
-import { ArrowUpDown, TrendingUp, Calendar } from 'lucide-react';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -33,23 +32,33 @@ interface ApiResponse {
 // ─── Constants ───────────────────────────────────────────────────────────────
 
 const CATEGORY_COLORS: Record<string, string> = {
-  Tools:        'bg-violet-500/20 text-violet-300 border-violet-500/30',
-  Research:     'bg-blue-500/20 text-blue-300 border-blue-500/30',
-  Companies:    'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
-  Hardware:     'bg-orange-500/20 text-orange-300 border-orange-500/30',
-  Learning:     'bg-amber-500/20 text-amber-300 border-amber-500/30',
-  'Open Source':'bg-teal-500/20 text-teal-300 border-teal-500/30',
-  Industry:     'bg-red-500/20 text-red-300 border-red-500/30',
+  Tools:        'bg-violet-50 text-violet-700 border-violet-200',
+  Research:     'bg-blue-50 text-blue-700 border-blue-200',
+  Companies:    'bg-emerald-50 text-emerald-700 border-emerald-200',
+  Hardware:     'bg-orange-50 text-orange-700 border-orange-200',
+  Learning:     'bg-amber-50 text-amber-700 border-amber-200',
+  'Open Source':'bg-teal-50 text-teal-700 border-teal-200',
+  Industry:     'bg-red-50 text-red-700 border-red-200',
 };
 
-const CATEGORY_IMAGES: Record<string, string> = {
-  Tools:        'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=75',
-  Research:     'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&q=75',
-  Companies:    'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=75',
-  Hardware:     'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=75',
-  Learning:     'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=75',
-  'Open Source':'https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=800&q=75',
-  Industry:     'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=75',
+const CATEGORY_BAR: Record<string, string> = {
+  Tools:        'bg-violet-500',
+  Research:     'bg-blue-500',
+  Companies:    'bg-emerald-500',
+  Hardware:     'bg-orange-500',
+  Learning:     'bg-amber-500',
+  'Open Source':'bg-teal-500',
+  Industry:     'bg-red-500',
+};
+
+const CATEGORY_EMOJIS: Record<string, string> = {
+  Tools:        '🛠️',
+  Research:     '🔬',
+  Companies:    '🏢',
+  Hardware:     '⚡',
+  Learning:     '📚',
+  'Open Source':'🌐',
+  Industry:     '💼',
 };
 
 const TOOL_PROMOS = [
@@ -61,22 +70,7 @@ const TOOL_PROMOS = [
   { icon: '🖊️', name: 'Digital Signature', href: '/tools/digital-signature', blurb: 'Sign NDAs, partnership agreements, and contracts online — free, no DocuSign.' },
 ];
 
-const STOP_WORDS = new Set([
-  'the','a','an','in','on','at','of','to','for','is','are','was','were',
-  'be','been','and','or','but','with','by','from','as','it','its','his',
-  'her','their','our','we','they','he','she','i','you','after','over',
-  'new','will','says','said','that','this','has','have','had','what','who',
-  'how','why','when','where','than','then','into','about','more','some',
-]);
-
 // ─── Helpers ─────────────────────────────────────────────────────────────────
-
-function formatDateTime(iso: string): string {
-  const d = new Date(iso);
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-    + ' · '
-    + d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-}
 
 function timeAgo(iso: string): string {
   const m = Math.floor((Date.now() - new Date(iso).getTime()) / 60_000);
@@ -87,23 +81,13 @@ function timeAgo(iso: string): string {
   return `${Math.floor(h / 24)}d ago`;
 }
 
-function getSeoKeywords(topic: string, category: string): string[] {
-  const words = topic
-    .split(/\s+/)
-    .map(w => w.replace(/[^a-zA-Z]/g, '').toLowerCase())
-    .filter(w => w.length > 3 && !STOP_WORDS.has(w))
-    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-    .slice(0, 3);
-  return ['AI', category, ...words].filter(Boolean).slice(0, 5);
-}
-
 // ─── Share Dropdown ───────────────────────────────────────────────────────────
 
 function ShareDropdown({ item, onClose }: { item: AINewsItem; onClose: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
 
-  const shareUrl  = `https://www.formly.tools/ai-news?id=${item.id}`;
+  const shareUrl  = `https://www.formly.tools/ai-news/${item.id}`;
   const shareText = `${item.topic} — via Formly AI News`;
 
   useEffect(() => {
@@ -122,17 +106,17 @@ function ShareDropdown({ item, onClose }: { item: AINewsItem; onClose: () => voi
   }
 
   const options = [
-    { label: 'WhatsApp',   icon: '💬', href: `https://wa.me/?text=${encodeURIComponent(`${shareText}\n${shareUrl}`)}` },
-    { label: 'Twitter / X',icon: '𝕏',  href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}` },
-    { label: 'Facebook',   icon: 'f',  href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}` },
-    { label: 'LinkedIn',   icon: 'in', href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}` },
-    { label: 'Telegram',   icon: '✈️', href: `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}` },
+    { label: 'WhatsApp',    icon: '💬', href: `https://wa.me/?text=${encodeURIComponent(`${shareText}\n${shareUrl}`)}` },
+    { label: 'Twitter / X', icon: '𝕏',  href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}` },
+    { label: 'Facebook',    icon: 'f',  href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}` },
+    { label: 'LinkedIn',    icon: 'in', href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}` },
+    { label: 'Telegram',    icon: '✈️', href: `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}` },
   ];
 
   return (
     <div
       ref={ref}
-      className="absolute bottom-full right-0 mb-2 w-48 bg-gray-800 border border-gray-700 rounded-xl shadow-2xl z-50 overflow-hidden"
+      className="absolute bottom-full right-0 mb-2 w-48 bg-white border border-stone-200 rounded-xl shadow-xl z-50 overflow-hidden"
     >
       <div className="p-1">
         {options.map(opt => (
@@ -142,7 +126,7 @@ function ShareDropdown({ item, onClose }: { item: AINewsItem; onClose: () => voi
             target="_blank"
             rel="noopener noreferrer"
             onClick={onClose}
-            className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-gray-700 text-sm text-gray-200 hover:text-white transition-colors"
+            className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-stone-50 text-sm text-stone-700 hover:text-stone-900 transition-colors"
           >
             <span className="w-5 text-center font-bold text-xs">{opt.icon}</span>
             {opt.label}
@@ -150,29 +134,29 @@ function ShareDropdown({ item, onClose }: { item: AINewsItem; onClose: () => voi
         ))}
         <button
           onClick={copyLink}
-          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-gray-700 text-sm text-gray-200 hover:text-white transition-colors"
+          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-stone-50 text-sm text-stone-700 hover:text-stone-900 transition-colors"
         >
-          {copied
-            ? <><Check className="w-4 h-4 text-emerald-400" /><span className="text-emerald-400">Copied!</span></>
-            : <><span className="w-5 text-center text-xs">🔗</span>Copy link</>
-          }
+          {copied ? (
+            <><Check className="w-4 h-4 text-emerald-500" /><span className="text-emerald-600">Copied!</span></>
+          ) : (
+            <><span className="w-5 text-center text-xs">🔗</span>Copy link</>
+          )}
         </button>
       </div>
     </div>
   );
 }
 
-// ─── News Card ────────────────────────────────────────────────────────────────
+// ─── AI News Card ─────────────────────────────────────────────────────────────
 
 function AICard({ item }: { item: AINewsItem }) {
-  const [shareOpen,    setShareOpen]    = useState(false);
-  const [highlighted,  setHighlighted]  = useState(false);
-  const [imgSrc, setImgSrc] = useState<string>(
-    item.image_url || CATEGORY_IMAGES[item.category] || CATEGORY_IMAGES.Industry
-  );
+  const [shareOpen, setShareOpen] = useState(false);
+  const [highlighted, setHighlighted] = useState(false);
 
-  const catColor = CATEGORY_COLORS[item.category] ?? 'bg-gray-500/20 text-gray-300 border-gray-500/30';
-  const keywords = getSeoKeywords(item.topic, item.category);
+  const hasUniqueImage = Boolean(item.image_url);
+  const catColor = CATEGORY_COLORS[item.category] ?? 'bg-stone-50 text-stone-600 border-stone-200';
+  const catBar   = CATEGORY_BAR[item.category]   ?? 'bg-stone-400';
+  const catEmoji = CATEGORY_EMOJIS[item.category] ?? '🤖';
 
   useEffect(() => {
     const id = new URLSearchParams(window.location.search).get('id');
@@ -185,78 +169,106 @@ function AICard({ item }: { item: AINewsItem }) {
   return (
     <article
       id={`ai-${item.id}`}
-      className={`bg-stone-900 border rounded-2xl overflow-hidden flex flex-col transition-all duration-700 ${
+      className={`bg-white border rounded-2xl overflow-hidden transition-all duration-300 ${
         highlighted
-          ? 'border-orange-500 ring-2 ring-orange-500/40'
-          : 'border-stone-800 hover:border-stone-700'
+          ? 'border-violet-400 ring-2 ring-violet-400/20'
+          : 'border-stone-200 hover:border-stone-300 hover:shadow-sm'
       }`}
       itemScope
       itemType="https://schema.org/NewsArticle"
     >
-      {/* Image — shorter aspect ratio */}
-      <div className="relative w-full aspect-[16/7] overflow-hidden bg-stone-800">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={imgSrc}
-          alt={item.topic}
-          className="w-full h-full object-cover"
-          onError={() => setImgSrc(CATEGORY_IMAGES[item.category] || CATEGORY_IMAGES.Industry)}
-          itemProp="image"
-        />
-        <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-sm text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
-          #{item.rank}
-        </div>
-        <div className={`absolute top-2 right-2 text-[10px] font-semibold px-2 py-0.5 rounded-full border backdrop-blur-sm ${catColor}`}>
-          {item.category}
-        </div>
-      </div>
+      {/* Category colour bar */}
+      <div className={`h-1 w-full ${catBar}`} />
 
-      {/* Body */}
-      <div className="flex flex-col flex-1 p-3 gap-2">
-        {/* Source + time */}
-        <div className="flex items-center justify-between gap-2 text-[10px] text-stone-500">
-          <span className="font-medium text-stone-400 truncate">{item.source_name}</span>
-          <span className="flex items-center gap-1 shrink-0">
-            <Clock className="w-3 h-3" />
-            <time dateTime={item.fetched_at} itemProp="datePublished">
+      <div className="p-4 sm:p-5 flex gap-4">
+        <div className="flex-1 min-w-0">
+          {/* Meta row */}
+          <div className="flex items-center gap-2 flex-wrap mb-2.5">
+            <span className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full border ${catColor}`}>
+              {catEmoji} {item.category}
+            </span>
+            <span className="text-[11px] text-stone-400">{item.source_name}</span>
+            <span className="text-[11px] text-stone-300">·</span>
+            <time dateTime={item.fetched_at} className="text-[11px] text-stone-400 flex items-center gap-0.5" itemProp="datePublished">
+              <Clock className="w-3 h-3" />
               {timeAgo(item.fetched_at)}
             </time>
-          </span>
-        </div>
+          </div>
 
-        {/* Headline */}
-        <h2 className="text-white font-bold text-sm leading-snug" itemProp="headline">
-          {item.topic}
-        </h2>
+          {/* Headline */}
+          <h2 className="text-stone-900 font-bold text-[15px] leading-snug mb-2.5" itemProp="headline">
+            {item.topic}
+          </h2>
 
-        {/* Summary — truncated */}
-        <p className="text-stone-300 text-xs leading-relaxed flex-1 line-clamp-3" itemProp="description">
-          {item.summary}
-        </p>
+          {/* Full summary */}
+          <p className="text-stone-600 text-sm leading-relaxed mb-3" itemProp="description">
+            {item.summary}
+          </p>
 
-        {/* Footer */}
-        <div className="flex items-center justify-between pt-2 border-t border-stone-800 mt-auto">
-          <a
-            href={item.source_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1 text-[10px] text-stone-400 hover:text-orange-400 transition-colors"
-            itemProp="publisher"
-          >
-            <ExternalLink className="w-3 h-3 shrink-0" />
-            <span>Read more</span>
-          </a>
-          <div className="relative">
-            <button
-              onClick={() => setShareOpen(o => !o)}
-              className="flex items-center gap-1 text-[10px] font-medium text-stone-400 hover:text-white bg-stone-800 hover:bg-stone-700 px-2 py-1 rounded transition-colors"
+          {/* Key takeaways */}
+          {item.key_points && item.key_points.length > 0 && (
+            <div className="mb-3 bg-violet-50 border border-violet-100 rounded-xl p-3">
+              <p className="text-[10px] font-bold text-violet-600 uppercase tracking-wider mb-2">
+                📌 Key Takeaways
+              </p>
+              <ul className="space-y-1.5">
+                {item.key_points.map((pt, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-stone-700">
+                    <span className="text-violet-400 font-bold mt-0.5 shrink-0">→</span>
+                    <span>{pt}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Footer */}
+          <div className="pt-2.5 border-t border-stone-100 space-y-2">
+            <Link
+              href={`/ai-news/${item.id}`}
+              className="block w-full text-center text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 py-2 px-4 rounded-xl transition-colors"
             >
-              <Share2 className="w-3 h-3" />
-              Share
-            </button>
-            {shareOpen && <ShareDropdown item={item} onClose={() => setShareOpen(false)} />}
+              Read Full Analysis →
+            </Link>
+            <div className="flex items-center gap-2">
+              <a
+                href={item.source_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-[11px] text-stone-400 hover:text-stone-600 transition-colors"
+                itemProp="publisher"
+              >
+                <ExternalLink className="w-3 h-3 shrink-0" />
+                <span className="truncate max-w-[140px]">{item.source_name}</span>
+              </a>
+              <div className="relative ml-auto">
+                <button
+                  onClick={() => setShareOpen(o => !o)}
+                  className="flex items-center gap-1 text-[11px] font-medium text-stone-400 hover:text-stone-700 px-2 py-1 rounded-lg hover:bg-stone-100 transition-colors"
+                >
+                  <Share2 className="w-3 h-3" />
+                  Share
+                </button>
+                {shareOpen && <ShareDropdown item={item} onClose={() => setShareOpen(false)} />}
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* Thumbnail — only if RSS provided a real unique image */}
+        {hasUniqueImage && (
+          <div className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden bg-stone-100 self-start mt-0.5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={item.image_url!}
+              alt=""
+              loading="lazy"
+              className="w-full h-full object-cover"
+              onError={(e) => { (e.target as HTMLImageElement).parentElement!.style.display = 'none'; }}
+              itemProp="image"
+            />
+          </div>
+        )}
       </div>
     </article>
   );
@@ -266,8 +278,8 @@ function AICard({ item }: { item: AINewsItem }) {
 
 function ToolPromoCard({ promo }: { promo: typeof TOOL_PROMOS[number] }) {
   return (
-    <div className="bg-gradient-to-br from-orange-50 to-amber-50/50 border border-orange-200 rounded-2xl p-6 flex flex-col gap-4">
-      <span className="text-xs font-semibold text-orange-500 uppercase tracking-wider">🤖 Free Tool Spotlight</span>
+    <div className="bg-gradient-to-br from-violet-50 to-indigo-50/50 border border-violet-200 rounded-2xl p-5 flex flex-col gap-4">
+      <span className="text-xs font-semibold text-violet-500 uppercase tracking-wider">🤖 Free Tool Spotlight</span>
       <div className="flex items-start gap-3">
         <span className="text-3xl">{promo.icon}</span>
         <div>
@@ -304,7 +316,7 @@ function NewsletterCard() {
   }
 
   return (
-    <div className="bg-violet-50 border border-violet-200 rounded-2xl p-6 flex flex-col gap-3">
+    <div className="bg-violet-50 border border-violet-200 rounded-2xl p-5 flex flex-col gap-3">
       <Mail className="w-6 h-6 text-violet-600" />
       <div>
         <h3 className="text-stone-900 font-bold text-base">Daily AI Digest</h3>
@@ -344,22 +356,21 @@ function NewsletterCard() {
 function Skeleton() {
   return (
     <div className="bg-white border border-stone-200 rounded-2xl overflow-hidden animate-pulse">
-      <div className="w-full aspect-video bg-stone-200" />
+      <div className="h-1 w-full bg-stone-200" />
       <div className="p-5 space-y-3">
         <div className="flex gap-2">
-          <div className="h-3 w-24 bg-stone-200 rounded" />
-          <div className="h-3 w-20 bg-stone-200 rounded ml-auto" />
+          <div className="h-5 w-16 bg-stone-200 rounded-full" />
+          <div className="h-5 w-20 bg-stone-200 rounded-full" />
         </div>
         <div className="h-5 w-3/4 bg-stone-200 rounded" />
-        <div className="flex gap-1.5">
-          {[50, 40, 60].map(w => (
-            <div key={w} className="h-4 bg-stone-200 rounded-full" style={{ width: w }} />
+        <div className="space-y-2">
+          {[100, 95, 90, 88, 85, 80].map(w => (
+            <div key={w} className="h-3.5 bg-stone-200 rounded" style={{ width: `${w}%` }} />
           ))}
         </div>
-        <div className="space-y-2">
-          {[100, 95, 90, 88, 85].map(w => (
-            <div key={w} className="h-3 bg-stone-200 rounded" style={{ width: `${w}%` }} />
-          ))}
+        <div className="h-px bg-stone-100" />
+        <div className="flex gap-4">
+          <div className="h-8 bg-stone-200 rounded-xl flex-1" />
         </div>
       </div>
     </div>
@@ -486,7 +497,6 @@ export function AIFeed({
     setCategory(ca); setCountry(co); setLanguage(lang); setSort(s); setQ(sq); setSearchInput(sq);
   }, [searchParams]);
 
-  // Instant jump to deep-linked card
   useEffect(() => {
     if (!initialId) return;
     const el = document.getElementById(`ai-${initialId}`);
@@ -510,7 +520,7 @@ export function AIFeed({
   const feedItems = buildFeedItems(items);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
 
       {/* ── Filter bar ── */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -537,7 +547,6 @@ export function AIFeed({
             </select>
             <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 pointer-events-none" />
           </div>
-          {/* Sort toggle */}
           <div className="flex items-center gap-0.5 bg-stone-100 p-1 rounded-xl">
             <ArrowUpDown className="w-3.5 h-3.5 text-stone-400 ml-1" />
             <button onClick={() => handleSortChange('latest')}
@@ -551,7 +560,7 @@ export function AIFeed({
           </div>
         </div>
         {lastUpdated && (
-          <p className="text-xs text-stone-500 flex items-center gap-1 shrink-0">
+          <p className="text-xs text-stone-400 flex items-center gap-1 shrink-0">
             <Clock className="w-3 h-3" />
             Updated {timeAgo(lastUpdated)}
           </p>
@@ -564,8 +573,8 @@ export function AIFeed({
           onClick={() => handleCountryChange('all')}
           className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
             country === 'all'
-              ? 'bg-orange-500 text-white border-orange-500'
-              : 'bg-white text-stone-600 border-stone-200 hover:text-stone-900 hover:border-orange-300'
+              ? 'bg-violet-500 text-white border-violet-500'
+              : 'bg-white text-stone-600 border-stone-200 hover:text-stone-900 hover:border-violet-300'
           }`}
         >
           🌍 All
@@ -574,8 +583,8 @@ export function AIFeed({
           onClick={() => handleCountryChange('GLOBAL')}
           className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
             country === 'GLOBAL'
-              ? 'bg-orange-500 text-white border-orange-500'
-              : 'bg-white text-stone-600 border-stone-200 hover:text-stone-900 hover:border-orange-300'
+              ? 'bg-violet-500 text-white border-violet-500'
+              : 'bg-white text-stone-600 border-stone-200 hover:text-stone-900 hover:border-violet-300'
           }`}
         >
           🌐 Global
@@ -586,8 +595,8 @@ export function AIFeed({
             onClick={() => handleCountryChange(c.code)}
             className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border flex items-center gap-1.5 ${
               country === c.code
-                ? 'bg-orange-500 text-white border-orange-500'
-                : 'bg-white text-stone-600 border-stone-200 hover:text-stone-900 hover:border-orange-300'
+                ? 'bg-violet-500 text-white border-violet-500'
+                : 'bg-white text-stone-600 border-stone-200 hover:text-stone-900 hover:border-violet-300'
             }`}
           >
             {c.flag}
@@ -628,31 +637,23 @@ export function AIFeed({
 
       {/* ── Loading skeleton ── */}
       {loading && (
-        <div className="grid sm:grid-cols-2 gap-4">
-          {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} />)}
+        <div className="space-y-3">
+          {Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} />)}
         </div>
       )}
 
       {/* ── Feed ── */}
       {!loading && (
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="space-y-3">
           {items.length === 0 ? (
-            <div className="sm:col-span-2"><EmptyState onRefresh={handleRefresh} /></div>
+            <EmptyState onRefresh={handleRefresh} />
           ) : (
             feedItems.map((entry, idx) => {
               if (entry === 'newsletter') {
-                return (
-                  <div key="newsletter" className="sm:col-span-2">
-                    <NewsletterCard />
-                  </div>
-                );
+                return <NewsletterCard key="newsletter" />;
               }
               if (typeof entry === 'object' && 'promo' in entry) {
-                return (
-                  <div key={`promo-${idx}`} className="sm:col-span-2">
-                    <ToolPromoCard promo={TOOL_PROMOS[entry.promo]} />
-                  </div>
-                );
+                return <ToolPromoCard key={`promo-${idx}`} promo={TOOL_PROMOS[entry.promo]} />;
               }
               const item = entry as AINewsItem;
               return <AICard key={item.id} item={item} />;

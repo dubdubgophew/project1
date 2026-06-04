@@ -1,53 +1,53 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Clock, ExternalLink, Share2 } from 'lucide-react';
+import { ArrowLeft, Clock, ExternalLink } from 'lucide-react';
 import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
 import { InArticleAd } from '@/components/shared/AdSense';
 import { ArticleImage } from '@/components/shared/ArticleImage';
 import { createAdminClient } from '@/lib/supabase/server';
-import type { TrendingNews } from '@/lib/trending-utils';
+import type { AINewsItem } from '@/lib/ai-news-utils';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const CATEGORY_COLORS: Record<string, string> = {
-  Sports:        'bg-blue-50 text-blue-700 border-blue-200',
-  Tech:          'bg-violet-50 text-violet-700 border-violet-200',
-  Politics:      'bg-red-50 text-red-700 border-red-200',
-  Entertainment: 'bg-amber-50 text-amber-700 border-amber-200',
-  Business:      'bg-emerald-50 text-emerald-700 border-emerald-200',
-  Health:        'bg-teal-50 text-teal-700 border-teal-200',
-  General:       'bg-stone-50 text-stone-600 border-stone-200',
+  Tools:        'bg-violet-50 text-violet-700 border-violet-200',
+  Research:     'bg-blue-50 text-blue-700 border-blue-200',
+  Companies:    'bg-emerald-50 text-emerald-700 border-emerald-200',
+  Hardware:     'bg-orange-50 text-orange-700 border-orange-200',
+  Learning:     'bg-amber-50 text-amber-700 border-amber-200',
+  'Open Source':'bg-teal-50 text-teal-700 border-teal-200',
+  Industry:     'bg-red-50 text-red-700 border-red-200',
 };
 
 const CATEGORY_BAR: Record<string, string> = {
-  Sports:        'bg-blue-500',
-  Tech:          'bg-violet-500',
-  Politics:      'bg-red-500',
-  Entertainment: 'bg-amber-500',
-  Business:      'bg-emerald-500',
-  Health:        'bg-teal-500',
-  General:       'bg-stone-400',
+  Tools:        'bg-violet-500',
+  Research:     'bg-blue-500',
+  Companies:    'bg-emerald-500',
+  Hardware:     'bg-orange-500',
+  Learning:     'bg-amber-500',
+  'Open Source':'bg-teal-500',
+  Industry:     'bg-red-500',
 };
 
 const CATEGORY_EMOJIS: Record<string, string> = {
-  Sports:        '🏆',
-  Tech:          '💻',
-  Politics:      '🏛️',
-  Entertainment: '🎬',
-  Business:      '📈',
-  Health:        '❤️',
-  General:       '📰',
+  Tools:        '🛠️',
+  Research:     '🔬',
+  Companies:    '🏢',
+  Hardware:     '⚡',
+  Learning:     '📚',
+  'Open Source':'🌐',
+  Industry:     '💼',
 };
 
 const TOOL_BY_CATEGORY: Record<string, { name: string; href: string; description: string; emoji: string }> = {
-  Business:      { name: 'PDF Summarizer',    href: '/tools/pdf-summarizer',   description: 'Upload reports, earnings releases, or any business document for instant AI-powered key points.', emoji: '📄' },
-  Tech:          { name: 'Code Explainer',    href: '/tools/code-explainer',   description: 'Paste any code snippet from this article and get a plain-English explanation instantly.', emoji: '💻' },
-  Politics:      { name: 'AI Email Writer',   href: '/tools/email-writer',     description: 'Draft a professional email to your representative or colleagues about this story — in seconds.', emoji: '📧' },
-  Health:        { name: 'Grammar Checker',   href: '/tools/grammar-checker',  description: 'Polish health summaries, reports, or patient communications with AI-powered grammar checking.', emoji: '✅' },
-  Sports:        { name: 'Bio Writer',        href: '/tools/bio-writer',       description: 'Write a compelling professional bio or sports profile with AI — perfect for athletes and coaches.', emoji: '✍️' },
-  Entertainment: { name: 'Paraphraser',       href: '/tools/paraphraser',      description: 'Rephrase any entertainment content in your own voice. Great for social captions and reviews.', emoji: '🔄' },
-  General:       { name: 'AI Email Writer',   href: '/tools/email-writer',     description: 'Write professional emails about any topic in seconds — no more staring at a blank page.', emoji: '📧' },
+  Tools:        { name: 'Code Explainer',  href: '/tools/code-explainer',  description: 'Paste any code snippet or tool output and get a plain-English explanation instantly.', emoji: '💻' },
+  Research:     { name: 'PDF Summarizer',  href: '/tools/pdf-summarizer',  description: 'Upload any research paper, whitepaper, or technical report for instant AI key points.', emoji: '📄' },
+  Companies:    { name: 'AI Email Writer', href: '/tools/email-writer',    description: 'Draft outreach emails to AI companies, investors, or partners — crafted by AI in seconds.', emoji: '📧' },
+  Hardware:     { name: 'Code Explainer',  href: '/tools/code-explainer',  description: 'Understand any hardware spec, benchmark code, or technical documentation instantly.', emoji: '💻' },
+  Learning:     { name: 'Grammar Checker', href: '/tools/grammar-checker', description: 'Polish your AI learning notes, summaries, or course assignments with AI grammar checking.', emoji: '✅' },
+  'Open Source':{ name: 'Code Reviewer',  href: '/tools/code-reviewer',   description: 'Get an AI code review on any open-source snippet — free, no signup needed.', emoji: '🔍' },
+  Industry:     { name: 'PDF Summarizer',  href: '/tools/pdf-summarizer',  description: 'Summarize any industry report, earnings release, or market analysis in seconds.', emoji: '📄' },
 };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -63,18 +63,19 @@ function timeAgo(iso: string): string {
 
 // ─── Related Card ─────────────────────────────────────────────────────────────
 
-function RelatedCard({ item }: { item: TrendingNews }) {
+function RelatedCard({ item }: { item: AINewsItem }) {
+  const catEmoji = CATEGORY_EMOJIS[item.category] ?? '🤖';
   return (
     <Link
-      href={`/news/${item.id}`}
-      className="flex items-start gap-3 bg-white border border-stone-200 rounded-xl p-4 hover:border-orange-300 hover:shadow-sm transition-all group"
+      href={`/ai-news/${item.id}`}
+      className="flex items-start gap-3 bg-white border border-stone-200 rounded-xl p-4 hover:border-violet-300 hover:shadow-sm transition-all group"
     >
-      <span className="text-xl shrink-0 mt-0.5">{CATEGORY_EMOJIS[item.category] ?? '📰'}</span>
+      <span className="text-xl shrink-0 mt-0.5">{catEmoji}</span>
       <div className="flex-1 min-w-0">
-        <h3 className="font-semibold text-stone-900 text-sm leading-snug mb-1 group-hover:text-orange-700 transition-colors line-clamp-2">
+        <h3 className="font-semibold text-stone-900 text-sm leading-snug mb-1 group-hover:text-violet-700 transition-colors line-clamp-2">
           {item.topic}
         </h3>
-        <p className="text-stone-500 text-xs">{timeAgo(item.fetched_at)} · {item.country_name}</p>
+        <p className="text-stone-500 text-xs">{timeAgo(item.fetched_at)} · {item.source_name}</p>
       </div>
     </Link>
   );
@@ -82,11 +83,11 @@ function RelatedCard({ item }: { item: TrendingNews }) {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default async function ArticlePage({ params }: { params: { id: string } }) {
+export default async function AIArticlePage({ params }: { params: { id: string } }) {
   const supabase = createAdminClient();
 
   const { data: article } = await supabase
-    .from('trending_news')
+    .from('ai_news')
     .select('*')
     .eq('id', params.id)
     .maybeSingle();
@@ -94,18 +95,18 @@ export default async function ArticlePage({ params }: { params: { id: string } }
   if (!article) notFound();
 
   const { data: relatedRaw } = await supabase
-    .from('trending_news')
-    .select('id,country_code,country_name,topic,summary,category,source_url,source_name,image_url,fetched_at,rank,key_points,traffic_volume,source_title,language_code,language_name')
+    .from('ai_news')
+    .select('id,source_name,topic,summary,category,source_url,image_url,fetched_at,rank,key_points,source_title,country_code,country_name,language_code,language_name,source_key')
     .eq('category', article.category)
     .neq('id', article.id)
     .order('fetched_at', { ascending: false })
     .limit(4);
 
-  const related = (relatedRaw ?? []) as TrendingNews[];
-  const tool    = TOOL_BY_CATEGORY[article.category] ?? TOOL_BY_CATEGORY.General;
-  const catColor = CATEGORY_COLORS[article.category] ?? CATEGORY_COLORS.General;
-  const catBar   = CATEGORY_BAR[article.category]    ?? CATEGORY_BAR.General;
-  const catEmoji = CATEGORY_EMOJIS[article.category] ?? '📰';
+  const related  = (relatedRaw ?? []) as AINewsItem[];
+  const tool     = TOOL_BY_CATEGORY[article.category] ?? TOOL_BY_CATEGORY.Research;
+  const catColor = CATEGORY_COLORS[article.category] ?? 'bg-stone-50 text-stone-600 border-stone-200';
+  const catBar   = CATEGORY_BAR[article.category]   ?? 'bg-stone-400';
+  const catEmoji = CATEGORY_EMOJIS[article.category] ?? '🤖';
   const keyPoints: string[] = Array.isArray(article.key_points) ? article.key_points : [];
 
   const jsonLd = {
@@ -117,8 +118,8 @@ export default async function ArticlePage({ params }: { params: { id: string } }
     dateModified: article.fetched_at,
     author: { '@type': 'Organization', name: 'Formly AI', url: 'https://formly.tools' },
     publisher: { '@type': 'Organization', name: 'Formly Tools', url: 'https://formly.tools', logo: { '@type': 'ImageObject', url: 'https://formly.tools/favicon.svg' } },
-    url: `https://formly.tools/news/${article.id}`,
-    mainEntityOfPage: `https://formly.tools/news/${article.id}`,
+    url: `https://formly.tools/ai-news/${article.id}`,
+    mainEntityOfPage: `https://formly.tools/ai-news/${article.id}`,
     ...(article.image_url ? { image: article.image_url } : {}),
   };
 
@@ -130,11 +131,11 @@ export default async function ArticlePage({ params }: { params: { id: string } }
 
           {/* Back */}
           <Link
-            href="/news"
+            href="/ai-news"
             className="inline-flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-800 mb-6 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to News
+            Back to AI News
           </Link>
 
           {/* Article */}
@@ -154,7 +155,7 @@ export default async function ArticlePage({ params }: { params: { id: string } }
                   {timeAgo(article.fetched_at)}
                 </time>
               </span>
-              <span className="text-sm text-stone-400">{article.country_name}</span>
+              <span className="text-sm text-stone-400">{article.source_name}</span>
             </div>
 
             {/* Headline */}
@@ -182,14 +183,14 @@ export default async function ArticlePage({ params }: { params: { id: string } }
 
             {/* Key Takeaways */}
             {keyPoints.length > 0 && (
-              <div className="bg-orange-50 border border-orange-100 rounded-2xl p-5 sm:p-6 mb-5">
-                <p className="text-[10px] font-bold text-orange-600 uppercase tracking-widest mb-4">
+              <div className="bg-violet-50 border border-violet-100 rounded-2xl p-5 sm:p-6 mb-5">
+                <p className="text-[10px] font-bold text-violet-600 uppercase tracking-widest mb-4">
                   📌 Key Takeaways
                 </p>
                 <ol className="space-y-3">
                   {keyPoints.map((pt, i) => (
                     <li key={i} className="flex items-start gap-3">
-                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-orange-500 text-white text-xs font-bold flex items-center justify-center mt-0.5">
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-violet-500 text-white text-xs font-bold flex items-center justify-center mt-0.5">
                         {i + 1}
                       </span>
                       <span className="text-stone-800 text-sm leading-relaxed">{pt}</span>
@@ -211,7 +212,7 @@ export default async function ArticlePage({ params }: { params: { id: string } }
                 href={article.source_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="shrink-0 flex items-center gap-1.5 text-sm font-medium text-stone-600 hover:text-orange-600 transition-colors"
+                className="shrink-0 flex items-center gap-1.5 text-sm font-medium text-stone-600 hover:text-violet-600 transition-colors"
               >
                 Read original <ExternalLink className="w-3.5 h-3.5" />
               </a>
@@ -219,8 +220,8 @@ export default async function ArticlePage({ params }: { params: { id: string } }
           </article>
 
           {/* Tool CTA */}
-          <div className="bg-gradient-to-br from-orange-50 to-amber-50/80 border border-orange-200 rounded-2xl p-5 sm:p-6 mb-10">
-            <p className="text-[10px] font-bold text-orange-500 uppercase tracking-widest mb-3">
+          <div className="bg-gradient-to-br from-violet-50 to-indigo-50/80 border border-violet-200 rounded-2xl p-5 sm:p-6 mb-10">
+            <p className="text-[10px] font-bold text-violet-500 uppercase tracking-widest mb-3">
               🤖 Free Tool for You
             </p>
             <div className="flex items-start gap-3 mb-4">
@@ -249,9 +250,9 @@ export default async function ArticlePage({ params }: { params: { id: string } }
 
           {/* Back link */}
           <div className="mt-10 pt-6 border-t border-stone-200">
-            <Link href="/news" className="inline-flex items-center gap-1.5 text-sm font-medium text-orange-600 hover:text-orange-700 transition-colors">
+            <Link href="/ai-news" className="inline-flex items-center gap-1.5 text-sm font-medium text-violet-600 hover:text-violet-700 transition-colors">
               <ArrowLeft className="w-4 h-4" />
-              All News
+              All AI News
             </Link>
           </div>
         </div>

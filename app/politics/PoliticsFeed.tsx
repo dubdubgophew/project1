@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -36,11 +36,7 @@ const TOOL_PROMOS = [
   { icon: '📄', name: 'PDF Summarizer',    href: '/tools/pdf-summarizer',     blurb: 'Summarize any government report, policy paper, or legislation in seconds.' },
 ];
 
-const STOP_WORDS = new Set(['the','a','an','in','on','at','of','to','for','is','are','was','were','be','been','and','or','but','with','by','from','as','it','its','his','her','their','our','we','they','he','she','i','you','after','over','new','will','says','said','that','this','has','have','had','what','who','how','why','when','where','than','then','into','about','more','some']);
-
-const CATEGORY_IMAGES: Record<string, string> = {
-  Politics: 'https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=800&q=75',
-};
+// ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function timeAgo(iso: string): string {
   const m = Math.floor((Date.now() - new Date(iso).getTime()) / 60_000);
@@ -56,10 +52,11 @@ function getCountryFlag(code: string): string {
 }
 
 // ── Share Dropdown ─────────────────────────────────────────────────────────────
+
 function ShareDropdown({ item, onClose }: { item: TrendingNews; onClose: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
-  const shareUrl  = `https://www.formly.tools/politics?id=${item.id}`;
+  const shareUrl  = `https://www.formly.tools/news/${item.id}`;
   const shareText = `${item.topic} — via Formly Politics`;
 
   useEffect(() => {
@@ -81,16 +78,19 @@ function ShareDropdown({ item, onClose }: { item: TrendingNews; onClose: () => v
   ];
 
   return (
-    <div ref={ref} className="absolute bottom-full right-0 mb-2 w-48 bg-gray-800 border border-gray-700 rounded-xl shadow-2xl z-50 overflow-hidden">
+    <div ref={ref} className="absolute bottom-full right-0 mb-2 w-48 bg-white border border-stone-200 rounded-xl shadow-xl z-50 overflow-hidden">
       <div className="p-1">
         {options.map(opt => (
           <a key={opt.label} href={opt.href} target="_blank" rel="noopener noreferrer" onClick={onClose}
-            className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-gray-700 text-sm text-gray-200 hover:text-white transition-colors">
+            className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-stone-50 text-sm text-stone-700 hover:text-stone-900 transition-colors">
             <span className="w-5 text-center font-bold text-xs">{opt.icon}</span>{opt.label}
           </a>
         ))}
-        <button onClick={copyLink} className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-gray-700 text-sm text-gray-200 hover:text-white transition-colors">
-          {copied ? <><Check className="w-4 h-4 text-emerald-400" /><span className="text-emerald-400">Copied!</span></> : <><span className="w-5 text-center text-xs">🔗</span>Copy link</>}
+        <button onClick={copyLink} className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-stone-50 text-sm text-stone-700 hover:text-stone-900 transition-colors">
+          {copied
+            ? <><Check className="w-4 h-4 text-emerald-500" /><span className="text-emerald-600">Copied!</span></>
+            : <><span className="w-5 text-center text-xs">🔗</span>Copy link</>
+          }
         </button>
       </div>
     </div>
@@ -98,10 +98,12 @@ function ShareDropdown({ item, onClose }: { item: TrendingNews; onClose: () => v
 }
 
 // ── News Card ─────────────────────────────────────────────────────────────────
+
 function PoliticsCard({ item }: { item: TrendingNews }) {
   const [shareOpen, setShareOpen] = useState(false);
   const [highlighted, setHighlighted] = useState(false);
-  const [imgSrc, setImgSrc] = useState(item.image_url || CATEGORY_IMAGES.Politics);
+
+  const hasUniqueImage = Boolean(item.image_url);
   const flag = getCountryFlag(item.country_code);
 
   useEffect(() => {
@@ -112,55 +114,107 @@ function PoliticsCard({ item }: { item: TrendingNews }) {
   return (
     <article
       id={`pol-${item.id}`}
-      className={`bg-stone-900 border rounded-2xl overflow-hidden flex flex-col transition-all duration-700 ${
-        highlighted ? 'border-blue-500 ring-2 ring-blue-500/40' : 'border-stone-800 hover:border-stone-700'
+      className={`bg-white border rounded-2xl overflow-hidden transition-all duration-300 ${
+        highlighted
+          ? 'border-red-400 ring-2 ring-red-400/20'
+          : 'border-stone-200 hover:border-stone-300 hover:shadow-sm'
       }`}
       itemScope itemType="https://schema.org/NewsArticle"
     >
-      <div className="relative w-full aspect-[16/7] overflow-hidden bg-stone-800">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={imgSrc} alt={item.topic} className="w-full h-full object-cover"
-          onError={() => setImgSrc(CATEGORY_IMAGES.Politics)} itemProp="image" />
-        <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-sm text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
-          #{item.rank}
-        </div>
-        <div className="absolute top-2 right-2 text-[10px] font-semibold px-2 py-0.5 rounded-full border backdrop-blur-sm bg-blue-500/20 text-blue-300 border-blue-500/30">
-          🏛️ Politics
-        </div>
-      </div>
+      {/* Category colour bar */}
+      <div className="h-1 w-full bg-red-500" />
 
-      <div className="flex flex-col flex-1 p-3 gap-2">
-        <div className="flex items-center justify-between gap-2 text-[10px] text-stone-500">
-          <span className="flex items-center gap-1">
-            <span>{flag}</span>
-            <span className="font-medium text-stone-400">{item.country_name}</span>
+      <div className="p-4 sm:p-5 flex gap-4">
+        <div className="flex-1 min-w-0">
+          {/* Meta row */}
+          <div className="flex items-center gap-2 flex-wrap mb-2.5">
+            <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full border bg-red-50 text-red-700 border-red-200">
+              🏛️ Politics
+            </span>
+            <span className="text-[11px] text-stone-400">{flag} {item.country_name}</span>
             {item.language_code && item.language_code !== 'en' && (
-              <span className="bg-stone-800 text-stone-400 px-1.5 rounded text-[9px]">{item.language_name}</span>
+              <span className="text-[11px] text-stone-400 bg-stone-100 px-1.5 py-0.5 rounded">{item.language_name}</span>
             )}
-          </span>
-          <span className="flex items-center gap-1">
-            <Clock className="w-3 h-3" />
-            <time dateTime={item.fetched_at} itemProp="datePublished">{timeAgo(item.fetched_at)}</time>
-          </span>
-        </div>
+            <span className="text-[11px] text-stone-300">·</span>
+            <time dateTime={item.fetched_at} className="text-[11px] text-stone-400 flex items-center gap-0.5" itemProp="datePublished">
+              <Clock className="w-3 h-3" />
+              {timeAgo(item.fetched_at)}
+            </time>
+          </div>
 
-        <h2 className="text-white font-bold text-sm leading-snug" itemProp="headline">{item.topic}</h2>
-        <p className="text-stone-300 text-xs leading-relaxed flex-1 line-clamp-3" itemProp="description">{item.summary}</p>
+          {/* Headline */}
+          <h2 className="text-stone-900 font-bold text-[15px] leading-snug mb-2.5" itemProp="headline">
+            {item.topic}
+          </h2>
 
-        <div className="flex items-center justify-between pt-2 border-t border-stone-800 mt-auto">
-          <a href={item.source_url} target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-1 text-[10px] text-stone-400 hover:text-blue-400 transition-colors" itemProp="publisher">
-            <ExternalLink className="w-3 h-3 shrink-0" />
-            <span className="truncate">{item.source_name}</span>
-          </a>
-          <div className="relative">
-            <button onClick={() => setShareOpen(o => !o)}
-              className="flex items-center gap-1 text-[10px] font-medium text-stone-400 hover:text-white bg-stone-800 hover:bg-stone-700 px-2 py-1 rounded transition-colors">
-              <Share2 className="w-3 h-3" /> Share
-            </button>
-            {shareOpen && <ShareDropdown item={item} onClose={() => setShareOpen(false)} />}
+          {/* Full summary */}
+          <p className="text-stone-600 text-sm leading-relaxed mb-3" itemProp="description">
+            {item.summary}
+          </p>
+
+          {/* Key takeaways */}
+          {item.key_points && item.key_points.length > 0 && (
+            <div className="mb-3 bg-red-50 border border-red-100 rounded-xl p-3">
+              <p className="text-[10px] font-bold text-red-600 uppercase tracking-wider mb-2">
+                📌 Key Takeaways
+              </p>
+              <ul className="space-y-1.5">
+                {item.key_points.map((pt, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-stone-700">
+                    <span className="text-red-400 font-bold mt-0.5 shrink-0">→</span>
+                    <span>{pt}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Footer */}
+          <div className="pt-2.5 border-t border-stone-100 space-y-2">
+            <Link
+              href={`/news/${item.id}`}
+              className="block w-full text-center text-sm font-semibold text-white bg-red-600 hover:bg-red-700 py-2 px-4 rounded-xl transition-colors"
+            >
+              Read Full Analysis →
+            </Link>
+            <div className="flex items-center gap-2">
+              <a
+                href={item.source_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-[11px] text-stone-400 hover:text-stone-600 transition-colors"
+                itemProp="publisher"
+              >
+                <ExternalLink className="w-3 h-3 shrink-0" />
+                <span className="truncate max-w-[140px]">{item.source_name}</span>
+              </a>
+              <div className="relative ml-auto">
+                <button
+                  onClick={() => setShareOpen(o => !o)}
+                  className="flex items-center gap-1 text-[11px] font-medium text-stone-400 hover:text-stone-700 px-2 py-1 rounded-lg hover:bg-stone-100 transition-colors"
+                >
+                  <Share2 className="w-3 h-3" /> Share
+                </button>
+                {shareOpen && <ShareDropdown item={item} onClose={() => setShareOpen(false)} />}
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* Thumbnail — only if RSS provided a real unique image */}
+        {hasUniqueImage && (
+          <div className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden bg-stone-100 self-start mt-0.5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={item.image_url!}
+              alt=""
+              loading="lazy"
+              className="w-full h-full object-cover"
+              onError={(e) => { (e.target as HTMLImageElement).parentElement!.style.display = 'none'; }}
+              itemProp="image"
+            />
+          </div>
+        )}
       </div>
     </article>
   );
@@ -168,8 +222,8 @@ function PoliticsCard({ item }: { item: TrendingNews }) {
 
 function ToolPromoCard({ promo }: { promo: typeof TOOL_PROMOS[number] }) {
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-indigo-50/50 border border-blue-200 rounded-2xl p-6 flex flex-col gap-4">
-      <span className="text-xs font-semibold text-blue-500 uppercase tracking-wider">🤖 Free Tool</span>
+    <div className="bg-gradient-to-br from-red-50 to-rose-50/50 border border-red-200 rounded-2xl p-5 flex flex-col gap-4">
+      <span className="text-xs font-semibold text-red-500 uppercase tracking-wider">🤖 Free Tool</span>
       <div className="flex items-start gap-3">
         <span className="text-3xl">{promo.icon}</span>
         <div>
@@ -190,14 +244,14 @@ function NewsletterCard() {
     try { await fetch('/api/newsletter', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) }); } finally { setState('done'); }
   }
   return (
-    <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 flex flex-col gap-3">
-      <Mail className="w-6 h-6 text-blue-600" />
+    <div className="bg-red-50 border border-red-200 rounded-2xl p-5 flex flex-col gap-3">
+      <Mail className="w-6 h-6 text-red-600" />
       <div>
         <h3 className="text-stone-900 font-bold text-base">Daily Politics Digest</h3>
         <p className="text-stone-600 text-sm mt-1">Top political stories from 10+ countries delivered to your inbox every morning.</p>
       </div>
       {state === 'done' ? (
-        <div className="flex items-center gap-2 text-blue-600 text-sm font-medium"><Check className="w-4 h-4" /> You&apos;re in!</div>
+        <div className="flex items-center gap-2 text-red-600 text-sm font-medium"><Check className="w-4 h-4" /> You&apos;re in!</div>
       ) : (
         <form onSubmit={submit} className="flex gap-2">
           <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="your@email.com"
@@ -215,11 +269,16 @@ function NewsletterCard() {
 function Skeleton() {
   return (
     <div className="bg-white border border-stone-200 rounded-2xl overflow-hidden animate-pulse">
-      <div className="w-full aspect-video bg-stone-200" />
+      <div className="h-1 w-full bg-stone-200" />
       <div className="p-5 space-y-3">
-        <div className="flex gap-2"><div className="h-3 w-20 bg-stone-200 rounded" /><div className="h-3 w-24 bg-stone-200 rounded ml-auto" /></div>
+        <div className="flex gap-2">
+          <div className="h-5 w-16 bg-stone-200 rounded-full" />
+          <div className="h-5 w-20 bg-stone-200 rounded-full" />
+        </div>
         <div className="h-5 w-3/4 bg-stone-200 rounded" />
-        <div className="space-y-2">{[100, 95, 90].map(w => <div key={w} className="h-3 bg-stone-200 rounded" style={{ width: `${w}%` }} />)}</div>
+        <div className="space-y-2">{[100, 95, 90, 88, 85].map(w => <div key={w} className="h-3.5 bg-stone-200 rounded" style={{ width: `${w}%` }} />)}</div>
+        <div className="h-px bg-stone-100" />
+        <div className="h-8 bg-stone-200 rounded-xl" />
       </div>
     </div>
   );
@@ -227,7 +286,7 @@ function Skeleton() {
 
 function EmptyState({ onRefresh }: { onRefresh: () => void }) {
   return (
-    <div className="col-span-full flex justify-center py-16">
+    <div className="flex justify-center py-16">
       <div className="bg-white border border-stone-200 rounded-2xl p-10 text-center max-w-sm">
         <div className="text-4xl mb-4">🏛️</div>
         <h3 className="text-stone-900 font-bold text-lg mb-2">Fetching political news…</h3>
@@ -239,6 +298,7 @@ function EmptyState({ onRefresh }: { onRefresh: () => void }) {
 }
 
 // ── Main Component ────────────────────────────────────────────────────────────
+
 export function PoliticsFeed({ initialItems, initialCountry, initialQ, initialSort, initialId, lastUpdated: initialLastUpdated }: Props) {
   const router       = useRouter();
   const searchParams = useSearchParams();
@@ -278,9 +338,9 @@ export function PoliticsFeed({ initialItems, initialCountry, initialQ, initialSo
     } catch (err) { console.error('[PoliticsFeed]', err); }
   }, []);
 
-  const handleCountryChange  = (code: string)  => { setCountry(code);   setPage(1); setLoading(true); updateURL(code, language, q, sort);   fetchPage({ country: code,    language, q, sort, page: 1, append: false }).finally(() => setLoading(false)); };
-  const handleLanguageChange = (lang: string)  => { setLanguage(lang);  setPage(1); setLoading(true); updateURL(country, lang, q, sort);    fetchPage({ country, language: lang,  q, sort, page: 1, append: false }).finally(() => setLoading(false)); };
-  const handleSortChange     = (s: string)      => { setSort(s);         setPage(1); setLoading(true); updateURL(country, language, q, s);    fetchPage({ country, language,        q, sort: s, page: 1, append: false }).finally(() => setLoading(false)); };
+  const handleCountryChange  = (code: string) => { setCountry(code);  setPage(1); setLoading(true); updateURL(code, language, q, sort);   fetchPage({ country: code,   language, q, sort, page: 1, append: false }).finally(() => setLoading(false)); };
+  const handleLanguageChange = (lang: string) => { setLanguage(lang); setPage(1); setLoading(true); updateURL(country, lang, q, sort);    fetchPage({ country, language: lang, q, sort, page: 1, append: false }).finally(() => setLoading(false)); };
+  const handleSortChange     = (s: string)    => { setSort(s);        setPage(1); setLoading(true); updateURL(country, language, q, s);    fetchPage({ country, language,       q, sort: s, page: 1, append: false }).finally(() => setLoading(false)); };
 
   const handleSearchChange = (val: string) => {
     setSearchInput(val);
@@ -342,15 +402,14 @@ export function PoliticsFeed({ initialItems, initialCountry, initialQ, initialSo
             placeholder="Search politics…" className="input pl-9 w-full text-sm py-2" />
         </div>
 
-        {/* Sort toggle */}
         <div className="flex items-center gap-1 bg-stone-100 p-1 rounded-xl">
           <ArrowUpDown className="w-3.5 h-3.5 text-stone-400 ml-1.5" />
           <button onClick={() => handleSortChange('latest')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${sort === 'latest' ? 'bg-white text-blue-700 shadow-sm' : 'text-stone-500 hover:text-stone-700'}`}>
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${sort === 'latest' ? 'bg-white text-red-700 shadow-sm' : 'text-stone-500 hover:text-stone-700'}`}>
             <Calendar className="w-3 h-3" /> Latest
           </button>
           <button onClick={() => handleSortChange('popular')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${sort === 'popular' ? 'bg-white text-blue-700 shadow-sm' : 'text-stone-500 hover:text-stone-700'}`}>
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${sort === 'popular' ? 'bg-white text-red-700 shadow-sm' : 'text-stone-500 hover:text-stone-700'}`}>
             <TrendingUp className="w-3 h-3" /> Popular
           </button>
         </div>
@@ -365,12 +424,12 @@ export function PoliticsFeed({ initialItems, initialCountry, initialQ, initialSo
       {/* ── Country pills ── */}
       <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1" style={{ scrollbarWidth: 'none' }}>
         <button onClick={() => handleCountryChange('all')}
-          className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${country === 'all' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-stone-600 border-stone-200 hover:border-blue-300'}`}>
+          className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${country === 'all' ? 'bg-red-600 text-white border-red-600' : 'bg-white text-stone-600 border-stone-200 hover:border-red-300'}`}>
           🌍 All
         </button>
         {COUNTRIES.map(c => (
           <button key={c.code} onClick={() => handleCountryChange(c.code)}
-            className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border flex items-center gap-1.5 ${country === c.code ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-stone-600 border-stone-200 hover:border-blue-300'}`}>
+            className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border flex items-center gap-1.5 ${country === c.code ? 'bg-red-600 text-white border-red-600' : 'bg-white text-stone-600 border-stone-200 hover:border-red-300'}`}>
             {c.flag}<span className="hidden sm:inline">{c.name}</span><span className="sm:hidden">{c.code}</span>
           </button>
         ))}
@@ -380,29 +439,33 @@ export function PoliticsFeed({ initialItems, initialCountry, initialQ, initialSo
       <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1" style={{ scrollbarWidth: 'none' }}>
         <span className="shrink-0 text-[11px] text-stone-400 self-center pr-1">Language:</span>
         <button onClick={() => handleLanguageChange('all')}
-          className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-colors border ${language === 'all' ? 'bg-indigo-500 text-white border-indigo-500' : 'bg-white text-stone-500 border-stone-200 hover:border-indigo-300'}`}>
+          className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-colors border ${language === 'all' ? 'bg-red-500 text-white border-red-500' : 'bg-white text-stone-500 border-stone-200 hover:border-red-300'}`}>
           All
         </button>
         {LANGUAGES.map(l => (
           <button key={l.code} onClick={() => handleLanguageChange(l.code)}
-            className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${language === l.code ? 'bg-indigo-500 text-white border-indigo-500' : 'bg-white text-stone-500 border-stone-200 hover:border-indigo-300'}`}>
+            className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${language === l.code ? 'bg-red-500 text-white border-red-500' : 'bg-white text-stone-500 border-stone-200 hover:border-red-300'}`}>
             <span>{l.flag}</span><span>{l.name}</span>
           </button>
         ))}
       </div>
 
       {/* ── Loading ── */}
-      {loading && <div className="grid sm:grid-cols-2 gap-4">{Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} />)}</div>}
+      {loading && (
+        <div className="space-y-3">
+          {Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} />)}
+        </div>
+      )}
 
       {/* ── Feed ── */}
       {!loading && (
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="space-y-3">
           {items.length === 0 ? (
-            <div className="sm:col-span-2"><EmptyState onRefresh={handleRefresh} /></div>
+            <EmptyState onRefresh={handleRefresh} />
           ) : (
             feedItems.map((entry, idx) => {
-              if (entry === 'newsletter') return <div key="newsletter" className="sm:col-span-2"><NewsletterCard /><InArticleAd variant={1} /></div>;
-              if (typeof entry === 'object' && 'promo' in entry) return <div key={`promo-${idx}`} className="sm:col-span-2"><ToolPromoCard promo={TOOL_PROMOS[entry.promo]} /></div>;
+              if (entry === 'newsletter') return <div key="newsletter"><NewsletterCard /><InArticleAd variant={1} /></div>;
+              if (typeof entry === 'object' && 'promo' in entry) return <ToolPromoCard key={`promo-${idx}`} promo={TOOL_PROMOS[entry.promo]} />;
               const item = entry as TrendingNews;
               return <PoliticsCard key={item.id} item={item} />;
             })
