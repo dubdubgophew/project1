@@ -40,7 +40,7 @@ const webPageSchema = {
   '@type': 'WebPage',
   '@id': 'https://formly.tools/#webpage',
   url: 'https://formly.tools',
-  name: 'Formly Tools — 38 Free AI Tools Online',
+  name: 'Formly Tools — 42 Free AI Tools Online',
   description: 'Free AI-powered tools: pay stub generator, resume builder, grammar checker, PDF summarizer, contract generator, income tax calculator, diagram maker & 31 more. No signup required.',
   isPartOf: { '@id': 'https://formly.tools/#website' },
   about: { '@type': 'Thing', name: 'Free AI Tools' },
@@ -63,7 +63,7 @@ const softwareAppListSchema = {
   name: 'Top Free AI Tools — Formly Tools',
   description: 'The most popular free AI-powered productivity tools on Formly Tools. No signup required.',
   url: 'https://formly.tools/tools',
-  numberOfItems: 38,
+  numberOfItems: 42,
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Free Pay Stub Generator', url: 'https://formly.tools/tools/paystub-generator' },
     { '@type': 'ListItem', position: 2, name: 'Free Resume Builder', url: 'https://formly.tools/tools/resume-builder' },

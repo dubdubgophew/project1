@@ -367,7 +367,7 @@ export default function VibeCheck() {
               Check in again
             </button>
             <a href="/tools" className="flex-1 py-3 rounded-xl bg-violet-600 text-white font-medium text-sm hover:bg-violet-700 transition-colors text-center">
-              All 38 tools →
+              All 42 tools →
             </a>
           </div>
 
