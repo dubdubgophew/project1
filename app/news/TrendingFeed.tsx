@@ -8,6 +8,7 @@ import {
   ExternalLink, Clock, Mail,
 } from 'lucide-react';
 import { COUNTRIES, type TrendingNews } from '@/lib/trending-utils';
+import { LANGUAGES } from '@/lib/regional-news-utils';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -473,6 +474,7 @@ export function TrendingFeed({
   const [items,       setItems]       = useState<TrendingNews[]>(initialItems);
   const [country,     setCountry]     = useState(initialCountry);
   const [category,    setCategory]    = useState(initialCategory);
+  const [language,    setLanguage]    = useState('all');
   const [q,           setQ]           = useState(initialQ);
   const [page,        setPage]        = useState(1);
   const [hasMore,     setHasMore]     = useState(initialItems.length === 20);
@@ -483,20 +485,22 @@ export function TrendingFeed({
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const updateURL = useCallback((c: string, ca: string, sq: string) => {
+  const updateURL = useCallback((c: string, ca: string, sq: string, lang: string) => {
     const p = new URLSearchParams();
-    if (c  && c  !== 'all') p.set('country', c);
-    if (ca && ca !== 'all') p.set('category', ca);
-    if (sq.trim())          p.set('q', sq.trim());
+    if (c    && c    !== 'all') p.set('country', c);
+    if (ca   && ca   !== 'all') p.set('category', ca);
+    if (lang && lang !== 'all') p.set('language', lang);
+    if (sq.trim())              p.set('q', sq.trim());
     router.push(`/news${p.size ? `?${p}` : ''}`, { scroll: false });
   }, [router]);
 
   const fetchPage = useCallback(async (opts: {
-    country: string; category: string; q: string; page: number; append: boolean;
+    country: string; category: string; language: string; q: string; page: number; append: boolean;
   }) => {
     const p = new URLSearchParams({
       country: opts.country, category: opts.category,
-      q: opts.q, page: String(opts.page), limit: '20',
+      language: opts.language, q: opts.q,
+      page: String(opts.page), limit: '20',
     });
     try {
       const res = await fetch(`/api/trending?${p}`);
@@ -516,14 +520,20 @@ export function TrendingFeed({
 
   const handleCountryChange = (code: string) => {
     setCountry(code); setPage(1); setLoading(true);
-    updateURL(code, category, q);
-    fetchPage({ country: code, category, q, page: 1, append: false }).finally(() => setLoading(false));
+    updateURL(code, category, q, language);
+    fetchPage({ country: code, category, language, q, page: 1, append: false }).finally(() => setLoading(false));
   };
 
   const handleCategoryChange = (cat: string) => {
     setCategory(cat); setPage(1); setLoading(true);
-    updateURL(country, cat, q);
-    fetchPage({ country, category: cat, q, page: 1, append: false }).finally(() => setLoading(false));
+    updateURL(country, cat, q, language);
+    fetchPage({ country, category: cat, language, q, page: 1, append: false }).finally(() => setLoading(false));
+  };
+
+  const handleLanguageChange = (lang: string) => {
+    setLanguage(lang); setPage(1); setLoading(true);
+    updateURL(country, category, q, lang);
+    fetchPage({ country, category, language: lang, q, page: 1, append: false }).finally(() => setLoading(false));
   };
 
   const handleSearchChange = (val: string) => {
@@ -531,8 +541,8 @@ export function TrendingFeed({
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       setQ(val); setPage(1); setLoading(true);
-      updateURL(country, category, val);
-      fetchPage({ country, category, q: val, page: 1, append: false }).finally(() => setLoading(false));
+      updateURL(country, category, val, language);
+      fetchPage({ country, category, language, q: val, page: 1, append: false }).finally(() => setLoading(false));
     }, 400);
   };
 
@@ -540,7 +550,7 @@ export function TrendingFeed({
     setLoadingMore(true);
     const next = page + 1; setPage(next);
     const scrollY = window.scrollY;
-    await fetchPage({ country, category, q, page: next, append: true });
+    await fetchPage({ country, category, language, q, page: next, append: true });
     setLoadingMore(false);
     // double-rAF: wait for React re-render + browser paint before restoring position
     requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, scrollY)));
@@ -548,14 +558,15 @@ export function TrendingFeed({
 
   const handleRefresh = () => {
     setLoading(true);
-    fetchPage({ country, category, q, page: 1, append: false }).finally(() => setLoading(false));
+    fetchPage({ country, category, language, q, page: 1, append: false }).finally(() => setLoading(false));
   };
 
   useEffect(() => {
-    const c  = searchParams.get('country')  ?? 'all';
-    const ca = searchParams.get('category') ?? 'all';
-    const sq = searchParams.get('q')        ?? '';
-    setCountry(c); setCategory(ca); setQ(sq); setSearchInput(sq);
+    const c    = searchParams.get('country')  ?? 'all';
+    const ca   = searchParams.get('category') ?? 'all';
+    const lang = searchParams.get('language') ?? 'all';
+    const sq   = searchParams.get('q')        ?? '';
+    setCountry(c); setCategory(ca); setLanguage(lang); setQ(sq); setSearchInput(sq);
   }, [searchParams]);
 
   // Scroll to deep-linked card — element is guaranteed in SSR HTML so this is reliable
@@ -646,6 +657,35 @@ export function TrendingFeed({
             {c.flag}
             <span className="hidden sm:inline">{c.name}</span>
             <span className="sm:hidden">{c.code}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* ── Language pills ── */}
+      <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1" style={{ scrollbarWidth: 'none' }}>
+        <span className="shrink-0 text-[11px] text-stone-400 self-center pr-1">Language:</span>
+        <button
+          onClick={() => handleLanguageChange('all')}
+          className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-colors border ${
+            language === 'all'
+              ? 'bg-violet-500 text-white border-violet-500'
+              : 'bg-white text-stone-500 border-stone-200 hover:text-stone-800 hover:border-violet-300'
+          }`}
+        >
+          All
+        </button>
+        {LANGUAGES.map(l => (
+          <button
+            key={l.code}
+            onClick={() => handleLanguageChange(l.code)}
+            className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
+              language === l.code
+                ? 'bg-violet-500 text-white border-violet-500'
+                : 'bg-white text-stone-500 border-stone-200 hover:text-stone-800 hover:border-violet-300'
+            }`}
+          >
+            <span>{l.flag}</span>
+            <span>{l.name}</span>
           </button>
         ))}
       </div>
