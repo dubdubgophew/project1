@@ -8,6 +8,8 @@ import {
   ExternalLink, Clock, Mail,
 } from 'lucide-react';
 import { AI_CATEGORIES, type AINewsItem } from '@/lib/ai-news-utils';
+import { COUNTRIES } from '@/lib/trending-utils';
+import { LANGUAGES } from '@/lib/regional-news-utils';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -398,6 +400,8 @@ export function AIFeed({
 
   const [items,       setItems]       = useState<AINewsItem[]>(initialItems);
   const [category,    setCategory]    = useState(initialCategory);
+  const [country,     setCountry]     = useState('all');
+  const [language,    setLanguage]    = useState('all');
   const [q,           setQ]           = useState(initialQ);
   const [page,        setPage]        = useState(1);
   const [hasMore,     setHasMore]     = useState(initialItems.length === 50);
@@ -408,18 +412,21 @@ export function AIFeed({
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const updateURL = useCallback((ca: string, sq: string) => {
+  const updateURL = useCallback((ca: string, sq: string, co: string, lang: string) => {
     const p = new URLSearchParams();
-    if (ca && ca !== 'all') p.set('category', ca);
-    if (sq.trim())          p.set('q', sq.trim());
+    if (ca   && ca   !== 'all') p.set('category', ca);
+    if (co   && co   !== 'all') p.set('country', co);
+    if (lang && lang !== 'all') p.set('language', lang);
+    if (sq.trim())              p.set('q', sq.trim());
     router.push(`/ai-news${p.size ? `?${p}` : ''}`, { scroll: false });
   }, [router]);
 
   const fetchPage = useCallback(async (opts: {
-    category: string; q: string; page: number; append: boolean;
+    category: string; country: string; language: string; q: string; page: number; append: boolean;
   }) => {
     const p = new URLSearchParams({
-      category: opts.category, q: opts.q,
+      category: opts.category, country: opts.country,
+      language: opts.language, q: opts.q,
       page: String(opts.page), limit: '20',
     });
     try {
@@ -440,8 +447,20 @@ export function AIFeed({
 
   const handleCategoryChange = (cat: string) => {
     setCategory(cat); setPage(1); setLoading(true);
-    updateURL(cat, q);
-    fetchPage({ category: cat, q, page: 1, append: false }).finally(() => setLoading(false));
+    updateURL(cat, q, country, language);
+    fetchPage({ category: cat, country, language, q, page: 1, append: false }).finally(() => setLoading(false));
+  };
+
+  const handleCountryChange = (co: string) => {
+    setCountry(co); setPage(1); setLoading(true);
+    updateURL(category, q, co, language);
+    fetchPage({ category, country: co, language, q, page: 1, append: false }).finally(() => setLoading(false));
+  };
+
+  const handleLanguageChange = (lang: string) => {
+    setLanguage(lang); setPage(1); setLoading(true);
+    updateURL(category, q, country, lang);
+    fetchPage({ category, country, language: lang, q, page: 1, append: false }).finally(() => setLoading(false));
   };
 
   const handleSearchChange = (val: string) => {
@@ -449,8 +468,8 @@ export function AIFeed({
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       setQ(val); setPage(1); setLoading(true);
-      updateURL(category, val);
-      fetchPage({ category, q: val, page: 1, append: false }).finally(() => setLoading(false));
+      updateURL(category, val, country, language);
+      fetchPage({ category, country, language, q: val, page: 1, append: false }).finally(() => setLoading(false));
     }, 400);
   };
 
@@ -458,20 +477,22 @@ export function AIFeed({
     setLoadingMore(true);
     const next = page + 1; setPage(next);
     const scrollY = window.scrollY;
-    await fetchPage({ category, q, page: next, append: true });
+    await fetchPage({ category, country, language, q, page: next, append: true });
     setLoadingMore(false);
     requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, scrollY)));
   };
 
   const handleRefresh = () => {
     setLoading(true);
-    fetchPage({ category, q, page: 1, append: false }).finally(() => setLoading(false));
+    fetchPage({ category, country, language, q, page: 1, append: false }).finally(() => setLoading(false));
   };
 
   useEffect(() => {
-    const ca = searchParams.get('category') ?? 'all';
-    const sq = searchParams.get('q')        ?? '';
-    setCategory(ca); setQ(sq); setSearchInput(sq);
+    const ca   = searchParams.get('category') ?? 'all';
+    const co   = searchParams.get('country')  ?? 'all';
+    const lang = searchParams.get('language') ?? 'all';
+    const sq   = searchParams.get('q')        ?? '';
+    setCategory(ca); setCountry(co); setLanguage(lang); setQ(sq); setSearchInput(sq);
   }, [searchParams]);
 
   // Instant jump to deep-linked card
@@ -530,6 +551,74 @@ export function AIFeed({
             Updated {timeAgo(lastUpdated)}
           </p>
         )}
+      </div>
+
+      {/* ── Country pills ── */}
+      <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1" style={{ scrollbarWidth: 'none' }}>
+        <button
+          onClick={() => handleCountryChange('all')}
+          className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
+            country === 'all'
+              ? 'bg-orange-500 text-white border-orange-500'
+              : 'bg-white text-stone-600 border-stone-200 hover:text-stone-900 hover:border-orange-300'
+          }`}
+        >
+          🌍 All
+        </button>
+        <button
+          onClick={() => handleCountryChange('GLOBAL')}
+          className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
+            country === 'GLOBAL'
+              ? 'bg-orange-500 text-white border-orange-500'
+              : 'bg-white text-stone-600 border-stone-200 hover:text-stone-900 hover:border-orange-300'
+          }`}
+        >
+          🌐 Global
+        </button>
+        {COUNTRIES.map(c => (
+          <button
+            key={c.code}
+            onClick={() => handleCountryChange(c.code)}
+            className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border flex items-center gap-1.5 ${
+              country === c.code
+                ? 'bg-orange-500 text-white border-orange-500'
+                : 'bg-white text-stone-600 border-stone-200 hover:text-stone-900 hover:border-orange-300'
+            }`}
+          >
+            {c.flag}
+            <span className="hidden sm:inline">{c.name}</span>
+            <span className="sm:hidden">{c.code}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* ── Language pills ── */}
+      <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1" style={{ scrollbarWidth: 'none' }}>
+        <span className="shrink-0 text-[11px] text-stone-400 self-center pr-1">Language:</span>
+        <button
+          onClick={() => handleLanguageChange('all')}
+          className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-colors border ${
+            language === 'all'
+              ? 'bg-violet-500 text-white border-violet-500'
+              : 'bg-white text-stone-500 border-stone-200 hover:text-stone-800 hover:border-violet-300'
+          }`}
+        >
+          All
+        </button>
+        {LANGUAGES.map(l => (
+          <button
+            key={l.code}
+            onClick={() => handleLanguageChange(l.code)}
+            className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
+              language === l.code
+                ? 'bg-violet-500 text-white border-violet-500'
+                : 'bg-white text-stone-500 border-stone-200 hover:text-stone-800 hover:border-violet-300'
+            }`}
+          >
+            <span>{l.flag}</span>
+            <span>{l.name}</span>
+          </button>
+        ))}
       </div>
 
       {/* ── Loading skeleton ── */}

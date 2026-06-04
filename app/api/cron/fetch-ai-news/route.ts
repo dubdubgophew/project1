@@ -135,17 +135,21 @@ export async function POST(_req: NextRequest) {
         // Track newly inserted URLs so subsequent sources don't double-insert
         if (item.newsUrl) existingUrls.add(item.newsUrl);
         return {
-          source_key:   source.key,
-          source_name:  source.name,
-          topic:        ai.topic || item.topic,
-          summary:      ai.summary,
-          category:     ai.category || 'Industry',
-          source_url:   item.newsUrl,
-          source_title: item.newsTitle || null,
-          image_url:    item.imageUrl || null,
-          fetched_at:   now.toISOString(),
-          expires_at:   expiresAt.toISOString(),
-          rank:         idx + 1,
+          source_key:    source.key,
+          source_name:   source.name,
+          topic:         ai.topic || item.topic,
+          summary:       ai.summary,
+          category:      ai.category || 'Industry',
+          source_url:    item.newsUrl,
+          source_title:  item.newsTitle || null,
+          image_url:     item.imageUrl || null,
+          fetched_at:    now.toISOString(),
+          expires_at:    expiresAt.toISOString(),
+          rank:          idx + 1,
+          country_code:  source.countryCode,
+          country_name:  source.countryName,
+          language_code: source.langCode,
+          language_name: source.langName,
         };
       });
 
