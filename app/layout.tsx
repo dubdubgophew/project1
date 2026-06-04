@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import Script from 'next/script';
 import { Plus_Jakarta_Sans, JetBrains_Mono, DM_Serif_Display } from 'next/font/google';
 import './globals.css';
 import { GoogleAnalytics } from '@/components/shared/GoogleAnalytics';
