@@ -14,6 +14,8 @@ const TOOL_TILES = [
   { emoji: '📜', name: 'Contract Gen',       href: '/tools/contract-generator' },
   { emoji: '🎨', name: 'Diagrify',           href: '/tools/diagrify' },
   { emoji: '💪', name: 'Iron Core',          href: '/tools/iron-core-workout' },
+  { emoji: '🎯', name: 'ATS Scanner',        href: '/tools/ats-resume-scanner' },
+  { emoji: '🤖', name: 'AI Replace Me?',     href: '/tools/will-ai-replace-me' },
 ];
 
 export function Hero() {
@@ -43,7 +45,7 @@ export function Hero() {
 
         {/* Headline — editorial serif */}
         <h1 className="font-display text-[2.8rem] sm:text-6xl lg:text-[5.5rem] font-normal tracking-[-0.02em] mb-5 sm:mb-6 leading-[1.08] text-stone-900">
-          37 Free AI Tools,
+          42 Free AI Tools,
           <br />
           <em className="text-orange-500">Zero Signup</em>
           <br />
@@ -54,7 +56,7 @@ export function Hero() {
 
         <p className="text-base sm:text-lg text-stone-500 max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed">
           Summarize PDFs, build resumes, generate pay stubs, write contracts,
-          format JSON, calculate EMIs, split expenses &amp; 30 more tools —
+          format JSON, calculate EMIs, split expenses &amp; 35 more tools —
           powered by Groq AI. No signup needed.
         </p>
 
@@ -64,7 +66,7 @@ export function Hero() {
             href="/tools"
             className="btn-primary text-sm sm:text-base px-7 py-3.5 sm:px-8 sm:py-4 shadow-xl shadow-orange-500/20 group w-full sm:w-auto"
           >
-            Try All 37 Tools Free
+            Try All 42 Tools Free
             <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
           </Link>
           <Link
