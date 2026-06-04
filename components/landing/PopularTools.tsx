@@ -115,6 +115,22 @@ const POPULAR_TOOLS = [
     category: 'Fitness',
     pinned: true,
   },
+  {
+    icon: '🎯',
+    name: 'ATS Resume Scanner',
+    href: '/tools/ats-resume-scanner',
+    desc: 'Free Jobscan alternative. Check your ATS match score, missing keywords & get instant fixes.',
+    category: 'Career',
+    pinned: true,
+  },
+  {
+    icon: '🤖',
+    name: 'Will AI Replace Me?',
+    href: '/tools/will-ai-replace-me',
+    desc: 'Find your AI job displacement risk %, timeline & survival plan. Brutally honest. Share-worthy.',
+    category: 'Career',
+    pinned: true,
+  },
 ];
 
 export function PopularTools() {
@@ -135,7 +151,7 @@ export function PopularTools() {
             href="/tools"
             className="text-sm text-orange-500 hover:text-orange-600 font-medium transition-colors whitespace-nowrap self-start sm:self-auto"
           >
-            View all 38 tools →
+            View all 42 tools →
           </Link>
         </div>
 
@@ -192,7 +208,7 @@ export function PopularTools() {
             href="/tools"
             className="text-sm text-orange-500 hover:text-orange-600 font-medium transition-colors"
           >
-            View all 38 tools →
+            View all 42 tools →
           </Link>
         </div>
       </div>

@@ -11,9 +11,9 @@ import { BannerAd } from '@/components/shared/AdSense';
 import { DiagrifBanner } from '@/components/landing/DiagrifBanner';
 
 export const metadata: Metadata = {
-  title: 'Formly Tools — 38 Free AI Tools Online | No Signup Required',
+  title: 'Formly Tools — 42 Free AI Tools Online | No Signup Required',
   description:
-    'Free AI-powered tools: pay stub generator, resume builder, grammar checker, PDF summarizer, contract generator, income tax calculator, diagram maker & 31 more. No signup. No credit card. Works instantly in your browser.',
+    'Free AI-powered tools: ATS resume scanner, AI job risk checker, pay stub generator, resume builder, grammar checker, PDF summarizer, contract generator & 35 more. No signup. No credit card. Works instantly in your browser.',
   keywords: [
     'free ai tools online', 'free tools no signup', 'ai productivity tools free',
     'pay stub generator free', 'resume builder free ai', 'grammar checker free online',
@@ -22,16 +22,16 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: 'https://formly.tools' },
   openGraph: {
-    title: 'Formly Tools — 38 Free AI Tools Online | No Signup Required',
-    description: '38 free AI-powered tools in one place. Pay stubs, resumes, contracts, grammar check, PDF summarizer, diagrams & more. No signup needed.',
+    title: 'Formly Tools — 42 Free AI Tools Online | No Signup Required',
+    description: '42 free AI-powered tools in one place. Pay stubs, resumes, contracts, grammar check, PDF summarizer, diagrams & more. No signup needed.',
     url: 'https://formly.tools',
     type: 'website',
     siteName: 'Formly Tools',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Formly Tools — 38 free AI tools | No Signup',
-    description: '38 free AI tools: pay stubs, resumes, grammar checker, PDF summarizer, diagrams & more. No signup needed.',
+    title: 'Formly Tools — 42 free AI tools | No Signup',
+    description: '42 free AI tools: pay stubs, resumes, grammar checker, PDF summarizer, diagrams & more. No signup needed.',
   },
 };
 
