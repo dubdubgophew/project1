@@ -21,6 +21,26 @@ type Tool = {
 const TOOLS: Tool[] = [
   // Pinned top 3
   {
+    icon: '🎯',
+    name: 'ATS Resume Scanner',
+    description: 'Check your resume against any job description. Get your ATS match score, missing keywords, section grades, and exact fixes — free.',
+    href: '/tools/ats-resume-scanner',
+    badge: 'New',
+    color: 'from-teal-500/10 to-teal-600/5 border-teal-500/20 hover:border-teal-500/40',
+    tags: ['resume', 'ats', 'job search', 'keywords'],
+    category: 'Career',
+  },
+  {
+    icon: '🤖',
+    name: 'Will AI Replace Me?',
+    description: 'Find out your AI job replacement risk %, timeline, and survival plan. Brutally honest. Free.',
+    href: '/tools/will-ai-replace-me',
+    badge: 'New',
+    color: 'from-orange-500/10 to-red-500/5 border-orange-500/20 hover:border-orange-500/40',
+    tags: ['ai', 'jobs', 'future of work', 'career'],
+    category: 'Career',
+  },
+  {
     icon: '🧾',
     name: 'Pay Stub Generator',
     description: 'Generate professional pay stubs with accurate 2024/2025 tax calculations. USA, UK, Canada, Australia, India & more.',
