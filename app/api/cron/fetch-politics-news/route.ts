@@ -36,6 +36,7 @@ async function generatePoliticsSummaries(sourceName: string, country: string, it
 Each object in your JSON array:
 - "topic": restate headline clearly (max 12 words)
 - "summary": 140-180 words covering: what happened, who are the key political actors, what does it mean for citizens or policy, and why it matters globally
+- "key_points": array of exactly 4 short bullet points (each max 15 words), capturing the most important facts
 - "category": always "Politics"
 
 Headlines:
@@ -55,7 +56,7 @@ Return ONLY a valid JSON array with exactly ${items.length} objects. No markdown
   if (!match) throw new Error('No JSON array in response');
   const parsed = JSON.parse(match[0]);
   if (!Array.isArray(parsed)) throw new Error('Response is not an array');
-  return parsed as { topic: string; summary: string; category: string }[];
+  return parsed as { topic: string; summary: string; key_points: string[]; category: string }[];
 }
 
 export async function POST(_req: NextRequest) {
@@ -102,7 +103,7 @@ export async function POST(_req: NextRequest) {
         continue;
       }
 
-      let summaries: { topic: string; summary: string; category: string }[];
+      let summaries: { topic: string; summary: string; key_points: string[]; category: string }[];
       try {
         summaries = await generatePoliticsSummaries(feed.name, feed.countryName, newItems);
       } catch (aiErr) {
@@ -110,6 +111,7 @@ export async function POST(_req: NextRequest) {
         summaries = newItems.map(t => ({
           topic: t.topic,
           summary: t.snippets.join(' ').slice(0, 600) || t.topic,
+          key_points: [],
           category: 'Politics',
         }));
       }
@@ -118,15 +120,16 @@ export async function POST(_req: NextRequest) {
       const expiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
 
       const rows = newItems.map((item, idx) => {
-        const ai = summaries[idx] ?? { topic: item.topic, summary: item.snippets.join(' ').slice(0, 600) || item.topic, category: 'Politics' };
+        const ai = summaries[idx] ?? { topic: item.topic, summary: item.snippets.join(' ').slice(0, 600) || item.topic, key_points: [], category: 'Politics' };
         if (item.newsUrl) existingUrls.add(item.newsUrl);
         return {
           country_code:   feed.countryCode,
           country_name:   feed.countryName,
           topic:          ai.topic || item.topic,
           summary:        ai.summary,
+          key_points:     ai.key_points?.length ? ai.key_points : null,
           traffic_volume: null,
-          category:       'Politics', // always forced
+          category:       'Politics',
           source_url:     item.newsUrl,
           source_name:    item.newsSource,
           source_title:   item.newsTitle || null,

@@ -14,6 +14,7 @@ export interface TrendingNews {
   rank: number;
   language_code: string;
   language_name: string;
+  key_points: string[] | null;
 }
 
 export const COUNTRIES = [

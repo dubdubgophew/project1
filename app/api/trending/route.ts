@@ -63,7 +63,7 @@ export async function GET(req: NextRequest) {
     // Build the data query
     let dataQuery = supabase
       .from('trending_news')
-      .select('id,country_code,country_name,topic,summary,traffic_volume,category,source_url,source_name,source_title,image_url,fetched_at,rank,language_code,language_name')
+      .select('id,country_code,country_name,topic,summary,traffic_volume,category,source_url,source_name,source_title,image_url,fetched_at,rank,language_code,language_name,key_points')
       .order(sort === 'popular' ? 'rank' : 'fetched_at', { ascending: sort === 'popular' })
       .order(sort === 'popular' ? 'fetched_at' : 'rank', { ascending: sort !== 'popular' })
       .range(offset, offset + limit - 1);

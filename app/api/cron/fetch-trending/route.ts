@@ -33,6 +33,7 @@ interface AISummaryItem {
   topic: string;
   summary: string;
   category: string;
+  key_points: string[];
 }
 
 function sleep(ms: number): Promise<void> {
@@ -71,6 +72,7 @@ async function generateSummariesBatch(
 Each object:
 - "topic": restate the headline clearly (max 12 words)
 - "summary": 150-200 words explaining what happened and why it matters, in plain English
+- "key_points": array of exactly 4 short bullet points (each max 15 words), capturing the most important facts
 - "category": exactly one of Sports | Tech | Politics | Entertainment | Business | Health | General
 
 Headlines:
@@ -138,6 +140,7 @@ export async function POST(_req: NextRequest) {
         summaries = newTrends.map(t => ({
           topic: t.topic,
           summary: t.snippets.join(' ').slice(0, 600) || `${t.topic} — latest news from ${country.name}.`,
+          key_points: [],
           category: detectCategory(t.topic, t.snippets),
         }));
       }
@@ -149,6 +152,7 @@ export async function POST(_req: NextRequest) {
         const ai: AISummaryItem = summaries[idx] ?? {
           topic: trend.topic,
           summary: trend.snippets.join(' ').slice(0, 600) || trend.topic,
+          key_points: [],
           category: detectCategory(trend.topic, trend.snippets),
         };
         // Track newly inserted URLs so subsequent countries don't double-insert
@@ -158,6 +162,7 @@ export async function POST(_req: NextRequest) {
           country_name:   country.name,
           topic:          ai.topic || trend.topic,
           summary:        ai.summary,
+          key_points:     ai.key_points?.length ? ai.key_points : null,
           traffic_volume: null,
           category:       ai.category || detectCategory(trend.topic, trend.snippets),
           source_url:     trend.newsUrl,

@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
 
     let query = supabase
       .from('ai_news')
-      .select('id,source_key,source_name,topic,summary,category,source_url,source_title,image_url,fetched_at,rank,country_code,country_name,language_code,language_name', { count: 'exact' })
+      .select('id,source_key,source_name,topic,summary,category,source_url,source_title,image_url,fetched_at,rank,country_code,country_name,language_code,language_name,key_points', { count: 'exact' })
       .order(sort === 'popular' ? 'rank' : 'fetched_at', { ascending: sort === 'popular' })
       .order(sort === 'popular' ? 'fetched_at' : 'rank', { ascending: sort !== 'popular' })
       .range(offset, offset + limit - 1);

@@ -43,33 +43,42 @@ const CATEGORIES = [
 ];
 
 const CATEGORY_COLORS: Record<string, string> = {
-  Sports:        'bg-blue-500/20 text-blue-300 border-blue-500/30',
-  Tech:          'bg-violet-500/20 text-violet-300 border-violet-500/30',
-  Politics:      'bg-red-500/20 text-red-300 border-red-500/30',
-  Entertainment: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
-  Business:      'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
-  Health:        'bg-teal-500/20 text-teal-300 border-teal-500/30',
-  General:       'bg-gray-500/20 text-gray-300 border-gray-500/30',
+  Sports:        'bg-blue-50 text-blue-700 border-blue-200',
+  Tech:          'bg-violet-50 text-violet-700 border-violet-200',
+  Politics:      'bg-red-50 text-red-700 border-red-200',
+  Entertainment: 'bg-amber-50 text-amber-700 border-amber-200',
+  Business:      'bg-emerald-50 text-emerald-700 border-emerald-200',
+  Health:        'bg-teal-50 text-teal-700 border-teal-200',
+  General:       'bg-stone-50 text-stone-600 border-stone-200',
 };
 
-// High-quality Unsplash fallback images per category
-const CATEGORY_IMAGES: Record<string, string> = {
-  Sports:        'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&q=75',
-  Tech:          'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=75',
-  Politics:      'https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=800&q=75',
-  Entertainment: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=800&q=75',
-  Business:      'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=75',
-  Health:        'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=75',
-  General:       'https://images.unsplash.com/photo-1495020689067-958852a7765e?w=800&q=75',
+const CATEGORY_BAR: Record<string, string> = {
+  Sports:        'bg-blue-500',
+  Tech:          'bg-violet-500',
+  Politics:      'bg-red-500',
+  Entertainment: 'bg-amber-500',
+  Business:      'bg-emerald-500',
+  Health:        'bg-teal-500',
+  General:       'bg-stone-400',
+};
+
+const CATEGORY_EMOJIS: Record<string, string> = {
+  Sports:        '🏆',
+  Tech:          '💻',
+  Politics:      '🏛️',
+  Entertainment: '🎬',
+  Business:      '📈',
+  Health:        '❤️',
+  General:       '📰',
 };
 
 const TOOL_PROMOS = [
-  { icon: '📄', name: 'PDF Summarizer',   href: '/tools/pdf-summarizer',   blurb: 'Upload any document from today\'s news and get the key points in seconds.' },
-  { icon: '📧', name: 'AI Email Writer',  href: '/tools/email-writer',     blurb: 'Draft a professional response to any news story or business update instantly.' },
+  { icon: '📄', name: 'PDF Summarizer',    href: '/tools/pdf-summarizer',   blurb: 'Upload any document from today\'s news and get the key points in seconds.' },
+  { icon: '📧', name: 'AI Email Writer',   href: '/tools/email-writer',     blurb: 'Draft a professional response to any news story or business update instantly.' },
   { icon: '✍️', name: 'Digital Signature', href: '/tools/digital-signature', blurb: 'Sign documents, contracts, and agreements online — free, no DocuSign needed.' },
-  { icon: '📋', name: 'Resume Builder',   href: '/tools/resume-builder',   blurb: 'Land your next opportunity with an ATS-optimized resume. AI-powered, free.' },
-  { icon: '📷', name: 'QR Code Generator', href: '/tools/qr-code',         blurb: 'Create branded QR codes for sharing articles, profiles, and business links.' },
-  { icon: '✅', name: 'Grammar Checker',  href: '/tools/grammar-checker',  blurb: 'Polish any piece of writing — articles, emails, or reports — instantly free.' },
+  { icon: '📋', name: 'Resume Builder',    href: '/tools/resume-builder',   blurb: 'Land your next opportunity with an ATS-optimized resume. AI-powered, free.' },
+  { icon: '📷', name: 'QR Code Generator', href: '/tools/qr-code',          blurb: 'Create branded QR codes for sharing articles, profiles, and business links.' },
+  { icon: '✅', name: 'Grammar Checker',   href: '/tools/grammar-checker',  blurb: 'Polish any piece of writing — articles, emails, or reports — instantly free.' },
 ];
 
 const STOP_WORDS = new Set([
@@ -82,13 +91,6 @@ const STOP_WORDS = new Set([
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function formatDateTime(iso: string): string {
-  const d = new Date(iso);
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-    + ' · '
-    + d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-}
-
 function timeAgo(iso: string): string {
   const m = Math.floor((Date.now() - new Date(iso).getTime()) / 60_000);
   if (m < 1)  return 'just now';
@@ -96,16 +98,6 @@ function timeAgo(iso: string): string {
   const h = Math.floor(m / 60);
   if (h < 24) return `${h}h ago`;
   return `${Math.floor(h / 24)}d ago`;
-}
-
-function getSeoKeywords(topic: string, category: string, country: string): string[] {
-  const words = topic
-    .split(/\s+/)
-    .map(w => w.replace(/[^a-zA-Z]/g, '').toLowerCase())
-    .filter(w => w.length > 3 && !STOP_WORDS.has(w))
-    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-    .slice(0, 3);
-  return [country, category, ...words].filter(Boolean).slice(0, 5);
 }
 
 function getCountryFlag(code: string): string {
@@ -118,7 +110,7 @@ function ShareDropdown({ item, onClose }: { item: TrendingNews; onClose: () => v
   const ref = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
 
-  const shareUrl = `https://www.formly.tools/news?id=${item.id}`;
+  const shareUrl  = `https://www.formly.tools/news/${item.id}`;
   const shareText = `${item.topic} — via Formly News`;
 
   useEffect(() => {
@@ -137,37 +129,17 @@ function ShareDropdown({ item, onClose }: { item: TrendingNews; onClose: () => v
   }
 
   const options = [
-    {
-      label: 'WhatsApp',
-      icon: '💬',
-      href: `https://wa.me/?text=${encodeURIComponent(`${shareText}\n${shareUrl}`)}`,
-    },
-    {
-      label: 'Twitter / X',
-      icon: '𝕏',
-      href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`,
-    },
-    {
-      label: 'Facebook',
-      icon: 'f',
-      href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
-    },
-    {
-      label: 'LinkedIn',
-      icon: 'in',
-      href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
-    },
-    {
-      label: 'Telegram',
-      icon: '✈️',
-      href: `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`,
-    },
+    { label: 'WhatsApp',   icon: '💬', href: `https://wa.me/?text=${encodeURIComponent(`${shareText}\n${shareUrl}`)}` },
+    { label: 'Twitter / X', icon: '𝕏', href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}` },
+    { label: 'Facebook',   icon: 'f',  href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}` },
+    { label: 'LinkedIn',   icon: 'in', href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}` },
+    { label: 'Telegram',   icon: '✈️', href: `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}` },
   ];
 
   return (
     <div
       ref={ref}
-      className="absolute bottom-full right-0 mb-2 w-48 bg-gray-800 border border-gray-700 rounded-xl shadow-2xl z-50 overflow-hidden"
+      className="absolute bottom-full right-0 mb-2 w-48 bg-white border border-stone-200 rounded-xl shadow-xl z-50 overflow-hidden"
     >
       <div className="p-1">
         {options.map(opt => (
@@ -177,7 +149,7 @@ function ShareDropdown({ item, onClose }: { item: TrendingNews; onClose: () => v
             target="_blank"
             rel="noopener noreferrer"
             onClick={onClose}
-            className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-gray-700 text-sm text-gray-200 hover:text-white transition-colors"
+            className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-stone-50 text-sm text-stone-700 hover:text-stone-900 transition-colors"
           >
             <span className="w-5 text-center font-bold text-xs">{opt.icon}</span>
             {opt.label}
@@ -185,10 +157,10 @@ function ShareDropdown({ item, onClose }: { item: TrendingNews; onClose: () => v
         ))}
         <button
           onClick={copyLink}
-          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-gray-700 text-sm text-gray-200 hover:text-white transition-colors"
+          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-stone-50 text-sm text-stone-700 hover:text-stone-900 transition-colors"
         >
           {copied ? (
-            <><Check className="w-4 h-4 text-emerald-400" /><span className="text-emerald-400">Copied!</span></>
+            <><Check className="w-4 h-4 text-emerald-500" /><span className="text-emerald-600">Copied!</span></>
           ) : (
             <><span className="w-5 text-center text-xs">🔗</span>Copy link</>
           )}
@@ -201,15 +173,16 @@ function ShareDropdown({ item, onClose }: { item: TrendingNews; onClose: () => v
 // ─── News Card ────────────────────────────────────────────────────────────────
 
 function NewsCard({ item }: { item: TrendingNews }) {
-  const [shareOpen, setShareOpen] = useState(false);
+  const [shareOpen, setShareOpen]   = useState(false);
   const [highlighted, setHighlighted] = useState(false);
-  const [imgSrc, setImgSrc] = useState<string>(
-    item.image_url || CATEGORY_IMAGES[item.category] || CATEGORY_IMAGES.General
-  );
 
-  const flag     = getCountryFlag(item.country_code);
+  // Only show image if it's a real unique URL from the RSS feed (not a generic fallback)
+  const hasUniqueImage = Boolean(item.image_url);
+
   const catColor = CATEGORY_COLORS[item.category] ?? CATEGORY_COLORS.General;
-  const keywords = getSeoKeywords(item.topic, item.category, item.country_name);
+  const catBar   = CATEGORY_BAR[item.category]   ?? CATEGORY_BAR.General;
+  const catEmoji = CATEGORY_EMOJIS[item.category] ?? '📰';
+  const flag     = getCountryFlag(item.country_code);
 
   useEffect(() => {
     const id = new URLSearchParams(window.location.search).get('id');
@@ -222,101 +195,115 @@ function NewsCard({ item }: { item: TrendingNews }) {
   return (
     <article
       id={`news-${item.id}`}
-      className={`bg-stone-900 border rounded-2xl overflow-hidden flex flex-col transition-all duration-700 ${
+      className={`bg-white border rounded-2xl overflow-hidden transition-all duration-300 ${
         highlighted
-          ? 'border-orange-500 ring-2 ring-orange-500/40'
-          : 'border-stone-800 hover:border-stone-700'
+          ? 'border-orange-400 ring-2 ring-orange-400/20'
+          : 'border-stone-200 hover:border-stone-300 hover:shadow-sm'
       }`}
       itemScope
       itemType="https://schema.org/NewsArticle"
     >
-      {/* Image — shorter aspect ratio */}
-      <div className="relative w-full aspect-[16/7] overflow-hidden bg-stone-800">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={imgSrc}
-          alt={item.topic}
-          className="w-full h-full object-cover"
-          onError={() => setImgSrc(CATEGORY_IMAGES[item.category] || CATEGORY_IMAGES.General)}
-          itemProp="image"
-        />
-        {/* Rank badge */}
-        <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-sm text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
-          #{item.rank}
-        </div>
-        {/* Category badge */}
-        <div className={`absolute top-2 right-2 text-[10px] font-semibold px-2 py-0.5 rounded-full border backdrop-blur-sm ${catColor}`}>
-          {item.category}
-        </div>
-      </div>
+      {/* Category colour bar */}
+      <div className={`h-1 w-full ${catBar}`} />
 
-      {/* Body */}
-      <div className="flex flex-col flex-1 p-3 gap-2">
-        {/* Country + time row */}
-        <div className="flex items-center justify-between gap-2 text-[10px] text-stone-500">
-          <span className="flex items-center gap-1">
-            <span>{flag}</span>
-            <span className="font-medium text-stone-400">{item.country_name}</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <Clock className="w-3 h-3" />
-            <time dateTime={item.fetched_at} itemProp="datePublished">
+      <div className="p-4 sm:p-5 flex gap-4">
+        <div className="flex-1 min-w-0">
+          {/* Meta row */}
+          <div className="flex items-center gap-2 flex-wrap mb-2.5">
+            <span className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full border ${catColor}`}>
+              {catEmoji} {item.category}
+            </span>
+            <span className="text-[11px] text-stone-400">{flag} {item.country_name}</span>
+            <span className="text-[11px] text-stone-300">·</span>
+            <time dateTime={item.fetched_at} className="text-[11px] text-stone-400 flex items-center gap-0.5" itemProp="datePublished">
+              <Clock className="w-3 h-3" />
               {timeAgo(item.fetched_at)}
             </time>
-          </span>
-        </div>
+          </div>
 
-        {/* Headline */}
-        <h2 className="text-white font-bold text-sm leading-snug" itemProp="headline">
-          {item.topic}
-        </h2>
+          {/* Headline */}
+          <h2 className="text-stone-900 font-bold text-[15px] leading-snug mb-2.5" itemProp="headline">
+            {item.topic}
+          </h2>
 
-        {/* Summary — truncated */}
-        <p className="text-stone-300 text-xs leading-relaxed flex-1 line-clamp-3" itemProp="description">
-          {item.summary}
-        </p>
+          {/* Full summary — always visible, no truncation */}
+          <p className="text-stone-600 text-sm leading-relaxed mb-3" itemProp="description">
+            {item.summary}
+          </p>
 
-        {/* Footer: source + share */}
-        <div className="flex items-center justify-between pt-2 border-t border-stone-800 mt-auto">
-          <a
-            href={item.source_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1 text-[10px] text-stone-400 hover:text-orange-400 transition-colors"
-            itemProp="publisher"
-          >
-            <ExternalLink className="w-3 h-3 shrink-0" />
-            <span className="truncate">{item.source_name}</span>
-          </a>
+          {/* Key takeaways */}
+          {item.key_points && item.key_points.length > 0 && (
+            <div className="mb-3 bg-orange-50 border border-orange-100 rounded-xl p-3">
+              <p className="text-[10px] font-bold text-orange-600 uppercase tracking-wider mb-2">
+                📌 Key Takeaways
+              </p>
+              <ul className="space-y-1.5">
+                {item.key_points.map((pt, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-stone-700">
+                    <span className="text-orange-400 font-bold mt-0.5 shrink-0">→</span>
+                    <span>{pt}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
-          <div className="relative">
-            <button
-              onClick={() => setShareOpen(o => !o)}
-              className="flex items-center gap-1 text-[10px] font-medium text-stone-400 hover:text-white bg-stone-800 hover:bg-stone-700 px-2 py-1 rounded transition-colors"
+          {/* Footer */}
+          <div className="flex items-center gap-3 pt-2.5 border-t border-stone-100">
+            <Link
+              href={`/news/${item.id}`}
+              className="text-sm font-semibold text-orange-600 hover:text-orange-700 transition-colors"
             >
-              <Share2 className="w-3 h-3" />
-              Share
-            </button>
-            {shareOpen && (
-              <ShareDropdown item={item} onClose={() => setShareOpen(false)} />
-            )}
+              Read Analysis →
+            </Link>
+            <a
+              href={item.source_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-[11px] text-stone-400 hover:text-stone-600 transition-colors"
+              itemProp="publisher"
+            >
+              <ExternalLink className="w-3 h-3 shrink-0" />
+              <span className="truncate max-w-[120px]">{item.source_name}</span>
+            </a>
+            <div className="relative ml-auto">
+              <button
+                onClick={() => setShareOpen(o => !o)}
+                className="flex items-center gap-1 text-[11px] font-medium text-stone-400 hover:text-stone-700 px-2 py-1 rounded-lg hover:bg-stone-100 transition-colors"
+              >
+                <Share2 className="w-3 h-3" />
+                Share
+              </button>
+              {shareOpen && <ShareDropdown item={item} onClose={() => setShareOpen(false)} />}
+            </div>
           </div>
         </div>
+
+        {/* Thumbnail — only shown when the RSS feed provided a real unique image */}
+        {hasUniqueImage && (
+          <div className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden bg-stone-100 self-start mt-0.5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={item.image_url!}
+              alt=""
+              loading="lazy"
+              className="w-full h-full object-cover"
+              onError={(e) => { (e.target as HTMLImageElement).parentElement!.style.display = 'none'; }}
+              itemProp="image"
+            />
+          </div>
+        )}
       </div>
     </article>
   );
 }
 
-// ─── Tool Promo Card (monetisation) ──────────────────────────────────────────
+// ─── Tool Promo Card ──────────────────────────────────────────────────────────
 
 function ToolPromoCard({ promo }: { promo: typeof TOOL_PROMOS[number] }) {
   return (
-    <div className="bg-gradient-to-br from-orange-50 to-amber-50/50 border border-orange-200 rounded-2xl p-6 flex flex-col gap-4">
-      <div className="flex items-center gap-2">
-        <span className="text-xs font-semibold text-orange-500 uppercase tracking-wider">
-          🤖 Free Tool Spotlight
-        </span>
-      </div>
+    <div className="bg-gradient-to-br from-orange-50 to-amber-50/50 border border-orange-200 rounded-2xl p-5 flex flex-col gap-4">
+      <span className="text-xs font-semibold text-orange-500 uppercase tracking-wider">🤖 Free Tool Spotlight</span>
       <div className="flex items-start gap-3">
         <span className="text-3xl">{promo.icon}</span>
         <div>
@@ -324,21 +311,18 @@ function ToolPromoCard({ promo }: { promo: typeof TOOL_PROMOS[number] }) {
           <p className="text-stone-600 text-sm mt-1 leading-relaxed">{promo.blurb}</p>
         </div>
       </div>
-      <Link
-        href={promo.href}
-        className="btn-primary text-sm py-2 justify-center"
-      >
+      <Link href={promo.href} className="btn-primary text-sm py-2 justify-center">
         Try {promo.name} Free →
       </Link>
     </div>
   );
 }
 
-// ─── Newsletter Card (monetisation) ──────────────────────────────────────────
+// ─── Newsletter Card ──────────────────────────────────────────────────────────
 
 function NewsletterCard() {
-  const [email, setEmail] = useState('');
-  const [state, setState] = useState<'idle' | 'loading' | 'done'>('idle');
+  const [email, setEmail]   = useState('');
+  const [state, setState]   = useState<'idle' | 'loading' | 'done'>('idle');
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -350,14 +334,13 @@ function NewsletterCard() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       });
-      setState('done');
-    } catch {
+    } finally {
       setState('done');
     }
   }
 
   return (
-    <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 flex flex-col gap-3">
+    <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 flex flex-col gap-3">
       <Mail className="w-6 h-6 text-emerald-600" />
       <div>
         <h3 className="text-stone-900 font-bold text-base">Daily Trending Digest</h3>
@@ -392,45 +375,27 @@ function NewsletterCard() {
   );
 }
 
-// ─── Ezoic Ad Placeholder (monetisation) ─────────────────────────────────────
-// To activate: sign up at ezoic.com, verify formly.tools, then replace this
-// component with your Ezoic ad placeholder divs. Ezoic works with Google
-// ad inventory and accepts sites of any size — no minimum traffic requirement.
-
-function EzoicAd({ id }: { id: number }) {
-  return (
-    <div className="w-full">
-      {/* Ezoic ad placeholder — replace with: <div id={`ezoic-pub-ad-placeholder-${id}`} /> */}
-      <div className="w-full h-[90px] bg-stone-100 border border-dashed border-stone-300 rounded-xl flex items-center justify-center">
-        <span className="text-xs text-stone-400">
-          Ad slot {id} · Sign up at ezoic.com to monetise
-        </span>
-      </div>
-    </div>
-  );
-}
-
 // ─── Loading Skeleton ─────────────────────────────────────────────────────────
 
 function Skeleton() {
   return (
     <div className="bg-white border border-stone-200 rounded-2xl overflow-hidden animate-pulse">
-      <div className="w-full aspect-video bg-stone-200" />
+      <div className="h-1 w-full bg-stone-200" />
       <div className="p-5 space-y-3">
         <div className="flex gap-2">
-          <div className="h-3 w-20 bg-stone-200 rounded" />
-          <div className="h-3 w-24 bg-stone-200 rounded ml-auto" />
+          <div className="h-5 w-16 bg-stone-200 rounded-full" />
+          <div className="h-5 w-20 bg-stone-200 rounded-full" />
         </div>
         <div className="h-5 w-3/4 bg-stone-200 rounded" />
-        <div className="flex gap-1.5">
-          {[60, 80, 70].map(w => (
-            <div key={w} className="h-4 bg-stone-200 rounded-full" style={{ width: w }} />
+        <div className="space-y-2">
+          {[100, 95, 90, 88, 85, 80].map(w => (
+            <div key={w} className="h-3.5 bg-stone-200 rounded" style={{ width: `${w}%` }} />
           ))}
         </div>
-        <div className="space-y-2">
-          {[100, 95, 90, 88, 85].map(w => (
-            <div key={w} className="h-3 bg-stone-200 rounded" style={{ width: `${w}%` }} />
-          ))}
+        <div className="h-px bg-stone-100" />
+        <div className="flex gap-4">
+          <div className="h-4 w-24 bg-stone-200 rounded" />
+          <div className="h-4 w-20 bg-stone-200 rounded" />
         </div>
       </div>
     </div>
@@ -441,7 +406,7 @@ function Skeleton() {
 
 function EmptyState({ onRefresh }: { onRefresh: () => void }) {
   return (
-    <div className="col-span-full flex justify-center py-16">
+    <div className="flex justify-center py-16">
       <div className="bg-white border border-stone-200 rounded-2xl p-10 text-center max-w-sm">
         <div className="text-4xl mb-4">📡</div>
         <h3 className="text-stone-900 font-bold text-lg mb-2">Fetching latest news…</h3>
@@ -558,22 +523,19 @@ export function TrendingFeed({
     setCountry(c); setCategory(ca); setLanguage(lang); setSort(s); setQ(sq); setSearchInput(sq);
   }, [searchParams]);
 
-  // Scroll to deep-linked card — element is guaranteed in SSR HTML so this is reliable
   useEffect(() => {
     if (!initialId) return;
     const el = document.getElementById(`news-${initialId}`);
     if (el) el.scrollIntoView({ block: 'start', behavior: 'instant' });
   }, [initialId]);
 
-  // Interleave promos and newsletter into the flat item list
+  // Interleave promos and newsletter into the feed
   function buildFeedItems(news: TrendingNews[]): ('newsletter' | { promo: number } | TrendingNews)[] {
     const out: ('newsletter' | { promo: number } | TrendingNews)[] = [];
     let promoIdx = 0;
     for (let i = 0; i < news.length; i++) {
       out.push(news[i]);
-      // After item 7 (index 6), insert newsletter
       if (i === 6) out.push('newsletter');
-      // After every 4th item (4, 8, 12, …), insert a tool promo
       if ((i + 1) % 4 === 0 && i < news.length - 1) {
         out.push({ promo: promoIdx % TOOL_PROMOS.length });
         promoIdx++;
@@ -585,7 +547,7 @@ export function TrendingFeed({
   const feedItems = buildFeedItems(items);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
 
       {/* ── Filter bar ── */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -614,7 +576,6 @@ export function TrendingFeed({
             <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 pointer-events-none" />
           </div>
 
-          {/* Sort toggle */}
           <div className="flex items-center gap-0.5 bg-stone-100 p-1 rounded-xl">
             <ArrowUpDown className="w-3.5 h-3.5 text-stone-400 ml-1" />
             <button onClick={() => handleSortChange('latest')}
@@ -629,7 +590,7 @@ export function TrendingFeed({
         </div>
 
         {lastUpdated && (
-          <p className="text-xs text-stone-500 flex items-center gap-1 shrink-0">
+          <p className="text-xs text-stone-400 flex items-center gap-1 shrink-0">
             <Clock className="w-3 h-3" />
             Updated {timeAgo(lastUpdated)}
           </p>
@@ -694,37 +655,27 @@ export function TrendingFeed({
         ))}
       </div>
 
-      {/* ── Loading skeleton ── */}
+      {/* ── Skeletons ── */}
       {loading && (
-        <div className="grid sm:grid-cols-2 gap-4">
-          {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} />)}
+        <div className="space-y-3">
+          {Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} />)}
         </div>
       )}
 
-      {/* ── Feed grid ── */}
+      {/* ── Feed list ── */}
       {!loading && (
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="space-y-3">
           {items.length === 0 ? (
-            <div className="sm:col-span-2"><EmptyState onRefresh={handleRefresh} /></div>
+            <EmptyState onRefresh={handleRefresh} />
           ) : (
             feedItems.map((entry, idx) => {
               if (entry === 'newsletter') {
-                return (
-                  <div key="newsletter" className="sm:col-span-2">
-                    <NewsletterCard />
-                    <EzoicAd id={1} />
-                  </div>
-                );
+                return <NewsletterCard key="newsletter" />;
               }
               if (typeof entry === 'object' && 'promo' in entry) {
-                return (
-                  <div key={`promo-${idx}`} className="sm:col-span-2">
-                    <ToolPromoCard promo={TOOL_PROMOS[entry.promo]} />
-                  </div>
-                );
+                return <ToolPromoCard key={`promo-${idx}`} promo={TOOL_PROMOS[entry.promo]} />;
               }
-              const item = entry as TrendingNews;
-              return <NewsCard key={item.id} item={item} />;
+              return <NewsCard key={(entry as TrendingNews).id} item={entry as TrendingNews} />;
             })
           )}
         </div>

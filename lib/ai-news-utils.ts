@@ -14,6 +14,7 @@ export interface AINewsItem {
   country_name: string;
   language_code: string;
   language_name: string;
+  key_points: string[] | null;
 }
 
 export const AI_SOURCES = [

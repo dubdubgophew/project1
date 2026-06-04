@@ -12,6 +12,7 @@ interface AISummaryItem {
   topic: string;
   summary: string;
   category: string;
+  key_points: string[];
 }
 
 function sleep(ms: number): Promise<void> {
@@ -43,6 +44,7 @@ async function generateAISummaries(sourceName: string, items: AIRawItem[]): Prom
 Each object:
 - "topic": restate the headline clearly (max 12 words)
 - "summary": 150-200 words. Explain what it means technically, why it matters for AI/ML practitioners, developers or enthusiasts. Include key details like model names, benchmark numbers, company names where relevant.
+- "key_points": array of exactly 4 short bullet points (each max 15 words), capturing the most important facts
 - "category": exactly one of Tools | Research | Companies | Hardware | Learning | Open Source | Industry
 
 Category guide:
@@ -119,6 +121,7 @@ export async function POST(_req: NextRequest) {
         summaries = newItems.map(t => ({
           topic: t.topic,
           summary: t.snippets.join(' ').slice(0, 600) || `${t.topic} — latest AI news.`,
+          key_points: [],
           category: 'Industry',
         }));
       }
@@ -130,6 +133,7 @@ export async function POST(_req: NextRequest) {
         const ai: AISummaryItem = summaries[idx] ?? {
           topic: item.topic,
           summary: item.snippets.join(' ').slice(0, 600) || item.topic,
+          key_points: [],
           category: 'Industry',
         };
         // Track newly inserted URLs so subsequent sources don't double-insert
@@ -139,6 +143,7 @@ export async function POST(_req: NextRequest) {
           source_name:   source.name,
           topic:         ai.topic || item.topic,
           summary:       ai.summary,
+          key_points:    ai.key_points?.length ? ai.key_points : null,
           category:      ai.category || 'Industry',
           source_url:    item.newsUrl,
           source_title:  item.newsTitle || null,
