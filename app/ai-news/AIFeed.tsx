@@ -8,6 +8,7 @@ import {
   ExternalLink, Clock, Mail, ArrowUpDown, TrendingUp, Calendar,
 } from 'lucide-react';
 import { AI_CATEGORIES, type AINewsItem } from '@/lib/ai-news-utils';
+import { BannerAd, InArticleAd } from '@/components/shared/AdSense';
 
 // ─── AI-specific filter options (only countries/languages with real sources) ──
 
@@ -219,6 +220,10 @@ function AICard({ item }: { item: AINewsItem }) {
             <span className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full border ${catColor}`}>
               {catEmoji} {item.category}
             </span>
+            <span className="text-[11px] text-stone-400">{item.country_name}</span>
+            {item.language_code && item.language_code !== 'en' && (
+              <span className="text-[11px] text-stone-400 bg-stone-100 px-1.5 py-0.5 rounded">{item.language_name}</span>
+            )}
             <span className="text-[11px] text-stone-400">{item.source_name}</span>
             <span className="text-[11px] text-stone-300">·</span>
             <time dateTime={item.fetched_at} className="text-[11px] text-stone-400 flex items-center gap-0.5" itemProp="datePublished">
@@ -554,6 +559,7 @@ export function AIFeed({
 
   return (
     <div className="space-y-5">
+      <BannerAd />
 
       {/* ── Filter bar ── */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -673,7 +679,12 @@ export function AIFeed({
           ) : (
             feedItems.map((entry, idx) => {
               if (entry === 'newsletter') {
-                return <NewsletterCard key="newsletter" />;
+                return (
+                  <div key="newsletter">
+                    <NewsletterCard />
+                    <InArticleAd variant={1} className="mt-3" />
+                  </div>
+                );
               }
               if (typeof entry === 'object' && 'promo' in entry) {
                 return <ToolPromoCard key={`promo-${idx}`} promo={TOOL_PROMOS[entry.promo]} />;

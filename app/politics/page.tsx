@@ -1,4 +1,4 @@
-﻿import { Header } from '@/components/shared/Header';
+import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
 import { SidebarAd } from '@/components/shared/AdSense';
 import { createAdminClient } from '@/lib/supabase/server';
@@ -7,31 +7,33 @@ import { PoliticsFeed } from './PoliticsFeed';
 import { Suspense } from 'react';
 
 interface PageProps {
-  searchParams?: { country?: string; language?: string; q?: string; sort?: string; id?: string };
+  searchParams?: { country?: string; language?: string; category?: string; q?: string; sort?: string; id?: string };
 }
 
 async function fetchInitialData(sp: PageProps['searchParams']) {
   try {
-    const supabase  = createAdminClient();
-    const country   = sp?.country?.toUpperCase();
-    const language  = sp?.language;
-    const q         = sp?.q ?? '';
-    const sort      = sp?.sort ?? 'latest';
-    const deepLinkId = sp?.id ?? null;
+    const supabase   = createAdminClient();
+    const country    = sp?.country?.toUpperCase();
+    const language   = sp?.language   ?? 'en';
+    const category   = sp?.category   ?? 'Politics';
+    const q          = sp?.q          ?? '';
+    const sort       = sp?.sort       ?? 'latest';
+    const deepLinkId = sp?.id         ?? null;
 
     const { data: latestRow } = await supabase
-      .from('trending_news').select('fetched_at').eq('category', 'Politics')
+      .from('trending_news').select('fetched_at')
+      .eq('category', category !== 'all' ? category : 'Politics')
       .order('fetched_at', { ascending: false }).limit(1).maybeSingle();
 
     let query = supabase
       .from('trending_news')
       .select('id,country_code,country_name,topic,summary,traffic_volume,category,source_url,source_name,source_title,image_url,fetched_at,rank,language_code,language_name,key_points')
-      .eq('category', 'Politics')
       .order(sort === 'popular' ? 'rank' : 'fetched_at', { ascending: sort === 'popular' })
       .order(sort === 'popular' ? 'fetched_at' : 'rank', { ascending: sort !== 'popular' })
       .limit(50);
 
-    if (country && country !== 'ALL' && country.length === 2) query = query.eq('country_code', country);
+    if (category && category !== 'all') query = query.eq('category', category);
+    if (country  && country !== 'ALL' && country.length === 2) query = query.eq('country_code', country);
     if (language && language !== 'all') query = query.eq('language_code', language);
     if (q.trim()) query = query.or(`topic.ilike.%${q.trim()}%,summary.ilike.%${q.trim()}%`);
 
@@ -55,8 +57,10 @@ async function fetchInitialData(sp: PageProps['searchParams']) {
 export default async function PoliticsPage({ searchParams }: PageProps) {
   const { items, lastUpdated, deepLinkId } = await fetchInitialData(searchParams);
   const initialCountry  = searchParams?.country  ?? 'all';
-  const initialQ        = searchParams?.q         ?? '';
-  const initialSort     = searchParams?.sort      ?? 'latest';
+  const initialCategory = searchParams?.category ?? 'Politics';
+  const initialLanguage = searchParams?.language ?? 'en';
+  const initialQ        = searchParams?.q        ?? '';
+  const initialSort     = searchParams?.sort     ?? 'latest';
 
   return (
     <>
@@ -80,6 +84,8 @@ export default async function PoliticsPage({ searchParams }: PageProps) {
                 <PoliticsFeed
                   initialItems={items}
                   initialCountry={initialCountry}
+                  initialCategory={initialCategory}
+                  initialLanguage={initialLanguage}
                   initialQ={initialQ}
                   initialSort={initialSort}
                   initialId={deepLinkId}

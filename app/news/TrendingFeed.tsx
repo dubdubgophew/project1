@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { COUNTRIES, type TrendingNews } from '@/lib/trending-utils';
 import { LANGUAGES } from '@/lib/regional-news-utils';
+import { BannerAd, InArticleAd } from '@/components/shared/AdSense';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -16,6 +17,7 @@ interface Props {
   initialItems: TrendingNews[];
   initialCountry: string;
   initialCategory: string;
+  initialLanguage: string;
   initialQ: string;
   initialId: string | null;
   lastUpdated: string | null;
@@ -225,6 +227,10 @@ function NewsCard({ item }: { item: TrendingNews }) {
               {catEmoji} {item.category}
             </span>
             <span className="text-[11px] text-stone-400">{flag} {item.country_name}</span>
+            {item.language_code && item.language_code !== 'en' && (
+              <span className="text-[11px] text-stone-400 bg-stone-100 px-1.5 py-0.5 rounded">{item.language_name}</span>
+            )}
+            <span className="text-[11px] text-stone-400">{item.source_name}</span>
             <span className="text-[11px] text-stone-300">·</span>
             <time dateTime={item.fetched_at} className="text-[11px] text-stone-400 flex items-center gap-0.5" itemProp="datePublished">
               <Clock className="w-3 h-3" />
@@ -441,6 +447,7 @@ export function TrendingFeed({
   initialItems,
   initialCountry,
   initialCategory,
+  initialLanguage,
   initialQ,
   initialId,
   lastUpdated: initialLastUpdated,
@@ -451,7 +458,7 @@ export function TrendingFeed({
   const [items,       setItems]       = useState<TrendingNews[]>(initialItems);
   const [country,     setCountry]     = useState(initialCountry);
   const [category,    setCategory]    = useState(initialCategory);
-  const [language,    setLanguage]    = useState('all');
+  const [language,    setLanguage]    = useState(initialLanguage);
   const [sort,        setSort]        = useState('latest');
   const [q,           setQ]           = useState(initialQ);
   const [page,        setPage]        = useState(1);
@@ -467,7 +474,7 @@ export function TrendingFeed({
     const p = new URLSearchParams();
     if (c    && c    !== 'all')    p.set('country', c);
     if (ca   && ca   !== 'all')    p.set('category', ca);
-    if (lang && lang !== 'all')    p.set('language', lang);
+    if (lang && lang !== 'en')     p.set('language', lang);  // 'en' is default, omit from URL
     if (sq.trim())                 p.set('q', sq.trim());
     if (s    && s    !== 'latest') p.set('sort', s);
     router.push(`/news${p.size ? `?${p}` : ''}`, { scroll: false });
@@ -529,7 +536,7 @@ export function TrendingFeed({
   useEffect(() => {
     const c    = searchParams.get('country')  ?? 'all';
     const ca   = searchParams.get('category') ?? 'all';
-    const lang = searchParams.get('language') ?? 'all';
+    const lang = searchParams.get('language') ?? 'en';
     const s    = searchParams.get('sort')     ?? 'latest';
     const sq   = searchParams.get('q')        ?? '';
     setCountry(c); setCategory(ca); setLanguage(lang); setSort(s); setQ(sq); setSearchInput(sq);
@@ -560,6 +567,7 @@ export function TrendingFeed({
 
   return (
     <div className="space-y-5">
+      <BannerAd />
 
       {/* ── Filter bar ── */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -682,7 +690,7 @@ export function TrendingFeed({
           ) : (
             feedItems.map((entry, idx) => {
               if (entry === 'newsletter') {
-                return <NewsletterCard key="newsletter" />;
+                return <Fragment key="newsletter"><NewsletterCard /><InArticleAd variant={1} /></Fragment>;
               }
               if (typeof entry === 'object' && 'promo' in entry) {
                 return <ToolPromoCard key={`promo-${idx}`} promo={TOOL_PROMOS[entry.promo]} />;

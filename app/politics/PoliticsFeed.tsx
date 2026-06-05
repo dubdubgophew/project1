@@ -4,15 +4,88 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import {
-  Search, RefreshCw, Share2, Check, ExternalLink, Clock,
+  Search, ChevronDown, RefreshCw, Share2, Check, ExternalLink, Clock,
   Mail, ArrowUpDown, TrendingUp, Calendar,
 } from 'lucide-react';
 import { COUNTRIES, type TrendingNews } from '@/lib/trending-utils';
 import { BannerAd, InArticleAd } from '@/components/shared/AdSense';
 
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+const POLITICS_CATEGORIES = [
+  { value: 'Politics',      label: '🏛️ Politics' },
+  { value: 'all',           label: 'All Topics' },
+  { value: 'Sports',        label: '🏆 Sports' },
+  { value: 'Tech',          label: '💻 Tech' },
+  { value: 'Entertainment', label: '🎬 Entertainment' },
+  { value: 'Business',      label: '📈 Business' },
+  { value: 'Health',        label: '❤️ Health' },
+  { value: 'General',       label: '📰 General' },
+];
+
+const POLITICS_LANGUAGES = [
+  { code: 'en', name: 'English',   flag: '🇬🇧' },
+  { code: 'fr', name: 'Français',  flag: '🇫🇷' },
+  { code: 'de', name: 'Deutsch',   flag: '🇩🇪' },
+  { code: 'es', name: 'Español',   flag: '🇪🇸' },
+  { code: 'pt', name: 'Português', flag: '🇧🇷' },
+];
+
+const CATEGORY_COLORS: Record<string, string> = {
+  Sports:        'bg-blue-50 text-blue-700 border-blue-200',
+  Tech:          'bg-violet-50 text-violet-700 border-violet-200',
+  Politics:      'bg-red-50 text-red-700 border-red-200',
+  Entertainment: 'bg-amber-50 text-amber-700 border-amber-200',
+  Business:      'bg-emerald-50 text-emerald-700 border-emerald-200',
+  Health:        'bg-teal-50 text-teal-700 border-teal-200',
+  General:       'bg-stone-50 text-stone-600 border-stone-200',
+};
+
+const CATEGORY_BAR: Record<string, string> = {
+  Sports:        'bg-blue-500',
+  Tech:          'bg-violet-500',
+  Politics:      'bg-red-500',
+  Entertainment: 'bg-amber-500',
+  Business:      'bg-emerald-500',
+  Health:        'bg-teal-500',
+  General:       'bg-stone-400',
+};
+
+const CATEGORY_EMOJIS: Record<string, string> = {
+  Sports:        '🏆',
+  Tech:          '💻',
+  Politics:      '🏛️',
+  Entertainment: '🎬',
+  Business:      '📈',
+  Health:        '❤️',
+  General:       '📰',
+};
+
+const CATEGORY_GRADIENTS: Record<string, string> = {
+  Sports:        'bg-gradient-to-br from-blue-100 to-blue-200',
+  Tech:          'bg-gradient-to-br from-violet-100 to-violet-200',
+  Politics:      'bg-gradient-to-br from-red-100 to-red-200',
+  Entertainment: 'bg-gradient-to-br from-amber-100 to-amber-200',
+  Business:      'bg-gradient-to-br from-emerald-100 to-emerald-200',
+  Health:        'bg-gradient-to-br from-teal-100 to-teal-200',
+  General:       'bg-gradient-to-br from-stone-100 to-stone-200',
+};
+
+const TOOL_PROMOS = [
+  { icon: '📋', name: 'Resume Builder',     href: '/tools/resume-builder',    blurb: 'Land your next government, policy, or public-sector role with an AI resume.' },
+  { icon: '📜', name: 'Contract Generator', href: '/tools/contract-generator', blurb: 'Generate NDAs, service agreements, and legal documents instantly.' },
+  { icon: '⚖️', name: 'Terms Simplifier',  href: '/tools/terms-simplifier',  blurb: 'Decode any government policy or legal text into plain English instantly.' },
+  { icon: '📧', name: 'Email Writer',       href: '/tools/email-writer',       blurb: 'Draft a professional letter to your MP, Senator, or government official.' },
+  { icon: '📄', name: 'PDF Summarizer',     href: '/tools/pdf-summarizer',     blurb: 'Summarize any government report, policy paper, or legislation in seconds.' },
+];
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
 interface Props {
   initialItems: TrendingNews[];
   initialCountry: string;
+  initialCategory: string;
+  initialLanguage: string;
   initialQ: string;
   initialSort: string;
   initialId: string | null;
@@ -26,14 +99,6 @@ interface ApiResponse {
   hasMore: boolean;
   lastUpdated: string | null;
 }
-
-const TOOL_PROMOS = [
-  { icon: '📋', name: 'Resume Builder',    href: '/tools/resume-builder',    blurb: 'Land your next government, policy, or public-sector role with an AI resume.' },
-  { icon: '📜', name: 'Contract Generator', href: '/tools/contract-generator', blurb: 'Generate NDAs, service agreements, and legal documents instantly.' },
-  { icon: '⚖️', name: 'Terms Simplifier',  href: '/tools/terms-simplifier',  blurb: 'Decode any government policy or legal text into plain English instantly.' },
-  { icon: '📧', name: 'Email Writer',       href: '/tools/email-writer',       blurb: 'Draft a professional letter to your MP, Senator, or government official.' },
-  { icon: '📄', name: 'PDF Summarizer',    href: '/tools/pdf-summarizer',     blurb: 'Summarize any government report, policy paper, or legislation in seconds.' },
-];
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -50,7 +115,7 @@ function getCountryFlag(code: string): string {
   return COUNTRIES.find(c => c.code === code)?.flag ?? '🌍';
 }
 
-// ── Share Dropdown ─────────────────────────────────────────────────────────────
+// ─── Share Dropdown ───────────────────────────────────────────────────────────
 
 function ShareDropdown({ item, onClose }: { item: TrendingNews; onClose: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -96,16 +161,18 @@ function ShareDropdown({ item, onClose }: { item: TrendingNews; onClose: () => v
   );
 }
 
-// ── News Card ─────────────────────────────────────────────────────────────────
-
-const POLITICS_GRADIENT = 'bg-gradient-to-br from-red-100 to-rose-200';
+// ─── News Card ────────────────────────────────────────────────────────────────
 
 function PoliticsCard({ item }: { item: TrendingNews }) {
   const [shareOpen, setShareOpen] = useState(false);
   const [highlighted, setHighlighted] = useState(false);
 
   const hasUniqueImage = Boolean(item.image_url);
-  const flag = getCountryFlag(item.country_code);
+  const flag        = getCountryFlag(item.country_code);
+  const catColor    = CATEGORY_COLORS[item.category]    ?? CATEGORY_COLORS.General;
+  const catBar      = CATEGORY_BAR[item.category]       ?? CATEGORY_BAR.General;
+  const catEmoji    = CATEGORY_EMOJIS[item.category]    ?? '📰';
+  const catGradient = CATEGORY_GRADIENTS[item.category] ?? CATEGORY_GRADIENTS.General;
 
   useEffect(() => {
     const id = new URLSearchParams(window.location.search).get('id');
@@ -122,20 +189,20 @@ function PoliticsCard({ item }: { item: TrendingNews }) {
       }`}
       itemScope itemType="https://schema.org/NewsArticle"
     >
-      {/* Category colour bar */}
-      <div className="h-1 w-full bg-red-500" />
+      <div className={`h-1 w-full ${catBar}`} />
 
       <div className="p-4 sm:p-5 flex gap-4">
         <div className="flex-1 min-w-0">
           {/* Meta row */}
           <div className="flex items-center gap-2 flex-wrap mb-2.5">
-            <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full border bg-red-50 text-red-700 border-red-200">
-              🏛️ Politics
+            <span className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full border ${catColor}`}>
+              {catEmoji} {item.category}
             </span>
             <span className="text-[11px] text-stone-400">{flag} {item.country_name}</span>
             {item.language_code && item.language_code !== 'en' && (
               <span className="text-[11px] text-stone-400 bg-stone-100 px-1.5 py-0.5 rounded">{item.language_name}</span>
             )}
+            <span className="text-[11px] text-stone-400">{item.source_name}</span>
             <span className="text-[11px] text-stone-300">·</span>
             <time dateTime={item.fetched_at} className="text-[11px] text-stone-400 flex items-center gap-0.5" itemProp="datePublished">
               <Clock className="w-3 h-3" />
@@ -156,9 +223,7 @@ function PoliticsCard({ item }: { item: TrendingNews }) {
           {/* Key takeaways */}
           {item.key_points && item.key_points.length > 0 && (
             <div className="mb-3 bg-red-50 border border-red-100 rounded-xl p-3">
-              <p className="text-[10px] font-bold text-red-600 uppercase tracking-wider mb-2">
-                📌 Key Takeaways
-              </p>
+              <p className="text-[10px] font-bold text-red-600 uppercase tracking-wider mb-2">📌 Key Takeaways</p>
               <ul className="space-y-1.5">
                 {item.key_points.map((pt, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm text-stone-700">
@@ -194,7 +259,7 @@ function PoliticsCard({ item }: { item: TrendingNews }) {
           </div>
         </div>
 
-        {/* Thumbnail — real image if available, category gradient otherwise */}
+        {/* Thumbnail */}
         <div className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden self-start mt-0.5">
           {hasUniqueImage ? (
             /* eslint-disable-next-line @next/next/no-img-element */
@@ -205,13 +270,13 @@ function PoliticsCard({ item }: { item: TrendingNews }) {
               className="w-full h-full object-cover"
               onError={(e) => {
                 const parent = (e.target as HTMLImageElement).parentElement!;
-                parent.innerHTML = `<div class="w-full h-full flex items-center justify-center ${POLITICS_GRADIENT}"><span class="text-2xl">🏛️</span></div>`;
+                parent.innerHTML = `<div class="w-full h-full flex items-center justify-center ${catGradient}"><span class="text-2xl">${catEmoji}</span></div>`;
               }}
               itemProp="image"
             />
           ) : (
-            <div className={`w-full h-full flex items-center justify-center ${POLITICS_GRADIENT}`}>
-              <span className="text-2xl">🏛️</span>
+            <div className={`w-full h-full flex items-center justify-center ${catGradient}`}>
+              <span className="text-2xl">{catEmoji}</span>
             </div>
           )}
         </div>
@@ -219,6 +284,8 @@ function PoliticsCard({ item }: { item: TrendingNews }) {
     </article>
   );
 }
+
+// ─── Tool Promo Card ──────────────────────────────────────────────────────────
 
 function ToolPromoCard({ promo }: { promo: typeof TOOL_PROMOS[number] }) {
   return (
@@ -235,6 +302,8 @@ function ToolPromoCard({ promo }: { promo: typeof TOOL_PROMOS[number] }) {
     </div>
   );
 }
+
+// ─── Newsletter Card ──────────────────────────────────────────────────────────
 
 function NewsletterCard() {
   const [email, setEmail] = useState('');
@@ -266,6 +335,8 @@ function NewsletterCard() {
   );
 }
 
+// ─── Loading Skeleton ─────────────────────────────────────────────────────────
+
 function Skeleton() {
   return (
     <div className="bg-white border border-stone-200 rounded-2xl overflow-hidden animate-pulse">
@@ -278,11 +349,13 @@ function Skeleton() {
         <div className="h-5 w-3/4 bg-stone-200 rounded" />
         <div className="space-y-2">{[100, 95, 90, 88, 85].map(w => <div key={w} className="h-3.5 bg-stone-200 rounded" style={{ width: `${w}%` }} />)}</div>
         <div className="h-px bg-stone-100" />
-        <div className="h-8 bg-stone-200 rounded-xl" />
+        <div className="flex gap-4"><div className="h-4 w-24 bg-stone-200 rounded" /><div className="h-4 w-20 bg-stone-200 rounded" /></div>
       </div>
     </div>
   );
 }
+
+// ─── Empty State ──────────────────────────────────────────────────────────────
 
 function EmptyState({ onRefresh }: { onRefresh: () => void }) {
   return (
@@ -297,15 +370,19 @@ function EmptyState({ onRefresh }: { onRefresh: () => void }) {
   );
 }
 
-// ── Main Component ────────────────────────────────────────────────────────────
+// ─── Main Component ───────────────────────────────────────────────────────────
 
-export function PoliticsFeed({ initialItems, initialCountry, initialQ, initialSort, initialId, lastUpdated: initialLastUpdated }: Props) {
+export function PoliticsFeed({
+  initialItems, initialCountry, initialCategory, initialLanguage,
+  initialQ, initialSort, initialId, lastUpdated: initialLastUpdated,
+}: Props) {
   const router       = useRouter();
   const searchParams = useSearchParams();
 
   const [items,       setItems]       = useState<TrendingNews[]>(initialItems);
   const [country,     setCountry]     = useState(initialCountry);
-  const [language,    setLanguage]    = useState('all');
+  const [category,    setCategory]    = useState(initialCategory);
+  const [language,    setLanguage]    = useState(initialLanguage);
   const [sort,        setSort]        = useState(initialSort);
   const [q,           setQ]           = useState(initialQ);
   const [page,        setPage]        = useState(1);
@@ -316,17 +393,23 @@ export function PoliticsFeed({ initialItems, initialCountry, initialQ, initialSo
   const [searchInput, setSearchInput] = useState(initialQ);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const updateURL = useCallback((c: string, lang: string, sq: string, s: string) => {
+  const updateURL = useCallback((c: string, ca: string, lang: string, sq: string, s: string) => {
     const p = new URLSearchParams();
-    if (c    && c    !== 'all') p.set('country', c);
-    if (lang && lang !== 'all') p.set('language', lang);
-    if (sq.trim())              p.set('q', sq.trim());
-    if (s    && s    !== 'latest') p.set('sort', s);
+    if (c    && c    !== 'all')      p.set('country', c);
+    if (ca   && ca   !== 'Politics') p.set('category', ca);
+    if (lang && lang !== 'en')       p.set('language', lang);
+    if (sq.trim())                   p.set('q', sq.trim());
+    if (s    && s    !== 'latest')   p.set('sort', s);
     router.push(`/politics${p.size ? `?${p}` : ''}`, { scroll: false });
   }, [router]);
 
-  const fetchPage = useCallback(async (opts: { country: string; language: string; q: string; sort: string; page: number; append: boolean }) => {
-    const p = new URLSearchParams({ country: opts.country, language: opts.language, q: opts.q, sort: opts.sort, page: String(opts.page), limit: '20' });
+  const fetchPage = useCallback(async (opts: {
+    country: string; category: string; language: string; q: string; sort: string; page: number; append: boolean;
+  }) => {
+    const p = new URLSearchParams({
+      country: opts.country, category: opts.category, language: opts.language,
+      q: opts.q, sort: opts.sort, page: String(opts.page), limit: '20',
+    });
     try {
       const res = await fetch(`/api/politics?${p}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -338,17 +421,18 @@ export function PoliticsFeed({ initialItems, initialCountry, initialQ, initialSo
     } catch (err) { console.error('[PoliticsFeed]', err); }
   }, []);
 
-  const handleCountryChange  = (code: string) => { setCountry(code);  setPage(1); setLoading(true); updateURL(code, language, q, sort);   fetchPage({ country: code,   language, q, sort, page: 1, append: false }).finally(() => setLoading(false)); };
-  const handleLanguageChange = (lang: string) => { setLanguage(lang); setPage(1); setLoading(true); updateURL(country, lang, q, sort);    fetchPage({ country, language: lang, q, sort, page: 1, append: false }).finally(() => setLoading(false)); };
-  const handleSortChange     = (s: string)    => { setSort(s);        setPage(1); setLoading(true); updateURL(country, language, q, s);    fetchPage({ country, language,       q, sort: s, page: 1, append: false }).finally(() => setLoading(false)); };
+  const handleCountryChange  = (c: string)    => { setCountry(c);   setPage(1); setLoading(true); updateURL(c, category, language, q, sort);    fetchPage({ country: c,    category, language, q, sort, page: 1, append: false }).finally(() => setLoading(false)); };
+  const handleCategoryChange = (ca: string)   => { setCategory(ca); setPage(1); setLoading(true); updateURL(country, ca, language, q, sort);    fetchPage({ country, category: ca, language, q, sort, page: 1, append: false }).finally(() => setLoading(false)); };
+  const handleLanguageChange = (lang: string) => { setLanguage(lang); setPage(1); setLoading(true); updateURL(country, category, lang, q, sort); fetchPage({ country, category, language: lang, q, sort, page: 1, append: false }).finally(() => setLoading(false)); };
+  const handleSortChange     = (s: string)    => { setSort(s);      setPage(1); setLoading(true); updateURL(country, category, language, q, s);  fetchPage({ country, category, language, q, sort: s, page: 1, append: false }).finally(() => setLoading(false)); };
 
   const handleSearchChange = (val: string) => {
     setSearchInput(val);
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       setQ(val); setPage(1); setLoading(true);
-      updateURL(country, language, val, sort);
-      fetchPage({ country, language, q: val, sort, page: 1, append: false }).finally(() => setLoading(false));
+      updateURL(country, category, language, val, sort);
+      fetchPage({ country, category, language, q: val, sort, page: 1, append: false }).finally(() => setLoading(false));
     }, 400);
   };
 
@@ -356,19 +440,20 @@ export function PoliticsFeed({ initialItems, initialCountry, initialQ, initialSo
     setLoadingMore(true);
     const next = page + 1; setPage(next);
     const scrollY = window.scrollY;
-    await fetchPage({ country, language, q, sort, page: next, append: true });
+    await fetchPage({ country, category, language, q, sort, page: next, append: true });
     setLoadingMore(false);
     requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, scrollY)));
   };
 
-  const handleRefresh = () => { setLoading(true); fetchPage({ country, language, q, sort, page: 1, append: false }).finally(() => setLoading(false)); };
+  const handleRefresh = () => { setLoading(true); fetchPage({ country, category, language, q, sort, page: 1, append: false }).finally(() => setLoading(false)); };
 
   useEffect(() => {
     const c    = searchParams.get('country')  ?? 'all';
-    const lang = searchParams.get('language') ?? 'all';
+    const ca   = searchParams.get('category') ?? 'Politics';
+    const lang = searchParams.get('language') ?? 'en';
     const sq   = searchParams.get('q')        ?? '';
     const s    = searchParams.get('sort')     ?? 'latest';
-    setCountry(c); setLanguage(lang); setQ(sq); setSearchInput(sq); setSort(s);
+    setCountry(c); setCategory(ca); setLanguage(lang); setQ(sq); setSearchInput(sq); setSort(s);
   }, [searchParams]);
 
   useEffect(() => {
@@ -394,7 +479,7 @@ export function PoliticsFeed({ initialItems, initialCountry, initialQ, initialSo
     <div className="space-y-5">
       <BannerAd />
 
-      {/* ── Filter + Sort bar ── */}
+      {/* ── Filter bar ── */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
@@ -402,16 +487,31 @@ export function PoliticsFeed({ initialItems, initialCountry, initialQ, initialSo
             placeholder="Search politics…" className="input pl-9 w-full text-sm py-2" />
         </div>
 
-        <div className="flex items-center gap-1 bg-stone-100 p-1 rounded-xl">
-          <ArrowUpDown className="w-3.5 h-3.5 text-stone-400 ml-1.5" />
-          <button onClick={() => handleSortChange('latest')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${sort === 'latest' ? 'bg-white text-red-700 shadow-sm' : 'text-stone-500 hover:text-stone-700'}`}>
-            <Calendar className="w-3 h-3" /> Latest
-          </button>
-          <button onClick={() => handleSortChange('popular')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${sort === 'popular' ? 'bg-white text-red-700 shadow-sm' : 'text-stone-500 hover:text-stone-700'}`}>
-            <TrendingUp className="w-3 h-3" /> Popular
-          </button>
+        <div className="flex items-center gap-2">
+          <div className="relative">
+            <select
+              value={category}
+              onChange={e => handleCategoryChange(e.target.value)}
+              className="input appearance-none pr-8 text-sm py-2 cursor-pointer"
+            >
+              {POLITICS_CATEGORIES.map(c => (
+                <option key={c.value} value={c.value}>{c.label}</option>
+              ))}
+            </select>
+            <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 pointer-events-none" />
+          </div>
+
+          <div className="flex items-center gap-0.5 bg-stone-100 p-1 rounded-xl">
+            <ArrowUpDown className="w-3.5 h-3.5 text-stone-400 ml-1.5" />
+            <button onClick={() => handleSortChange('latest')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${sort === 'latest' ? 'bg-white text-red-700 shadow-sm' : 'text-stone-500 hover:text-stone-700'}`}>
+              <Calendar className="w-3 h-3" /> Latest
+            </button>
+            <button onClick={() => handleSortChange('popular')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${sort === 'popular' ? 'bg-white text-red-700 shadow-sm' : 'text-stone-500 hover:text-stone-700'}`}>
+              <TrendingUp className="w-3 h-3" /> Popular
+            </button>
+          </div>
         </div>
 
         {lastUpdated && (
@@ -435,6 +535,26 @@ export function PoliticsFeed({ initialItems, initialCountry, initialQ, initialSo
         ))}
       </div>
 
+      {/* ── Language pills ── */}
+      <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1" style={{ scrollbarWidth: 'none' }}>
+        <span className="shrink-0 text-[11px] text-stone-400 self-center pr-1">Language:</span>
+        <button
+          onClick={() => handleLanguageChange('all')}
+          className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-colors border ${language === 'all' ? 'bg-red-600 text-white border-red-600' : 'bg-white text-stone-500 border-stone-200 hover:text-stone-800 hover:border-red-300'}`}
+        >
+          All
+        </button>
+        {POLITICS_LANGUAGES.map(l => (
+          <button
+            key={l.code}
+            onClick={() => handleLanguageChange(l.code)}
+            className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${language === l.code ? 'bg-red-600 text-white border-red-600' : 'bg-white text-stone-500 border-stone-200 hover:text-stone-800 hover:border-red-300'}`}
+          >
+            <span>{l.flag}</span>
+            <span>{l.name}</span>
+          </button>
+        ))}
+      </div>
 
       {/* ── Loading ── */}
       {loading && (
@@ -450,7 +570,14 @@ export function PoliticsFeed({ initialItems, initialCountry, initialQ, initialSo
             <EmptyState onRefresh={handleRefresh} />
           ) : (
             feedItems.map((entry, idx) => {
-              if (entry === 'newsletter') return <div key="newsletter"><NewsletterCard /><InArticleAd variant={1} /></div>;
+              if (entry === 'newsletter') {
+                return (
+                  <div key="newsletter">
+                    <NewsletterCard />
+                    <InArticleAd variant={1} className="mt-3" />
+                  </div>
+                );
+              }
               if (typeof entry === 'object' && 'promo' in entry) return <ToolPromoCard key={`promo-${idx}`} promo={TOOL_PROMOS[entry.promo]} />;
               const item = entry as TrendingNews;
               return <PoliticsCard key={item.id} item={item} />;

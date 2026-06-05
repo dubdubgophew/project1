@@ -10,6 +10,7 @@ interface PageProps {
   searchParams?: {
     country?: string;
     category?: string;
+    language?: string;
     q?: string;
     id?: string;
   };
@@ -50,6 +51,7 @@ async function fetchInitialData(searchParams: PageProps['searchParams']): Promis
 
     const country    = searchParams?.country?.toUpperCase();
     const category   = searchParams?.category;
+    const language   = searchParams?.language ?? 'en';
     const q          = searchParams?.q ?? '';
     const deepLinkId = searchParams?.id ?? null;
 
@@ -66,31 +68,23 @@ async function fetchInitialData(searchParams: PageProps['searchParams']): Promis
     // Build data query — load all 50 items so shared cards are always in the DOM
     let query = supabase
       .from('trending_news')
-      .select(
-        'id,country_code,country_name,topic,summary,traffic_volume,category,source_url,source_name,source_title,image_url,fetched_at,rank'
-      )
+      .select('id,country_code,country_name,topic,summary,traffic_volume,category,source_url,source_name,source_title,image_url,fetched_at,rank,language_code,language_name,key_points')
       .order('fetched_at', { ascending: false })
       .order('rank', { ascending: true })
       .limit(50);
 
-    if (country && country !== 'ALL' && country.length === 2) {
-      query = query.eq('country_code', country);
-    }
-    if (category && category !== 'all') {
-      query = query.eq('category', category);
-    }
-    if (q.trim()) {
-      query = query.or(`topic.ilike.%${q.trim()}%,summary.ilike.%${q.trim()}%`);
-    }
+    if (country  && country !== 'ALL' && country.length === 2) query = query.eq('country_code', country);
+    if (category && category !== 'all')                         query = query.eq('category', category);
+    if (language && language !== 'all')                         query = query.eq('language_code', language);
+    if (q.trim()) query = query.or(`topic.ilike.%${q.trim()}%,summary.ilike.%${q.trim()}%`);
 
     const { data: items } = await query;
     let list = (items as TrendingNews[]) ?? [];
 
-    // If deep-linking to a specific card, ensure it's in the list (fetch it if missing)
     if (deepLinkId && !list.some(i => i.id === deepLinkId)) {
       const { data: specific } = await supabase
         .from('trending_news')
-        .select('id,country_code,country_name,topic,summary,traffic_volume,category,source_url,source_name,source_title,image_url,fetched_at,rank')
+        .select('id,country_code,country_name,topic,summary,traffic_volume,category,source_url,source_name,source_title,image_url,fetched_at,rank,language_code,language_name,key_points')
         .eq('id', deepLinkId)
         .maybeSingle();
       if (specific) list = [specific as TrendingNews, ...list];
@@ -107,7 +101,8 @@ export default async function NewsPage({ searchParams }: PageProps) {
 
   const initialCountry  = searchParams?.country  ?? 'all';
   const initialCategory = searchParams?.category ?? 'all';
-  const initialQ        = searchParams?.q         ?? '';
+  const initialLanguage = searchParams?.language ?? 'en';
+  const initialQ        = searchParams?.q        ?? '';
 
   const jsonLdItemList = {
     '@context': 'https://schema.org',
@@ -155,6 +150,7 @@ export default async function NewsPage({ searchParams }: PageProps) {
                 initialItems={items}
                 initialCountry={initialCountry}
                 initialCategory={initialCategory}
+                initialLanguage={initialLanguage}
                 initialQ={initialQ}
                 initialId={deepLinkId}
                 lastUpdated={lastUpdated}
