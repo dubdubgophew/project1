@@ -103,15 +103,26 @@ export async function GET(req: NextRequest) {
 
   const supabase = createAdminClient();
 
-  const twoDaysAgo = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString();
-  const { data: bad, error: fetchErr } = await supabase
+  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
+  // Fetch all recent articles and filter client-side — catches all fallback patterns:
+  // "— latest AI news.", "— latest news from", summary === topic, or summary < 200 chars
+  const { data: all, error: fetchErr } = await supabase
     .from(table)
-    .select('id, topic, source_name, language_code, language_name, category')
-    .gte('fetched_at', twoDaysAgo)
-    .or('summary.like.%— latest AI news.%,summary.like.%— latest news from%,summary.like.%— AI update.%')
-    .limit(limit);
+    .select('id, topic, source_name, language_code, language_name, category, summary')
+    .gte('fetched_at', sevenDaysAgo)
+    .limit(200);
 
   if (fetchErr) return NextResponse.json({ error: fetchErr.message }, { status: 500 });
+
+  const bad = ((all ?? []) as (BadArticle & { summary: string })[]).filter(a =>
+    !a.summary ||
+    a.summary.length < 200 ||
+    a.summary.includes('— latest AI news.') ||
+    a.summary.includes('— latest news from') ||
+    a.summary.includes('— AI update.') ||
+    a.summary.trim() === a.topic.trim()
+  );
   if (!bad?.length) return NextResponse.json({ message: 'No bad articles found', repaired: 0 });
 
   if (dryRun) {

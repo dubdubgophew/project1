@@ -28,18 +28,26 @@ export async function GET(req: NextRequest) {
   const table = (searchParams.get('table') ?? 'ai_news') as 'ai_news' | 'trending_news';
   const supabase = createAdminClient();
 
-  const twoDaysAgo = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString();
+  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
-  // Find articles with HTML entities in topic or summary
-  const { data, error } = await supabase
+  // Fetch all recent articles and filter client-side for any with entities or boilerplate
+  const { data: all, error } = await supabase
     .from(table)
     .select('id, topic, summary')
-    .gte('fetched_at', twoDaysAgo)
-    .or('topic.like.%&#%,summary.like.%&#%,summary.like.%appeared first on%')
-    .limit(100);
+    .gte('fetched_at', sevenDaysAgo)
+    .limit(300);
+
+  const data = (all ?? []).filter(r =>
+    r.topic?.includes('&#') ||
+    r.summary?.includes('&#') ||
+    r.summary?.includes('appeared first on') ||
+    r.summary?.includes('&amp;') ||
+    r.summary?.includes('&lt;') ||
+    r.topic?.includes('&amp;')
+  );
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  if (!data?.length) return NextResponse.json({ message: 'Nothing to fix', fixed: 0 });
+  if (!data.length) return NextResponse.json({ message: 'Nothing to fix', fixed: 0 });
 
   let fixed = 0;
   const errors: string[] = [];
