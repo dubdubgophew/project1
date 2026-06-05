@@ -7,6 +7,8 @@ import { type StockNewsItem } from '@/lib/stocks-utils';
 import { StocksFeed } from './StocksFeed';
 import { Suspense } from 'react';
 
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   searchParams?: {
     category?: string;
@@ -72,7 +74,12 @@ async function fetchInitialData(searchParams: PageProps['searchParams']): Promis
 
     if (category && category !== 'all') query = query.eq('category', category);
     if (country  && country  !== 'ALL' && country.length >= 2) query = query.eq('country_code', country);
-    if (lang     && lang     !== 'all') query = query.eq('language_code', lang);
+    if (lang && lang !== 'all') {
+      // null language_code means English (inserted before column was backfilled)
+      query = lang === 'en'
+        ? query.or('language_code.eq.en,language_code.is.null')
+        : query.eq('language_code', lang);
+    }
     if (q.trim()) query = query.or(`topic.ilike.%${q.trim()}%,summary.ilike.%${q.trim()}%`);
 
     const { data: items } = await query;
