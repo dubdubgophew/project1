@@ -8,7 +8,6 @@ import {
   Mail, ArrowUpDown, TrendingUp, Calendar,
 } from 'lucide-react';
 import { COUNTRIES, type TrendingNews } from '@/lib/trending-utils';
-import { LANGUAGES } from '@/lib/regional-news-utils';
 import { BannerAd, InArticleAd } from '@/components/shared/AdSense';
 
 interface Props {
@@ -444,20 +443,6 @@ export function PoliticsFeed({ initialItems, initialCountry, initialQ, initialSo
         ))}
       </div>
 
-      {/* ── Language pills ── */}
-      <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1" style={{ scrollbarWidth: 'none' }}>
-        <span className="shrink-0 text-[11px] text-stone-400 self-center pr-1">Language:</span>
-        <button onClick={() => handleLanguageChange('all')}
-          className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-colors border ${language === 'all' ? 'bg-red-500 text-white border-red-500' : 'bg-white text-stone-500 border-stone-200 hover:border-red-300'}`}>
-          All
-        </button>
-        {LANGUAGES.map(l => (
-          <button key={l.code} onClick={() => handleLanguageChange(l.code)}
-            className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${language === l.code ? 'bg-red-500 text-white border-red-500' : 'bg-white text-stone-500 border-stone-200 hover:border-red-300'}`}>
-            <span>{l.flag}</span><span>{l.name}</span>
-          </button>
-        ))}
-      </div>
 
       {/* ── Loading ── */}
       {loading && (
