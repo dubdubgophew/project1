@@ -52,26 +52,48 @@ export async function callAI(
 }
 
 /**
- * Robustly extracts the first complete JSON array from an AI response.
- * Handles cases where the model adds preamble or trailing commentary.
+ * Robustly extracts the first complete JSON array of objects from an AI response.
+ * Skips any '[' that isn't the start of a real JSON array (e.g. inline brackets
+ * in model preamble like "headlines [from Reddit]:"). Falls back through every
+ * '[' position until one parses cleanly.
  */
 export function extractJsonArray(raw: string): string | null {
-  const start = raw.indexOf('[');
-  if (start === -1) return null;
-  let depth = 0;
-  let inString = false;
-  let escape = false;
-  for (let i = start; i < raw.length; i++) {
-    const c = raw[i];
-    if (escape) { escape = false; continue; }
-    if (c === '\\' && inString) { escape = true; continue; }
-    if (c === '"') { inString = !inString; continue; }
-    if (inString) continue;
-    if (c === '[' || c === '{') depth++;
-    else if (c === ']' || c === '}') {
-      depth--;
-      if (depth === 0) return raw.slice(start, i + 1);
+  let searchFrom = 0;
+  while (searchFrom < raw.length) {
+    const start = raw.indexOf('[', searchFrom);
+    if (start === -1) return null;
+
+    // Only consider '[' that's followed (after whitespace) by '{' — i.e. an array of objects
+    const peek = raw.slice(start + 1).trimStart();
+    if (!peek.startsWith('{')) { searchFrom = start + 1; continue; }
+
+    // Walk forward with balanced bracket counting
+    let depth = 0;
+    let inString = false;
+    let escape = false;
+    let end = -1;
+    for (let i = start; i < raw.length; i++) {
+      const c = raw[i];
+      if (escape)            { escape = false; continue; }
+      if (c === '\\' && inString) { escape = true; continue; }
+      if (c === '"')         { inString = !inString; continue; }
+      if (inString)          continue;
+      if (c === '[' || c === '{') depth++;
+      else if (c === ']' || c === '}') {
+        depth--;
+        if (depth === 0) { end = i; break; }
+      }
     }
+
+    if (end === -1) return null; // unclosed array — give up
+
+    const candidate = raw.slice(start, end + 1);
+    try {
+      const parsed = JSON.parse(candidate);
+      if (Array.isArray(parsed)) return candidate;
+    } catch { /* bad bracket match — try next '[' */ }
+
+    searchFrom = start + 1;
   }
   return null;
 }
