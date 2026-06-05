@@ -8,7 +8,7 @@ import { createClient } from '@/lib/supabase/client';
 import type { User } from '@supabase/supabase-js';
 import Link from 'next/link';
 
-// ─── TAX TABLES 2024/2025 ────────────────────────────────────────────────────
+// ─── TAX TABLES 2025/2026 ────────────────────────────────────────────────────
 
 type Bracket = [number, number];
 
@@ -651,7 +651,7 @@ export default function PaystubGeneratorPage() {
     return (
       <ToolLayout
         title="Pay Stub Generator"
-        description="Generate professional pay stubs with accurate 2024/2025 tax calculations for USA, UK, Canada, Australia, India, and more."
+        description="Generate professional pay stubs with accurate 2025/2026 tax calculations for USA, UK, Canada, Australia, India, and more."
         icon="🧾"
         relatedTools={RELATED}
         showAds={false}
@@ -670,7 +670,7 @@ export default function PaystubGeneratorPage() {
     return (
       <ToolLayout
         title="Pay Stub Generator"
-        description="Generate professional pay stubs with accurate 2024/2025 tax calculations for USA, UK, Canada, Australia, India, and more."
+        description="Generate professional pay stubs with accurate 2025/2026 tax calculations for USA, UK, Canada, Australia, India, and more."
         icon="🧾"
         relatedTools={RELATED}
         showAds={false}
@@ -1042,7 +1042,7 @@ export default function PaystubGeneratorPage() {
 
       <div className="card bg-amber-500/5 border-amber-500/20 mt-2">
         <p className="text-xs text-amber-300">
-          <strong>2024/2025 Tax Tables.</strong> Calculations use annualized withholding method with standard deductions.
+          <strong>2025/2026 Tax Tables.</strong> Calculations use annualized withholding method with standard deductions.
           State/provincial rates are simplified estimates. For payroll compliance, use certified payroll software.
           This tool is for estimation and reference only.
         </p>

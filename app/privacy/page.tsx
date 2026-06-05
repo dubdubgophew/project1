@@ -15,7 +15,7 @@ export default function PrivacyPage() {
       <main className="min-h-screen bg-[#F9F7F4] pt-24 pb-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold text-stone-900 mb-2">Privacy Policy</h1>
-          <p className="text-gray-500 text-sm mb-10">Last updated: January 15, 2024</p>
+          <p className="text-gray-500 text-sm mb-10">Last updated: June 5, 2026</p>
 
           <div className="prose prose-sm max-w-none prose-invert prose-p:text-gray-400 prose-h2:text-white prose-h2:text-xl prose-h2:mt-8 prose-li:text-stone-500">
             <p>Formly (&quot;we&quot;, &quot;our&quot;, &quot;us&quot;) is committed to protecting your privacy. This policy explains what information we collect, how we use it, and your rights.</p>

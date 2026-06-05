@@ -6,7 +6,7 @@ import { ChevronDown } from 'lucide-react';
 const FAQS = [
   {
     q: 'Is Formly really free? What are the limits?',
-    a: 'Yes! You get 5 free AI requests per day across all tools — no credit card, no signup needed. Free accounts (with signup) get 10/day. Pro users get 200/day and Unlimited users get, well, unlimited.',
+    a: 'Yes! You get 5 free AI requests per day across all tools — no credit card, no signup needed. Free accounts (with signup) get 10/day. Pro users get 200/day.',
   },
   {
     q: 'What AI model powers Formly?',
@@ -30,7 +30,7 @@ const FAQS = [
   },
   {
     q: 'Is there an API available?',
-    a: "API access is coming soon for Unlimited plan subscribers. You'll be able to integrate Formly's AI tools into your own applications. Join the waitlist via your dashboard.",
+    a: "API access is on our roadmap. Join the waitlist via your dashboard and we'll notify you when it launches.",
   },
   {
     q: 'What languages are supported?',
@@ -38,7 +38,7 @@ const FAQS = [
   },
   {
     q: 'What tools does Formly offer for free?',
-    a: 'Formly offers 37 free AI-powered and utility tools, including a PDF summarizer, paraphraser, grammar checker, AI email writer, pay stub generator, resume builder, contract generator, JSON formatter, base64 encoder, regex tester, diff checker, PDF-to-Markdown converter, expense splitter, loan/EMI calculator, word counter, QR code generator, digital signature creator, and more. All tools are accessible without an account.',
+    a: 'Formly offers 40 free AI-powered and utility tools, including a PDF summarizer, paraphraser, grammar checker, AI email writer, pay stub generator, resume builder, contract generator, JSON formatter, base64 encoder, regex tester, diff checker, PDF-to-Markdown converter, expense splitter, loan/EMI calculator, word counter, QR code generator, digital signature creator, and more. All tools are accessible without an account.',
   },
   {
     q: 'Can I use Formly tools without creating an account?',
@@ -50,11 +50,11 @@ const FAQS = [
   },
   {
     q: "What's the difference between Formly's free and Pro plan?",
-    a: "The free plan gives you 5–10 AI requests per day with no signup required. The Pro plan ($9.99/month) gives you 200 AI requests per day, priority processing, and access to all premium features. The Unlimited plan removes all daily limits. Both paid plans include a 7-day money-back guarantee.",
+    a: "The free plan gives you 5–10 AI requests per day with no signup required. The Pro plan ($5.99/month) gives you 200 AI requests per day, priority processing, PDF downloads, and access to all premium features. Includes a 7-day money-back guarantee.",
   },
   {
     q: 'Can I export documents as PDF from Formly?',
-    a: 'Yes. The resume builder, pay stub generator, and contract generator all let you download a polished PDF. PDF export is available on Day Pass, Pro, and Unlimited plans. Free plan users can copy and paste the output.',
+    a: 'Yes. The resume builder, pay stub generator, and contract generator all let you download a polished PDF. PDF export is available on Day Pass and Pro plans. Free plan users can copy and paste the output.',
   },
   {
     q: 'Does Formly work with all browsers?',
@@ -70,7 +70,7 @@ const FAQS = [
   },
   {
     q: 'Is there a student or NGO discount?',
-    a: 'Yes — 50% off Pro or Unlimited monthly subscriptions. Email support@formly.tools with proof of student status (college ID or .edu email) or NGO registration. The discount applies to subscriptions only and is not available on the Day Pass, which is already a low-cost one-time purchase at $1.99.',
+    a: 'Yes — 50% off the Pro monthly plan ($5.99/mo → $3.00/mo). Email support@formly.tools with proof of student status (college ID or .edu email) or NGO registration. The discount applies to subscriptions only and is not available on the Day Pass.',
   },
 ];
 

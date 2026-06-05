@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
-import { Check, Zap, Star, Building2, HelpCircle, Loader2, Flame } from 'lucide-react';
+import { Check, Zap, Star, HelpCircle, Loader2, Flame } from 'lucide-react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 
@@ -17,26 +17,46 @@ const PLANS = [
     features: [
       '5 AI uses per day (no signup)',
       '10 uses/day with free account',
-      'All 28 AI tools',
+      'All 40 AI tools',
       'Copy & download output',
       'Standard AI speed',
       'Community support',
     ],
-    notIncluded: ['Longer inputs', 'Priority speed', 'PDF downloads', 'API access'],
+    notIncluded: ['Longer inputs', 'Priority speed', 'PDF downloads'],
     cta: 'Start for Free',
     href: '/tools',
     highlighted: false,
     badge: null,
   },
   {
+    id: 'day_pass',
+    name: 'Day Pass',
+    icon: Flame,
+    priceUSD: 3.99,
+    description: 'Full Pro access for 24 hours. One-time payment.',
+    features: [
+      '200 AI uses for 24 hours',
+      'All 40 AI tools',
+      'Priority processing (2× faster)',
+      'Longer text inputs (10K chars)',
+      'PDF downloads for resumes',
+      'No subscription needed',
+    ],
+    notIncluded: ['Usage analytics dashboard'],
+    cta: 'Buy Day Pass',
+    highlighted: false,
+    badge: 'One-Time',
+    oneTime: true,
+  },
+  {
     id: 'pro',
     name: 'Pro',
     icon: Star,
-    priceUSD: 9.99,
+    priceUSD: 5.99,
     description: 'For freelancers and power users.',
     features: [
       '200 AI uses per day',
-      'All 28 AI tools',
+      'All 40 AI tools',
       'Priority processing (2× faster)',
       'Longer text inputs (10K chars)',
       'PDF downloads for resumes',
@@ -44,52 +64,10 @@ const PLANS = [
       'Usage analytics dashboard',
       'Email support (48h response)',
     ],
-    notIncluded: ['API access', 'White-label output'],
+    notIncluded: ['API access'],
     cta: 'Start Pro',
     highlighted: true,
     badge: 'Most Popular',
-  },
-  {
-    id: 'unlimited',
-    name: 'Unlimited',
-    icon: Building2,
-    priceUSD: 19.99,
-    description: 'For agencies and heavy users.',
-    features: [
-      'Unlimited AI uses per day',
-      'All 28 AI tools',
-      'Fastest processing priority',
-      'Max text length (50K chars)',
-      'All Pro features included',
-      'White-label output',
-      'API access (coming soon)',
-      'Priority email support (24h)',
-      'Team workspace (coming soon)',
-    ],
-    notIncluded: [],
-    cta: 'Go Unlimited',
-    highlighted: false,
-    badge: 'Best Value',
-  },
-  {
-    id: 'day_pass',
-    name: 'Day Pass',
-    icon: Flame,
-    priceUSD: 1.99,
-    description: 'Full Pro access for 24 hours. One-time payment.',
-    features: [
-      '200 AI uses for 24 hours',
-      'All 28 AI tools',
-      'Priority processing (2× faster)',
-      'Longer text inputs (10K chars)',
-      'PDF downloads for resumes',
-      'No subscription needed',
-    ],
-    notIncluded: ['Usage analytics dashboard', 'API access'],
-    cta: 'Buy Day Pass',
-    highlighted: false,
-    badge: 'One-Time',
-    oneTime: true,
   },
 ];
 
@@ -148,7 +126,7 @@ export default function PricingPage() {
           </div>
 
           {/* Plans */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
             {PLANS.map((plan) => (
               <div
                 key={plan.id}
@@ -238,28 +216,24 @@ export default function PricingPage() {
                   <th className="text-center py-3 px-2 text-stone-500 font-medium">Free</th>
                   <th className="text-center py-3 px-2 text-orange-400 font-medium">Day Pass</th>
                   <th className="text-center py-3 px-2 text-orange-500 font-semibold">Pro</th>
-                  <th className="text-center py-3 px-2 text-amber-400 font-medium">Unlimited</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-200">
                 {[
-                  ['AI uses', '5–10/day', '200 (24h)', '200/day', 'Unlimited'],
-                  ['All 28 AI tools', '✓', '✓', '✓', '✓'],
-                  ['Max input length', '2,000 chars', '10,000 chars', '10,000 chars', '50,000 chars'],
-                  ['Processing speed', 'Standard', 'Priority (2×)', 'Priority (2×)', 'Fastest (3×)'],
-                  ['PDF downloads', '✗', '✓', '✓', '✓'],
-                  ['Usage dashboard', '✗', '✗', '✓', '✓'],
-                  ['White-label output', '✗', '✗', '✗', '✓'],
-                  ['API access', '✗', '✗', '✗', 'Coming soon'],
-                  ['Support', 'Community', 'Community', 'Email (48h)', 'Priority (24h)'],
-                  ['Billing', 'Free', '$1.99 once', '$9.99/mo', '$19.99/mo'],
-                ].map(([feature, free, dayPass, pro, unlim]) => (
+                  ['AI uses', '5–10/day', '200 (24h)', '200/day'],
+                  ['All 40 AI tools', '✓', '✓', '✓'],
+                  ['Max input length', '2,000 chars', '10,000 chars', '10,000 chars'],
+                  ['Processing speed', 'Standard', 'Priority (2×)', 'Priority (2×)'],
+                  ['PDF downloads', '✗', '✓', '✓'],
+                  ['Usage dashboard', '✗', '✗', '✓'],
+                  ['Support', 'Community', 'Community', 'Email (48h)'],
+                  ['Billing', 'Free', '$3.99 once', '$5.99/mo'],
+                ].map(([feature, free, dayPass, pro]) => (
                   <tr key={feature}>
                     <td className="py-3 pr-4 text-stone-500">{feature}</td>
                     <td className="text-center py-3 px-2 text-stone-400">{free}</td>
                     <td className="text-center py-3 px-2 text-stone-600">{dayPass}</td>
                     <td className="text-center py-3 px-2 text-stone-600">{pro}</td>
-                    <td className="text-center py-3 px-2 text-stone-600">{unlim}</td>
                   </tr>
                 ))}
               </tbody>
@@ -281,15 +255,15 @@ export default function PricingPage() {
                 },
                 {
                   q: "What's the money-back guarantee?",
-                  a: "If you're not satisfied within 7 days of your first payment, email support@formly.tools for a full refund — no questions asked.",
+                  a: "If you're not satisfied within 7 days of your first Pro subscription payment, email support@formly.tools for a full refund — no questions asked. Day Pass purchases are non-refundable.",
                 },
                 {
                   q: 'Do unused credits roll over?',
-                  a: "Daily limits reset at midnight UTC. They don't roll over — but with 200-unlimited uses/day on paid plans, you'll rarely hit the limit.",
+                  a: "Daily limits reset at midnight UTC. They don't roll over — but with 200 uses/day on the Pro plan, you'll rarely hit the limit.",
                 },
                 {
                   q: 'Is there a student or NGO discount?',
-                  a: 'Yes — 50% off the Pro or Unlimited monthly plan. Email support@formly.tools with proof of student status (college ID or .edu email) or NGO registration. Discounts apply to subscriptions only and are not available on the Day Pass, which is already a low-cost one-time purchase.',
+                  a: 'Yes — 50% off the Pro monthly plan. Email support@formly.tools with proof of student status (college ID or .edu email) or NGO registration. Discounts apply to subscriptions only and are not available on the Day Pass.',
                 },
                 {
                   q: 'Can I upgrade or downgrade my plan?',

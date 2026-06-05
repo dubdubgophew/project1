@@ -130,7 +130,7 @@ export function ToolLayout({
                   <li>✓ Early access to new tools</li>
                 </ul>
                 <Link href="/pricing" className="btn-primary w-full justify-center text-sm py-2.5">
-                  Start Pro — $9.99/month
+                  Start Pro — $5.99/month
                 </Link>
               </div>
 

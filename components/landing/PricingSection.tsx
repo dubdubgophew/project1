@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Check, Zap, Star, Building2, Flame } from 'lucide-react';
+import { Check, Zap, Star, Flame } from 'lucide-react';
 
 const PLANS = [
   {
@@ -13,7 +13,7 @@ const PLANS = [
     description: 'Try every tool without a credit card.',
     features: [
       '5 AI requests per day',
-      'All 37 AI tools',
+      'All 40 AI tools',
       'No signup required',
       'Standard processing speed',
       'Copy & download output',
@@ -25,13 +25,13 @@ const PLANS = [
   {
     name: 'Day Pass',
     icon: Flame,
-    priceUSD: 1.99,
+    priceUSD: 3.99,
     priceSuffix: ' one-time',
     badge: 'No Subscription',
     description: 'Full Pro access for 24 hours.',
     features: [
       '200 AI requests for 24 hours',
-      'All 37 AI tools',
+      'All 40 AI tools',
       'Priority processing speed',
       'Longer text inputs (10K chars)',
       'PDF downloads',
@@ -44,13 +44,13 @@ const PLANS = [
   {
     name: 'Pro',
     icon: Star,
-    priceUSD: 9.99,
+    priceUSD: 5.99,
     priceSuffix: '/month',
     badge: 'Most Popular',
     description: 'For freelancers and power users.',
     features: [
       '200 AI requests per day',
-      'All 37 AI tools',
+      'All 40 AI tools',
       'Priority processing speed',
       'Longer text inputs (10K chars)',
       'PDF download for resumes',
@@ -60,27 +60,6 @@ const PLANS = [
     cta: 'Start Pro Trial',
     href: '/signup?plan=pro',
     highlighted: true,
-  },
-  {
-    name: 'Unlimited',
-    icon: Building2,
-    priceUSD: 19.99,
-    priceSuffix: '/month',
-    badge: 'Best Value',
-    description: 'For agencies and heavy users.',
-    features: [
-      'Unlimited AI requests',
-      'All 37 AI tools',
-      'Fastest processing priority',
-      'Max text length (50K chars)',
-      'API access (coming soon)',
-      'Priority email & chat support',
-      'White-label output',
-      'Team workspace (coming soon)',
-    ],
-    cta: 'Go Unlimited',
-    href: '/signup?plan=unlimited',
-    highlighted: false,
   },
 ];
 
@@ -99,7 +78,7 @@ export function PricingSection() {
           <p className="text-sm text-stone-400">All prices in USD · Local currency shown at checkout · All taxes included</p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {PLANS.map((plan) => (
             <div
               key={plan.name}

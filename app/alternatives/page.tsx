@@ -14,12 +14,12 @@ import {
 export const metadata: Metadata = {
   title: '29 Free Alternatives: Grammarly, Excalidraw, DocuSign, Visio & More | Formly',
   description:
-    'Free online alternatives to Grammarly, Excalidraw, draw.io, Visio, DocuSign, AdobeSign, QuillBot, ChatGPT writing tools, Resume.io, LegalZoom, and ADP. 29 AI tools — no signup, no credit card.',
+    'Free online alternatives to Grammarly, Excalidraw, draw.io, Visio, DocuSign, AdobeSign, QuillBot, ChatGPT writing tools, Resume.io, LegalZoom, and ADP. 40 AI tools — no signup, no credit card.',
   alternates: { canonical: 'https://formly.tools/alternatives' },
   openGraph: {
     title: 'Free Alternatives to Grammarly, Excalidraw, DocuSign, Visio & More',
     description:
-      '29 free AI tools replacing expensive subscriptions. Grammar checker, diagrams, digital signatures, resume builder — all free, no signup required.',
+      '40 free AI tools replacing expensive subscriptions. Grammar checker, diagrams, digital signatures, resume builder — all free, no signup required.',
     url: 'https://formly.tools/alternatives',
     type: 'website',
     siteName: 'Formly',
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Free Alternatives to Grammarly, Excalidraw, DocuSign & More',
     description:
-      '29 free AI-powered tools that replace expensive paid subscriptions. No signup needed.',
+      '40 free AI-powered tools that replace expensive paid subscriptions. No signup needed.',
   },
 };
 
@@ -376,7 +376,7 @@ const webPageSchema = {
   '@type': 'WebPage',
   name: 'Free Alternatives to Grammarly, Excalidraw, DocuSign, Visio & More',
   description:
-    'Find free online alternatives to expensive tools: Grammarly, Excalidraw, draw.io, DocuSign, QuillBot, Resume.io, ADP, and more. 29 free AI tools, no signup needed.',
+    'Find free online alternatives to expensive tools: Grammarly, Excalidraw, draw.io, DocuSign, QuillBot, Resume.io, ADP, and more. 40 free AI tools, no signup needed.',
   url: 'https://formly.tools/alternatives',
   isPartOf: { '@type': 'WebSite', name: 'Formly', url: 'https://formly.tools' },
   about: {
@@ -418,7 +418,7 @@ export default function AlternativesPage() {
             {/* Eyebrow badge */}
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/25 text-violet-300 text-sm font-medium mb-6">
               <Zap className="w-3.5 h-3.5" />
-              29 Free AI Tools — No Signup Required
+              40 Free AI Tools — No Signup Required
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
@@ -429,7 +429,7 @@ export default function AlternativesPage() {
 
             <p className="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed mb-8">
               Stop paying for Grammarly, Excalidraw, DocuSign, Visio, QuillBot, and more.
-              Formly gives you 29 free AI-powered alternatives — no subscriptions, no credit card,
+              Formly gives you 40 free AI-powered alternatives — no subscriptions, no credit card,
               no signup needed.
             </p>
 
@@ -553,7 +553,7 @@ export default function AlternativesPage() {
                   color: 'text-emerald-400',
                   bg: 'bg-emerald-500/10',
                   title: 'Genuinely Free',
-                  body: 'No credit card required. No free trial that expires. Our free tier gives you real daily access to all 29 AI tools — not a neutered demo.',
+                  body: 'No credit card required. No free trial that expires. Our free tier gives you real daily access to all 40 AI tools — not a neutered demo.',
                 },
                 {
                   icon: Shield,
@@ -573,7 +573,7 @@ export default function AlternativesPage() {
                   icon: Star,
                   color: 'text-violet-400',
                   bg: 'bg-violet-500/10',
-                  title: '29 Tools in One Place',
+                  title: '40 Tools in One Place',
                   body: 'Instead of juggling subscriptions to Grammarly, DocuSign, QuillBot, and Resume.io, get all the functionality under one roof — for free.',
                 },
                 {
@@ -646,7 +646,7 @@ export default function AlternativesPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/tools" className="btn-primary px-8 py-3">
-                Explore All 29 Free Tools
+                Explore All 40 Free Tools
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link href="/pricing" className="btn-secondary px-8 py-3">

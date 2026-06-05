@@ -11,7 +11,7 @@ import { BannerAd } from '@/components/shared/AdSense';
 import { DiagrifBanner } from '@/components/landing/DiagrifBanner';
 
 export const metadata: Metadata = {
-  title: 'Formly Tools — 42 Free AI Tools Online | No Signup Required',
+  title: 'Formly Tools — 40 Free AI Tools Online | No Signup Required',
   description:
     'Free AI-powered tools: ATS resume scanner, AI job risk checker, pay stub generator, resume builder, grammar checker, PDF summarizer, contract generator & 35 more. No signup. No credit card. Works instantly in your browser.',
   keywords: [
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: 'https://formly.tools' },
   openGraph: {
-    title: 'Formly Tools — 42 Free AI Tools Online | No Signup Required',
+    title: 'Formly Tools — 40 Free AI Tools Online | No Signup Required',
     description: '42 free AI-powered tools in one place. Pay stubs, resumes, contracts, grammar check, PDF summarizer, diagrams & more. No signup needed.',
     url: 'https://formly.tools',
     type: 'website',
@@ -30,8 +30,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Formly Tools — 42 free AI tools | No Signup',
-    description: '42 free AI tools: pay stubs, resumes, grammar checker, PDF summarizer, diagrams & more. No signup needed.',
+    title: 'Formly Tools — 40 free AI tools | No Signup',
+    description: '40 free AI tools: pay stubs, resumes, grammar checker, PDF summarizer, diagrams & more. No signup needed.',
   },
 };
 
@@ -40,7 +40,7 @@ const webPageSchema = {
   '@type': 'WebPage',
   '@id': 'https://formly.tools/#webpage',
   url: 'https://formly.tools',
-  name: 'Formly Tools — 42 Free AI Tools Online',
+  name: 'Formly Tools — 40 Free AI Tools Online',
   description: 'Free AI-powered tools: pay stub generator, resume builder, grammar checker, PDF summarizer, contract generator, income tax calculator, diagram maker & 31 more. No signup required.',
   isPartOf: { '@id': 'https://formly.tools/#website' },
   about: { '@type': 'Thing', name: 'Free AI Tools' },
@@ -118,7 +118,7 @@ export default function HomePage() {
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <a href="/tools" className="btn-primary text-base px-8 py-4 w-full sm:w-auto">
-                  Try All 37 Tools Free →
+                  Try All 40 Tools Free →
                 </a>
                 <a href="/pricing" className="inline-flex items-center justify-center gap-2 text-base px-8 py-4 rounded-xl font-semibold border border-orange-500/40 text-orange-400 hover:bg-orange-500/10 hover:border-orange-500/70 transition-all duration-200 w-full sm:w-auto">
                   View Pro Plans

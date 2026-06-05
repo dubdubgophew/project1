@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Pricing — Free & Pro Plans for AI Tools | Formly',
-  description: 'Formly pricing: free forever plan with daily limits, Pro for unlimited AI tool usage. Pay stub generator, resume builder, contract generator & 26 more tools. No credit card to start.',
-  keywords: ['formly pricing', 'ai tools pricing', 'free ai tools plan', 'formly pro', 'pay stub generator subscription', 'unlimited ai tools'],
+  description: 'Formly pricing: free forever plan with daily limits, Pro plan at $5.99/month for 200 uses/day. 40 AI tools — pay stub generator, resume builder, contract generator & more. No credit card to start.',
+  keywords: ['formly pricing', 'ai tools pricing', 'free ai tools plan', 'formly pro', 'pay stub generator subscription', 'ai tools pro plan'],
   openGraph: {
     title: 'Formly Pricing — Free & Pro AI Tools Plans',
-    description: 'Start free — no credit card. Upgrade to Pro for unlimited use of all 29 AI tools.',
+    description: 'Start free — no credit card. Pro plan $5.99/month for 200 uses/day across all 40 AI tools.',
     url: 'https://formly.tools/pricing',
     type: 'website',
     siteName: 'Formly',
@@ -41,7 +41,7 @@ export default function PricingLayout({ children }: { children: React.ReactNode 
                 {
                   '@type': 'Offer',
                   name: 'Pro Plan',
-                  description: 'Unlimited uses, priority processing, all 29 tools',
+                  description: '200 uses/day, priority processing, PDF downloads, all 40 tools',
                   eligibleCustomerType: 'https://schema.org/EndUserCustomer',
                 },
               ],

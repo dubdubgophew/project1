@@ -6,11 +6,11 @@ import { Zap, Target, Heart, Shield } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'About Formly — Free AI Tools Platform Built in India',
-  description: 'Formly is a free AI tools platform built and operated from India. 29 professional AI tools — pay stub generator, resume builder, grammar checker & more. No subscriptions. Powered by Groq AI.',
+  description: 'Formly is a free AI tools platform built and operated from India. 40 professional AI tools — pay stub generator, resume builder, grammar checker & more. No subscriptions. Powered by Groq AI.',
   alternates: { canonical: 'https://formly.tools/about' },
   openGraph: {
     title: 'About Formly — Free AI Tools for Everyone',
-    description: 'Formly democratizes AI tools. 29 professional-grade AI tools, free to try. Built in India, used by 50,000+ professionals worldwide.',
+    description: 'Formly democratizes AI tools. 40 professional-grade AI tools, free to try. Built in India, used by 50,000+ professionals worldwide.',
     url: 'https://formly.tools/about',
     type: 'website',
     siteName: 'Formly',
@@ -25,13 +25,13 @@ export default function AboutPage() {
     alternateName: 'formly.tools',
     url: 'https://formly.tools',
     logo: 'https://formly.tools/favicon.svg',
-    description: 'Formly provides 29 free AI-powered productivity tools for professionals worldwide — pay stub generator, resume builder, contract generator, PDF summarizer, AI paraphraser, grammar checker, digital signature, QR code generator, and more. Built in India, used by 50,000+ professionals in 100+ countries.',
+    description: 'Formly provides 40 free AI-powered productivity tools for professionals worldwide — pay stub generator, resume builder, contract generator, PDF summarizer, AI paraphraser, grammar checker, digital signature, QR code generator, and more. Built in India, used by 50,000+ professionals in 100+ countries.',
     foundingLocation: { '@type': 'Place', name: 'India', addressCountry: 'IN' },
     areaServed: ['US', 'GB', 'IN', 'CA', 'AU', 'NZ', 'SG', 'IE', 'Worldwide'],
     audience: { '@type': 'Audience', audienceType: 'Professionals, developers, writers, freelancers, and businesses' },
     applicationCategory: 'Productivity',
     operatingSystem: 'Web Browser',
-    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', description: 'Free daily usage for all 29 tools, no credit card required' },
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', description: 'Free daily usage for all 40 tools, no credit card required' },
     sameAs: ['https://twitter.com/formlytools'],
     numberOfEmployees: { '@type': 'QuantitativeValue', value: '1-10' },
     keywords: 'free AI tools, pay stub generator, resume builder, grammar checker, paraphraser, PDF summarizer',
@@ -58,14 +58,14 @@ export default function AboutPage() {
                 color: 'text-orange-500',
                 bg: 'bg-violet-500/10',
                 title: 'Our Mission',
-                text: 'Formly was built to democratize AI tools. The best writing assistants, grammar checkers, and AI utilities were locked behind expensive paywalls. We changed that — 28 professional-grade AI tools, free to try, forever.',
+                text: 'Formly was built to democratize AI tools. The best writing assistants, grammar checkers, and AI utilities were locked behind expensive paywalls. We changed that — 40 professional-grade AI tools, free to try, forever.',
               },
               {
                 icon: Zap,
                 color: 'text-amber-400',
                 bg: 'bg-amber-500/10',
                 title: 'Why We Built This',
-                text: "We were frustrated with tools that charge $30-100/month for basic AI features. Using Groq's blazing-fast AI infrastructure, we deliver premium quality at a fraction of the price — $9.99/month for Pro, or completely free for casual use.",
+                text: "We were frustrated with tools that charge $30–100/month for basic AI features. Using Groq's blazing-fast AI infrastructure, we deliver premium quality at a fraction of the price — $5.99/month for Pro, or completely free for casual use.",
               },
               {
                 icon: Heart,
@@ -97,7 +97,7 @@ export default function AboutPage() {
           <div className="mt-12 p-8 rounded-2xl bg-gradient-to-br from-violet-600/10 to-purple-600/5 border border-violet-500/20 text-center">
             <h2 className="text-xl font-bold text-stone-900 mb-2">Join 50,000+ Users</h2>
             <p className="text-gray-400 text-sm mb-4">Start using Formly free — no credit card required.</p>
-            <a href="/tools" className="btn-primary inline-flex">Try All 28 Tools Free →</a>
+            <a href="/tools" className="btn-primary inline-flex">Try All 40 Tools Free →</a>
           </div>
 
           <BannerAd className="mt-12" />

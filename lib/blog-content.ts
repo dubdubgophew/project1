@@ -359,7 +359,7 @@ export const BLOG_POSTS: BlogPost[] = [
     toolName: 'Grammar Checker',
     readingTime: 6,
     publishedAt: '2026-02-05',
-    updatedAt: '2026-05-01',
+    updatedAt: '2026-06-05',
     metaDescription:
       'Check grammar, spelling, punctuation, and style with a free AI grammar checker. Better than basic spell check — catches complex grammar errors and suggests improvements.',
     intro:

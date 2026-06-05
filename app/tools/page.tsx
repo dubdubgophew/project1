@@ -43,7 +43,7 @@ const TOOLS: Tool[] = [
   {
     icon: '🧾',
     name: 'Pay Stub Generator',
-    description: 'Generate professional pay stubs with accurate 2024/2025 tax calculations. USA, UK, Canada, Australia, India & more.',
+    description: 'Generate professional pay stubs with accurate 2025/2026 tax calculations. USA, UK, Canada, Australia, India & more.',
     href: '/tools/paystub-generator',
     badge: 'New',
     color: 'from-green-500/10 to-green-600/5 border-green-500/20 hover:border-green-500/40',
@@ -549,7 +549,7 @@ function ToolsContent() {
         <p>
           Most AI tool platforms charge $20-100/month, show intrusive ads, require signups for basic features,
           or produce mediocre AI output. Formly is different: powered by Groq AI — fast, high-quality output
-          comparable to GPT-4 — and available free for casual users. Our Pro plan at just $9.99/month gives you 200 daily uses
+          comparable to GPT-4 — and available free for casual users. Our Pro plan at just $5.99/month gives you 200 daily uses
           and priority processing, making it the most affordable professional AI suite available.
         </p>
         <h3 className="text-lg font-semibold text-stone-900 mt-6">Privacy-First Approach</h3>

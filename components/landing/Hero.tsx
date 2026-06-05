@@ -66,7 +66,7 @@ export function Hero() {
             href="/tools"
             className="btn-primary text-sm sm:text-base px-7 py-3.5 sm:px-8 sm:py-4 shadow-xl shadow-orange-500/20 group w-full sm:w-auto"
           >
-            Try All 42 Tools Free
+            Try All 40 Tools Free
             <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
           </Link>
           <Link
@@ -74,7 +74,7 @@ export function Hero() {
             className="btn-secondary text-sm sm:text-base px-7 py-3.5 sm:px-8 sm:py-4 group w-full sm:w-auto"
           >
             <TrendingUp className="w-4 h-4 text-orange-400" />
-            Pro Plans from $9.99/mo
+            Pro Plans from $5.99/mo
           </Link>
         </div>
 

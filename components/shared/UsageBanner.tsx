@@ -39,7 +39,7 @@ export function UsageBanner({ remaining, limit, plan }: UsageBannerProps) {
           )}
           {plan === 'pro' && (
             <span className="text-gray-400">
-              <Link href="/pricing" className="text-violet-400 hover:text-violet-300 underline">Upgrade to Unlimited</Link> for unlimited uses, or wait for your limit to reset at midnight UTC.
+              You have reached your 200/day Pro limit. Resets at midnight UTC.
             </span>
           )}
         </div>

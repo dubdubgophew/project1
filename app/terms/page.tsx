@@ -15,7 +15,7 @@ export default function TermsPage() {
       <main className="min-h-screen bg-[#F9F7F4] pt-24 pb-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold text-stone-900 mb-2">Terms of Service</h1>
-          <p className="text-gray-500 text-sm mb-10">Last updated: January 15, 2024</p>
+          <p className="text-gray-500 text-sm mb-10">Last updated: June 5, 2026</p>
 
           <div className="prose prose-sm max-w-none prose-invert prose-p:text-gray-400 prose-h2:text-white prose-h2:text-xl prose-h2:mt-8 prose-li:text-stone-500">
             <p>By using Formly (&quot;the Service&quot;), you agree to these Terms. Please read them carefully.</p>
@@ -33,7 +33,7 @@ export default function TermsPage() {
             <p>The free tier provides 5 AI uses per day without an account, and 10 uses/day with a free account. We reserve the right to modify these limits at any time.</p>
 
             <h2>3. Subscriptions & Payments</h2>
-            <p>Pro and Unlimited plans are billed monthly. You may cancel at any time; cancellation takes effect at the end of the billing period. We offer a 7-day money-back guarantee for first-time subscribers — email support@formly.tools within 7 days of payment.</p>
+            <p>The Pro plan ($5.99/month) is billed monthly. The Day Pass ($3.99) is a one-time payment that grants 24-hour Pro access with no recurring charges. You may cancel your Pro subscription at any time; cancellation takes effect at the end of the current billing period. We offer a 7-day money-back guarantee for first-time Pro subscribers — email support@formly.tools within 7 days of payment. Day Pass purchases are non-refundable.</p>
 
             <h2>4. AI Output Disclaimer</h2>
             <p>AI-generated content may contain errors, inaccuracies, or outdated information. Do not rely solely on AI output for legal, medical, financial, or safety-critical decisions. The Contract Generator produces templates for reference only — consult a qualified lawyer for binding agreements.</p>
