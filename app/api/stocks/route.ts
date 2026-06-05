@@ -7,6 +7,7 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const category = searchParams.get('category') ?? 'all';
     const country  = searchParams.get('country')  ?? 'all';
+    const lang     = searchParams.get('lang')      ?? 'en';
     const sort     = searchParams.get('sort')      ?? 'latest';
     const q        = searchParams.get('q')         ?? '';
     const page     = Math.max(1, parseInt(searchParams.get('page')  ?? '1',  10));
@@ -31,6 +32,7 @@ export async function GET(req: NextRequest) {
 
     if (category && category !== 'all') query = query.eq('category', category);
     if (country  && country  !== 'all') query = query.eq('country_code', country.toUpperCase());
+    if (lang     && lang     !== 'all') query = query.eq('language_code', lang);
     if (q.trim()) query = query.or(`topic.ilike.%${q.trim()}%,summary.ilike.%${q.trim()}%`);
 
     const { data: items, count } = await query;

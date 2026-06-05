@@ -7,7 +7,7 @@ import {
   Search, ChevronDown, RefreshCw, Share2, Check,
   ExternalLink, Clock, Mail, ArrowUpDown, TrendingUp, Calendar,
 } from 'lucide-react';
-import { STOCK_CATEGORIES, STOCK_COUNTRIES, type StockNewsItem } from '@/lib/stocks-utils';
+import { STOCK_CATEGORIES, STOCK_COUNTRIES, STOCK_LANGUAGES, type StockNewsItem } from '@/lib/stocks-utils';
 import { BannerAd, InArticleAd } from '@/components/shared/AdSense';
 
 // ─── Category styling ─────────────────────────────────────────────────────────
@@ -71,6 +71,7 @@ interface Props {
   initialQ: string;
   initialId: string | null;
   initialCountry: string;
+  initialLang: string;
   initialSort: string;
   lastUpdated: string | null;
 }
@@ -423,6 +424,7 @@ export function StocksFeed({
   initialQ,
   initialId,
   initialCountry,
+  initialLang,
   initialSort,
   lastUpdated: initialLastUpdated,
 }: Props) {
@@ -432,6 +434,7 @@ export function StocksFeed({
   const [items,       setItems]       = useState<StockNewsItem[]>(initialItems);
   const [category,    setCategory]    = useState(initialCategory);
   const [country,     setCountry]     = useState(initialCountry);
+  const [lang,        setLang]        = useState(initialLang);
   const [sort,        setSort]        = useState(initialSort);
   const [q,           setQ]           = useState(initialQ);
   const [page,        setPage]        = useState(1);
@@ -443,20 +446,21 @@ export function StocksFeed({
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const updateURL = useCallback((ca: string, sq: string, co: string, s: string) => {
+  const updateURL = useCallback((ca: string, sq: string, co: string, lg: string, s: string) => {
     const p = new URLSearchParams();
     if (ca && ca !== 'all')     p.set('category', ca);
     if (co && co !== 'all')     p.set('country', co);
+    if (lg && lg !== 'en')      p.set('lang', lg);
     if (sq.trim())              p.set('q', sq.trim());
     if (s  && s  !== 'latest')  p.set('sort', s);
     router.push(`/stocks${p.size ? `?${p}` : ''}`, { scroll: false });
   }, [router]);
 
   const fetchPage = useCallback(async (opts: {
-    category: string; country: string; sort: string; q: string; page: number; append: boolean;
+    category: string; country: string; lang: string; sort: string; q: string; page: number; append: boolean;
   }) => {
     const p = new URLSearchParams({
-      category: opts.category, country: opts.country,
+      category: opts.category, country: opts.country, lang: opts.lang,
       sort: opts.sort, q: opts.q,
       page: String(opts.page), limit: '20',
     });
@@ -476,17 +480,18 @@ export function StocksFeed({
     }
   }, []);
 
-  const handleCategoryChange = (cat: string) => { setCategory(cat); setPage(1); setLoading(true); updateURL(cat,      q, country, sort); fetchPage({ category: cat,  country, sort, q, page: 1, append: false }).finally(() => setLoading(false)); };
-  const handleCountryChange  = (co: string)  => { setCountry(co);   setPage(1); setLoading(true); updateURL(category, q, co,      sort); fetchPage({ category, country: co, sort, q, page: 1, append: false }).finally(() => setLoading(false)); };
-  const handleSortChange     = (s: string)   => { setSort(s);       setPage(1); setLoading(true); updateURL(category, q, country, s);   fetchPage({ category, country, sort: s, q, page: 1, append: false }).finally(() => setLoading(false)); };
+  const handleCategoryChange = (cat: string) => { setCategory(cat); setPage(1); setLoading(true); updateURL(cat,      q, country, lang, sort); fetchPage({ category: cat,  country, lang, sort, q, page: 1, append: false }).finally(() => setLoading(false)); };
+  const handleCountryChange  = (co: string)  => { setCountry(co);   setPage(1); setLoading(true); updateURL(category, q, co,      lang, sort); fetchPage({ category, country: co, lang, sort, q, page: 1, append: false }).finally(() => setLoading(false)); };
+  const handleLangChange     = (lg: string)  => { setLang(lg);      setPage(1); setLoading(true); updateURL(category, q, country, lg,   sort); fetchPage({ category, country, lang: lg, sort, q, page: 1, append: false }).finally(() => setLoading(false)); };
+  const handleSortChange     = (s: string)   => { setSort(s);       setPage(1); setLoading(true); updateURL(category, q, country, lang, s);    fetchPage({ category, country, lang, sort: s, q, page: 1, append: false }).finally(() => setLoading(false)); };
 
   const handleSearchChange = (val: string) => {
     setSearchInput(val);
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       setQ(val); setPage(1); setLoading(true);
-      updateURL(category, val, country, sort);
-      fetchPage({ category, country, sort, q: val, page: 1, append: false }).finally(() => setLoading(false));
+      updateURL(category, val, country, lang, sort);
+      fetchPage({ category, country, lang, sort, q: val, page: 1, append: false }).finally(() => setLoading(false));
     }, 400);
   };
 
@@ -494,22 +499,23 @@ export function StocksFeed({
     setLoadingMore(true);
     const next = page + 1; setPage(next);
     const scrollY = window.scrollY;
-    await fetchPage({ category, country, sort, q, page: next, append: true });
+    await fetchPage({ category, country, lang, sort, q, page: next, append: true });
     setLoadingMore(false);
     requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, scrollY)));
   };
 
   const handleRefresh = () => {
     setLoading(true);
-    fetchPage({ category, country, sort, q, page: 1, append: false }).finally(() => setLoading(false));
+    fetchPage({ category, country, lang, sort, q, page: 1, append: false }).finally(() => setLoading(false));
   };
 
   useEffect(() => {
     const ca = searchParams.get('category') ?? 'all';
     const co = searchParams.get('country')  ?? 'all';
+    const lg = searchParams.get('lang')     ?? 'en';
     const s  = searchParams.get('sort')     ?? 'latest';
     const sq = searchParams.get('q')        ?? '';
-    setCategory(ca); setCountry(co); setSort(s); setQ(sq); setSearchInput(sq);
+    setCategory(ca); setCountry(co); setLang(lg); setSort(s); setQ(sq); setSearchInput(sq);
   }, [searchParams]);
 
   useEffect(() => {
@@ -612,6 +618,24 @@ export function StocksFeed({
             {c.flag}
             <span className="hidden sm:inline">{c.name}</span>
             <span className="sm:hidden">{c.code}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* ── Language pills ── */}
+      <div className="flex gap-2 overflow-x-auto -mx-1 px-1" style={{ scrollbarWidth: 'none' }}>
+        {STOCK_LANGUAGES.map(l => (
+          <button
+            key={l.code}
+            onClick={() => handleLangChange(l.code)}
+            className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border flex items-center gap-1.5 ${
+              lang === l.code
+                ? 'bg-emerald-500 text-white border-emerald-500'
+                : 'bg-white text-stone-600 border-stone-200 hover:text-stone-900 hover:border-emerald-300'
+            }`}
+          >
+            <span>{l.flag}</span>
+            {l.name}
           </button>
         ))}
       </div>

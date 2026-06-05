@@ -60,6 +60,12 @@ export const STOCK_COUNTRIES = [
   { code: 'DE',     name: 'Germany',        flag: '🇩🇪' },
 ];
 
+export const STOCK_LANGUAGES = [
+  { code: 'all', name: 'All Languages', flag: '🌐' },
+  { code: 'en',  name: 'English',       flag: '🇬🇧' },
+  { code: 'de',  name: 'Deutsch',       flag: '🇩🇪' },
+];
+
 export interface StockRawItem {
   topic: string;
   newsUrl: string;

@@ -11,6 +11,7 @@ interface PageProps {
   searchParams?: {
     category?: string;
     country?: string;
+    lang?: string;
     q?: string;
     id?: string;
     sort?: string;
@@ -50,6 +51,7 @@ async function fetchInitialData(searchParams: PageProps['searchParams']): Promis
 
     const category   = searchParams?.category ?? 'all';
     const country    = searchParams?.country?.toUpperCase() ?? 'all';
+    const lang       = searchParams?.lang ?? 'en';
     const sort       = searchParams?.sort ?? 'latest';
     const q          = searchParams?.q ?? '';
     const deepLinkId = searchParams?.id ?? null;
@@ -70,6 +72,7 @@ async function fetchInitialData(searchParams: PageProps['searchParams']): Promis
 
     if (category && category !== 'all') query = query.eq('category', category);
     if (country  && country  !== 'ALL' && country.length >= 2) query = query.eq('country_code', country);
+    if (lang     && lang     !== 'all') query = query.eq('language_code', lang);
     if (q.trim()) query = query.or(`topic.ilike.%${q.trim()}%,summary.ilike.%${q.trim()}%`);
 
     const { data: items } = await query;
@@ -95,6 +98,7 @@ export default async function StocksPage({ searchParams }: PageProps) {
 
   const initialCategory = searchParams?.category ?? 'all';
   const initialCountry  = searchParams?.country  ?? 'all';
+  const initialLang     = searchParams?.lang      ?? 'en';
   const initialQ        = searchParams?.q         ?? '';
   const initialSort     = searchParams?.sort      ?? 'latest';
 
@@ -122,6 +126,7 @@ export default async function StocksPage({ searchParams }: PageProps) {
                   initialItems={items}
                   initialCategory={initialCategory}
                   initialCountry={initialCountry}
+                  initialLang={initialLang}
                   initialQ={initialQ}
                   initialSort={initialSort}
                   initialId={deepLinkId}
