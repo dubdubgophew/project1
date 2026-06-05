@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { callAI } from '@/lib/ai';
+import { callAI, extractJsonArray } from '@/lib/ai';
 import { createAdminClient } from '@/lib/supabase/server';
 import {
   COUNTRIES,
@@ -96,12 +96,12 @@ Respond ONLY with a valid JSON array. No markdown, no extra text.`;
       { role: 'system', content: 'You are a professional investigative journalist. Always respond with valid JSON only.' },
       { role: 'user', content: prompt },
     ],
-    { model: 'llama-3.3-70b-versatile', maxTokens: 3500, temperature: 0.35 }
+    { model: 'llama-3.3-70b-versatile', maxTokens: 6000, temperature: 0.35 }
   );
 
-  const jsonMatch = raw.match(/\[[\s\S]*\]/);
-  if (!jsonMatch) throw new Error('No JSON array in AI response');
-  const parsed = JSON.parse(jsonMatch[0]) as AISummaryItem[];
+  const jsonStr = extractJsonArray(raw);
+  if (!jsonStr) throw new Error('No JSON array in AI response');
+  const parsed = JSON.parse(jsonStr) as AISummaryItem[];
   if (!Array.isArray(parsed)) throw new Error('AI response is not an array');
   return parsed;
 }

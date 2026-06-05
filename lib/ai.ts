@@ -51,6 +51,31 @@ export async function callAI(
   }
 }
 
+/**
+ * Robustly extracts the first complete JSON array from an AI response.
+ * Handles cases where the model adds preamble or trailing commentary.
+ */
+export function extractJsonArray(raw: string): string | null {
+  const start = raw.indexOf('[');
+  if (start === -1) return null;
+  let depth = 0;
+  let inString = false;
+  let escape = false;
+  for (let i = start; i < raw.length; i++) {
+    const c = raw[i];
+    if (escape) { escape = false; continue; }
+    if (c === '\\' && inString) { escape = true; continue; }
+    if (c === '"') { inString = !inString; continue; }
+    if (inString) continue;
+    if (c === '[' || c === '{') depth++;
+    else if (c === ']' || c === '}') {
+      depth--;
+      if (depth === 0) return raw.slice(start, i + 1);
+    }
+  }
+  return null;
+}
+
 export async function streamAI(
   messages: AIMessage[],
   onChunk: (text: string) => void,

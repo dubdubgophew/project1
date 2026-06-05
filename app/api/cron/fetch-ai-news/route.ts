@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { callAI } from '@/lib/ai';
+import { callAI, extractJsonArray } from '@/lib/ai';
 import { createAdminClient } from '@/lib/supabase/server';
 import { AI_SOURCES, parseAIFeedRSS, type AIRawItem } from '@/lib/ai-news-utils';
 import { fetchOGImage } from '@/lib/trending-utils';
@@ -32,6 +32,14 @@ async function fetchSourceFeed(url: string): Promise<AIRawItem[]> {
   return parseAIFeedRSS(await res.text());
 }
 
+function cleanSnippet(snippet: string): string {
+  return snippet
+    .replace(/submitted by\s+\/u\/\S+\s+to\s+\/r\/\S+/gi, '')
+    .replace(/\[link\]/gi, '').replace(/\[comments\]/gi, '')
+    .replace(/\[score hidden\]/gi, '').replace(/\[\+?\d+\s+comments?\]/gi, '')
+    .replace(/\s{2,}/g, ' ').trim();
+}
+
 async function generateAISummaries(
   sourceName: string,
   items: AIRawItem[],
@@ -40,7 +48,8 @@ async function generateAISummaries(
 ): Promise<AISummaryItem[]> {
   const topicsBlock = items
     .map((t, i) => {
-      const ctx = t.snippets.slice(0, 2).join(' ').slice(0, 400) || t.newsTitle;
+      const raw = t.snippets.slice(0, 2).join(' ').slice(0, 400);
+      const ctx = cleanSnippet(raw) || t.newsTitle;
       return `${i + 1}. Headline: "${t.topic}"\n   Context: ${ctx}`;
     })
     .join('\n\n');
@@ -86,12 +95,12 @@ Respond ONLY with a valid JSON array. No markdown, no extra text.`;
       { role: 'system', content: 'You are a professional AI industry analyst. Always respond with valid JSON only.' },
       { role: 'user', content: prompt },
     ],
-    { model: 'llama-3.3-70b-versatile', maxTokens: 3500, temperature: 0.35 }
+    { model: 'llama-3.3-70b-versatile', maxTokens: 6000, temperature: 0.35 }
   );
 
-  const jsonMatch = raw.match(/\[[\s\S]*\]/);
-  if (!jsonMatch) throw new Error('No JSON array in AI response');
-  const parsed = JSON.parse(jsonMatch[0]) as AISummaryItem[];
+  const jsonStr = extractJsonArray(raw);
+  if (!jsonStr) throw new Error('No JSON array in AI response');
+  const parsed = JSON.parse(jsonStr) as AISummaryItem[];
   if (!Array.isArray(parsed)) throw new Error('AI response is not an array');
   return parsed;
 }

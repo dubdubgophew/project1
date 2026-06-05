@@ -1,5 +1,5 @@
 ﻿import { NextRequest, NextResponse } from 'next/server';
-import { callAI } from '@/lib/ai';
+import { callAI, extractJsonArray } from '@/lib/ai';
 import { createAdminClient } from '@/lib/supabase/server';
 import { parseStandardRSS, fetchOGImage, type RawTrendItem } from '@/lib/trending-utils';
 
@@ -57,12 +57,12 @@ Return ONLY a valid JSON array with exactly ${items.length} objects. No markdown
       { role: 'system', content: 'You are a professional political analyst. Always respond with valid JSON only.' },
       { role: 'user', content: prompt },
     ],
-    { model: 'llama-3.3-70b-versatile', maxTokens: 4500, temperature: 0.3 }
+    { model: 'llama-3.3-70b-versatile', maxTokens: 6000, temperature: 0.3 }
   );
 
-  const match = raw.match(/\[[\s\S]*\]/);
-  if (!match) throw new Error('No JSON array in response');
-  const parsed = JSON.parse(match[0]);
+  const jsonStr = extractJsonArray(raw);
+  if (!jsonStr) throw new Error('No JSON array in response');
+  const parsed = JSON.parse(jsonStr);
   if (!Array.isArray(parsed)) throw new Error('Response is not an array');
   return parsed as { topic: string; summary: string; key_points: string[]; category: string }[];
 }
