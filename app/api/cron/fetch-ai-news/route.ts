@@ -32,7 +32,12 @@ async function fetchSourceFeed(url: string): Promise<AIRawItem[]> {
   return parseAIFeedRSS(await res.text());
 }
 
-async function generateAISummaries(sourceName: string, items: AIRawItem[]): Promise<AISummaryItem[]> {
+async function generateAISummaries(
+  sourceName: string,
+  items: AIRawItem[],
+  langCode: string,
+  langName: string,
+): Promise<AISummaryItem[]> {
   const topicsBlock = items
     .map((t, i) => {
       const ctx = t.snippets.slice(0, 2).join(' ').slice(0, 400) || t.newsTitle;
@@ -40,7 +45,11 @@ async function generateAISummaries(sourceName: string, items: AIRawItem[]): Prom
     })
     .join('\n\n');
 
-  const prompt = `You are a senior AI industry analyst writing for ${sourceName}. For each headline, deliver a proper multi-angle analysis — not a description. Give readers real understanding of what this means for the AI field.
+  const langInstruction = langCode !== 'en'
+    ? `\nIMPORTANT: Write "topic", "summary", and all "key_points" content in ${langName}. Keep "category" values in English.\n`
+    : '';
+
+  const prompt = `You are a senior AI industry analyst writing for ${sourceName}. For each headline, deliver a proper multi-angle analysis — not a description. Give readers real understanding of what this means for the AI field.${langInstruction}
 
 Produce a JSON array with exactly ${items.length} objects in the SAME ORDER.
 
@@ -134,7 +143,7 @@ export async function POST(_req: NextRequest) {
 
       let summaries: AISummaryItem[];
       try {
-        summaries = await generateAISummaries(source.name, newItems);
+        summaries = await generateAISummaries(source.name, newItems, source.langCode, source.langName);
       } catch (aiErr) {
         console.error(`[fetch-ai-news] AI failed for ${source.key}, using fallback:`, aiErr);
         summaries = newItems.map(t => ({

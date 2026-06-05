@@ -29,10 +29,12 @@ export const AI_SOURCES = [
   { key: 'reddit_ai',   name: 'Reddit r/artificial',       url: 'https://www.reddit.com/r/artificial/.rss',                           countryCode: 'GLOBAL', countryName: 'Global', langCode: 'en', langName: 'English' },
   { key: 'reddit_ml',   name: 'Reddit r/MachineLearning',  url: 'https://www.reddit.com/r/MachineLearning/.rss',                      countryCode: 'GLOBAL', countryName: 'Global', langCode: 'en', langName: 'English' },
   // Regional AI sources
-  { key: 'aim_india',   name: 'Analytics India Mag',       url: 'https://analyticsindiamag.com/feed/',                               countryCode: 'IN',     countryName: 'India', langCode: 'en', langName: 'English' },
-  { key: 'inc42',       name: 'Inc42 AI',                  url: 'https://inc42.com/tag/artificial-intelligence/feed/',               countryCode: 'IN',     countryName: 'India', langCode: 'en', langName: 'English' },
+  { key: 'aim_india',   name: 'Analytics India Mag',       url: 'https://analyticsindiamag.com/feed/',                               countryCode: 'IN',     countryName: 'India',   langCode: 'en', langName: 'English' },
+  { key: 'inc42',       name: 'Inc42 AI',                  url: 'https://inc42.com/tag/artificial-intelligence/feed/',               countryCode: 'IN',     countryName: 'India',   langCode: 'en', langName: 'English' },
   { key: 'heise_ai',    name: 'Heise KI',                  url: 'https://www.heise.de/thema/KI/feed/rss.xml',                        countryCode: 'DE',     countryName: 'Germany', langCode: 'de', langName: 'Deutsch' },
-  { key: 'silicon_fr',  name: 'Silicon.fr',                url: 'https://www.silicon.fr/feed/',                                      countryCode: 'FR',     countryName: 'France', langCode: 'fr', langName: 'Français' },
+  { key: 'silicon_fr',  name: 'Silicon.fr',                url: 'https://www.silicon.fr/feed/',                                      countryCode: 'FR',     countryName: 'France',  langCode: 'fr', langName: 'Français' },
+  { key: 'xataka',      name: 'Xataka IA',                 url: 'https://www.xataka.com/tag/inteligencia-artificial/rss',            countryCode: 'ES',     countryName: 'Spain',   langCode: 'es', langName: 'Español' },
+  { key: 'olhar',       name: 'Olhar Digital',             url: 'https://olhardigital.com.br/editoria/inteligencia-artificial/feed/', countryCode: 'BR',     countryName: 'Brazil',  langCode: 'pt', langName: 'Português' },
 ];
 
 export type AISourceKey = (typeof AI_SOURCES)[number]['key'];

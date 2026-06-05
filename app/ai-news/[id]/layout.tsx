@@ -8,7 +8,7 @@ export async function generateMetadata(
     const supabase = createAdminClient();
     const { data } = await supabase
       .from('ai_news')
-      .select('topic, summary, image_url, fetched_at')
+      .select('topic, summary, image_url, fetched_at, language_code, country_name')
       .eq('id', params.id)
       .maybeSingle();
 
@@ -17,17 +17,22 @@ export async function generateMetadata(
     const title       = `${data.topic} — AI Analysis | Formly`;
     const description = data.summary?.slice(0, 160) ?? '';
     const canonical   = `https://formly.tools/ai-news/${params.id}`;
+    const langCode    = data.language_code ?? 'en';
 
     return {
       title,
       description,
-      alternates: { canonical },
+      alternates: {
+        canonical,
+        languages: { [langCode]: canonical, 'x-default': canonical },
+      },
       openGraph: {
         title,
         description,
         url: canonical,
         type: 'article',
         publishedTime: data.fetched_at,
+        locale: langCode.replace('-', '_'),
         ...(data.image_url ? { images: [{ url: data.image_url }] } : {}),
       },
       twitter: {

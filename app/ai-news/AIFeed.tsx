@@ -8,8 +8,27 @@ import {
   ExternalLink, Clock, Mail, ArrowUpDown, TrendingUp, Calendar,
 } from 'lucide-react';
 import { AI_CATEGORIES, type AINewsItem } from '@/lib/ai-news-utils';
-import { COUNTRIES } from '@/lib/trending-utils';
-import { LANGUAGES } from '@/lib/regional-news-utils';
+
+// ─── AI-specific filter options (only countries/languages with real sources) ──
+
+const AI_COUNTRIES = [
+  { code: 'GLOBAL', name: 'Global',        flag: '🌐' },
+  { code: 'US',     name: 'United States', flag: '🇺🇸' },
+  { code: 'GB',     name: 'United Kingdom',flag: '🇬🇧' },
+  { code: 'IN',     name: 'India',         flag: '🇮🇳' },
+  { code: 'DE',     name: 'Germany',       flag: '🇩🇪' },
+  { code: 'FR',     name: 'France',        flag: '🇫🇷' },
+  { code: 'ES',     name: 'Spain',         flag: '🇪🇸' },
+  { code: 'BR',     name: 'Brazil',        flag: '🇧🇷' },
+];
+
+const AI_LANGUAGES = [
+  { code: 'en', name: 'English',   flag: '🇬🇧' },
+  { code: 'de', name: 'Deutsch',   flag: '🇩🇪' },
+  { code: 'fr', name: 'Français',  flag: '🇫🇷' },
+  { code: 'es', name: 'Español',   flag: '🇪🇸' },
+  { code: 'pt', name: 'Português', flag: '🇧🇷' },
+];
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -597,17 +616,7 @@ export function AIFeed({
         >
           🌍 All
         </button>
-        <button
-          onClick={() => handleCountryChange('GLOBAL')}
-          className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
-            country === 'GLOBAL'
-              ? 'bg-violet-500 text-white border-violet-500'
-              : 'bg-white text-stone-600 border-stone-200 hover:text-stone-900 hover:border-violet-300'
-          }`}
-        >
-          🌐 Global
-        </button>
-        {COUNTRIES.map(c => (
+        {AI_COUNTRIES.map(c => (
           <button
             key={c.code}
             onClick={() => handleCountryChange(c.code)}
@@ -637,7 +646,7 @@ export function AIFeed({
         >
           All
         </button>
-        {LANGUAGES.map(l => (
+        {AI_LANGUAGES.map(l => (
           <button
             key={l.code}
             onClick={() => handleLanguageChange(l.code)}

@@ -111,11 +111,14 @@ export default async function AIArticlePage({ params }: { params: { id: string }
   const catEmoji = CATEGORY_EMOJIS[article.category] ?? '🤖';
   const keyPoints: string[] = Array.isArray(article.key_points) ? article.key_points : [];
 
+  const langCode  = article.language_code ?? 'en';
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'NewsArticle',
     headline: article.topic,
     description: article.summary,
+    inLanguage: langCode,
     datePublished: article.fetched_at,
     dateModified: article.fetched_at,
     author: { '@type': 'Organization', name: 'Formly AI', url: 'https://formly.tools' },
@@ -141,7 +144,7 @@ export default async function AIArticlePage({ params }: { params: { id: string }
           </Link>
 
           {/* Article */}
-          <article itemScope itemType="https://schema.org/NewsArticle">
+          <article itemScope itemType="https://schema.org/NewsArticle" lang={langCode}>
 
             {/* Category bar */}
             <div className={`h-1.5 w-full rounded-full mb-5 ${catBar}`} />
