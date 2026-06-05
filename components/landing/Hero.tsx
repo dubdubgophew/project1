@@ -45,7 +45,7 @@ export function Hero() {
 
         {/* Headline — editorial serif */}
         <h1 className="font-display text-[2.8rem] sm:text-6xl lg:text-[5.5rem] font-normal tracking-[-0.02em] mb-5 sm:mb-6 leading-[1.08] text-stone-900">
-          42 Free AI Tools,
+          40 Free AI Tools,
           <br />
           <em className="text-orange-500">Zero Signup</em>
           <br />
