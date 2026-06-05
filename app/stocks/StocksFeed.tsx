@@ -444,7 +444,8 @@ export function StocksFeed({
   const [lastUpdated, setLastUpdated] = useState<string | null>(initialLastUpdated);
   const [searchInput, setSearchInput] = useState(initialQ);
 
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const debounceRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const autoFetched  = useRef(false);
 
   const updateURL = useCallback((ca: string, sq: string, co: string, lg: string, s: string) => {
     const p = new URLSearchParams();
@@ -517,6 +518,17 @@ export function StocksFeed({
     const sq = searchParams.get('q')        ?? '';
     setCategory(ca); setCountry(co); setLang(lg); setSort(s); setQ(sq); setSearchInput(sq);
   }, [searchParams]);
+
+  // If SSR returned no items (server-side Supabase silently failed), fetch client-side on mount
+  useEffect(() => {
+    if (initialItems.length === 0 && !autoFetched.current) {
+      autoFetched.current = true;
+      setLoading(true);
+      fetchPage({ category, country, lang, sort, q, page: 1, append: false })
+        .finally(() => setLoading(false));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!initialId) return;
