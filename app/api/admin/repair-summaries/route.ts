@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { callAI } from '@/lib/ai';
+import { callAI, sanitizeJsonString } from '@/lib/ai';
 import { createAdminClient } from '@/lib/supabase/server';
 
 export const maxDuration = 300;
@@ -64,13 +64,14 @@ Respond with ONLY the JSON object. No extra text.`;
   const objStart = raw.indexOf('{');
   if (objStart === -1) throw new Error(`No JSON object in response. Raw: ${raw.slice(0, 200)}`);
 
-  // Find the matching closing brace using balanced counting
+  // Find the matching closing brace using balanced counting (on the sanitized string)
+  const sanitized = sanitizeJsonString(raw);
   let depth = 0;
   let inString = false;
   let escape = false;
   let objEnd = -1;
-  for (let i = objStart; i < raw.length; i++) {
-    const c = raw[i];
+  for (let i = objStart; i < sanitized.length; i++) {
+    const c = sanitized[i];
     if (escape)            { escape = false; continue; }
     if (c === '\\' && inString) { escape = true; continue; }
     if (c === '"')         { inString = !inString; continue; }
@@ -80,7 +81,7 @@ Respond with ONLY the JSON object. No extra text.`;
   }
   if (objEnd === -1) throw new Error(`Unclosed JSON object. Raw: ${raw.slice(0, 200)}`);
 
-  const parsed = JSON.parse(raw.slice(objStart, objEnd + 1)) as RepairResult;
+  const parsed = JSON.parse(sanitized.slice(objStart, objEnd + 1)) as RepairResult;
   if (!parsed.summary || parsed.summary.length < 50) throw new Error('Summary too short');
   return parsed;
 }

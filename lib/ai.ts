@@ -52,6 +52,31 @@ export async function callAI(
 }
 
 /**
+ * Escapes literal control characters (newlines, tabs, etc.) that the model
+ * writes inside JSON string values, making them valid for JSON.parse.
+ */
+export function sanitizeJsonString(s: string): string {
+  let result = '';
+  let inString = false;
+  let escape = false;
+  for (let i = 0; i < s.length; i++) {
+    const ch = s[i];
+    const code = s.charCodeAt(i);
+    if (escape)              { escape = false; result += ch; continue; }
+    if (ch === '\\' && inString) { escape = true; result += ch; continue; }
+    if (ch === '"')          { inString = !inString; result += ch; continue; }
+    if (inString) {
+      if (code === 0x0a)     { result += '\\n'; continue; }
+      if (code === 0x0d)     { result += '\\r'; continue; }
+      if (code === 0x09)     { result += '\\t'; continue; }
+      if (code < 0x20)       { result += `\\u${code.toString(16).padStart(4, '0')}`; continue; }
+    }
+    result += ch;
+  }
+  return result;
+}
+
+/**
  * Robustly extracts the first complete JSON array of objects from an AI response.
  * Skips any '[' that isn't the start of a real JSON array (e.g. inline brackets
  * in model preamble like "headlines [from Reddit]:"). Falls back through every
@@ -87,7 +112,7 @@ export function extractJsonArray(raw: string): string | null {
 
     if (end === -1) return null; // unclosed array — give up
 
-    const candidate = raw.slice(start, end + 1);
+    const candidate = sanitizeJsonString(raw.slice(start, end + 1));
     try {
       const parsed = JSON.parse(candidate);
       if (Array.isArray(parsed)) return candidate;
