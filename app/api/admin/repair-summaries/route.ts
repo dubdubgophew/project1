@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { callAI, sanitizeJsonString } from '@/lib/ai';
+import { callAI } from '@/lib/ai';
 import { createAdminClient } from '@/lib/supabase/server';
 
 export const maxDuration = 300;
 
 // GET /api/admin/repair-summaries?secret=ADMIN_SECRET&table=ai_news&limit=30
-// GET /api/admin/repair-summaries?secret=ADMIN_SECRET&table=ai_news&debug=1  ← returns raw AI output
+// Finds articles with one-liner fallback summaries and re-generates proper analyses.
 
 interface BadArticle {
   id: string;
@@ -23,67 +23,70 @@ interface RepairResult {
   category: string;
 }
 
+function extractSection(raw: string, tag: string): string {
+  const re = new RegExp(`===\\s*${tag}\\s*===\\s*([\\s\\S]*?)(?:===|$)`, 'i');
+  return raw.match(re)?.[1]?.trim() ?? '';
+}
+
 async function repairOne(article: BadArticle, isAI: boolean): Promise<RepairResult> {
   const langCode = article.language_code ?? 'en';
   const langName = article.language_name ?? 'English';
-  const langNote = langCode !== 'en' ? ` Write the response in ${langName}.` : '';
-
+  const langNote = langCode !== 'en' ? ` Write ALL output in ${langName}.` : '';
   const categoryValues = isAI
     ? 'Tools | Research | Companies | Hardware | Learning | Open Source | Industry'
     : 'Sports | Tech | Politics | Entertainment | Business | Health | General';
 
-  const prompt = `You are a senior analyst. Write a proper analysis for this news headline from ${article.source_name}.${langNote}
+  const prompt = `You are a senior analyst. Write a proper multi-angle analysis for this headline from ${article.source_name}.${langNote}
 
 Headline: "${article.topic}"
 
-Return a single JSON object (no array, no markdown):
-{
-  "topic": "restate headline clearly, max 12 words",
-  "summary": "230-270 words across 3 paragraphs. Para 1: WHAT happened (specific facts, names, numbers). Para 2: WHY it happened (context, causes, motivations). Para 3: SO WHAT — concrete impact, who wins/loses, end with editorial opinion on true significance.",
-  "key_points": [
-    "📍 What Happened | one-line factual summary",
-    "💡 Why It Happened | root cause or strategic reason",
-    "📈 Possible Upside | who benefits and how",
-    "⚠️ Possible Downside | risks, disruption, who loses",
-    "🔮 Outlook | what to watch near-term and long-term"
-  ],
-  "category": "one of: ${categoryValues}"
-}
+Output EXACTLY this format with the === delimiters. Do not add any other text.
 
-Respond with ONLY the JSON object. No extra text.`;
+===TOPIC===
+Restate the headline clearly (max 12 words)
+===SUMMARY===
+Paragraph 1 (WHAT): Specific facts — what happened, key names, numbers, dates.
+
+Paragraph 2 (WHY): Root causes, context, what drove this development.
+
+Paragraph 3 (SO WHAT): Concrete impact on people, industry, or society. Who wins, who loses. End with your editorial take on the true significance.
+===KEY1===
+📍 What Happened | one-line factual summary (max 20 words)
+===KEY2===
+💡 Why It Happened | root cause or strategic reason (max 20 words)
+===KEY3===
+📈 Possible Upside | who benefits and how (max 20 words)
+===KEY4===
+⚠️ Possible Downside | risks or who loses out (max 20 words)
+===KEY5===
+🔮 Outlook | what to watch near-term and long-term (max 20 words)
+===CATEGORY===
+${categoryValues}`;
 
   const raw = await callAI(
     [
-      { role: 'system', content: 'You are a professional analyst. Respond with a single valid JSON object only.' },
+      { role: 'system', content: `You are a professional analyst. Follow the output format exactly. Write exactly 3 paragraphs in ===SUMMARY===, each separated by a blank line.${langCode !== 'en' ? ` Write in ${langName}.` : ''}` },
       { role: 'user', content: prompt },
     ],
-    { model: 'llama-3.3-70b-versatile', maxTokens: 2000, temperature: 0.35 }
+    { model: 'llama-3.3-70b-versatile', maxTokens: 1500, temperature: 0.35 }
   );
 
-  // Extract JSON object — find first { ... }
-  const objStart = raw.indexOf('{');
-  if (objStart === -1) throw new Error(`No JSON object in response. Raw: ${raw.slice(0, 200)}`);
+  const topic    = extractSection(raw, 'TOPIC')    || article.topic;
+  const summary  = extractSection(raw, 'SUMMARY');
+  const key1     = extractSection(raw, 'KEY1');
+  const key2     = extractSection(raw, 'KEY2');
+  const key3     = extractSection(raw, 'KEY3');
+  const key4     = extractSection(raw, 'KEY4');
+  const key5     = extractSection(raw, 'KEY5');
+  const category = extractSection(raw, 'CATEGORY').split('|')[0].trim() || article.category || 'Industry';
 
-  // Find the matching closing brace using balanced counting (on the sanitized string)
-  const sanitized = sanitizeJsonString(raw);
-  let depth = 0;
-  let inString = false;
-  let escape = false;
-  let objEnd = -1;
-  for (let i = objStart; i < sanitized.length; i++) {
-    const c = sanitized[i];
-    if (escape)            { escape = false; continue; }
-    if (c === '\\' && inString) { escape = true; continue; }
-    if (c === '"')         { inString = !inString; continue; }
-    if (inString)          continue;
-    if (c === '{')         depth++;
-    else if (c === '}')    { depth--; if (depth === 0) { objEnd = i; break; } }
+  if (!summary || summary.length < 50) {
+    throw new Error(`Summary too short (${summary.length} chars). Raw: ${raw.slice(0, 300)}`);
   }
-  if (objEnd === -1) throw new Error(`Unclosed JSON object. Raw: ${raw.slice(0, 200)}`);
 
-  const parsed = JSON.parse(sanitized.slice(objStart, objEnd + 1)) as RepairResult;
-  if (!parsed.summary || parsed.summary.length < 50) throw new Error('Summary too short');
-  return parsed;
+  const key_points = [key1, key2, key3, key4, key5].filter(Boolean);
+
+  return { topic, summary, key_points, category };
 }
 
 export async function GET(req: NextRequest) {
@@ -115,16 +118,11 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ found: bad.length, articles: bad.map((a: BadArticle) => a.topic) });
   }
 
-  // Debug mode: test AI on first article, return raw response
+  // Debug: show raw AI output for first article
   if (debug) {
     const art = bad[0] as BadArticle;
-    const langNote = (art.language_code ?? 'en') !== 'en' ? ` Write in ${art.language_name}.` : '';
-    const prompt = `You are a senior analyst. Write an analysis for this headline from ${art.source_name}.${langNote}\n\nHeadline: "${art.topic}"\n\nReturn a single JSON object with keys: topic, summary (230-270 words, 3 paragraphs), key_points (array of 5 strings), category.\n\nRespond with ONLY the JSON object.`;
-    const raw = await callAI(
-      [{ role: 'system', content: 'Respond with a single valid JSON object only.' }, { role: 'user', content: prompt }],
-      { model: 'llama-3.3-70b-versatile', maxTokens: 2000, temperature: 0.35 }
-    );
-    return NextResponse.json({ article: art.topic, rawResponse: raw });
+    const res = await repairOne(art, isAI);
+    return NextResponse.json({ article: art.topic, result: res });
   }
 
   let repaired = 0;
@@ -138,16 +136,16 @@ export async function GET(req: NextRequest) {
         .update({
           topic:      res.topic || art.topic,
           summary:    res.summary,
-          key_points: res.key_points?.length ? res.key_points : null,
+          key_points: res.key_points.length ? res.key_points : null,
           category:   res.category || art.category,
         })
         .eq('id', art.id);
       if (upErr) errors.push(`${art.topic.slice(0, 40)}: ${upErr.message}`);
       else repaired++;
     } catch (err) {
-      errors.push(`${art.topic.slice(0, 40)}: ${String(err).slice(0, 120)}`);
+      errors.push(`${art.topic.slice(0, 40)}: ${String(err).slice(0, 150)}`);
     }
-    await new Promise(r => setTimeout(r, 300));
+    await new Promise(r => setTimeout(r, 800));
   }
 
   return NextResponse.json({ success: true, found: bad.length, repaired, errors });

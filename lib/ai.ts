@@ -40,7 +40,7 @@ export async function callAI(
       (error.message.includes('rate_limit') || error.message.includes('429'))
     ) {
       const fallback = await getGroq().chat.completions.create({
-        model: 'llama3-8b-8192',
+        model: 'llama-3.1-8b-instant',
         messages,
         max_tokens: maxTokens,
         temperature,
