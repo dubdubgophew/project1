@@ -450,7 +450,7 @@ export function StocksFeed({
     const p = new URLSearchParams();
     if (ca && ca !== 'all')     p.set('category', ca);
     if (co && co !== 'all')     p.set('country', co);
-    if (lg && lg !== 'en')      p.set('lang', lg);
+    if (lg && lg !== 'all')     p.set('lang', lg);
     if (sq.trim())              p.set('q', sq.trim());
     if (s  && s  !== 'latest')  p.set('sort', s);
     router.push(`/stocks${p.size ? `?${p}` : ''}`, { scroll: false });
@@ -512,7 +512,7 @@ export function StocksFeed({
   useEffect(() => {
     const ca = searchParams.get('category') ?? 'all';
     const co = searchParams.get('country')  ?? 'all';
-    const lg = searchParams.get('lang')     ?? 'en';
+    const lg = searchParams.get('lang')     ?? 'all';
     const s  = searchParams.get('sort')     ?? 'latest';
     const sq = searchParams.get('q')        ?? '';
     setCategory(ca); setCountry(co); setLang(lg); setSort(s); setQ(sq); setSearchInput(sq);

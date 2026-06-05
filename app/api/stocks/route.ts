@@ -32,11 +32,7 @@ export async function GET(req: NextRequest) {
 
     if (category && category !== 'all') query = query.eq('category', category);
     if (country  && country  !== 'all') query = query.eq('country_code', country.toUpperCase());
-    if (lang && lang !== 'all') {
-      query = lang === 'en'
-        ? query.or('language_code.eq.en,language_code.is.null')
-        : query.eq('language_code', lang);
-    }
+    if (lang     && lang     !== 'all') query = query.eq('language_code', lang);
     if (q.trim()) query = query.or(`topic.ilike.%${q.trim()}%,summary.ilike.%${q.trim()}%`);
 
     const { data: items, count } = await query;
