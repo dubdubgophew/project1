@@ -100,7 +100,7 @@ export default async function StocksPage({ searchParams }: PageProps) {
 
   const initialCategory = searchParams?.category ?? 'all';
   const initialCountry  = searchParams?.country  ?? 'all';
-  const initialLang     = searchParams?.lang      ?? 'all';
+  const initialLang     = searchParams?.lang      ?? 'en';
   const initialQ        = searchParams?.q         ?? '';
   const initialSort     = searchParams?.sort      ?? 'latest';
 
