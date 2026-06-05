@@ -123,6 +123,16 @@ const TOOLS: Tool[] = [
     category: 'AI Writing',
   },
   {
+    icon: '▶️',
+    name: 'YouTube Summarizer',
+    description: 'Summarize any YouTube video from its URL. Get key points, timestamps, and insights in seconds. Free.',
+    href: '/tools/youtube-summarizer',
+    badge: 'Popular',
+    color: 'from-red-500/10 to-rose-600/5 border-red-500/20 hover:border-red-500/40',
+    tags: ['youtube', 'video summarizer', 'youtube summary', 'video to text'],
+    category: 'AI Writing',
+  },
+  {
     icon: '#️⃣',
     name: 'Hashtag Generator',
     description: 'Generate viral hashtags for Instagram, Twitter, LinkedIn, and TikTok based on your topic.',
@@ -407,6 +417,67 @@ const TOOLS: Tool[] = [
     tags: ['home loan', 'emi', 'india', 'mortgage', 'amortization', 'section 24b'],
     category: 'Calculators',
   },
+  // File Converter
+  {
+    icon: '🗜️',
+    name: 'Image Compressor',
+    description: 'Compress JPG, PNG, and WebP images by up to 90% without losing quality. No upload — works entirely in your browser. Free & instant.',
+    href: '/tools/compress-image',
+    badge: 'New',
+    color: 'from-blue-500/10 to-sky-600/5 border-blue-500/20 hover:border-blue-500/40',
+    tags: ['image compressor', 'compress image', 'reduce image size', 'jpg compressor', 'png optimizer'],
+    category: 'File Converter',
+  },
+  {
+    icon: '🔄',
+    name: 'Image Converter',
+    description: 'Convert images between JPG, PNG, and WebP formats instantly. Batch convert, no upload, 100% in-browser. Free.',
+    href: '/tools/image-converter',
+    badge: 'New',
+    color: 'from-cyan-500/10 to-teal-600/5 border-cyan-500/20 hover:border-cyan-500/40',
+    tags: ['image converter', 'jpg to png', 'png to webp', 'convert image format', 'webp converter'],
+    category: 'File Converter',
+  },
+  {
+    icon: '🖼️',
+    name: 'Image to PDF',
+    description: 'Convert JPG, PNG, and WebP images to a PDF document. Add multiple images, reorder pages, choose A4 or Letter. Free & instant.',
+    href: '/tools/image-to-pdf',
+    badge: 'New',
+    color: 'from-rose-500/10 to-pink-600/5 border-rose-500/20 hover:border-rose-500/40',
+    tags: ['image to pdf', 'jpg to pdf', 'png to pdf', 'photos to pdf', 'convert image to pdf'],
+    category: 'File Converter',
+  },
+  {
+    icon: '📎',
+    name: 'Merge PDF',
+    description: 'Combine multiple PDF files into one. Reorder files, no upload, works entirely in your browser. Free alternative to Smallpdf.',
+    href: '/tools/merge-pdf',
+    badge: 'New',
+    color: 'from-violet-500/10 to-purple-600/5 border-violet-500/20 hover:border-violet-500/40',
+    tags: ['merge pdf', 'combine pdf', 'pdf merger', 'join pdf files', 'pdf combiner'],
+    category: 'File Converter',
+  },
+  {
+    icon: '📄',
+    name: 'PDF to JPG',
+    description: 'Convert every PDF page to a high-quality JPG or PNG image. Choose DPI, extract any page range. Free, no upload needed.',
+    href: '/tools/pdf-to-jpg',
+    badge: 'New',
+    color: 'from-amber-500/10 to-orange-600/5 border-amber-500/20 hover:border-amber-500/40',
+    tags: ['pdf to jpg', 'pdf to image', 'convert pdf to jpg', 'extract pdf pages', 'pdf to png'],
+    category: 'File Converter',
+  },
+  {
+    icon: '✂️',
+    name: 'Split PDF',
+    description: 'Split a PDF into separate files by page range. Extract pages, split by range, or save every page as its own PDF. Free, no upload.',
+    href: '/tools/split-pdf',
+    badge: 'New',
+    color: 'from-emerald-500/10 to-green-600/5 border-emerald-500/20 hover:border-emerald-500/40',
+    tags: ['split pdf', 'pdf splitter', 'extract pdf pages', 'pdf page extractor', 'separate pdf pages'],
+    category: 'File Converter',
+  },
   // Fitness & Health
   {
     icon: '✨',
@@ -430,7 +501,7 @@ const TOOLS: Tool[] = [
   },
 ];
 
-const ALL_CATEGORIES = ['All', 'Payroll & Legal', 'AI Writing', 'AI Documents', 'Developer', 'Finance', 'Utilities', 'Design & Diagrams', 'Calculators', 'Fitness & Health'];
+const ALL_CATEGORIES = ['All', 'Payroll & Legal', 'AI Writing', 'AI Documents', 'Developer', 'Finance', 'Utilities', 'File Converter', 'Design & Diagrams', 'Calculators', 'Fitness & Health'];
 
 function ToolsContent() {
   const searchParams = useSearchParams();

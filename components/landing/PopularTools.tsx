@@ -131,6 +131,30 @@ const POPULAR_TOOLS = [
     category: 'Career',
     pinned: true,
   },
+  {
+    icon: '🗜️',
+    name: 'Image Compressor',
+    href: '/tools/compress-image',
+    desc: 'Compress JPG, PNG & WebP images by up to 90% — no upload, 100% in-browser, instant.',
+    category: 'File Tools',
+    pinned: true,
+  },
+  {
+    icon: '📎',
+    name: 'Merge PDF',
+    href: '/tools/merge-pdf',
+    desc: 'Combine multiple PDFs into one. Reorder files, no upload, works in browser. Free alternative to Smallpdf.',
+    category: 'File Tools',
+    pinned: true,
+  },
+  {
+    icon: '🖼️',
+    name: 'Image to PDF',
+    href: '/tools/image-to-pdf',
+    desc: 'Convert JPG, PNG & WebP images to PDF. Multiple images, reorder pages, instant download. Free.',
+    category: 'File Tools',
+    pinned: false,
+  },
 ];
 
 export function PopularTools() {
@@ -151,7 +175,7 @@ export function PopularTools() {
             href="/tools"
             className="text-sm text-orange-500 hover:text-orange-600 font-medium transition-colors whitespace-nowrap self-start sm:self-auto"
           >
-            View all 40 tools →
+            View all 47 tools →
           </Link>
         </div>
 
@@ -208,7 +232,7 @@ export function PopularTools() {
             href="/tools"
             className="text-sm text-orange-500 hover:text-orange-600 font-medium transition-colors"
           >
-            View all 40 tools →
+            View all 47 tools →
           </Link>
         </div>
       </div>

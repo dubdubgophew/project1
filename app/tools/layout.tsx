@@ -1,20 +1,20 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'All 29 Free AI Tools — Pay Stub Generator, Resume Builder & More | Formly',
-  description: 'Browse all 29 free AI tools on Formly: pay stub generator, resume builder, contract generator, PDF summarizer, paraphraser, grammar checker, code reviewer, QR code generator & more. No signup needed.',
-  keywords: ['free ai tools online', 'pay stub generator free', 'ai resume builder', 'free grammar checker', 'ai paraphraser', 'pdf summarizer free', 'free code reviewer', 'contract generator online', 'qr code generator free', 'online productivity tools', 'free writing tools', 'developer tools online'],
+  title: 'All 47 Free AI Tools — Image Compressor, PDF Merger, Resume Builder & More | Formly',
+  description: 'Browse all 47 free tools on Formly: image compressor, merge PDF, split PDF, image converter, pay stub generator, resume builder, grammar checker, PDF summarizer & more. No signup needed.',
+  keywords: ['free ai tools online', 'image compressor free', 'merge pdf online free', 'split pdf online', 'pdf to jpg converter', 'pay stub generator free', 'ai resume builder', 'free grammar checker', 'ai paraphraser', 'pdf summarizer free', 'free code reviewer', 'contract generator online', 'image converter online free'],
   openGraph: {
-    title: 'All 29 Free AI Tools | Formly',
-    description: 'Pay stub generator, resume builder, contract generator, PDF summarizer, paraphraser, grammar checker, code reviewer & 22 more free AI tools.',
+    title: 'All 47 Free AI Tools | Formly',
+    description: 'Image compressor, merge PDF, split PDF, PDF to JPG, pay stub generator, resume builder, grammar checker & 40 more free tools.',
     url: 'https://formly.tools/tools',
     type: 'website',
     siteName: 'Formly',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'All 29 Free AI Tools | Formly',
-    description: '29 free AI tools: pay stub generator, resume builder, paraphraser, grammar checker, PDF summarizer & more. No signup needed.',
+    title: 'All 47 Free AI Tools | Formly',
+    description: '47 free tools: image compressor, merge PDF, split PDF, pay stub generator, resume builder, paraphraser, grammar checker & more. No signup needed.',
   },
   alternates: { canonical: 'https://formly.tools/tools' },
 };
@@ -29,9 +29,9 @@ export default function ToolsLayout({ children }: { children: React.ReactNode })
             '@context': 'https://schema.org',
             '@type': 'ItemList',
             name: 'Formly Free AI Tools',
-            description: 'Complete list of 29 free AI-powered tools available on Formly',
+            description: 'Complete list of 47 free tools available on Formly — AI tools, file converters, PDF tools, calculators & more',
             url: 'https://formly.tools/tools',
-            numberOfItems: 29,
+            numberOfItems: 47,
             itemListElement: [
               { '@type': 'ListItem', position: 1, name: 'Pay Stub Generator', url: 'https://formly.tools/tools/paystub-generator', description: 'Free pay stub maker with 2025 tax calculations for USA, UK, Canada, India, Australia' },
               { '@type': 'ListItem', position: 2, name: 'Resume Builder', url: 'https://formly.tools/tools/resume-builder', description: 'AI-powered ATS-optimized resume creator with real-time ATS score' },
@@ -62,6 +62,12 @@ export default function ToolsLayout({ children }: { children: React.ReactNode })
               { '@type': 'ListItem', position: 27, name: 'Diff Checker', url: 'https://formly.tools/tools/diff-checker', description: 'Compare two texts and highlight differences' },
               { '@type': 'ListItem', position: 28, name: 'Text Case', url: 'https://formly.tools/tools/text-case', description: 'Convert text between UPPER, lower, Title, camelCase, snake_case' },
               { '@type': 'ListItem', position: 29, name: 'Terms Simplifier', url: 'https://formly.tools/tools/terms-simplifier', description: 'AI simplifies legal terms and privacy policies into plain English' },
+              { '@type': 'ListItem', position: 30, name: 'Image Compressor', url: 'https://formly.tools/tools/compress-image', description: 'Compress JPG, PNG, WebP images by up to 90% — no upload, browser-only' },
+              { '@type': 'ListItem', position: 31, name: 'Image Converter', url: 'https://formly.tools/tools/image-converter', description: 'Convert images between JPG, PNG, WebP formats — batch, no upload' },
+              { '@type': 'ListItem', position: 32, name: 'Image to PDF', url: 'https://formly.tools/tools/image-to-pdf', description: 'Convert multiple images to a single PDF document' },
+              { '@type': 'ListItem', position: 33, name: 'Merge PDF', url: 'https://formly.tools/tools/merge-pdf', description: 'Combine multiple PDF files into one — free Smallpdf alternative' },
+              { '@type': 'ListItem', position: 34, name: 'PDF to JPG', url: 'https://formly.tools/tools/pdf-to-jpg', description: 'Convert PDF pages to JPG or PNG images — choose DPI, extract pages' },
+              { '@type': 'ListItem', position: 35, name: 'Split PDF', url: 'https://formly.tools/tools/split-pdf', description: 'Split PDF by page range, extract pages, or save each page separately' },
             ],
           }),
         }}

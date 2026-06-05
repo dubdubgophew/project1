@@ -53,6 +53,12 @@ const STATIC_ROUTES: Array<{ url: string; priority: number; changeFrequency: Met
   { url: '/tools/iron-core-workout', priority: 0.9, changeFrequency: 'monthly', lastModified: '2026-05-31' },
   { url: '/tools/ats-resume-scanner', priority: 0.9, changeFrequency: 'weekly', lastModified: '2026-06-04' },
   { url: '/tools/will-ai-replace-me', priority: 0.9, changeFrequency: 'weekly', lastModified: '2026-06-04' },
+  { url: '/tools/compress-image', priority: 0.9, changeFrequency: 'monthly', lastModified: '2026-06-05' },
+  { url: '/tools/image-converter', priority: 0.9, changeFrequency: 'monthly', lastModified: '2026-06-05' },
+  { url: '/tools/image-to-pdf', priority: 0.9, changeFrequency: 'monthly', lastModified: '2026-06-05' },
+  { url: '/tools/merge-pdf', priority: 0.9, changeFrequency: 'monthly', lastModified: '2026-06-05' },
+  { url: '/tools/pdf-to-jpg', priority: 0.9, changeFrequency: 'monthly', lastModified: '2026-06-05' },
+  { url: '/tools/split-pdf', priority: 0.9, changeFrequency: 'monthly', lastModified: '2026-06-05' },
   // Comparison / alternatives pages (high-intent SEO)
   { url: '/alternatives', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-05-31' },
   // Static marketing & informational pages

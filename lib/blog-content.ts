@@ -2373,6 +2373,233 @@ export const BLOG_POSTS: BlogPost[] = [
       { q: 'Is the tool different for different countries?', a: 'The AI capability assessment is global. However, AI adoption speed varies by country and industry. US and UK adoption is fastest; South Asia and Southeast Asia are catching up rapidly. The tool calibrates risk based on global AI capabilities — local adoption speed is an additional factor to consider.' },
     ],
   },
+
+  // ─── File Converter Tools ──────────────────────────────────────────────────
+  {
+    slug: 'compress-image-online',
+    title: 'How to Compress Images Online for Free — No Quality Loss',
+    category: 'productivity',
+    toolSlug: 'compress-image',
+    toolName: 'Image Compressor',
+    readingTime: 5,
+    publishedAt: '2026-06-05',
+    updatedAt: '2026-06-05',
+    metaDescription: 'Learn how to compress JPG, PNG, and WebP images for free online without losing quality. Reduce file size by up to 90% — no upload, works in browser.',
+    intro: 'Large image files slow down websites, fill up storage, and hit email attachment limits. Whether you\'re a developer optimizing a site, a blogger resizing post images, or someone trying to email a photo, image compression is an essential skill. This guide shows you how to compress images for free — right in your browser.',
+    sections: [
+      {
+        heading: 'What Is Image Compression?',
+        body: 'Image compression reduces the file size of an image by removing redundant data. There are two types: lossless (maintains perfect quality, smaller reduction) and lossy (accepts minor quality trade-offs for much larger reductions). JPEG and WebP support both. PNG is typically lossless. For most web use cases, 70–85% quality gives undetectable difference at 50–80% smaller file sizes.',
+      },
+      {
+        heading: 'Why Compress Images?',
+        body: 'Google uses page load speed as a ranking factor — oversized images are the #1 cause of slow pages. For email, most servers cap attachments at 10–25 MB. For social media, platforms recompress your images anyway, so pre-compressing gives you control over the output. For storage, compressing a folder of 100 photos can save gigabytes.',
+      },
+      {
+        heading: 'How to Compress an Image in Your Browser',
+        body: '1. Open Formly\'s free Image Compressor tool.\n2. Drag and drop your image (JPG, PNG, or WebP) or click to browse.\n3. Adjust the quality slider — 80 is a great default for web use.\n4. Choose output format (original, JPEG, or WebP for best compression).\n5. See the before/after file size comparison instantly.\n6. Click "Download Compressed" to save the result.\n\nNo upload to any server. Everything runs in your browser using the Canvas API.',
+      },
+      {
+        heading: 'Best Practices by Country and Use Case',
+        body: 'In India, mobile data is often throttled — aim for images under 100 KB for blog posts. In the US and UK, web performance tools like Lighthouse flag images over 200 KB. In Australia, where broadband is improving but rural connections are slower, sub-150 KB images are ideal. For e-commerce globally, product images should be under 300 KB at 1200×1200 px.',
+      },
+      {
+        heading: 'WebP vs JPEG vs PNG — Which Format to Choose?',
+        body: 'WebP offers the best compression: typically 25–35% smaller than JPEG at equivalent quality. Use WebP for all web images if browser support is acceptable (it\'s supported in all modern browsers). Use JPEG for photographs where transparency isn\'t needed. Use PNG for logos, screenshots, or anything with transparency or sharp edges. Avoid PNG for photos — file sizes are 3–5× larger than JPEG.',
+      },
+    ],
+    faqs: [
+      { q: 'Does compressing images reduce quality?', a: 'At 70–85% quality settings, the reduction in quality is invisible to the human eye for most images. Only extreme compression (below 40%) causes visible artifacts. Use the tool\'s preview to check before downloading.' },
+      { q: 'Is the image compressor completely free?', a: 'Yes. Formly\'s image compressor is 100% free with no file size limits. Your images never leave your device — all processing happens in the browser.' },
+      { q: 'Can I compress multiple images at once?', a: 'Yes. Drag and drop multiple images and the tool will process each one. Download them individually.' },
+      { q: 'What formats can I compress?', a: 'JPG/JPEG, PNG, and WebP input formats are supported. You can compress in the original format or convert to a more efficient format like WebP or JPEG.' },
+    ],
+    countriesServed: ['United States', 'United Kingdom', 'India', 'Australia', 'Canada', 'Germany', 'Singapore'],
+  },
+  {
+    slug: 'image-converter-online',
+    title: 'Free Image Converter Online — JPG to PNG, PNG to WebP & More',
+    category: 'productivity',
+    toolSlug: 'image-converter',
+    toolName: 'Image Converter',
+    readingTime: 4,
+    publishedAt: '2026-06-05',
+    updatedAt: '2026-06-05',
+    metaDescription: 'Convert images between JPG, PNG, and WebP formats for free online. Batch convert multiple images, no upload required. Works entirely in your browser.',
+    intro: 'Different platforms and use cases require different image formats. Social media platforms prefer JPEG. Web developers want WebP for performance. Designers need PNG for transparency. Converting between formats used to require Photoshop — now you can do it instantly in your browser for free.',
+    sections: [
+      {
+        heading: 'JPG vs PNG vs WebP — When to Use Each',
+        body: 'JPEG/JPG: Best for photographs. Lossy compression gives small file sizes. No transparency support. Ideal for blog posts, product photos, social media.\n\nPNG: Best for graphics, logos, screenshots. Lossless — no quality loss. Supports transparency (alpha channel). File sizes are larger for photos.\n\nWebP: Google\'s modern format. Smaller than both JPEG and PNG at equivalent quality. Supports transparency. Supported by all modern browsers (Chrome, Firefox, Safari, Edge). Best choice for web images.',
+      },
+      {
+        heading: 'How to Convert Image Formats Online',
+        body: '1. Open Formly\'s free Image Converter.\n2. Upload one or more images by dragging and dropping or clicking Browse.\n3. Select your target format: JPEG, PNG, or WebP.\n4. For JPEG and WebP, adjust the quality slider (default: 90%).\n5. Click "Convert All" to batch-convert all uploaded images.\n6. Download each converted image individually.',
+      },
+      {
+        heading: 'Converting PNG to WebP for SEO',
+        body: 'Google\'s PageSpeed Insights and Core Web Vitals scoring reward WebP images. Switching from PNG/JPEG to WebP can reduce image payload by 25–50%, improving LCP (Largest Contentful Paint) scores. This directly impacts search rankings, especially in competitive niches. For WordPress sites, use WebP for all new uploads and convert existing images with this tool.',
+      },
+      {
+        heading: 'Batch Image Conversion Workflow',
+        body: 'Upload all images at once, select the target format, click Convert All, then download each converted file. For large batches, convert in groups. The canvas-based conversion preserves image dimensions exactly — no unexpected cropping or resizing.',
+      },
+    ],
+    faqs: [
+      { q: 'Can I convert PNG to JPG without losing transparency?', a: 'PNG supports transparency but JPEG does not. When converting PNG to JPEG, transparent areas are filled with white. If you need transparency in the output, convert to WebP instead — it supports transparency like PNG with smaller file sizes.' },
+      { q: 'Does the image converter work offline?', a: 'Yes. Once the page loads, all conversion happens in your browser using the Canvas API. No internet connection is needed after the initial page load, and your images never leave your device.' },
+      { q: 'Is there a file size limit?', a: 'There is no enforced limit, but very large images (over 20 MP) may slow down browser-based processing. For extremely large files, consider using a desktop application.' },
+    ],
+    countriesServed: ['United States', 'United Kingdom', 'India', 'Australia', 'Canada', 'Germany'],
+  },
+  {
+    slug: 'image-to-pdf-converter',
+    title: 'Convert Images to PDF Free Online — JPG, PNG & WebP to PDF',
+    category: 'productivity',
+    toolSlug: 'image-to-pdf',
+    toolName: 'Image to PDF',
+    readingTime: 5,
+    publishedAt: '2026-06-05',
+    updatedAt: '2026-06-05',
+    metaDescription: 'Convert JPG, PNG, and WebP images to PDF online for free. Add multiple images, choose page size, reorder pages, instant download. No upload needed.',
+    intro: 'Need to send multiple photos as one document? Convert a scanned receipt to PDF for expenses? Combine product images into a portfolio? Converting images to PDF is a common task for students, professionals, and businesses worldwide. Here\'s how to do it instantly for free.',
+    sections: [
+      {
+        heading: 'When Do You Need to Convert Images to PDF?',
+        body: 'Common use cases include: submitting scanned documents to government portals (Aadhaar, passport applications, HMRC, IRS), emailing receipts to accountants, creating photo portfolios, combining multiple screenshots into a report, sharing ID proofs for bank account opening, and attaching multiple photos to legal documents.',
+      },
+      {
+        heading: 'How to Convert Images to PDF',
+        body: '1. Open Formly\'s Image to PDF tool.\n2. Upload your JPG, PNG, or WebP images by drag and drop or clicking Browse.\n3. Reorder the images using the up/down arrows to set the page order.\n4. Choose your page size: A4 (international standard), US Letter, or Fit to Image.\n5. Choose orientation: Portrait or Landscape.\n6. Select margin: None, Small, or Medium.\n7. Click "Convert to PDF" — the PDF is generated in your browser.\n8. Download the PDF.',
+      },
+      {
+        heading: 'A4 vs Letter vs Fit to Image',
+        body: 'A4 (210 × 297 mm) is the international standard used in the UK, Europe, India, Australia, and most of the world. US Letter (8.5 × 11 inches) is the US standard. "Fit to Image" sizes each page exactly to the image\'s dimensions — useful for photos and screenshots where you don\'t want whitespace borders.',
+      },
+      {
+        heading: 'Document Submission Requirements by Country',
+        body: 'India (government portals): Most require PDF under 1 MB, A4 size. UK (HMRC, visa applications): A4, 150–300 DPI recommended. US (USCIS, IRS): Letter size preferred. Australia (myGov, immigration): A4 accepted, file size varies. Use the "Fit to Image" option only for informal documents — for official submissions, always use A4 or Letter.',
+      },
+    ],
+    faqs: [
+      { q: 'Can I add multiple images to one PDF?', a: 'Yes. Upload multiple images and they will each become a separate page in the PDF. Use the up/down arrows to control the page order.' },
+      { q: 'Are my images uploaded to a server?', a: 'No. This tool uses pdf-lib running entirely in your browser. Your images never leave your device.' },
+      { q: 'What image formats are supported?', a: 'JPG, PNG, and WebP. For WebP, the tool automatically converts to PNG internally before embedding in the PDF, since PDF natively supports JPEG and PNG.' },
+      { q: 'What is the maximum PDF size I can create?', a: 'There is no hard limit. The PDF size depends on your image sizes and the number of pages. Browsers can typically handle PDFs up to a few hundred MB.' },
+    ],
+    countriesServed: ['India', 'United Kingdom', 'United States', 'Australia', 'Canada', 'Germany', 'Singapore', 'New Zealand'],
+  },
+  {
+    slug: 'merge-pdf-files-online',
+    title: 'Merge PDF Files Online Free — Combine Multiple PDFs Instantly',
+    category: 'productivity',
+    toolSlug: 'merge-pdf',
+    toolName: 'Merge PDF',
+    readingTime: 5,
+    publishedAt: '2026-06-05',
+    updatedAt: '2026-06-05',
+    metaDescription: 'Merge multiple PDF files into one online for free. No upload, no size limit, reorder files, instant download. Free alternative to Smallpdf and ILovePDF.',
+    intro: 'Merging PDFs is one of the most common document tasks in the modern workplace. Whether you\'re combining bank statements for a loan application, merging chapters of a report, or compiling invoices for accounting, a PDF merger saves time. Here\'s why a browser-based, no-upload PDF merger is the safest and fastest option.',
+    sections: [
+      {
+        heading: 'Why Merge PDFs?',
+        body: 'Common reasons to merge PDFs: combining bank statements for a visa application, merging invoices for monthly accounting, attaching multiple contracts as one document to an email, combining research papers into a reading list, merging scanned pages of a multi-page form, and compiling multiple reports into an annual summary.',
+      },
+      {
+        heading: 'How to Merge PDFs Online for Free',
+        body: '1. Open Formly\'s Merge PDF tool.\n2. Click to upload or drag and drop your PDF files.\n3. Once uploaded, the tool shows the page count for each file.\n4. Reorder the PDFs using the up/down arrows to set the final document order.\n5. Click "Merge PDFs".\n6. Download the merged PDF.',
+      },
+      {
+        heading: 'Privacy: Why No-Upload PDF Mergers Matter',
+        body: 'Many PDF tools (Smallpdf, ILovePDF, Adobe Online) upload your files to their servers for processing. This is a privacy risk for sensitive documents like bank statements, tax returns, legal contracts, medical records, and HR documents. Formly\'s PDF merger uses pdf-lib running entirely in your browser — your documents never leave your device. This makes it the safest choice for confidential files.',
+      },
+      {
+        heading: 'Formly vs Smallpdf vs ILovePDF',
+        body: 'Smallpdf: 2 free tasks per hour, requires sign-up for more, uploads files to servers. ILovePDF: 5 free tasks, files uploaded to cloud. Adobe Acrobat Online: subscription required for most features. Formly: unlimited free merges, no upload, no account required, works offline after page load. For privacy-conscious users and those with sensitive documents, Formly is the clear choice.',
+      },
+    ],
+    faqs: [
+      { q: 'Is there a file size limit for merging PDFs?', a: 'There is no enforced size limit. The practical limit depends on your device\'s available RAM. Most modern devices can handle PDFs totalling several hundred MB.' },
+      { q: 'How many PDFs can I merge at once?', a: 'There is no limit on the number of files. Upload as many PDFs as you need and merge them all into one document.' },
+      { q: 'Can I reorder pages within a PDF?', a: 'The Merge PDF tool lets you reorder entire files. To reorder individual pages within a single PDF, use the Split PDF tool to extract pages and then use Image to PDF to reassemble them.' },
+      { q: 'Do I need to create an account?', a: 'No. Formly\'s Merge PDF tool requires no sign-up, no account, and no payment. It is completely free.' },
+    ],
+    countriesServed: ['United States', 'United Kingdom', 'India', 'Australia', 'Canada', 'Germany', 'Singapore', 'New Zealand', 'Ireland'],
+  },
+  {
+    slug: 'pdf-to-jpg-converter',
+    title: 'Convert PDF to JPG Online Free — Extract PDF Pages as Images',
+    category: 'productivity',
+    toolSlug: 'pdf-to-jpg',
+    toolName: 'PDF to JPG',
+    readingTime: 4,
+    publishedAt: '2026-06-05',
+    updatedAt: '2026-06-05',
+    metaDescription: 'Convert PDF pages to JPG or PNG images online for free. Extract all pages or specific pages, choose DPI quality. No upload, works in browser.',
+    intro: 'Sometimes you need the content of a PDF as an image — to embed in a presentation, post on social media, attach to a form that only accepts images, or extract a chart from a report. Converting PDF to JPG in your browser is fast, private, and free.',
+    sections: [
+      {
+        heading: 'Why Convert PDF to Image?',
+        body: 'Common use cases: extracting a graph or chart from a PDF for a PowerPoint presentation, converting a scanned PDF to editable images for OCR processing, sharing a PDF page on WhatsApp or Instagram (which don\'t accept PDFs), attaching a PDF page to an online form that only accepts images, and creating thumbnail previews of PDF documents.',
+      },
+      {
+        heading: 'How to Convert PDF to JPG Online',
+        body: '1. Open Formly\'s PDF to JPG tool.\n2. Upload your PDF by clicking or dropping it.\n3. Choose image quality: Low (72 DPI for thumbnails), Medium (150 DPI for standard use), or High (300 DPI for print quality).\n4. Choose output format: JPG (smaller size) or PNG (lossless, supports transparency).\n5. Select pages: all pages or a specific range (e.g., "1–3, 5").\n6. Click "Convert".\n7. Download images individually or all at once.',
+      },
+      {
+        heading: 'Choosing the Right DPI',
+        body: '72 DPI: Screen resolution — use for web thumbnails, social media previews, or quick sharing. File sizes are smallest.\n\n150 DPI: Standard quality — good for email, presentations, and general use. Balances quality and file size.\n\n300 DPI: Print quality — use when the image will be printed or when maximum detail is needed. File sizes are largest but quality is crisp.',
+      },
+      {
+        heading: 'JPG vs PNG Output',
+        body: 'JPG: Smaller file size, ideal for photos and complex PDFs. Slight quality loss from compression, no transparency. PNG: Larger file size, lossless quality, supports transparency. Use PNG if the PDF page has a transparent background or when you need pixel-perfect output for OCR or further image processing.',
+      },
+    ],
+    faqs: [
+      { q: 'Can I convert just one page of a PDF to JPG?', a: 'Yes. Enter the specific page number in the page range field (e.g., "5") to convert only that page.' },
+      { q: 'Why is the output image blurry?', a: 'Select a higher DPI setting. At 72 DPI, images look fine on screen but may appear low-resolution when enlarged. Use 150 or 300 DPI for clearer output.' },
+      { q: 'Is my PDF uploaded to a server?', a: 'No. The tool uses PDF.js running in your browser. Your file is never sent to any server.' },
+      { q: 'How do I convert all pages at once?', a: 'Select "All pages" in the page range field (leave it blank or type "all"). Each page becomes a separate image file.' },
+    ],
+    countriesServed: ['United States', 'United Kingdom', 'India', 'Australia', 'Canada', 'Germany'],
+  },
+  {
+    slug: 'split-pdf-online',
+    title: 'Split PDF Online Free — Extract & Separate PDF Pages Instantly',
+    category: 'productivity',
+    toolSlug: 'split-pdf',
+    toolName: 'Split PDF',
+    readingTime: 4,
+    publishedAt: '2026-06-05',
+    updatedAt: '2026-06-05',
+    metaDescription: 'Split PDF files online for free. Extract specific pages, split by page range, or save every page as a separate PDF. No upload, works entirely in browser.',
+    intro: 'Need to extract just a few pages from a 200-page PDF? Submit only certain pages of a contract? Share one chapter of a report? Splitting PDFs used to require Adobe Acrobat Pro. Now you can do it for free in your browser in seconds.',
+    sections: [
+      {
+        heading: 'Three Ways to Split a PDF',
+        body: '1. Extract Pages — select specific pages (e.g., "1, 3, 5–8") and create one PDF containing only those pages. Useful when you need a subset of a document.\n\n2. Split by Range — divide a PDF into multiple sections (e.g., "1–10 | 11–20 | 21–30"), with each range becoming a separate PDF file. Useful for separating chapters or sections.\n\n3. Every Page Separately — create one PDF per page. Useful when you need to share individual pages, have each signed separately, or process pages individually.',
+      },
+      {
+        heading: 'How to Split a PDF Online',
+        body: '1. Open Formly\'s Split PDF tool.\n2. Upload your PDF.\n3. Choose your split mode: Extract pages, Split by range, or Every page separately.\n4. For "Extract pages": Enter your page numbers (e.g., "1–5, 7, 10–12").\n5. For "Split by range": Enter ranges separated by "|" (e.g., "1–10 | 11–20").\n6. Click "Split PDF".\n7. Download each output PDF individually.',
+      },
+      {
+        heading: 'Common Use Cases by Region',
+        body: 'India: Extracting specific pages from a property registration document, splitting chapters from a textbook PDF. UK: Separating pages of a tenancy agreement for different parties to sign. US: Extracting exhibits from a legal filing. Australia: Splitting financial statements by quarter. Germany: Separating invoice pages for different cost centres.',
+      },
+      {
+        heading: 'Formly vs Smallpdf Split PDF',
+        body: 'Smallpdf charges for unlimited page extraction and uploads files to cloud servers. Formly uses pdf-lib in-browser — completely free, unlimited pages, zero upload, works offline after page load. For sensitive legal and financial documents, Formly is the obvious choice.',
+      },
+    ],
+    faqs: [
+      { q: 'Can I split a password-protected PDF?', a: 'Password-protected PDFs cannot be processed by this tool. Remove the password first using a PDF password remover.' },
+      { q: 'How do I split a 500-page PDF into individual pages?', a: 'Select "Every page separately" mode and click Split. The tool will generate 500 individual PDF files. Download each one. Note: very large PDFs may take a moment to process in the browser.' },
+      { q: 'Is there a page limit?', a: 'There is no enforced page limit. The practical limit depends on your device\'s RAM. PDFs with hundreds of pages work fine on modern devices.' },
+      { q: 'Can I split multiple PDFs at once?', a: 'The tool processes one PDF at a time. For batch splitting, repeat the process for each file.' },
+    ],
+    countriesServed: ['United States', 'United Kingdom', 'India', 'Australia', 'Canada', 'Germany', 'Singapore'],
+  },
 ];
 
 export const BLOG_CATEGORIES = [

@@ -11,9 +11,9 @@ import { BannerAd } from '@/components/shared/AdSense';
 import { DiagrifBanner } from '@/components/landing/DiagrifBanner';
 
 export const metadata: Metadata = {
-  title: 'Formly Tools — 40 Free AI Tools Online | No Signup Required',
+  title: 'Formly Tools — 47 Free AI Tools Online | No Signup Required',
   description:
-    'Free AI-powered tools: ATS resume scanner, AI job risk checker, pay stub generator, resume builder, grammar checker, PDF summarizer, contract generator & 35 more. No signup. No credit card. Works instantly in your browser.',
+    'Free AI-powered tools: ATS resume scanner, AI job risk checker, pay stub generator, resume builder, grammar checker, PDF summarizer, image compressor, merge PDF & 39 more. No signup. No credit card. Works instantly in your browser.',
   keywords: [
     'free ai tools online', 'free tools no signup', 'ai productivity tools free',
     'pay stub generator free', 'resume builder free ai', 'grammar checker free online',
@@ -22,16 +22,16 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: 'https://formly.tools' },
   openGraph: {
-    title: 'Formly Tools — 40 Free AI Tools Online | No Signup Required',
-    description: '42 free AI-powered tools in one place. Pay stubs, resumes, contracts, grammar check, PDF summarizer, diagrams & more. No signup needed.',
+    title: 'Formly Tools — 47 Free AI Tools Online | No Signup Required',
+    description: '47 free AI-powered tools in one place. Pay stubs, resumes, contracts, grammar check, PDF summarizer, image compressor, merge PDF & more. No signup needed.',
     url: 'https://formly.tools',
     type: 'website',
     siteName: 'Formly Tools',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Formly Tools — 40 free AI tools | No Signup',
-    description: '40 free AI tools: pay stubs, resumes, grammar checker, PDF summarizer, diagrams & more. No signup needed.',
+    title: 'Formly Tools — 47 free AI tools | No Signup',
+    description: '47 free AI tools: pay stubs, resumes, grammar checker, PDF summarizer, image compressor, merge PDF & more. No signup needed.',
   },
 };
 
@@ -40,8 +40,8 @@ const webPageSchema = {
   '@type': 'WebPage',
   '@id': 'https://formly.tools/#webpage',
   url: 'https://formly.tools',
-  name: 'Formly Tools — 40 Free AI Tools Online',
-  description: 'Free AI-powered tools: pay stub generator, resume builder, grammar checker, PDF summarizer, contract generator, income tax calculator, diagram maker & 31 more. No signup required.',
+  name: 'Formly Tools — 47 Free AI Tools Online',
+  description: 'Free AI-powered tools: pay stub generator, resume builder, grammar checker, PDF summarizer, image compressor, merge PDF, contract generator, income tax calculator, diagram maker & 38 more. No signup required.',
   isPartOf: { '@id': 'https://formly.tools/#website' },
   about: { '@type': 'Thing', name: 'Free AI Tools' },
   datePublished: '2024-01-15',
@@ -63,7 +63,7 @@ const softwareAppListSchema = {
   name: 'Top Free AI Tools — Formly Tools',
   description: 'The most popular free AI-powered productivity tools on Formly Tools. No signup required.',
   url: 'https://formly.tools/tools',
-  numberOfItems: 42,
+  numberOfItems: 47,
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Free Pay Stub Generator', url: 'https://formly.tools/tools/paystub-generator' },
     { '@type': 'ListItem', position: 2, name: 'Free Resume Builder', url: 'https://formly.tools/tools/resume-builder' },
@@ -118,7 +118,7 @@ export default function HomePage() {
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <a href="/tools" className="btn-primary text-base px-8 py-4 w-full sm:w-auto">
-                  Try All 40 Tools Free →
+                  Try All 47 Tools Free →
                 </a>
                 <a href="/pricing" className="inline-flex items-center justify-center gap-2 text-base px-8 py-4 rounded-xl font-semibold border border-orange-500/40 text-orange-400 hover:bg-orange-500/10 hover:border-orange-500/70 transition-all duration-200 w-full sm:w-auto">
                   View Pro Plans
