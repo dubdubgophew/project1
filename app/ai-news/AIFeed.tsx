@@ -37,6 +37,8 @@ interface Props {
   initialCategory: string;
   initialQ: string;
   initialId: string | null;
+  initialLanguage: string;
+  initialCountry: string;
   lastUpdated: string | null;
 }
 
@@ -442,6 +444,8 @@ export function AIFeed({
   initialCategory,
   initialQ,
   initialId,
+  initialLanguage,
+  initialCountry,
   lastUpdated: initialLastUpdated,
 }: Props) {
   const router       = useRouter();
@@ -449,8 +453,8 @@ export function AIFeed({
 
   const [items,       setItems]       = useState<AINewsItem[]>(initialItems);
   const [category,    setCategory]    = useState(initialCategory);
-  const [country,     setCountry]     = useState('all');
-  const [language,    setLanguage]    = useState('all');
+  const [country,     setCountry]     = useState(initialCountry);
+  const [language,    setLanguage]    = useState(initialLanguage);
   const [sort,        setSort]        = useState('latest');
   const [q,           setQ]           = useState(initialQ);
   const [page,        setPage]        = useState(1);
@@ -466,7 +470,7 @@ export function AIFeed({
     const p = new URLSearchParams();
     if (ca   && ca   !== 'all')    p.set('category', ca);
     if (co   && co   !== 'all')    p.set('country', co);
-    if (lang && lang !== 'all')    p.set('language', lang);
+    if (lang && lang !== 'en')     p.set('language', lang);  // 'en' is default, omit from URL
     if (sq.trim())                 p.set('q', sq.trim());
     if (s    && s    !== 'latest') p.set('sort', s);
     router.push(`/ai-news${p.size ? `?${p}` : ''}`, { scroll: false });
@@ -528,7 +532,7 @@ export function AIFeed({
   useEffect(() => {
     const ca   = searchParams.get('category') ?? 'all';
     const co   = searchParams.get('country')  ?? 'all';
-    const lang = searchParams.get('language') ?? 'all';
+    const lang = searchParams.get('language') ?? 'en';
     const s    = searchParams.get('sort')     ?? 'latest';
     const sq   = searchParams.get('q')        ?? '';
     setCategory(ca); setCountry(co); setLanguage(lang); setSort(s); setQ(sq); setSearchInput(sq);

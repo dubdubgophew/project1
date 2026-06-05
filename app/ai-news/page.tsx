@@ -11,6 +11,8 @@ interface PageProps {
     category?: string;
     q?: string;
     id?: string;
+    language?: string;
+    country?: string;
   };
 }
 
@@ -43,6 +45,8 @@ async function fetchInitialData(searchParams: PageProps['searchParams']): Promis
     const category   = searchParams?.category;
     const q          = searchParams?.q ?? '';
     const deepLinkId = searchParams?.id ?? null;
+    const language   = searchParams?.language ?? 'en';
+    const country    = searchParams?.country   ?? 'all';
 
     const { data: latestRow } = await supabase
       .from('ai_news')
@@ -55,12 +59,14 @@ async function fetchInitialData(searchParams: PageProps['searchParams']): Promis
 
     let query = supabase
       .from('ai_news')
-      .select('id,source_key,source_name,topic,summary,category,source_url,source_title,image_url,fetched_at,rank')
+      .select('id,source_key,source_name,topic,summary,category,source_url,source_title,image_url,fetched_at,rank,key_points,country_code,country_name,language_code,language_name')
       .order('fetched_at', { ascending: false })
       .order('rank', { ascending: true })
       .limit(50);
 
     if (category && category !== 'all') query = query.eq('category', category);
+    if (language  && language  !== 'all') query = query.eq('language_code', language);
+    if (country   && country   !== 'all') query = query.eq('country_code', country.toUpperCase());
     if (q.trim()) query = query.or(`topic.ilike.%${q.trim()}%,summary.ilike.%${q.trim()}%`);
 
     const { data: items } = await query;
@@ -86,6 +92,8 @@ export default async function AINewsPage({ searchParams }: PageProps) {
 
   const initialCategory = searchParams?.category ?? 'all';
   const initialQ        = searchParams?.q         ?? '';
+  const initialLanguage = searchParams?.language  ?? 'en';
+  const initialCountry  = searchParams?.country   ?? 'all';
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -131,6 +139,8 @@ export default async function AINewsPage({ searchParams }: PageProps) {
                 initialCategory={initialCategory}
                 initialQ={initialQ}
                 initialId={deepLinkId}
+                initialLanguage={initialLanguage}
+                initialCountry={initialCountry}
                 lastUpdated={lastUpdated}
               />
             </div>
