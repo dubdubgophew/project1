@@ -66,6 +66,7 @@ const STATIC_ROUTES: Array<{ url: string; priority: number; changeFrequency: Met
   { url: '/news', priority: 0.9, changeFrequency: 'hourly', lastModified: '2026-05-31' },
   { url: '/ai-news', priority: 0.9, changeFrequency: 'hourly', lastModified: '2026-05-31' },
   { url: '/politics', priority: 0.9, changeFrequency: 'hourly', lastModified: '2026-06-05' },
+  { url: '/stocks',   priority: 0.9, changeFrequency: 'hourly', lastModified: '2026-06-05' },
   { url: '/blog', priority: 0.7, changeFrequency: 'daily', lastModified: '2026-05-31' },
 ];
 

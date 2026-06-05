@@ -43,6 +43,10 @@
     {
       "path": "/api/cron/fetch-politics-news",
       "schedule": "0 13 * * *"
+    },
+    {
+      "path": "/api/cron/fetch-stocks-news",
+      "schedule": "0 14 * * *"
     }
   ],
   "functions": {
@@ -83,6 +87,9 @@
       "maxDuration": 300
     },
     "app/api/cron/fetch-politics-news/route.ts": {
+      "maxDuration": 300
+    },
+    "app/api/cron/fetch-stocks-news/route.ts": {
       "maxDuration": 300
     }
   }
