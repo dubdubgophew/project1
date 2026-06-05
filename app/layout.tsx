@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://formly.tools',
     siteName: 'Formly Tools',
-    title: 'Formly Tools — 42 Free AI Tools Online | No Signup',
+    title: 'Formly Tools — 37 Free AI Tools Online | No Signup',
     description:
       'Free AI tools: pay stub generator, resume builder, grammar checker, paraphraser, contract generator, PDF summarizer, AI diagrams & 30 more. No signup required.',
     images: [
@@ -80,13 +80,13 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Formly Tools — 42 Free AI Tools Online',
+        alt: 'Formly Tools — 37 Free AI Tools Online',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Formly Tools — 42 Free AI Tools Online',
+    title: 'Formly Tools — 37 Free AI Tools Online',
     description: 'Free AI tools: pay stubs, resume builder, grammar checker, diagrams, contracts & 32 more. No signup required.',
     images: ['/og-image.png'],
     creator: '@formlytools',
@@ -135,9 +135,7 @@ export default function RootLayout({
         <AdSenseScript />
         <meta name="monetag" content="701dad6c34191d949e21404ca1901f4f" />
         {/* Bing Webmaster Tools verification */}
-        {process.env.BING_SITE_VERIFICATION && (
-          <meta name="msvalidate.01" content={process.env.BING_SITE_VERIFICATION} />
-        )}
+        <meta name="msvalidate.01" content="6D08415757455297A4CA4ED033A20EDA" />
         {/* hreflang — geo targeting for English-speaking markets */}
         <link rel="alternate" hrefLang="en" href="https://formly.tools" />
         <link rel="alternate" hrefLang="en-US" href="https://formly.tools" />
