@@ -8,7 +8,7 @@ import { ArticleImage } from '@/components/shared/ArticleImage';
 import { createAdminClient } from '@/lib/supabase/server';
 import type { TrendingNews } from '@/lib/trending-utils';
 
-export const revalidate = 3600; // Cache article pages for 1 hour
+export const revalidate = 60;
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 

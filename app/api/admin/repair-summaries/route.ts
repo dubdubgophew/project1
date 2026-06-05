@@ -105,24 +105,25 @@ export async function GET(req: NextRequest) {
 
   const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
-  // Fetch all recent articles and filter client-side — catches all fallback patterns:
-  // "— latest AI news.", "— latest news from", summary === topic, or summary < 200 chars
+  // Fetch all recent articles with summary + key_points and filter client-side
   const { data: all, error: fetchErr } = await supabase
     .from(table)
-    .select('id, topic, source_name, language_code, language_name, category, summary')
+    .select('id, topic, source_name, language_code, language_name, category, summary, key_points')
     .gte('fetched_at', sevenDaysAgo)
     .limit(200);
 
   if (fetchErr) return NextResponse.json({ error: fetchErr.message }, { status: 500 });
 
-  const bad = ((all ?? []) as (BadArticle & { summary: string })[]).filter(a =>
+  const bad = ((all ?? []) as (BadArticle & { summary: string; key_points: unknown })[]).filter(a =>
     !a.summary ||
     a.summary.length < 200 ||
+    !a.key_points ||
+    (Array.isArray(a.key_points) && a.key_points.length === 0) ||
     a.summary.includes('— latest AI news.') ||
     a.summary.includes('— latest news from') ||
     a.summary.includes('— AI update.') ||
-    a.summary.trim() === a.topic.trim()
-  );
+    a.summary.trim() === a.topic?.trim()
+  ).slice(0, limit);
   if (!bad?.length) return NextResponse.json({ message: 'No bad articles found', repaired: 0 });
 
   if (dryRun) {

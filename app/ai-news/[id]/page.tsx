@@ -1,4 +1,4 @@
-export const revalidate = 3600; // Cache article pages for 1 hour
+export const revalidate = 60;
 
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
