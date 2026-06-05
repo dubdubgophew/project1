@@ -140,17 +140,26 @@ export async function POST(_req: NextRequest) {
         toFetch.forEach((t, i) => { if (ogImages[i]) t.imageUrl = ogImages[i]!; });
       }
 
-      let summaries: StockSummaryItem[];
-      try {
-        summaries = await generateStockSummaries(source.name, source.countryName, source.langCode, source.langName, newItems);
-      } catch (aiErr) {
-        console.error(`[fetch-stocks-news] AI failed for ${source.key}, using fallback:`, aiErr);
-        summaries = newItems.map(t => ({
-          topic: t.topic,
-          summary: t.snippets.join(' ').slice(0, 600) || `${t.topic} — latest market news.`,
-          key_points: [],
-          category: 'Markets',
-        }));
+      // Batch into groups of 6 to stay well under the AI token limit
+      const MAX_BATCH = 6;
+      const summaries: StockSummaryItem[] = [];
+      for (let bStart = 0; bStart < newItems.length; bStart += MAX_BATCH) {
+        const batch = newItems.slice(bStart, bStart + MAX_BATCH);
+        try {
+          const batchSummaries = await generateStockSummaries(
+            source.name, source.countryName, source.langCode, source.langName, batch,
+          );
+          summaries.push(...batchSummaries);
+        } catch (aiErr) {
+          console.error(`[fetch-stocks-news] AI failed batch ${bStart}-${bStart + batch.length} for ${source.key}:`, aiErr);
+          summaries.push(...batch.map(t => ({
+            topic: t.topic,
+            summary: t.snippets.join(' ').slice(0, 600) || `${t.topic} — latest market news.`,
+            key_points: [] as string[],
+            category: 'Markets',
+          })));
+        }
+        if (bStart + MAX_BATCH < newItems.length) await sleep(800);
       }
 
       const now = new Date();
