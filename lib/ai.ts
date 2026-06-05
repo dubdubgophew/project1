@@ -7,6 +7,35 @@ function getGroq(): Groq {
   return _groq;
 }
 
+// ─── In-memory response cache ─────────────────────────────────────────────────
+// Deduplicates identical AI calls within the TTL window.
+// Useful for repeated tool-page queries and rate-limit headroom on cron jobs.
+
+const _cache = new Map<string, { result: string; expiresAt: number }>();
+const CACHE_TTL_MS    = 10 * 60 * 1000; // 10 minutes
+const CACHE_MAX_SIZE  = 250;
+
+function _cacheKey(messages: AIMessage[], model: string): string {
+  const raw = JSON.stringify({ model, messages });
+  return raw.length <= 600 ? raw : raw.slice(0, 300) + '|' + raw.slice(-300);
+}
+
+function _cacheGet(key: string): string | null {
+  const entry = _cache.get(key);
+  if (!entry) return null;
+  if (Date.now() > entry.expiresAt) { _cache.delete(key); return null; }
+  return entry.result;
+}
+
+function _cacheSet(key: string, result: string): void {
+  if (_cache.size >= CACHE_MAX_SIZE) {
+    // Evict oldest entry (Map preserves insertion order)
+    const oldest = _cache.keys().next().value;
+    if (oldest !== undefined) _cache.delete(oldest);
+  }
+  _cache.set(key, { result, expiresAt: Date.now() + CACHE_TTL_MS });
+}
+
 export type AIMessage = {
   role: 'system' | 'user' | 'assistant';
   content: string;
@@ -18,13 +47,21 @@ export async function callAI(
     model?: string;
     maxTokens?: number;
     temperature?: number;
+    skipCache?: boolean;
   } = {}
 ): Promise<string> {
   const {
     model = 'llama-3.3-70b-versatile',
     maxTokens = 2048,
     temperature = 0.7,
+    skipCache = false,
   } = options;
+
+  const key = skipCache ? null : _cacheKey(messages, model);
+  if (key) {
+    const cached = _cacheGet(key);
+    if (cached) return cached;
+  }
 
   try {
     const completion = await getGroq().chat.completions.create({
@@ -33,7 +70,9 @@ export async function callAI(
       max_tokens: maxTokens,
       temperature,
     });
-    return completion.choices[0]?.message?.content ?? '';
+    const result = completion.choices[0]?.message?.content ?? '';
+    if (key && result) _cacheSet(key, result);
+    return result;
   } catch (error: unknown) {
     if (
       error instanceof Error &&
@@ -45,7 +84,9 @@ export async function callAI(
         max_tokens: maxTokens,
         temperature,
       });
-      return fallback.choices[0]?.message?.content ?? '';
+      const result = fallback.choices[0]?.message?.content ?? '';
+      if (key && result) _cacheSet(key, result);
+      return result;
     }
     throw error;
   }

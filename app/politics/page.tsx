@@ -103,6 +103,17 @@ export default async function PoliticsPage({ searchParams }: PageProps) {
         </div>
       </main>
       <Footer />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home',          item: 'https://formly.tools' },
+            { '@type': 'ListItem', position: 2, name: 'Politics News', item: 'https://formly.tools/politics' },
+          ],
+        }) }}
+      />
     </>
   );
 }

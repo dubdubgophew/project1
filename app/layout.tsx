@@ -32,7 +32,7 @@ const dmSerifDisplay = DM_Serif_Display({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://formly.tools'),
   title: {
-    default: 'Formly Tools — 42 Free AI Tools Online | No Signup Required',
+    default: 'Formly Tools — 37 Free AI Tools Online | No Signup Required',
     template: '%s | Formly Tools',
   },
   description:
@@ -134,6 +134,10 @@ export default function RootLayout({
         <meta name="google-adsense-account" content="ca-pub-7233937066598688" />
         <AdSenseScript />
         <meta name="monetag" content="701dad6c34191d949e21404ca1901f4f" />
+        {/* Bing Webmaster Tools verification */}
+        {process.env.BING_SITE_VERIFICATION && (
+          <meta name="msvalidate.01" content={process.env.BING_SITE_VERIFICATION} />
+        )}
         {/* hreflang — geo targeting for English-speaking markets */}
         <link rel="alternate" hrefLang="en" href="https://formly.tools" />
         <link rel="alternate" hrefLang="en-US" href="https://formly.tools" />
@@ -181,7 +185,7 @@ export default function RootLayout({
           hasOfferCatalog: {
             '@type': 'OfferCatalog',
             name: 'Free AI Tools — No Signup Required',
-            numberOfItems: 42,
+            numberOfItems: 37,
             itemListElement: [
               { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Free Pay Stub Generator', description: 'Generate pay stubs for USA, UK, Canada, India, Australia. 2026 tax tables.', url: 'https://formly.tools/tools/paystub-generator' } },
               { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'AI Resume Builder', description: 'Build ATS-optimized resumes with AI. Free, no signup.', url: 'https://formly.tools/tools/resume-builder' } },
@@ -231,7 +235,7 @@ export default function RootLayout({
           name: 'Formly Tools — Free AI Tool Categories',
           description: 'Browse 37 free AI tools organized by category: AI Writing, Payroll & Legal, Developer Tools, Finance, Utilities, and more.',
           url: 'https://formly.tools/tools',
-          numberOfItems: 42,
+          numberOfItems: 37,
           itemListElement: [
             { '@type': 'ListItem', position: 1, name: 'AI Writing Tools', item: 'https://formly.tools/tools#writing' },
             { '@type': 'ListItem', position: 2, name: 'Payroll & Legal Tools', item: 'https://formly.tools/tools#payroll' },

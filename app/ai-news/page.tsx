@@ -158,6 +158,17 @@ export default async function AINewsPage({ searchParams }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home',    item: 'https://formly.tools' },
+            { '@type': 'ListItem', position: 2, name: 'AI News', item: 'https://formly.tools/ai-news' },
+          ],
+        }) }}
+      />
     </>
   );
 }

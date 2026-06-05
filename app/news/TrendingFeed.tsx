@@ -298,6 +298,9 @@ function NewsCard({ item }: { item: TrendingNews }) {
               src={item.image_url!}
               alt=""
               loading="lazy"
+              decoding="async"
+              width={96}
+              height={96}
               className="w-full h-full object-cover"
               onError={(e) => {
                 const parent = (e.target as HTMLImageElement).parentElement!;
