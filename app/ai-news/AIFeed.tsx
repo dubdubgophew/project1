@@ -118,7 +118,7 @@ function ShareDropdown({ item, onClose }: { item: AINewsItem; onClose: () => voi
   const ref = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
 
-  const shareUrl  = `https://www.formly.tools/ai-news/${item.id}`;
+  const shareUrl  = `https://www.formly.tools/ai-news?id=${item.id}`;
   const shareText = `${item.topic} — via Formly AI News`;
 
   useEffect(() => {
@@ -228,11 +228,9 @@ function AICard({ item }: { item: AINewsItem }) {
           </div>
 
           {/* Headline */}
-          <Link href={`/ai-news/${item.id}`}>
-            <h2 className="text-stone-900 font-bold text-[15px] leading-snug mb-2.5 hover:text-violet-700 transition-colors" itemProp="headline">
-              {item.topic}
-            </h2>
-          </Link>
+          <h2 className="text-stone-900 font-bold text-[15px] leading-snug mb-2.5" itemProp="headline">
+            {item.topic}
+          </h2>
 
           {/* Full summary */}
           <p className="text-stone-600 text-sm leading-relaxed mb-3" itemProp="description">

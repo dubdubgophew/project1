@@ -120,7 +120,7 @@ function ShareDropdown({ item, onClose }: { item: TrendingNews; onClose: () => v
   const ref = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
 
-  const shareUrl  = `https://www.formly.tools/news/${item.id}`;
+  const shareUrl  = `https://www.formly.tools/news?id=${item.id}`;
   const shareText = `${item.topic} — via Formly News`;
 
   useEffect(() => {
@@ -260,34 +260,26 @@ function NewsCard({ item }: { item: TrendingNews }) {
           )}
 
           {/* Footer */}
-          <div className="pt-2.5 border-t border-stone-100 space-y-2">
-            <Link
-              href={`/news/${item.id}`}
-              className="block w-full text-center text-sm font-semibold text-white bg-orange-500 hover:bg-orange-600 py-2 px-4 rounded-xl transition-colors"
+          <div className="pt-2.5 border-t border-stone-100 flex items-center gap-2">
+            <a
+              href={item.source_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-[11px] text-stone-400 hover:text-stone-600 transition-colors"
+              itemProp="publisher"
             >
-              Read Full Analysis →
-            </Link>
-            <div className="flex items-center gap-2">
-              <a
-                href={item.source_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1 text-[11px] text-stone-400 hover:text-stone-600 transition-colors"
-                itemProp="publisher"
+              <ExternalLink className="w-3 h-3 shrink-0" />
+              <span className="truncate max-w-[140px]">{item.source_name}</span>
+            </a>
+            <div className="relative ml-auto">
+              <button
+                onClick={() => setShareOpen(o => !o)}
+                className="flex items-center gap-1 text-[11px] font-medium text-stone-400 hover:text-stone-700 px-2 py-1 rounded-lg hover:bg-stone-100 transition-colors"
               >
-                <ExternalLink className="w-3 h-3 shrink-0" />
-                <span className="truncate max-w-[140px]">{item.source_name}</span>
-              </a>
-              <div className="relative ml-auto">
-                <button
-                  onClick={() => setShareOpen(o => !o)}
-                  className="flex items-center gap-1 text-[11px] font-medium text-stone-400 hover:text-stone-700 px-2 py-1 rounded-lg hover:bg-stone-100 transition-colors"
-                >
-                  <Share2 className="w-3 h-3" />
-                  Share
-                </button>
-                {shareOpen && <ShareDropdown item={item} onClose={() => setShareOpen(false)} />}
-              </div>
+                <Share2 className="w-3 h-3" />
+                Share
+              </button>
+              {shareOpen && <ShareDropdown item={item} onClose={() => setShareOpen(false)} />}
             </div>
           </div>
         </div>
