@@ -112,49 +112,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Supabase not configured — skip DB blog URLs
   }
 
-  // Individual news article pages — fresh daily content = strong crawl signal
-  let newsArticleUrls: MetadataRoute.Sitemap = [];
-  try {
-    const supabase = createAdminClient();
-    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
-    const { data: articles } = await supabase
-      .from('trending_news')
-      .select('id,fetched_at')
-      .gte('fetched_at', sevenDaysAgo)
-      .order('fetched_at', { ascending: false })
-      .limit(500);
-
-    newsArticleUrls = (articles ?? []).map(a => ({
-      url: `${BASE_URL}/news/${a.id}`,
-      lastModified: a.fetched_at,
-      changeFrequency: 'daily' as const,
-      priority: 0.65,
-    }));
-  } catch {
-    // Skip if Supabase unavailable
-  }
-
-  // Individual AI news article pages
-  let aiNewsArticleUrls: MetadataRoute.Sitemap = [];
-  try {
-    const supabase = createAdminClient();
-    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
-    const { data: aiArticles } = await supabase
-      .from('ai_news')
-      .select('id,fetched_at')
-      .gte('fetched_at', sevenDaysAgo)
-      .order('fetched_at', { ascending: false })
-      .limit(200);
-
-    aiNewsArticleUrls = (aiArticles ?? []).map(a => ({
-      url: `${BASE_URL}/ai-news/${a.id}`,
-      lastModified: a.fetched_at,
-      changeFrequency: 'daily' as const,
-      priority: 0.65,
-    }));
-  } catch {
-    // Skip if Supabase unavailable
-  }
-
-  return [...staticUrls, ...guideUrls, ...dbBlogUrls, ...newsArticleUrls, ...aiNewsArticleUrls];
+  return [...staticUrls, ...guideUrls, ...dbBlogUrls];
 }
