@@ -1,17 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { POST as fetchStocksNews }   from '@/app/api/cron/fetch-stocks-news/route';
+import { POST as fetchAiNews }        from '@/app/api/cron/fetch-ai-news/route';
+import { POST as fetchTrending }      from '@/app/api/cron/fetch-trending/route';
+import { POST as fetchPoliticsNews }  from '@/app/api/cron/fetch-politics-news/route';
+import { POST as fetchRegionalNews }  from '@/app/api/cron/fetch-regional-news/route';
 
 export const maxDuration = 300;
 
 // GET /api/admin/run-cron?secret=ADMIN_SECRET&job=fetch-stocks-news
-// Browser-accessible trigger for any cron job.
+// Browser-accessible trigger for any cron job. Calls handlers directly (no HTTP hop).
 
-const ALLOWED_JOBS = [
-  'fetch-stocks-news',
-  'fetch-ai-news',
-  'fetch-trending',
-  'fetch-politics-news',
-  'fetch-regional-news',
-];
+const HANDLERS: Record<string, (req: NextRequest) => Promise<NextResponse>> = {
+  'fetch-stocks-news':  fetchStocksNews,
+  'fetch-ai-news':      fetchAiNews,
+  'fetch-trending':     fetchTrending,
+  'fetch-politics-news': fetchPoliticsNews,
+  'fetch-regional-news': fetchRegionalNews,
+};
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -22,24 +27,20 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  if (!job || !ALLOWED_JOBS.includes(job)) {
+  const handler = job ? HANDLERS[job] : null;
+  if (!handler) {
     return NextResponse.json(
-      { error: 'Invalid job. Allowed: ' + ALLOWED_JOBS.join(', ') },
+      { error: 'Invalid job. Allowed: ' + Object.keys(HANDLERS).join(', ') },
       { status: 400 }
     );
   }
 
-  const cronSecret = process.env.CRON_SECRET;
-  if (!cronSecret) {
-    return NextResponse.json({ error: 'CRON_SECRET not configured' }, { status: 500 });
+  const start = Date.now();
+  try {
+    const res  = await handler(req);
+    const data = await res.json().catch(() => ({}));
+    return NextResponse.json({ job, status: res.status, duration_ms: Date.now() - start, ...data });
+  } catch (err) {
+    return NextResponse.json({ job, error: String(err), duration_ms: Date.now() - start }, { status: 500 });
   }
-
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://formly.tools';
-  const res = await fetch(`${baseUrl}/api/cron/${job}`, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${cronSecret}` },
-  });
-
-  const data = await res.json().catch(() => ({}));
-  return NextResponse.json({ job, status: res.status, ...data });
 }
