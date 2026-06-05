@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { callAI, extractJsonArray } from '@/lib/ai';
 import { createAdminClient } from '@/lib/supabase/server';
-import { type StockNewsItem } from '@/lib/stocks-utils';
 
 export const maxDuration = 300;
 
-// GET /api/admin/backfill-stocks?secret=ADMIN_SECRET&limit=60
+// GET /api/admin/backfill-stocks?secret=ADMIN_SECRET&limit=30
 // Regenerates AI summaries for stock news records that have null key_points.
+// Batch size 3, maxTokens 3500: total ~4200 tokens/call, safely under Groq's 6000 TPM cap.
 
 interface StockSummaryItem {
   topic: string;
@@ -28,8 +28,9 @@ async function regenerateSummaries(
 
   const topicsBlock = items
     .map((t, i) => {
-      const ctx = (t.source_title || t.topic) + (t.summary ? `\n   Context: ${t.summary.slice(0, 300)}` : '');
-      return `${i + 1}. Headline: "${t.source_title || t.topic}"\n   ${ctx}`;
+      const headline = t.source_title || t.topic;
+      const ctx = t.summary ? t.summary.slice(0, 120) : '';
+      return `${i + 1}. Headline: "${headline}"${ctx ? `\n   Context: ${ctx}` : ''}`;
     })
     .join('\n\n');
 
@@ -39,11 +40,11 @@ Produce a JSON array with exactly ${items.length} objects in the SAME ORDER.
 
 Each object:
 - "topic": restate the headline clearly as a market-relevant title (max 12 words)
-- "summary": 230-270 words across 3 paragraphs:
+- "summary": 180-220 words across 3 paragraphs:
   Para 1 — WHAT: Specific facts — what happened, key numbers, company/ticker names, index moves, prices, percentages.
   Para 2 — WHY: What drove this? Macro context, earnings drivers, policy changes, technical levels, sector dynamics.
   Para 3 — SO WHAT: Who wins and who loses? Concrete investment takeaway and forward-looking view.
-- "key_points": exactly 5 strings, EACH in the format "emoji Label | content (max 20 words)":
+- "key_points": exactly 5 strings, EACH in the format "emoji Label | content (max 18 words)":
   "📍 What Happened | [concise factual one-liner with key numbers]"
   "💰 Market Impact | [immediate effect on prices, indices, or sectors]"
   "📈 Bull Case | [who benefits, what could push prices higher]"
@@ -61,7 +62,7 @@ Respond ONLY with a valid JSON array. No markdown, no extra text.`;
       { role: 'system', content: 'You are a professional financial markets analyst. Always respond with valid JSON only.' },
       { role: 'user', content: prompt },
     ],
-    { model: 'llama-3.3-70b-versatile', maxTokens: 6000, temperature: 0.3, skipCache: true }
+    { model: 'llama-3.3-70b-versatile', maxTokens: 3500, temperature: 0.3, skipCache: true }
   );
 
   const jsonStr = extractJsonArray(raw);
@@ -80,7 +81,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const limit = Math.min(parseInt(searchParams.get('limit') ?? '60', 10), 120);
+  const limit = Math.min(parseInt(searchParams.get('limit') ?? '30', 10), 60);
   const supabase = createAdminClient();
 
   const { data: records, error } = await supabase
@@ -101,16 +102,14 @@ export async function GET(req: NextRequest) {
     bySource.get(key)!.push(r);
   }
 
-  const MAX_BATCH = 6;
+  // 3 items/batch × ~700 input tokens + ~1500 output tokens ≈ 2200 total < 6000 TPM cap
+  const MAX_BATCH = 3;
   let updated = 0;
   const errors: string[] = [];
 
   for (const [, group] of bySource) {
-    const first = group[0] as StockNewsItem & { source_key: string };
-    const sourceName   = first.source_name;
-    const countryName  = first.country_name;
-    const langCode     = first.language_code;
-    const langName     = first.language_name;
+    const first = group[0] as { source_name: string; country_name: string; language_code: string; language_name: string };
+    const { source_name: sourceName, country_name: countryName, language_code: langCode, language_name: langName } = first;
 
     for (let bStart = 0; bStart < group.length; bStart += MAX_BATCH) {
       const batch = group.slice(bStart, bStart + MAX_BATCH) as {
@@ -129,13 +128,12 @@ export async function GET(req: NextRequest) {
           else updated++;
         }
       } catch (err) {
-        errors.push(`batch ${bStart}-${bStart + batch.length}: ${String(err)}`);
+        errors.push(`batch ${bStart}-${bStart + batch.length} [${sourceName}]: ${String(err)}`);
       }
 
-      if (bStart + MAX_BATCH < group.length) await sleep(800);
+      // 5s between batches to respect 6000 TPM sliding window
+      await sleep(5000);
     }
-
-    await sleep(400);
   }
 
   return NextResponse.json({ updated, skipped: records.length - updated, errors });

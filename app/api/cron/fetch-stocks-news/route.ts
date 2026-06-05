@@ -41,7 +41,7 @@ async function generateStockSummaries(
 ): Promise<StockSummaryItem[]> {
   const topicsBlock = items
     .map((t, i) => {
-      const ctx = t.snippets.slice(0, 2).join(' ').slice(0, 400) || t.newsTitle;
+      const ctx = t.snippets.slice(0, 1).join(' ').slice(0, 150) || t.newsTitle;
       return `${i + 1}. Headline: "${t.topic}"\n   Context: ${ctx}`;
     })
     .join('\n\n');
@@ -87,7 +87,7 @@ Respond ONLY with a valid JSON array. No markdown, no extra text.`;
       { role: 'system', content: 'You are a professional financial markets analyst. Always respond with valid JSON only.' },
       { role: 'user', content: prompt },
     ],
-    { model: 'llama-3.3-70b-versatile', maxTokens: 6000, temperature: 0.3 }
+    { model: 'llama-3.3-70b-versatile', maxTokens: 3500, temperature: 0.3 }
   );
 
   const jsonStr = extractJsonArray(raw);
@@ -140,8 +140,8 @@ export async function POST(_req: NextRequest) {
         toFetch.forEach((t, i) => { if (ogImages[i]) t.imageUrl = ogImages[i]!; });
       }
 
-      // Batch into groups of 6 to stay well under the AI token limit
-      const MAX_BATCH = 6;
+      // Batch into groups of 3: keeps total tokens (input ~600 + output ~1600) well under the 6000 TPM cap
+      const MAX_BATCH = 3;
       const summaries: StockSummaryItem[] = [];
       for (let bStart = 0; bStart < newItems.length; bStart += MAX_BATCH) {
         const batch = newItems.slice(bStart, bStart + MAX_BATCH);
