@@ -2642,6 +2642,223 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
     countriesServed: ['United States', 'United Kingdom', 'India', 'Australia', 'Canada', 'New Zealand', 'Singapore', 'Ireland'],
   },
+
+  // ─── Editorial Articles ───────────────────────────────────────────────────
+  {
+    slug: 'how-ats-systems-filter-resumes',
+    title: 'How ATS Systems Filter Resumes — And How to Beat Them in 2026',
+    category: 'ai-tools',
+    toolSlug: 'ats-resume-scanner',
+    toolName: 'ATS Resume Scanner',
+    readingTime: 10,
+    publishedAt: '2026-06-06',
+    updatedAt: '2026-06-06',
+    metaDescription:
+      'Learn exactly how Applicant Tracking Systems filter and rank resumes, the 12 most common ATS failure points, and how to optimize your resume to reach a human recruiter in 2026.',
+    intro:
+      'You spent three hours crafting the perfect resume. You hit submit. Then — silence. No call. No email. You were not rejected by a human — you were rejected by software. Over 98% of Fortune 500 companies and 66% of all companies now use Applicant Tracking Systems (ATS) to screen candidates before a recruiter ever reads a single resume. Understanding exactly how these systems work is the difference between landing interviews and disappearing into a digital void.',
+    sections: [
+      {
+        heading: 'What Is an Applicant Tracking System?',
+        body: 'An ATS is software that automates the early stages of hiring. When you apply for a job online, your resume is parsed, stored, ranked, and filtered by the ATS — often without any human involvement until the shortlisted candidates emerge.\n\nModern ATS platforms include Workday, Greenhouse, Lever, iCIMS, Taleo, and BambooHR. Each has its own parsing engine, but they all perform the same core functions: extract your data into structured fields (name, contact, work history, education, skills), score your resume against the job description, and rank you against other applicants.\n\nMany job seekers assume a recruiter is reading their resume within hours of applying. In reality, at a mid-to-large company, recruiters may only look at candidates who score above a certain threshold in the ATS — and that threshold can be ruthlessly strict.',
+      },
+      {
+        heading: 'How ATS Resume Scoring Works',
+        body: 'ATS ranking is primarily keyword-based. The system scans the job description, extracts critical terms (skills, tools, job titles, certifications, degree requirements), and then checks how many of those terms appear in your resume. Your "match score" is essentially a percentage of required keywords found.\n\nBeyond keywords, ATS systems also look for:\n\n**Section headers** — The ATS needs to know where your "Work Experience" ends and your "Education" begins. Non-standard headers like "My Journey" or "What I Have Done" confuse parsers.\n\n**Dates** — Work history must have clearly formatted dates. Missing or ambiguous dates cause parsing failures.\n\n**Job title matching** — If the role is "Senior Software Engineer" and your resume says "Lead Dev," you may not match even if the roles were identical.\n\n**File format** — Word (.docx) and plain PDF parse better than image-based PDFs, scanned documents, or files with heavy design elements.',
+      },
+      {
+        heading: 'The 12 Most Common ATS Failure Points',
+        body: '1. **Using tables or columns** — Most ATS systems read left to right, top to bottom. A two-column layout confuses parsing, often merging content incorrectly.\n\n2. **Headers and footers** — Contact information in the document header is frequently missed by ATS parsers. Put your name and contact details in the body.\n\n3. **Images and graphics** — Icons, photos, logos, and decorative elements are invisible to ATS. Skills represented as visual bar charts are simply not read.\n\n4. **Non-standard fonts** — Stick to system fonts: Arial, Calibri, Times New Roman, Garamond. Custom fonts may not render and can break parsing.\n\n5. **Missing keywords** — The single biggest reason for rejection. If the job requires "Python" and you wrote "Python 3.x programming," some ATS may still not match.\n\n6. **Keyword stuffing in white text** — Some applicants try hiding keywords in white text. Modern ATS and recruiters check for this. It results in immediate disqualification.\n\n7. **Abbreviations without expansions** — "ML" might not match "Machine Learning." Use both: "Machine Learning (ML)."\n\n8. **Non-chronological ordering** — Most ATS expect reverse chronological order. Functional or hybrid formats often confuse parsers.\n\n9. **Generic objective statements** — ATS systems largely ignore boilerplate filler text. Use that space for keywords instead.\n\n10. **Missing contact information** — Phone, email, and location (at minimum city and country) should be present in a standard text area.\n\n11. **Incorrect date formats** — Use consistent formats: "Jan 2022 – Mar 2024" or "01/2022 – 03/2024." Mixed formats cause errors.\n\n12. **Job titles that don\'t match** — Tailor your job titles to match common industry terminology. If your company called you a "Ninja Engineer," use "Software Engineer" on your resume.',
+      },
+      {
+        heading: 'Keyword Optimization: The Right Way',
+        body: 'Keyword optimization is not about stuffing every word from the job description into your resume. It is about strategic placement of the terms that matter most.\n\n**Step 1: Identify must-have vs nice-to-have keywords.** Must-have keywords appear in the first paragraph of the job description, are listed as "required," and appear multiple times. Nice-to-have keywords are listed under "preferred" or "bonus."\n\n**Step 2: Mirror the exact phrasing.** If the job description says "project management," do not substitute "overseeing projects." Use the exact phrase — or both.\n\n**Step 3: Distribute keywords naturally.** Place keywords in your work experience descriptions (where you can demonstrate context), skills section, and summary. ATS systems give more weight to keywords that appear in context (e.g., "managed a team using Agile methodology") versus a bare skills list.\n\n**Step 4: Use both acronyms and full forms.** "Search Engine Optimization (SEO)," "JavaScript (JS)," "Artificial Intelligence (AI)." This covers both ATS indexing and human readability.\n\n**Step 5: Tailor per application.** A single "one size fits all" resume will not rank well for different job descriptions. Spend five minutes tailoring the keywords for each specific role. An ATS scanner tool can show you exactly what keywords you\'re missing before you submit.',
+      },
+      {
+        heading: 'ATS-Friendly Resume Formatting Rules',
+        body: 'The safest ATS-friendly format is a clean, single-column Word document or simple PDF. Here are the non-negotiable formatting rules:\n\n**Use standard section headers:** Work Experience, Education, Skills, Certifications, Projects, Summary. Avoid creative alternatives.\n\n**Font size:** 10–12pt for body, 14–16pt for your name. Avoid anything smaller than 10pt.\n\n**Margins:** 0.5–1 inch. Very narrow margins can cause parsing issues.\n\n**Bullet points:** Use standard bullet points (•) rather than custom symbols, checkmarks, or arrows.\n\n**No text boxes:** Text inside text boxes (common in Microsoft Word templates) is invisible to many ATS parsers.\n\n**File naming:** Name your file "FirstName-LastName-Resume.pdf" — this helps in recruiter searches and shows professionalism.\n\n**Page length:** One page for under 5 years of experience; two pages for senior roles. Three or more pages are rarely appropriate.',
+      },
+      {
+        heading: 'How to Check Your ATS Score Before Applying',
+        body: 'The most effective way to prepare your resume for ATS is to run it through a scanner before submitting. An ATS scanner compares your resume against the specific job description you are targeting and tells you:\n\n— Your match score as a percentage\n— Missing keywords that appear in the job description but not your resume\n— Keywords you use correctly\n— Formatting issues that may affect parsing\n— Suggestions for specific improvements\n\nFormly\'s free ATS Resume Scanner was built specifically as a Jobscan alternative. Paste your resume and the job description, and within seconds you get a detailed match score, a list of missing keywords sorted by importance, and specific suggestions for which lines to change. It is completely free — no account required for basic use.',
+      },
+      {
+        heading: 'After the ATS: Writing for Human Recruiters',
+        body: 'Once your resume clears the ATS threshold, a human recruiter — typically spending 6–10 seconds on an initial scan — decides whether to read further. Your resume must work at two levels: machine-readable and human-compelling.\n\nFor the human reader, the top third of your resume is the most critical. Recruiters scan from the top down, left to right. Your name, title, and a punchy 2–3 line summary should communicate your value proposition immediately.\n\nQuantify everything possible. "Increased sales by 34% in Q3" is far more compelling than "improved sales performance." Numbers catch the eye and signal credibility.\n\nUse strong action verbs: Led, Built, Reduced, Managed, Launched, Optimized, Negotiated. Avoid passive constructions like "was responsible for" or "helped with."\n\nFinally, proofread carefully. Spelling errors signal carelessness — a quality no recruiter wants in a candidate.',
+      },
+    ],
+    faqs: [
+      {
+        q: 'What percentage of companies use ATS software?',
+        a: 'Over 98% of Fortune 500 companies use ATS, and studies suggest 66–75% of all companies (including mid-size employers) use some form of applicant tracking. If you apply through a company website or job board like LinkedIn, Indeed, or Greenhouse, your resume almost certainly goes through an ATS first.',
+      },
+      {
+        q: 'Can I use a designed resume template with ATS?',
+        a: 'It depends on the design. Clean, single-column templates with minimal design elements (no tables, text boxes, or images) generally parse well. Heavy design templates with two-column layouts, infographic elements, or embedded fonts are risky. When in doubt, save a plain-text version of your resume for ATS submission.',
+      },
+      {
+        q: 'How many keywords should my resume have?',
+        a: 'Focus on quality over quantity. Your resume should naturally contain the 8–15 most important keywords from the job description, each appearing in the context of real experience. Keyword stuffing (repeating words dozens of times) is penalized by modern ATS and looks unnatural to human reviewers.',
+      },
+      {
+        q: 'Does a higher ATS score guarantee an interview?',
+        a: 'No — a high ATS score gets your resume seen by a human recruiter. After that, the human decides. Your experience, achievements, and presentation still determine whether you get the call. But a low ATS score means no human will ever see your resume, regardless of how qualified you are.',
+      },
+      {
+        q: 'Should I use the exact job title on my resume if it is different from my actual title?',
+        a: 'You can use the common industry equivalent in your summary or skills section, but do not misrepresent your actual job title in your work history — employers verify titles through reference checks. Instead, add context: "Team Lead (equivalent to Senior Product Manager at a 10-person startup)."',
+      },
+      {
+        q: 'How often should I update my resume?',
+        a: 'Update your resume every 3–6 months, even if you are not actively job hunting. Add recent achievements, new skills, and completed projects while details are fresh. This way, when an opportunity arises, you are not scrambling to remember what you accomplished two years ago.',
+      },
+    ],
+    countriesServed: ['United States', 'United Kingdom', 'Canada', 'Australia', 'India', 'Singapore'],
+  },
+
+  {
+    slug: 'ai-job-displacement-2026-career-guide',
+    title: 'AI and Jobs in 2026: Which Careers Are Safe, Which Are at Risk, and What to Do Now',
+    category: 'ai-tools',
+    toolSlug: 'will-ai-replace-me',
+    toolName: 'Will AI Replace Me?',
+    readingTime: 11,
+    publishedAt: '2026-06-06',
+    updatedAt: '2026-06-06',
+    metaDescription:
+      'A data-driven guide to AI job displacement in 2026: which professions face the highest automation risk, which are safest, and the practical steps to future-proof your career right now.',
+    intro:
+      'The question is no longer "will AI take jobs?" — it is "which jobs, on what timeline, and what should I do about it?" AI systems are already performing tasks that would have required significant human expertise five years ago: writing code, analyzing legal contracts, reading medical images, answering customer service queries, generating financial reports. For the first time in economic history, automation is threatening white-collar knowledge work at the same scale it disrupted manual labor. This guide gives you the honest, research-backed picture — no hype in either direction.',
+    sections: [
+      {
+        heading: 'Understanding AI Displacement vs AI Augmentation',
+        body: 'Not all AI impact is the same. It is critical to distinguish between:\n\n**Displacement** — AI performs a task previously done by a human, reducing headcount. Example: an AI system processes insurance claims, eliminating 50% of claims-processing roles at an insurer.\n\n**Augmentation** — AI makes workers more productive, potentially changing their roles but not eliminating them. Example: AI drafts legal contracts for review by a lawyer who can now handle 3x the caseload.\n\n**Transformation** — The job changes so significantly that existing workers must reskill entirely. Example: accountants evolving into AI-assisted financial strategists.\n\nMost jobs will experience some combination of all three. The critical variable is what percentage of a job\'s tasks can be automated versus which require human judgment, relationships, creativity, or physical presence. Research from McKinsey suggests that by 2030, 30% of tasks across all occupations could be automated — but fewer than 5% of jobs consist entirely of tasks that are fully automatable right now.',
+      },
+      {
+        heading: 'The Highest-Risk Professions in 2026',
+        body: 'Based on current AI capabilities and deployment trends, these roles face the most significant automation pressure:\n\n**Data entry and processing (Risk: 85–95%)** — AI handles structured data extraction, form filling, and basic data validation faster and more accurately than humans. This category is already being automated at scale.\n\n**Customer service (Risk: 70–85%)** — Large language models now handle tier-1 support queries for most major companies. Complex escalations still require humans, but the volume of routine interactions handled by AI is growing rapidly.\n\n**Basic content writing (Risk: 60–80%)** — Product descriptions, SEO articles, basic reports, and templated marketing copy are increasingly AI-generated. Unique, expert-driven content with a specific voice remains human territory.\n\n**Junior accounting and bookkeeping (Risk: 55–75%)** — Routine reconciliation, categorization, and report generation are being automated. Interpretation, strategy, and client relationships remain human.\n\n**Paralegal and legal research (Risk: 50–70%)** — AI can now search case law, summarize contracts, and flag risks faster than junior paralegals. Legal judgment and courtroom presence remain human.\n\n**Radiology (Risk: 40–65%)** — AI diagnostic tools can read certain medical images with accuracy matching or exceeding specialists. However, complex cases and patient communication remain human roles.\n\n**Software testing (Risk: 40–60%)** — Automated test generation, regression testing, and bug detection are increasingly AI-assisted, reducing the need for manual QA roles.',
+      },
+      {
+        heading: 'The Safest Professions in 2026',
+        body: 'Certain professions are structurally resistant to AI automation — for reasons of physical requirement, deep relationship trust, novel reasoning, or regulatory necessity:\n\n**Trades and physical work (Risk: 5–15%)** — Plumbers, electricians, HVAC technicians, construction workers. Robotic manipulation of unstructured physical environments remains an unsolved hard problem. Demand for skilled tradespeople is high and growing.\n\n**Healthcare (direct patient care) (Risk: 10–20%)** — Nurses, physicians, therapists, dentists. AI augments diagnosis and treatment planning, but patient trust, physical examination, and care cannot be robotized at scale.\n\n**Mental health and social work (Risk: 5–15%)** — Human connection is the core of the service. AI tools can assist with scheduling and documentation, but therapy requires human empathy and therapeutic relationships.\n\n**Education (K-12) (Risk: 10–20%)** — Teaching involves behavioral management, emotional support, and community roles that go far beyond information delivery.\n\n**Business leadership and strategy (Risk: 15–25%)** — Strategic judgment in ambiguous situations, stakeholder management, and organizational leadership involve human skills that remain deeply resistant to automation.\n\n**Creative direction (Risk: 20–30%)** — AI generates content but needs humans to direct it toward coherent strategy, brand voice, and cultural nuance. The most successful creative professionals will be those who use AI fluently.\n\n**Skilled nursing and aged care (Risk: 5–10%)** — Physical care, dignity, and emotional support for vulnerable populations will remain human for the foreseeable future.',
+      },
+      {
+        heading: 'The AI-Proof Career Traits',
+        body: 'Research from Oxford, McKinsey, and MIT consistently identifies the characteristics that make a role resistant to automation:\n\n**Social intelligence** — Jobs requiring empathy, negotiation, mentorship, and trust-building. AI cannot replicate the experience of being genuinely understood by another person.\n\n**Creative and non-routine cognitive work** — Novel problem solving in ambiguous environments. AI excels at pattern recognition on known problems; humans excel at framing new problems.\n\n**Physical dexterity in unstructured environments** — Anything that requires navigating novel physical situations. Robotic systems are improving rapidly but remain far behind human adaptability.\n\n**Complex stakeholder management** — Politics, organizational dynamics, and relationship navigation are human domains.\n\n**Ethical and regulatory judgment** — High-stakes decisions with accountability requirements tend to require human judgment — partly because of liability, partly because of genuine complexity.\n\nIf your career scores well on multiple of these traits, your risk is low. If your job is primarily executing structured, repeatable tasks — regardless of whether those tasks are physical or cognitive — your exposure is higher.',
+      },
+      {
+        heading: 'The Timeline: When Will These Changes Happen?',
+        body: 'The pace of AI deployment varies enormously by industry, company size, and geography:\n\n**Already happening (2024–2026):** Customer service, content generation, basic coding, data processing, junior legal research, image analysis in healthcare. If you work in these areas and are in a junior role, the pressure is real and present.\n\n**Near-term (2026–2028):** Broader deployment of AI in accounting, financial services, HR screening, basic consulting deliverables, architectural drafting. Mid-level roles in these fields will start feeling pressure.\n\n**Medium-term (2028–2032):** More complex knowledge work automation — advanced legal analysis, financial advice, complex diagnosis support, sophisticated engineering tasks. Senior roles in traditionally "safe" fields will see significant augmentation requirements.\n\n**Long-term (2032+):** The frontier of what AI can do will continue to expand. Predicting specific timelines beyond 5–7 years is not reliable given the pace of model development.\n\nThe key insight: there is usually a 3–7 year gap between when AI can technically do something and when organizations fully deploy it at scale. That gap is your opportunity window.',
+      },
+      {
+        heading: 'Five Practical Steps to Future-Proof Your Career',
+        body: '**1. Learn to work with AI tools, not against them.** The biggest near-term risk is not "AI replaces me" but "a person who uses AI replaces me." Master the AI tools relevant to your field. If you are a writer, learn prompt engineering. If you are an analyst, learn AI-assisted data tools. If you are a developer, master AI code assistance.\n\n**2. Move toward the irreplaceable parts of your role.** In every job, some tasks are being automated and others are not. Deliberately invest your time in the non-automatable portions — client relationships, strategic judgment, creative direction, mentorship.\n\n**3. Build T-shaped expertise.** Deep expertise in one domain (the vertical bar of the T) plus broad working knowledge across adjacent areas (the horizontal bar) makes you more valuable and adaptable. Pure specialists in automatable domains are more vulnerable than generalists with a specialty.\n\n**4. Develop skills that work with AI.** Critical thinking about AI outputs, prompt engineering, AI ethics judgment, and the ability to identify when AI is wrong are becoming core professional competencies. These skills are not being automated — they are becoming more valuable.\n\n**5. Invest in human skills.** Communication, leadership, negotiation, empathy, creativity, and relationship-building are the skills AI cannot replicate and will not replicate. Anything that makes you more human — more trusted, more persuasive, more caring — is a career asset that compounds over time.\n\nThe biggest mistake is waiting. The time to adapt is before displacement, not after. Check your AI displacement risk score to understand your specific situation.',
+      },
+      {
+        heading: 'The Honest Bottom Line',
+        body: 'AI will not eliminate the majority of jobs in the near term — but it will significantly reshape them. The people who will thrive are those who adapt proactively: learning to use AI fluently, doubling down on irreplaceable human skills, and continuously evolving their role toward higher-value work.\n\nThe people who will struggle are those in roles that are primarily execution of structured tasks, who resist learning new tools, and who assume their current job description will be stable for the next decade.\n\nThe economic disruption of AI is real and will be uneven. Lower-wage workers in task-automatable roles are often most exposed but have the least resources to retrain. Higher-wage knowledge workers may have more resources but also more complacency. Neither group should be comfortable without a clear adaptation plan.\n\nThis is not a reason for panic. Technology has always transformed work, and new jobs emerge from the disruption. But the transition requires active navigation — not passive waiting.',
+      },
+    ],
+    faqs: [
+      {
+        q: 'Which jobs are completely safe from AI automation?',
+        a: 'No job is 100% immune from AI impact, but roles that combine physical presence in unstructured environments, deep interpersonal trust, and genuine creative novelty are highly resistant. Think skilled trades, mental health, direct patient care, complex education, and executive leadership. Even these roles will use AI tools, but the core work remains human.',
+      },
+      {
+        q: 'Is software engineering being replaced by AI?',
+        a: 'AI tools dramatically increase developer productivity and are replacing some junior coding tasks (boilerplate, simple scripts, unit tests). But software engineering as a whole is becoming more important, not less. The demand for developers who can architect systems, understand complex requirements, and work with AI tools effectively is growing. Junior roles are most at risk; experienced engineers who use AI well are more valuable than ever.',
+      },
+      {
+        q: 'Should I change careers because of AI?',
+        a: 'Not necessarily, but you should audit your current role. Identify which parts of your job are repetitive and structured (higher automation risk) versus which require judgment, relationships, and creativity (lower risk). Invest in the latter and learn to use AI for the former. Changing careers is one option, but adapting within your career is often the better path.',
+      },
+      {
+        q: 'How accurate are AI job displacement predictions?',
+        a: 'Predictions vary significantly. Oxford researchers estimated 47% of US jobs were at high risk in 2013 — a figure now considered too high, since most jobs adapted rather than disappeared. McKinsey\'s more recent models suggest 30% of tasks (not jobs) could be automated by 2030. Use predictions as a directional guide, not a forecast of certainty.',
+      },
+      {
+        q: 'What is the best way to check my personal AI displacement risk?',
+        a: 'Use Formly\'s free "Will AI Replace Me?" tool — enter your job title and the tool gives you a percentage displacement risk, timeline estimate, the specific tasks most at risk, and a personalized survival plan with concrete next steps.',
+      },
+      {
+        q: 'Does AI affect jobs in India differently from the West?',
+        a: 'Yes. India has a large business process outsourcing (BPO) sector — customer service, data entry, back-office processing — that faces high automation risk. At the same time, India\'s technology sector is a beneficiary of AI, with growing demand for AI engineers, data scientists, and prompt specialists. The impact varies significantly by industry and role level.',
+      },
+    ],
+    countriesServed: ['United States', 'United Kingdom', 'India', 'Canada', 'Australia', 'Singapore', 'Germany'],
+  },
+
+  {
+    slug: 'professional-email-writing-guide-2026',
+    title: 'The Complete Professional Email Writing Guide for 2026 (With Templates)',
+    category: 'productivity',
+    toolSlug: 'email-writer',
+    toolName: 'Email Writer',
+    readingTime: 9,
+    publishedAt: '2026-06-06',
+    updatedAt: '2026-06-06',
+    metaDescription:
+      'Master professional email writing in 2026: subject line formulas, tone matching, cold email frameworks, follow-up timing, and ready-to-use templates for every business scenario.',
+    intro:
+      'The average professional sends and receives over 120 emails per day. In that sea of messages, the emails that get read, responded to, and acted on are not longer or more elaborate — they are cleaner, clearer, and more human. Whether you are pitching a client, following up after a job interview, escalating an issue to your manager, or writing a cold outreach to someone you have never met, the principles of effective professional email writing remain consistent. This guide covers everything you need to know — from subject line psychology to follow-up timing — with ready-to-use templates for the most common scenarios.',
+    sections: [
+      {
+        heading: 'The Anatomy of an Effective Professional Email',
+        body: 'Every professional email has five components. Failing at any one of them reduces your response rate:\n\n**1. Subject line** — The single most important line. Determines whether the email is opened at all. Should be specific, relevant, and under 50 characters (to avoid truncation on mobile).\n\n**2. Opening line** — The first sentence after the greeting. Sets tone and context. The biggest mistake here is starting with "I hope this email finds you well" — a phrase so overused it is now actively off-putting to many readers.\n\n**3. Body** — The substance of your message. Should follow the one-email-one-purpose rule. Clearly states the context, the request or information, and any necessary background — in that order.\n\n**4. Call to action (CTA)** — Explicitly states what you need from the recipient. One specific action. "Please review the attached contract and let me know if you have any changes by Friday" is good. "Let me know your thoughts" is not.\n\n**5. Signature** — Name, title, company, contact number. Not a paragraph of links and social media icons — just the essentials.',
+      },
+      {
+        heading: 'Subject Line Formulas That Actually Work',
+        body: 'Subject lines should answer the question: "Why should I open this now?" These formulas consistently outperform generic subject lines:\n\n**Specificity formula:** [Specific thing] — [Context]. Example: "Q3 Marketing Budget Review — Action Needed by Thursday"\n\n**Question formula:** [Relevant question that the email answers]. Example: "Can we move Tuesday\'s meeting to 3pm?"\n\n**Reference formula:** [Shared context] — [Purpose]. Example: "Following up on your LinkedIn post about AI hiring"\n\n**Benefit formula:** [What\'s in it for them]. Example: "Three ideas to reduce your AWS bill by 30%"\n\n**Numbered list:** [Number] [things]. Example: "5 issues with the current proposal"\n\n**Subject lines to avoid:**\n— "Following up" (vague, no context)\n— "Checking in" (adds no value)\n— "Quick question" (frustratingly vague)\n— "Hey!" (too casual for most professional contexts)\n— All-caps subject lines (read as aggressive)\n— Clickbait phrasing (damages trust)\n\nFor cold emails, adding the recipient\'s company name or a specific detail about their work dramatically increases open rates. "Idea for [Company]\'s Q4 content strategy" outperforms "Thought you might be interested in this" every time.',
+      },
+      {
+        heading: 'Tone Matching: Formal, Professional, and Casual',
+        body: 'The appropriate tone depends on your relationship with the recipient, the purpose of the email, and the company culture. Using the wrong tone is a common mistake that undermines otherwise well-written emails.\n\n**Formal tone** — For first contact with senior executives, government or legal correspondence, and any situation where you have no established relationship. Uses full sentences, avoids contractions, uses titles and last names.\n\nExample opening: "Dear Mr. Sharma, I am writing to inquire about the consulting engagement described in your recent announcement."\n\n**Professional tone** — The default for most business communication. Clear, direct, warm but not overly casual. Uses first names after initial introduction, contractions are fine, short paragraphs.\n\nExample opening: "Hi Priya, Hope your week is going well. I wanted to follow up on the proposal we discussed last Thursday."\n\n**Casual professional** — For colleagues you work with regularly, internal teams, and cultures that explicitly value informality (startups, creative agencies). Can include humor if appropriate, very direct, often shorter.\n\nExample opening: "Hey Sam — quick one. Can you get me the export data before EOD? Need it for the board deck."\n\nWhen in doubt, use professional tone and adjust based on how the recipient replies to you. If they write in a casual style, you can mirror it.',
+      },
+      {
+        heading: 'Cold Email: The Framework That Actually Gets Responses',
+        body: 'Cold email — reaching out to someone who does not know you — has a notoriously low response rate when done badly and a surprisingly high rate when done well. The key difference is relevance and respect for the recipient\'s time.\n\n**The AIDA cold email framework:**\n\n**Attention** — Open with something specific and relevant to them. Not "I loved your company" but "I noticed your team just launched [specific thing] — impressive turnaround time."\n\n**Interest** — In 1–2 sentences, explain who you are in the context of what they care about. Not your full bio, just the relevant bit.\n\n**Desire** — Briefly explain what you can offer. Make it about their problem, not your product.\n\n**Action** — One clear, low-friction ask. "Would you be open to a 20-minute call next week?" is much better than "I would love to meet whenever works for you."\n\n**Cold email rules:**\n— Keep the total email under 150 words. Every sentence must earn its place.\n— Never attach anything in a first cold email.\n— Personalize the first two sentences for each recipient. Generic openers are immediately deleted.\n— Send Tuesday–Thursday, 8–10am in the recipient\'s timezone for highest open rates.\n— One follow-up is appropriate; two is the absolute maximum.',
+      },
+      {
+        heading: 'Follow-Up Email Timing and Frequency',
+        body: 'Not following up is one of the most common and costly email mistakes in business. Studies show that 80% of sales require at least five follow-ups, yet 44% of salespeople give up after one. The same pattern applies to job applications, partnership outreach, and internal requests.\n\n**Follow-up timing guidelines:**\n\n— **Internal requests (same company):** Follow up after 2–3 business days if no response.\n— **Client or external business emails:** Follow up after 3–5 business days.\n— **Cold outreach:** Wait 4–7 days before the first follow-up.\n— **Job applications:** Wait 5–7 business days after the application deadline.\n\n**Follow-up tone:** Each follow-up should add value or new information, not just ask "Did you see my last email?" A good follow-up might add: a relevant article, an updated timeline, a clarifying question, or a concrete reason why the timing matters.\n\n**When to stop:** After two follow-ups with no response, let it go. A third follow-up is almost never appropriate and damages your professional reputation.\n\n**The "break-up email":** If you have tried twice with no response on something important, a polite final message can paradoxically generate responses: "I\'ve reached out a couple of times and understand you may not be interested — no hard feelings. If circumstances change, I\'m happy to reconnect."',
+      },
+      {
+        heading: 'Ready-to-Use Email Templates for Common Scenarios',
+        body: '**Template 1: Job Application Follow-Up**\nSubject: Following up — [Your Name] application for [Role]\n\nHi [Name],\n\nI applied for the [Role] position on [Date] and wanted to follow up to reiterate my interest. I\'m particularly excited about [specific thing about company/role] and believe my experience in [relevant skill] would be a strong fit.\n\nPlease let me know if you need any additional information. I\'m happy to connect at your convenience.\n\nBest,\n[Your Name]\n\n---\n\n**Template 2: Client Project Update**\nSubject: [Project Name] — Week 3 Update\n\nHi [Name],\n\nHere\'s this week\'s progress on [Project]:\n✓ Completed: [Item 1], [Item 2]\n→ In progress: [Item 3]\n⚠ Blocker: [Item 4] is waiting on [dependency]\n\nNext steps: I\'ll have [deliverable] ready by [date]. Can we confirm the deadline for [item]?\n\nLet me know if anything needs adjusting.\n\n[Your Name]\n\n---\n\n**Template 3: Cold Partnership Outreach**\nSubject: Idea for [Their Company] — [Your Company]\n\nHi [Name],\n\nI\'ve been following [Company]\'s work on [specific thing] — impressive progress on [outcome].\n\nWe\'re [one-sentence description of your company] and work with [type of companies]. I think there could be a good fit here around [specific opportunity].\n\nWould you be open to a 20-minute call next week to explore? I\'m flexible on timing.\n\n[Your Name], [Title], [Company]',
+      },
+      {
+        heading: 'Common Professional Email Mistakes to Avoid',
+        body: '**Mistake 1: Reply All abuse.** Before hitting Reply All, ask: does everyone on this thread need to see your response? Usually the answer is no.\n\n**Mistake 2: Using email for urgent matters.** Email is asynchronous. If you need an answer within the hour, use phone or instant messaging. Email is not the appropriate channel for urgency.\n\n**Mistake 3: Emotional emails.** Never send an email when angry or upset. Write the draft, save it, sleep on it, and send (or delete) in the morning. Once sent, you cannot unsend.\n\n**Mistake 4: Long paragraphs.** The reader is on a mobile device or scanning quickly. Use short paragraphs (2–4 sentences maximum), white space, and bullet points for lists.\n\n**Mistake 5: Burying the ask.** The most important information — your request or key point — should be in the first paragraph, not buried in a wall of context.\n\n**Mistake 6: No subject line, or a terrible one.** "Hi," "Meeting," and "Question" are not subject lines. Be specific.\n\n**Mistake 7: Forgetting the attachment.** If you mention an attachment, check that it is actually attached before hitting send. This is an embarrassingly common error.\n\n**Mistake 8: Ignoring tone.** Read your email out loud before sending. If it sounds cold, demanding, or passive-aggressive when spoken, it will come across that way in writing too.',
+      },
+    ],
+    faqs: [
+      {
+        q: 'How long should a professional email be?',
+        a: 'As short as possible while conveying everything necessary. Most professional emails should be readable in under 30 seconds — roughly 100–200 words. Emails longer than 300 words are often better served by an attachment or a call. The one exception is detailed project proposals or RFP responses, where length is expected.',
+      },
+      {
+        q: 'Should I use "Dear" or "Hi" in professional emails?',
+        a: '"Hi [Name]," is the dominant professional standard in most industries in 2026. "Dear [Name]," is appropriate for formal correspondence (legal, government, very senior executives you\'ve not met). "Hey [Name]," is fine for established internal colleagues in casual cultures. Avoid "To Whom It May Concern" — it signals you did not bother to research who you were writing to.',
+      },
+      {
+        q: 'What is the best time to send a professional email?',
+        a: 'Tuesday through Thursday, between 8–10am in the recipient\'s local time zone, consistently shows the highest open and response rates in multiple email marketing studies. Monday morning (inbox clearing after the weekend) and Friday afternoon (mentally checked out before the weekend) are the worst times. That said, for internal emails, whenever the thought is ready is usually fine.',
+      },
+      {
+        q: 'How do I write a professional email to someone senior to me?',
+        a: 'Be concise and get to the point faster than you would with a peer. Senior leaders receive many emails and appreciate directness. Lead with the ask or the key information, provide only the necessary context, and keep it short. Avoid excessive deference — "I know you are very busy but..." wastes their time and yours.',
+      },
+      {
+        q: 'Is it okay to use an AI tool to write professional emails?',
+        a: 'Yes, and increasingly expected. AI email tools help with structure, tone, and phrasing — particularly useful when writing in a second language or when dealing with high-stakes situations. The best practice is to provide the AI with your key points and then edit the output to sound like you. A polished email, regardless of how it was drafted, reflects well on you.',
+      },
+      {
+        q: 'How do I write an email asking for a raise?',
+        a: 'Schedule a meeting first — do not lead with the request via email. Use email to confirm the meeting and frame the agenda: "I\'d like to discuss my compensation — I\'ve prepared some context on my contributions and market rates. Can we find 20 minutes this week?" The raise conversation itself should be in person or on a call, with the email serving as a professional framework.',
+      },
+    ],
+    countriesServed: ['United States', 'United Kingdom', 'India', 'Canada', 'Australia', 'Germany', 'Singapore'],
+  },
 ];
 
 export const BLOG_CATEGORIES = [

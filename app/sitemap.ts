@@ -14,6 +14,10 @@ const STATIC_ROUTES: Array<{ url: string; priority: number; changeFrequency: Met
   { url: '/tools/paraphraser', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-05-31' },
   { url: '/tools/grammar-checker', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-05-31' },
   { url: '/tools/plagiarism-checker', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-06-06' },
+  // Editorial articles
+  { url: '/blog/how-ats-systems-filter-resumes', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-06-06' },
+  { url: '/blog/ai-job-displacement-2026-career-guide', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-06-06' },
+  { url: '/blog/professional-email-writing-guide-2026', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-06-06' },
   { url: '/tools/email-writer', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-05-31' },
   { url: '/tools/code-explainer', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-05-31' },
   { url: '/tools/paystub-generator', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-05-31' },
