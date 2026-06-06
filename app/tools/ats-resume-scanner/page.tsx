@@ -133,7 +133,7 @@ export default function ATSResumeScannerPage() {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <Header />
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
 
         {/* ── Hero ── */}
         <section className="bg-gradient-to-br from-teal-50 via-white to-blue-50 border-b border-stone-100 pt-12 pb-10 px-4">

@@ -65,7 +65,7 @@ export default async function PoliticsPage({ searchParams }: PageProps) {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-[#F9F7F4] pt-24 pb-20">
+      <main id="main-content" className="min-h-screen bg-[#F9F7F4] pt-24 pb-20">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-2">

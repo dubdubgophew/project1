@@ -25,7 +25,7 @@ export default function ContactPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-[#F9F7F4] pt-24 pb-20">
+      <main id="main-content" className="min-h-screen bg-[#F9F7F4] pt-24 pb-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12">
             <div>
@@ -67,21 +67,21 @@ export default function ContactPage() {
                   <p className="text-gray-400 text-sm">We&apos;ll get back to you within 24-48 hours.</p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4" aria-label="Contact form">
                   <h2 className="text-lg font-semibold text-stone-900 mb-5">Send a Message</h2>
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="label">Name</label>
-                      <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" className="input" required />
+                      <label htmlFor="contact-name" className="label">Name</label>
+                      <input id="contact-name" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" className="input" required aria-required="true" />
                     </div>
                     <div>
-                      <label className="label">Email</label>
-                      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" className="input" required />
+                      <label htmlFor="contact-email" className="label">Email</label>
+                      <input id="contact-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" className="input" required aria-required="true" />
                     </div>
                   </div>
                   <div>
-                    <label className="label">Subject</label>
-                    <select value={subject} onChange={(e) => setSubject(e.target.value)} className="input" required>
+                    <label htmlFor="contact-subject" className="label">Subject</label>
+                    <select id="contact-subject" value={subject} onChange={(e) => setSubject(e.target.value)} className="input" required aria-required="true">
                       <option value="">Select a topic…</option>
                       <option>Technical Issue</option>
                       <option>Billing / Subscription</option>
@@ -91,8 +91,8 @@ export default function ContactPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="label">Message</label>
-                    <textarea value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Describe your issue or question…" className="textarea" required />
+                    <label htmlFor="contact-message" className="label">Message</label>
+                    <textarea id="contact-message" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Describe your issue or question…" className="textarea" required aria-required="true" />
                   </div>
                   <button type="submit" disabled={loading} className="btn-primary w-full justify-center">
                     {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Mail className="w-4 h-4" />}

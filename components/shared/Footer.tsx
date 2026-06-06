@@ -59,17 +59,17 @@ export function Footer() {
               No signup required for the first 5 daily uses.
             </p>
             <div className="flex items-center gap-3">
-              <a href="https://twitter.com/formlytools" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-stone-800/80 flex items-center justify-center text-stone-500 hover:text-white hover:bg-stone-700 transition-colors">
-                <Twitter className="w-4 h-4" />
+              <a href="https://twitter.com/formlytools" target="_blank" rel="noopener noreferrer" aria-label="Follow Formly Tools on X (Twitter)" className="w-9 h-9 rounded-lg bg-stone-800/80 flex items-center justify-center text-stone-500 hover:text-white hover:bg-stone-700 transition-colors">
+                <Twitter className="w-4 h-4" aria-hidden="true" />
               </a>
-              <a href="https://github.com/formlytools" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-stone-800/80 flex items-center justify-center text-stone-500 hover:text-white hover:bg-stone-700 transition-colors">
-                <Github className="w-4 h-4" />
+              <a href="https://github.com/formlytools" target="_blank" rel="noopener noreferrer" aria-label="Formly Tools on GitHub" className="w-9 h-9 rounded-lg bg-stone-800/80 flex items-center justify-center text-stone-500 hover:text-white hover:bg-stone-700 transition-colors">
+                <Github className="w-4 h-4" aria-hidden="true" />
               </a>
-              <a href="https://linkedin.com/company/formlytools" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-stone-800/80 flex items-center justify-center text-stone-500 hover:text-white hover:bg-stone-700 transition-colors">
-                <Linkedin className="w-4 h-4" />
+              <a href="https://linkedin.com/company/formlytools" target="_blank" rel="noopener noreferrer" aria-label="Formly Tools on LinkedIn" className="w-9 h-9 rounded-lg bg-stone-800/80 flex items-center justify-center text-stone-500 hover:text-white hover:bg-stone-700 transition-colors">
+                <Linkedin className="w-4 h-4" aria-hidden="true" />
               </a>
-              <a href="mailto:hello@formly.tools" className="w-9 h-9 rounded-lg bg-stone-800/80 flex items-center justify-center text-stone-500 hover:text-white hover:bg-stone-700 transition-colors">
-                <Mail className="w-4 h-4" />
+              <a href="mailto:hello@formly.tools" aria-label="Email Formly Tools support" className="w-9 h-9 rounded-lg bg-stone-800/80 flex items-center justify-center text-stone-500 hover:text-white hover:bg-stone-700 transition-colors">
+                <Mail className="w-4 h-4" aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -118,12 +118,15 @@ export function Footer() {
             <p className="text-sm text-stone-500 mb-4">
               Get notified when we add new AI tools and features.
             </p>
-            <form action="/api/newsletter" method="POST" className="space-y-2">
+            <form action="/api/newsletter" method="POST" className="space-y-2" aria-label="Newsletter subscription">
+              <label htmlFor="footer-email" className="sr-only">Email address</label>
               <input
+                id="footer-email"
                 type="email"
                 name="email"
                 placeholder="your@email.com"
                 required
+                aria-required="true"
                 className="w-full px-4 py-3 rounded-xl bg-stone-900 border border-stone-700 text-stone-100 placeholder-stone-600 focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500/40 transition-all duration-200 text-sm"
               />
               <button type="submit" className="btn-primary w-full justify-center text-sm py-2.5">

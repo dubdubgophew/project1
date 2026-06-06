@@ -35,13 +35,13 @@ export function ToolLayout({
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-[#F9F7F4] pt-[76px]">
+      <main id="main-content" className="min-h-screen bg-[#F9F7F4] pt-[76px]">
         {/* Tool header */}
         <div className="border-b border-stone-200 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <Link
               href="/tools"
-              className="inline-flex items-center gap-2 text-sm text-stone-400 hover:text-stone-700 transition-colors mb-4"
+              className="inline-flex items-center gap-2 text-sm text-stone-500 hover:text-stone-700 transition-colors mb-4"
             >
               <ArrowLeft className="w-4 h-4" />
               All Tools

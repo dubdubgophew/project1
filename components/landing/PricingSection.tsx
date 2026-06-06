@@ -75,7 +75,7 @@ export function PricingSection() {
           <p className="text-stone-500 max-w-xl mx-auto mb-2">
             Start free, upgrade when you need more. Cancel anytime — no questions asked.
           </p>
-          <p className="text-sm text-stone-400">All prices in USD · Local currency shown at checkout · All taxes included</p>
+          <p className="text-sm text-stone-500">All prices in USD · Local currency shown at checkout · All taxes included</p>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -109,7 +109,7 @@ export function PricingSection() {
                 ) : (
                   <div className="flex items-end gap-2">
                     <span className="text-4xl font-bold text-stone-900">${plan.priceUSD}</span>
-                    <span className="text-stone-400 mb-1">{plan.priceSuffix}</span>
+                    <span className="text-stone-500 mb-1">{plan.priceSuffix}</span>
                   </div>
                 )}
               </div>
@@ -134,7 +134,7 @@ export function PricingSection() {
           ))}
         </div>
 
-        <p className="text-center text-sm text-stone-400 mt-8">
+        <p className="text-center text-sm text-stone-500 mt-8">
           All plans include a 7-day money-back guarantee. Secure payment via DodoPayments · All taxes included.
         </p>
       </div>

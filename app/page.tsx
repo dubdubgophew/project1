@@ -84,7 +84,7 @@ export default function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppListSchema) }} />
       <Header />
-      <main>
+      <main id="main-content">
         <div className="h-20" />
         <DiagrifBanner />
         <Hero />

@@ -61,7 +61,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 ml-64 p-8">
+      <main id="main-content" className="flex-1 ml-64 p-8">
         {children}
       </main>
     </div>

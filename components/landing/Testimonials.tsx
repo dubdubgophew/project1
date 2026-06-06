@@ -82,7 +82,7 @@ export function Testimonials() {
                 </div>
                 <div>
                   <div className="font-semibold text-stone-900 text-sm">{t.name}</div>
-                  <div className="text-xs text-stone-400">{t.role} · {t.country}</div>
+                  <div className="text-xs text-stone-500">{t.role} · {t.country}</div>
                 </div>
               </div>
 

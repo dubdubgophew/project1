@@ -403,7 +403,7 @@ export default function AlternativesPage() {
 
       <Header />
 
-      <main className="min-h-screen bg-gray-950">
+      <main id="main-content" className="min-h-screen bg-gray-950">
         {/* ── Hero ──────────────────────────────────────────────── */}
         <section className="relative pt-28 pb-20 overflow-hidden">
           {/* Ambient glow */}

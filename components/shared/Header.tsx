@@ -40,7 +40,14 @@ export function Header() {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 pt-3 px-3 sm:px-4 lg:px-6">
+    <header className="fixed top-0 left-0 right-0 z-50 pt-3 px-3 sm:px-4 lg:px-6" role="banner">
+      {/* Skip-to-content link for keyboard/screen-reader users */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-orange-500 focus:text-white focus:rounded-lg focus:text-sm focus:font-medium"
+      >
+        Skip to main content
+      </a>
       {/* Floating pill container */}
       <div className={`max-w-7xl mx-auto rounded-2xl transition-all duration-300 ${
         scrolled
@@ -50,9 +57,9 @@ export function Header() {
         <div className="px-4 sm:px-5">
           <div className="flex items-center justify-between h-14">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
+            <Link href="/" aria-label="Formly Tools — Home" className="flex items-center gap-2 group flex-shrink-0">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center shadow-md shadow-orange-500/25 group-hover:shadow-orange-500/40 transition-shadow">
-                <Zap className="w-4 h-4 text-white" />
+                <Zap className="w-4 h-4 text-white" aria-hidden="true" />
               </div>
               <span className="font-bold tracking-tight leading-none">
                 <span className="text-xl text-stone-900">formly</span>
@@ -61,14 +68,16 @@ export function Header() {
             </Link>
 
             {/* Desktop Nav */}
-            <nav className="hidden md:flex items-center gap-0.5">
+            <nav aria-label="Main navigation" className="hidden md:flex items-center gap-0.5">
               <div className="relative">
                 <button
                   onClick={() => setToolsOpen(!toolsOpen)}
                   onBlur={() => setTimeout(() => setToolsOpen(false), 150)}
+                  aria-expanded={toolsOpen}
+                  aria-haspopup="true"
                   className="flex items-center gap-1 px-3 py-2 rounded-lg text-sm text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition-all"
                 >
-                  Tools <ChevronDown className={`w-3.5 h-3.5 transition-transform ${toolsOpen ? 'rotate-180' : ''}`} />
+                  Tools <ChevronDown className={`w-3.5 h-3.5 transition-transform ${toolsOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
                 </button>
                 {toolsOpen && (
                   <div onMouseDown={(e) => e.preventDefault()} className="absolute top-full left-0 mt-2 w-52 bg-white border border-stone-200 rounded-xl shadow-xl overflow-hidden">
@@ -117,13 +126,17 @@ export function Header() {
             </nav>
 
             {/* Search */}
-            <form onSubmit={e => { e.preventDefault(); if (q.trim()) { router.push(`/tools?q=${encodeURIComponent(q.trim())}`); setQ(''); } }}>
+            <form role="search" aria-label="Search Formly Tools" onSubmit={e => { e.preventDefault(); if (q.trim()) { router.push(`/tools?q=${encodeURIComponent(q.trim())}`); setQ(''); } }}>
               <div className="relative hidden md:block">
-                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-stone-400" />
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-stone-400" aria-hidden="true" />
                 <input
                   value={q}
                   onChange={e => setQ(e.target.value)}
                   placeholder="Search tools…"
+                  aria-label="Search tools"
+                  name="q"
+                  type="search"
+                  autoComplete="off"
                   className="bg-stone-100 border border-stone-200 rounded-lg pl-8 pr-3 py-1.5 text-sm text-stone-700 w-32 focus:w-48 focus:border-orange-400 focus:bg-white focus:ring-1 focus:ring-orange-400/30 transition-all duration-200 focus:outline-none placeholder:text-stone-400"
                 />
               </div>
@@ -151,9 +164,10 @@ export function Header() {
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="md:hidden p-2 rounded-lg text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-colors"
-              aria-label="Toggle menu"
+              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={mobileOpen}
             >
-              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileOpen ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
             </button>
           </div>
         </div>
@@ -161,7 +175,7 @@ export function Header() {
 
       {/* Mobile Menu — also floating */}
       {mobileOpen && (
-        <div className="md:hidden max-w-7xl mx-auto mt-1.5 rounded-2xl bg-white border border-stone-200 shadow-xl overflow-hidden">
+        <nav aria-label="Mobile navigation" className="md:hidden max-w-7xl mx-auto mt-1.5 rounded-2xl bg-white border border-stone-200 shadow-xl overflow-hidden">
           <div className="px-4 py-4 space-y-0.5">
             {TOOLS_NAV.map((tool) => (
               <Link
@@ -217,7 +231,7 @@ export function Header() {
               )}
             </div>
           </div>
-        </div>
+        </nav>
       )}
     </header>
   );

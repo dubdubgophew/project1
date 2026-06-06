@@ -637,7 +637,7 @@ export default function ToolsPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-[#F9F7F4] pt-24">
+      <main id="main-content" className="min-h-screen bg-[#F9F7F4] pt-24">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pb-20">
           <div className="grid lg:grid-cols-[1fr_260px] gap-8">
             <div>

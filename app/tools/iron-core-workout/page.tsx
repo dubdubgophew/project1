@@ -924,7 +924,7 @@ export default function IronCoreWorkoutPage() {
         @keyframes pulse-glow { 0%,100%{box-shadow:0 0 8px #d94025aa} 50%{box-shadow:0 0 22px #d94025} }
         .timer-done { animation: pulse-glow 1s ease-in-out infinite; }
       `}</style>
-      <main style={{background:'#0a0a08', minHeight:'100vh', paddingBottom:60}}>
+      <main id="main-content" style={{background:'#0a0a08', minHeight:'100vh', paddingBottom:60}}>
 
         {/* Header spacer */}
         <div style={{height:64}} />

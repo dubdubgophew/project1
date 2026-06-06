@@ -114,35 +114,37 @@ function SignupForm() {
         <div className="flex-1 h-px bg-gray-800" />
       </div>
 
-      <form onSubmit={handleSignup} className="space-y-4">
+      <form onSubmit={handleSignup} className="space-y-4" aria-label="Create account form">
         {error && (
-          <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+          <div role="alert" className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
             {error}
           </div>
         )}
 
         <div>
-          <label className="label">Full Name</label>
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" required className="input" />
+          <label htmlFor="signup-name" className="label">Full Name</label>
+          <input id="signup-name" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" required aria-required="true" className="input" />
         </div>
         <div>
-          <label className="label">Email</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" required className="input" />
+          <label htmlFor="signup-email" className="label">Email</label>
+          <input id="signup-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" required aria-required="true" className="input" />
         </div>
         <div>
-          <label className="label">Password</label>
+          <label htmlFor="signup-password" className="label">Password</label>
           <div className="relative">
             <input
+              id="signup-password"
               type={showPass ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Min. 8 characters"
               required
+              aria-required="true"
               minLength={8}
               className="input pr-10"
             />
-            <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors">
-              {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            <button type="button" onClick={() => setShowPass(!showPass)} aria-label={showPass ? 'Hide password' : 'Show password'} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors">
+              {showPass ? <EyeOff className="w-4 h-4" aria-hidden="true" /> : <Eye className="w-4 h-4" aria-hidden="true" />}
             </button>
           </div>
         </div>

@@ -12,7 +12,7 @@ export default function TermsPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-[#F9F7F4] pt-24 pb-20">
+      <main id="main-content" className="min-h-screen bg-[#F9F7F4] pt-24 pb-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold text-stone-900 mb-2">Terms of Service</h1>
           <p className="text-gray-500 text-sm mb-10">Last updated: June 5, 2026</p>

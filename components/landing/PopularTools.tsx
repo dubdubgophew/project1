@@ -209,7 +209,7 @@ export function PopularTools() {
               </h3>
 
               {/* Category badge */}
-              <span className="inline-block mb-2 text-[10px] px-1.5 py-0.5 rounded bg-stone-100 text-stone-400 w-fit">
+              <span className="inline-block mb-2 text-[10px] px-1.5 py-0.5 rounded bg-stone-100 text-stone-600 w-fit">
                 {tool.category}
               </span>
 

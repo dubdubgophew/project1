@@ -85,7 +85,7 @@ export default async function BlogPostPage({ params }: Props) {
     return (
       <>
         <Header />
-        <main className="min-h-screen bg-[#F9F7F4] pt-24 pb-20">
+        <main id="main-content" className="min-h-screen bg-[#F9F7F4] pt-24 pb-20">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-[1fr_280px] gap-12">
               <article>
@@ -170,7 +170,7 @@ export default async function BlogPostPage({ params }: Props) {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-[#F9F7F4] pt-24 pb-20">
+      <main id="main-content" className="min-h-screen bg-[#F9F7F4] pt-24 pb-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-[1fr_280px] gap-12">
             <article>

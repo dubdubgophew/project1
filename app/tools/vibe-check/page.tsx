@@ -260,7 +260,7 @@ export default function VibeCheck() {
   if (step === 'checkin' || step === 'loading') return (
     <>
       <Header />
-      <main className="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-amber-50 pt-24 pb-20">
+      <main id="main-content" className="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-amber-50 pt-24 pb-20">
         <div className="max-w-xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-8">
             <div className="text-5xl mb-2">✨</div>
@@ -371,7 +371,7 @@ export default function VibeCheck() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-amber-50 pt-24 pb-20">
+      <main id="main-content" className="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-amber-50 pt-24 pb-20">
         <div className="max-w-xl mx-auto px-4 sm:px-6 space-y-4">
           <div className="text-center">
             <div className="text-5xl mb-2">{mood?.emoji}</div>

@@ -74,7 +74,7 @@ export function HowItWorks() {
                     </div>
                   </div>
 
-                  <div className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-2">Step {step.step}</div>
+                  <div className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">Step {step.step}</div>
                   <h3 className="text-lg font-semibold text-stone-900 mb-3">{step.title}</h3>
                   <p className="text-stone-500 text-sm leading-relaxed">{step.description}</p>
                 </div>
