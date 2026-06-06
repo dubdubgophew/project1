@@ -17,7 +17,7 @@ export default function TermsPage() {
           <h1 className="text-4xl font-bold text-stone-900 mb-2">Terms of Service</h1>
           <p className="text-gray-500 text-sm mb-10">Last updated: June 5, 2026</p>
 
-          <div className="prose prose-sm max-w-none prose-invert prose-p:text-gray-400 prose-h2:text-white prose-h2:text-xl prose-h2:mt-8 prose-li:text-stone-500">
+          <div className="legal-content">
             <p>By using Formly (&quot;the Service&quot;), you agree to these Terms. Please read them carefully.</p>
 
             <h2>1. Acceptable Use</h2>

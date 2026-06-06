@@ -196,18 +196,7 @@ export default async function BlogPostPage({ params }: Props) {
               <InArticleAd className="my-6" />
 
               {/* AI-generated article HTML */}
-              <div
-                className="prose prose-sm max-w-none mt-6
-                  prose-headings:text-stone-900 prose-headings:font-bold
-                  prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-3
-                  prose-h3:text-lg prose-h3:mt-6 prose-h3:mb-2
-                  prose-p:text-stone-600 prose-p:leading-relaxed prose-p:mb-4
-                  prose-li:text-stone-600 prose-ul:my-4 prose-ol:my-4
-                  prose-strong:text-stone-900
-                  prose-a:text-violet-600 prose-a:no-underline hover:prose-a:text-violet-700
-                  prose-code:text-orange-600 prose-code:bg-orange-50 prose-code:px-1 prose-code:rounded"
-                dangerouslySetInnerHTML={{ __html: post.content }}
-              />
+              <div className="blog-content mt-6" dangerouslySetInnerHTML={{ __html: post.content }} />
 
               {/* Mid-article ad — after content, before CTA */}
               <InArticleAd variant={2} className="my-8" />

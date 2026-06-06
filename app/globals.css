@@ -125,12 +125,6 @@
 }
 
 @layer utilities {
-  .animate-delay-100 { animation-delay: 100ms; }
-  .animate-delay-200 { animation-delay: 200ms; }
-  .animate-delay-300 { animation-delay: 300ms; }
-  .animate-delay-400 { animation-delay: 400ms; }
-  .animate-delay-500 { animation-delay: 500ms; }
-
   .text-balance {
     text-wrap: balance;
   }
@@ -157,12 +151,9 @@
   100% { background-position: -200% 0; }
 }
 
-/* Prose */
+/* PDF summarizer output text color override */
 .prose-dark {
-  --tw-prose-body: #44403C;
-  --tw-prose-headings: #1C1917;
-  --tw-prose-links: #F97316;
-  --tw-prose-code: #EA580C;
+  color: #44403C;
 }
 
 /* AdSense */
@@ -170,3 +161,32 @@
   @apply my-6 flex items-center justify-center;
   min-height: 90px;
 }
+
+/* Blog article content — replaces @tailwindcss/typography prose */
+.blog-content { color: #57534e; font-size: 0.875rem; line-height: 1.75; }
+.blog-content p { color: #57534e; line-height: 1.75; margin-bottom: 1rem; }
+.blog-content h2 { font-size: 1.25rem; font-weight: 700; color: #1c1917; margin-top: 2rem; margin-bottom: 0.75rem; }
+.blog-content h3 { font-size: 1.125rem; font-weight: 600; color: #1c1917; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+.blog-content ul { list-style: disc; padding-left: 1.5rem; margin: 1rem 0; }
+.blog-content ol { list-style: decimal; padding-left: 1.5rem; margin: 1rem 0; }
+.blog-content li { color: #57534e; margin-bottom: 0.25rem; }
+.blog-content strong { color: #1c1917; font-weight: 700; }
+.blog-content a { color: #7c3aed; text-decoration: none; }
+.blog-content a:hover { color: #6d28d9; }
+.blog-content code { color: #ea580c; background: #fff7ed; padding: 0.125rem 0.25rem; border-radius: 0.25rem; }
+.blog-content .faq-section h2 { font-size: 1.5rem; margin-top: 2rem; }
+.blog-content .faq-item { margin-bottom: 1rem; }
+.blog-content .faq-item h3 { font-size: 1rem; font-weight: 600; color: #1c1917; margin: 0 0 0.25rem; }
+.blog-content .faq-item p { margin: 0; color: #57534e; }
+
+/* Legal page content (privacy, terms, refunds) */
+.legal-content { color: #44403c; font-size: 0.9375rem; line-height: 1.75; }
+.legal-content p { margin-bottom: 1rem; color: #57534e; }
+.legal-content h2 { font-size: 1.125rem; font-weight: 700; color: #1c1917; margin-top: 2rem; margin-bottom: 0.5rem; }
+.legal-content ul, .legal-content ol { padding-left: 1.5rem; margin: 0.75rem 0; }
+.legal-content ul { list-style: disc; }
+.legal-content ol { list-style: decimal; }
+.legal-content li { color: #57534e; margin-bottom: 0.25rem; }
+.legal-content strong { color: #1c1917; font-weight: 600; }
+.legal-content a { color: #f97316; }
+.legal-content a:hover { color: #ea580c; }

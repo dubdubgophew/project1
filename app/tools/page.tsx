@@ -615,7 +615,7 @@ function ToolsContent() {
       </div>
 
       {/* SEO content */}
-      <div className="mt-16 prose prose-sm max-w-4xl mx-auto text-stone-500">
+      <div className="mt-16 max-w-4xl mx-auto text-stone-600 text-sm leading-relaxed space-y-4">
         <h2 className="text-2xl font-bold text-stone-900">Why Formly is Better Than the Alternatives</h2>
         <p>
           Most AI tool platforms charge $20-100/month, show intrusive ads, require signups for basic features,

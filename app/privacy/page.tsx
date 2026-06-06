@@ -17,14 +17,14 @@ export default function PrivacyPage() {
           <h1 className="text-4xl font-bold text-stone-900 mb-2">Privacy Policy</h1>
           <p className="text-gray-500 text-sm mb-10">Last updated: June 5, 2026</p>
 
-          <div className="prose prose-sm max-w-none prose-invert prose-p:text-gray-400 prose-h2:text-white prose-h2:text-xl prose-h2:mt-8 prose-li:text-stone-500">
+          <div className="legal-content">
             <p>Formly (&quot;we&quot;, &quot;our&quot;, &quot;us&quot;) is committed to protecting your privacy. This policy explains what information we collect, how we use it, and your rights.</p>
 
             <h2>1. What We Collect</h2>
-            <p><strong className="text-white">Account data:</strong> Email address and name when you create an account. Used only for authentication and account management.</p>
-            <p><strong className="text-white">Usage data:</strong> We log which AI tool was used, the timestamp, and your IP address or user ID — solely for rate limiting (preventing abuse). We do NOT log the content of your requests.</p>
-            <p><strong className="text-white">Payment data:</strong> Handled entirely by DodoPayments (our Merchant of Record). We never see or store your card details.</p>
-            <p><strong className="text-white">Analytics:</strong> Google Analytics collects anonymized usage data (page views, session duration). No personally identifiable information is sent to Google.</p>
+            <p><strong className="text-stone-900">Account data:</strong> Email address and name when you create an account. Used only for authentication and account management.</p>
+            <p><strong className="text-stone-900">Usage data:</strong> We log which AI tool was used, the timestamp, and your IP address or user ID — solely for rate limiting (preventing abuse). We do NOT log the content of your requests.</p>
+            <p><strong className="text-stone-900">Payment data:</strong> Handled entirely by DodoPayments (our Merchant of Record). We never see or store your card details.</p>
+            <p><strong className="text-stone-900">Analytics:</strong> Google Analytics collects anonymized usage data (page views, session duration). No personally identifiable information is sent to Google.</p>
 
             <h2>2. What We Do NOT Collect</h2>
             <ul>
@@ -52,10 +52,10 @@ export default function PrivacyPage() {
 
             <h2>7. Third-Party Services</h2>
             <ul>
-              <li><strong className="text-white">Groq:</strong> Processes AI requests. Your input is sent to Groq&apos;s API and not stored by us. See <a href="https://groq.com/privacy" className="text-orange-500">Groq Privacy Policy</a>.</li>
-              <li><strong className="text-white">Supabase:</strong> Database and authentication.</li>
-              <li><strong className="text-white">DodoPayments:</strong> Payment processing. See <a href="https://dodopayments.com/privacy" className="text-orange-500">DodoPayments Privacy Policy</a>.</li>
-              <li><strong className="text-white">Vercel:</strong> Hosting and edge functions.</li>
+              <li><strong className="text-stone-900">Groq:</strong> Processes AI requests. Your input is sent to Groq&apos;s API and not stored by us. See <a href="https://groq.com/privacy" className="text-orange-500">Groq Privacy Policy</a>.</li>
+              <li><strong className="text-stone-900">Supabase:</strong> Database and authentication.</li>
+              <li><strong className="text-stone-900">DodoPayments:</strong> Payment processing. See <a href="https://dodopayments.com/privacy" className="text-orange-500">DodoPayments Privacy Policy</a>.</li>
+              <li><strong className="text-stone-900">Vercel:</strong> Hosting and edge functions.</li>
             </ul>
 
             <h2>8. Contact</h2>

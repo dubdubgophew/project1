@@ -131,6 +131,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${plusJakartaSans.variable} ${jetbrainsMono.variable} ${dmSerifDisplay.variable}`}>
       <head>
+        {/* Preconnect for third-party origins used above the fold */}
+        <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://quge5.com" />
         <meta name="google-adsense-account" content="ca-pub-7233937066598688" />
         <AdSenseScript />
         <meta name="monetag" content="701dad6c34191d949e21404ca1901f4f" />

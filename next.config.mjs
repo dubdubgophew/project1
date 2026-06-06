@@ -8,6 +8,7 @@ const nextConfig = {
   },
   experimental: {
     serverComponentsExternalPackages: ['pdf-parse', 'sharp'],
+    optimizePackageImports: ['lucide-react'],
   },
   images: {
     remotePatterns: [
@@ -70,6 +71,13 @@ const nextConfig = {
               "form-action 'self'",
             ].join('; '),
           },
+        ],
+      },
+      {
+        // Long-lived immutable cache for Next.js static assets (Vercel adds this too, belt-and-suspenders)
+        source: '/_next/static/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
         ],
       },
       {
