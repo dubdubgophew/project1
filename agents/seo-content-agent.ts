@@ -254,7 +254,7 @@ export async function generateBlogPost(keyword?: string): Promise<BlogPost | nul
     const titleResponse = await callAI([
       {
         role: 'system',
-        content: `You are an SEO content strategist for Formly (formly.tools), a free AI tools platform.
+        content: `You are an SEO content strategist for Formly Tools (formly.tools), a free AI tools platform with 47 tools.
 Generate a specific, compelling blog post title for the given keyword.
 Rules:
 - Full phrase or sentence (6-12 words, max 65 chars)
@@ -291,7 +291,7 @@ Return ONLY valid JSON: {"title": "...", "tags": ["tag1", "tag2", "tag3"]}`,
     const articleResponse = await callAI([
       {
         role: 'system',
-        content: `You are an SEO content writer for Formly (formly.tools), a free AI tools platform.
+        content: `You are an SEO content writer for Formly Tools (formly.tools), a free AI tools platform with 47 tools.
 Write a blog post following 2026 search best practices.
 
 CRITICAL STRUCTURE (in this order):
@@ -303,7 +303,7 @@ CRITICAL STRUCTURE (in this order):
 <div class="faq-item"><h3>Question?</h3><p>Direct 2-sentence answer.</p></div>
 </div>
 Include 4 FAQ items matching real search queries.
-5. CTA: <p>Try it free at <a href="/tools">Formly Tools — 37 Free AI Tools</a>. No signup required.</p>
+5. CTA: <p>Try it free at <a href="https://formly.tools/tools">Formly Tools — 47 Free Tools</a>. No signup required.</p>
 
 FORMAT: HTML only. Tags: <h2>, <h3>, <p>, <ul>, <li>, <strong>, <a>. No <html>/<body>/<head>.
 LENGTH: 750-1000 words.

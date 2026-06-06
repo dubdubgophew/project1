@@ -54,9 +54,9 @@ export function Header() {
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center shadow-md shadow-orange-500/25 group-hover:shadow-orange-500/40 transition-shadow">
                 <Zap className="w-4 h-4 text-white" />
               </div>
-              <span className="text-xl font-bold tracking-tight">
-                <span className="text-stone-900">form</span>
-                <span className="gradient-text">ly</span>
+              <span className="font-bold tracking-tight leading-none">
+                <span className="text-xl text-stone-900">formly</span>
+                <span className="text-lg gradient-text"> tools</span>
               </span>
             </Link>
 

@@ -50,13 +50,13 @@ export function Footer() {
                 <Zap className="w-4 h-4 text-white" />
               </div>
               <span className="text-xl font-bold">
-                <span className="text-stone-100">form</span>
-                <span className="gradient-text">ly</span>
+                <span className="text-stone-100">formly</span>
+                <span className="gradient-text"> tools</span>
               </span>
             </Link>
             <p className="text-stone-500 text-sm leading-relaxed mb-6">
-              37 free AI tools for writers, developers, and professionals.
-              No signup required for first 5 daily uses.
+              47 free tools for writers, developers, and professionals.
+              No signup required for the first 5 daily uses.
             </p>
             <div className="flex items-center gap-3">
               <a href="https://twitter.com/formlytools" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-stone-800/80 flex items-center justify-center text-stone-500 hover:text-white hover:bg-stone-700 transition-colors">
@@ -138,7 +138,7 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-stone-800/60 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-stone-600">
-            © {new Date().getFullYear()} Formly. Built with ♥ in India.
+            © {new Date().getFullYear()} Formly Tools. Built with ♥ in India.
           </p>
           <div className="flex items-center gap-4">
             <span className="text-xs text-stone-700">Powered by Groq AI</span>

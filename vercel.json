@@ -9,6 +9,10 @@
       "schedule": "0 6 * * *"
     },
     {
+      "path": "/api/cron/generate-brand-content",
+      "schedule": "0 7 * * *"
+    },
+    {
       "path": "/api/cron/weekly-report",
       "schedule": "0 8 * * 1"
     },
@@ -60,6 +64,9 @@
       "maxDuration": 60
     },
     "app/api/cron/generate-content/route.ts": {
+      "maxDuration": 300
+    },
+    "app/api/cron/generate-brand-content/route.ts": {
       "maxDuration": 300
     },
     "app/api/cron/indexnow/route.ts": {
