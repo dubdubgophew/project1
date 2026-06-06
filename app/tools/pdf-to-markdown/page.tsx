@@ -108,6 +108,7 @@ export default function PdfToMarkdownPage() {
 
   return (
     <ToolLayout
+        toolSlug="pdf-to-markdown"
       title="PDF to Markdown Converter"
       description="Convert any PDF to clean, structured Markdown instantly. Perfect for feeding documents into AI tools with minimal token waste."
       icon="📄"

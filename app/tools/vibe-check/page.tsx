@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
 import { InArticleAd } from '@/components/shared/AdSense';
+import { ToolSEOContent } from '@/components/tools/ToolSEOContent';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 type Step = 'checkin' | 'loading' | 'result';
@@ -467,6 +468,8 @@ export default function VibeCheck() {
               <span> Need support? <a href={result.crisis.url} target="_blank" rel="noopener noreferrer" className="text-violet-500 hover:underline">{result.crisis.name}</a></span>
             )}
           </p>
+
+          <ToolSEOContent toolSlug="vibe-check" />
         </div>
       </main>
       <Footer />

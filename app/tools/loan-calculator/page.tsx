@@ -54,6 +54,7 @@ export default function LoanCalculatorPage() {
 
   return (
     <ToolLayout
+        toolSlug="loan-calculator"
       title="Loan / EMI Calculator"
       description="Calculate monthly EMI, total interest, and full amortization schedule for any loan. Instantly see principal vs interest breakdown."
       icon="🏦"

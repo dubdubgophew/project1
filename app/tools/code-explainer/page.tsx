@@ -57,6 +57,7 @@ export default function CodeExplainerPage() {
 
   return (
     <ToolLayout
+        toolSlug="code-explainer"
       title="AI Code Explainer"
       description="Paste any code and get a clear plain-English explanation, improvement suggestions, or auto-generated documentation. Supports 20+ languages."
       icon="💻"

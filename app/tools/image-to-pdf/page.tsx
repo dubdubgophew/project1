@@ -208,6 +208,7 @@ export default function ImageToPdfPage() {
 
   return (
     <ToolLayout
+        toolSlug="image-to-pdf"
       title="Image to PDF"
       icon="🖼️"
       description="Convert JPG, PNG, and WebP images to a PDF document. Add multiple images, reorder them, and download instantly. Free, no upload."

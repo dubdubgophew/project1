@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
+import { ToolSEOContent } from '@/components/tools/ToolSEOContent';
 
 // ─────────────────────────────────────────────
 // DATA
@@ -1596,6 +1597,9 @@ export default function IronCoreWorkoutPage() {
           </div>
         )}
 
+        <div className="max-w-4xl mx-auto px-4 pb-16">
+          <ToolSEOContent toolSlug="iron-core-workout" />
+        </div>
       </main>
       <Footer />
     </>

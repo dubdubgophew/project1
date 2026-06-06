@@ -91,6 +91,7 @@ export default function CodeReviewerPage() {
 
   return (
     <ToolLayout
+        toolSlug="code-reviewer"
       title="AI Code Reviewer"
       description="Paste your code and get an instant AI review — issues, quality score, performance tips, and an improved version."
       icon="🔎"

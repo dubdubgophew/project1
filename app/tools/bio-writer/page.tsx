@@ -54,6 +54,7 @@ export default function BioWriterPage() {
 
   return (
     <ToolLayout
+        toolSlug="bio-writer"
       title="AI Bio Writer"
       description="Create compelling professional bios for LinkedIn, Twitter, Instagram, and personal websites. Make a powerful first impression."
       icon="🪪"

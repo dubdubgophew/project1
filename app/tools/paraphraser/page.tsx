@@ -64,6 +64,7 @@ export default function ParaphraserPage() {
 
   return (
     <ToolLayout
+        toolSlug="paraphraser"
       title="AI Paraphraser"
       description="Instantly rewrite text in 5 different styles. Eliminate plagiarism, improve clarity, and tailor your writing for any audience."
       icon="✍️"

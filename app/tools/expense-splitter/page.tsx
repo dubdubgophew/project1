@@ -106,6 +106,7 @@ export default function ExpenseSplitterPage() {
 
   return (
     <ToolLayout
+        toolSlug="expense-splitter"
       title="Expense Splitter"
       description="Split group expenses fairly. Add people, track who paid what, and get a simplified debt settlement plan."
       icon="💰"

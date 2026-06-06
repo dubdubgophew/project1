@@ -650,6 +650,7 @@ export default function PaystubGeneratorPage() {
   if (user === undefined) {
     return (
       <ToolLayout
+        toolSlug="paystub-generator"
         title="Pay Stub Generator"
         description="Generate professional pay stubs with accurate 2025/2026 tax calculations for USA, UK, Canada, Australia, India, and more."
         icon="🧾"

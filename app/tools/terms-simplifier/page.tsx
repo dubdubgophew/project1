@@ -99,6 +99,7 @@ export default function TermsSimplifierPage() {
 
   return (
     <ToolLayout
+        toolSlug="terms-simplifier"
       title="Terms Simplifier"
       description="Paste any Terms of Service or Privacy Policy and get a plain-English summary — red flags, what they can do, your rights, and a privacy score."
       icon="⚖️"

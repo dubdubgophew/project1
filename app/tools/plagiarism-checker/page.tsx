@@ -99,6 +99,7 @@ export default function PlagiarismCheckerPage() {
 
   return (
     <ToolLayout
+        toolSlug="plagiarism-checker"
       title="Plagiarism Checker"
       description="AI-powered originality detector. Get a segment-level plagiarism risk score, identify suspicious passages, and get specific rewriting suggestions."
       icon="🔍"

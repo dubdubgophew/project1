@@ -164,6 +164,7 @@ export default function GratuityCalculatorPage() {
 
   return (
     <ToolLayout
+        toolSlug="gratuity-calculator"
       title="Gratuity Calculator"
       description="Calculate gratuity payable under Payment of Gratuity Act, 1972. Find taxable and exempt gratuity for covered and non-covered employees."
       icon="🎁"

@@ -5,6 +5,7 @@ import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
 import { BannerAd, InArticleAd } from '@/components/shared/AdSense';
 import { Share2, Check, ChevronDown, ChevronUp, AlertCircle, Zap, Shield, Brain, TrendingUp } from 'lucide-react';
+import { ToolSEOContent } from '@/components/tools/ToolSEOContent';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 interface AIReplaceResult {
@@ -397,6 +398,8 @@ export default function WillAIReplaceMePage() {
               ))}
             </div>
           </section>
+
+          <ToolSEOContent toolSlug="will-ai-replace-me" />
 
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
             '@context': 'https://schema.org',

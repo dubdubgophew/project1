@@ -53,6 +53,7 @@ export default function HashtagGeneratorPage() {
 
   return (
     <ToolLayout
+        toolSlug="hashtag-generator"
       title="AI Hashtag Generator"
       description="Generate perfectly curated hashtags for any topic and platform. Mix of popular, niche, and trending hashtags to maximize reach."
       icon="#️⃣"

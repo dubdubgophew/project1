@@ -64,6 +64,7 @@ export default function YouTubeSummarizerPage() {
 
   return (
     <ToolLayout
+        toolSlug="youtube-summarizer"
       title="YouTube Video Summarizer"
       description="Paste any YouTube URL and get a complete AI summary with key takeaways and timestamps in seconds. Save hours of watching."
       icon="▶️"

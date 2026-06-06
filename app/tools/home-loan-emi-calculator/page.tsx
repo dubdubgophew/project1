@@ -354,6 +354,7 @@ export default function HomeLoanEMIPage() {
 
   return (
     <ToolLayout
+        toolSlug="home-loan-emi-calculator"
       title="Home Loan EMI Calculator India"
       description="Calculate EMI, amortization, LTV, Section 24b tax benefits, prepayment savings, outstanding balance lookup and floating rate scenarios for home loans in India."
       icon="🏠"

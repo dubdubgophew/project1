@@ -207,6 +207,7 @@ export default function CompressImagePage() {
 
   return (
     <ToolLayout
+        toolSlug="compress-image"
       title="Image Compressor"
       icon="🗜️"
       description="Compress JPG, PNG, and WebP images in your browser. No upload needed — 100% private and free."

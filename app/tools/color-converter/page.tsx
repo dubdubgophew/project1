@@ -208,6 +208,7 @@ export default function ColorConverterPage() {
 
   return (
     <ToolLayout
+        toolSlug="color-converter"
       title="Color Converter"
       description="Convert colors between HEX, RGB, HSL, HSV, and CMYK. Generate tints, shades, complementary and triadic colors instantly."
       icon="🎨"

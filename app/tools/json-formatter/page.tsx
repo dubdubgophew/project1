@@ -96,6 +96,7 @@ export default function JsonFormatterPage() {
 
   return (
     <ToolLayout
+        toolSlug="json-formatter"
       title="JSON Formatter & Validator"
       description="Format, minify, and validate JSON instantly. See detailed stats, error messages with line numbers, and copy the result."
       icon="{}"

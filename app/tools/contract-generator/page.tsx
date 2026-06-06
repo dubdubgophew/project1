@@ -389,6 +389,7 @@ export default function ContractGeneratorPage() {
 
   return (
     <ToolLayout
+        toolSlug="contract-generator"
       title="AI Contract Generator"
       description="Generate professional legal contracts in minutes — freelance agreements, NDAs, consulting contracts & more. Saves thousands in legal fees."
       icon="📜"

@@ -209,6 +209,7 @@ export default function PdfToJpgPage() {
 
   return (
     <ToolLayout
+        toolSlug="pdf-to-jpg"
       title="PDF to JPG"
       icon="📄"
       description="Convert every page of a PDF into high-quality JPG images. Extract all pages or specific pages. Free, no upload, works in your browser."

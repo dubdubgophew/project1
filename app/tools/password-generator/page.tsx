@@ -84,6 +84,7 @@ export default function PasswordGeneratorPage() {
 
   return (
     <ToolLayout
+        toolSlug="password-generator"
       title="Password Generator"
       description="Generate cryptographically secure passwords with custom rules. See entropy, strength, and estimated crack time."
       icon="🔑"

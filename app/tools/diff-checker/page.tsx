@@ -63,6 +63,7 @@ export default function DiffCheckerPage() {
 
   return (
     <ToolLayout
+        toolSlug="diff-checker"
       title="Diff Checker"
       description="Compare two texts and see exactly what changed — added lines in green, removed lines in red. Uses LCS algorithm for accurate diffing."
       icon="↔️"

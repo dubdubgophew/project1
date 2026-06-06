@@ -436,6 +436,7 @@ export default function DigitalSignaturePage() {
 
   return (
     <ToolLayout
+        toolSlug="digital-signature"
       title="Digital Signature Creator"
       description="Create a professional digital signature by drawing, typing, or uploading — then place it on any document. 100% free, no account needed, no data sent anywhere."
       icon="✍️"

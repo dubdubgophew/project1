@@ -51,6 +51,7 @@ export default function EmailWriterPage() {
 
   return (
     <ToolLayout
+        toolSlug="email-writer"
       title="AI Email Writer"
       description="Generate professional, ready-to-send emails in seconds. Choose your tone, describe your purpose, and let AI craft the perfect email."
       icon="📧"

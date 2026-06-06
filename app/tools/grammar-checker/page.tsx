@@ -49,6 +49,7 @@ export default function GrammarCheckerPage() {
 
   return (
     <ToolLayout
+        toolSlug="grammar-checker"
       title="Grammar Checker & Fixer"
       description="Instantly detect and fix grammar, spelling, punctuation, and style errors. Get clear explanations for every correction."
       icon="✅"

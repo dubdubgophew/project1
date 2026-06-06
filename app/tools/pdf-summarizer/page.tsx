@@ -82,6 +82,7 @@ export default function PDFSummarizerPage() {
 
   return (
     <ToolLayout
+        toolSlug="pdf-summarizer"
       title="AI PDF Summarizer"
       description="Upload any PDF — research papers, reports, books, contracts — and get a concise AI-powered summary with key points extracted instantly."
       icon="📄"

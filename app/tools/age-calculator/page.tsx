@@ -78,6 +78,7 @@ export default function AgeCalculatorPage() {
 
   return (
     <ToolLayout
+        toolSlug="age-calculator"
       title="Age Calculator"
       description="Calculate your exact age in years, months, and days. See your next birthday countdown, total days lived, zodiac sign, and more — updated live."
       icon="🎂"

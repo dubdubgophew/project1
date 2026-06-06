@@ -150,6 +150,7 @@ export default function UnitConverterPage() {
 
   return (
     <ToolLayout
+        toolSlug="unit-converter"
       title="Unit Converter"
       description="Convert between all common units — length, weight, temperature, area, volume, speed, data, and time. Real-time conversion with 8 categories."
       icon="📐"

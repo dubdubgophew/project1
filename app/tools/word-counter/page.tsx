@@ -44,6 +44,7 @@ export default function WordCounterPage() {
 
   return (
     <ToolLayout
+        toolSlug="word-counter"
       title="Word Counter"
       description="Count words, characters, sentences, and paragraphs in real time. Get reading/speaking time estimates and top word frequency."
       icon="📊"

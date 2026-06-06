@@ -97,6 +97,7 @@ export default function RegexTesterPage() {
 
   return (
     <ToolLayout
+        toolSlug="regex-tester"
       title="Regex Tester"
       description="Test regular expressions live. Highlight matches, inspect groups, use replace mode, and pick from a library of common patterns."
       icon="🔍"

@@ -174,6 +174,7 @@ export default function MergePdfPage() {
 
   return (
     <ToolLayout
+        toolSlug="merge-pdf"
       title="Merge PDF"
       icon="📎"
       description="Combine multiple PDF files into one. Reorder files, then download the merged PDF instantly. Free, no upload, works in your browser."

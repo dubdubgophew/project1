@@ -252,6 +252,7 @@ export default function QRCodePage() {
 
   return (
     <ToolLayout
+        toolSlug="qr-code"
       title="QR Code Generator"
       description="Generate beautiful, artistic QR codes — upload your photo to create a QR code that looks like your image."
       icon="⬛"

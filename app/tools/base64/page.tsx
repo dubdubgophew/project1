@@ -82,6 +82,7 @@ export default function Base64Page() {
 
   return (
     <ToolLayout
+        toolSlug="base64"
       title="Base64 Encoder / Decoder"
       description="Encode text or files to Base64, or decode Base64 strings back to text or downloadable files. Real-time conversion."
       icon="🔐"

@@ -113,6 +113,7 @@ export default function CoverLetterPage() {
 
   return (
     <ToolLayout
+        toolSlug="cover-letter"
       title="AI Cover Letter Generator"
       description="Generate a tailored, professional cover letter in seconds. Customize tone, highlight your skills, and download as PDF."
       icon="📝"

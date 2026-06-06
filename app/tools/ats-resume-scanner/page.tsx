@@ -5,6 +5,7 @@ import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
 import { BannerAd, InArticleAd } from '@/components/shared/AdSense';
 import { Upload, FileText, Share2, Check, ChevronDown, ChevronUp, AlertCircle, CheckCircle, XCircle, Zap, Target, TrendingUp } from 'lucide-react';
+import { ToolSEOContent } from '@/components/tools/ToolSEOContent';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 interface SectionScore { score: number; feedback: string }
@@ -425,6 +426,8 @@ export default function ATSResumeScannerPage() {
               ))}
             </div>
           </section>
+
+          <ToolSEOContent toolSlug="ats-resume-scanner" />
 
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
             '@context': 'https://schema.org', '@type': 'SoftwareApplication',

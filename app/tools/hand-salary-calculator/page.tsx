@@ -264,6 +264,7 @@ export default function HandSalaryCalculatorPage() {
 
   return (
     <ToolLayout
+        toolSlug="hand-salary-calculator"
       title="In-Hand Salary Calculator — FY 2026-27"
       description="Calculate your exact in-hand salary from CTC. FY 2026-27 tax slabs, new vs old regime comparison, EPF/NPS account breakdown, HRA exemption, and full payslip."
       icon="🧮"

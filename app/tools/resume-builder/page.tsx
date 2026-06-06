@@ -330,6 +330,7 @@ export default function ResumeBuilderPage() {
 
   return (
     <ToolLayout
+        toolSlug="resume-builder"
       title="AI Resume Builder"
       description="Build a professional, ATS-optimized resume in minutes. Fill in your details and let AI craft compelling bullet points and a strong summary."
       icon="📋"

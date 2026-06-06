@@ -79,6 +79,7 @@ export default function TextCasePage() {
 
   return (
     <ToolLayout
+        toolSlug="text-case"
       title="Text Case Converter"
       description="Convert text between UPPERCASE, lowercase, Title Case, camelCase, snake_case, kebab-case, and more — instantly with one click."
       icon="🔤"

@@ -2,6 +2,7 @@ import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
 import { SidebarAd, InArticleAd } from '@/components/shared/AdSense';
 import { ToolFAQ } from '@/components/tools/ToolFAQ';
+import { ToolSEOContent } from '@/components/tools/ToolSEOContent';
 import Link from 'next/link';
 import { ArrowLeft, Lock, Zap, Infinity } from 'lucide-react';
 
@@ -19,6 +20,8 @@ interface ToolLayoutProps {
   rateLimited?: boolean;
   /** Visible FAQ accordion rendered below the tool for SEO indexability */
   faqs?: FAQ[];
+  /** Tool slug — enables SEO content section (what it is, why use it, free alternatives) */
+  toolSlug?: string;
 }
 
 export function ToolLayout({
@@ -31,6 +34,7 @@ export function ToolLayout({
   showAds = true,
   rateLimited = false,
   faqs,
+  toolSlug,
 }: ToolLayoutProps) {
   return (
     <>
@@ -74,6 +78,9 @@ export function ToolLayout({
               {showAds !== false && <InArticleAd className="my-2" />}
 
               {faqs && faqs.length > 0 && <ToolFAQ faqs={faqs} />}
+
+              {/* SEO content section — what it is, why use it, free alternatives */}
+              {toolSlug && <ToolSEOContent toolSlug={toolSlug} />}
 
               {/* Usage notice */}
               {rateLimited ? (

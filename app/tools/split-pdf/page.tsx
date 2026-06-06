@@ -216,6 +216,7 @@ export default function SplitPdfPage() {
 
   return (
     <ToolLayout
+        toolSlug="split-pdf"
       title="Split PDF"
       icon="✂️"
       description="Split a PDF into separate files by page range. Extract individual pages or save every page as a separate PDF. Free, no upload."

@@ -121,6 +121,7 @@ export default function HRACalculatorPage() {
 
   return (
     <ToolLayout
+        toolSlug="hra-calculator"
       title="HRA Exemption Calculator"
       description="Calculate your HRA exemption under Section 10(13A) of the Income Tax Act. Instantly find exempt vs taxable HRA for metro and non-metro cities."
       icon="🏠"

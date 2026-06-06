@@ -276,6 +276,7 @@ export default function SIPCalculatorPage() {
 
   return (
     <ToolLayout
+        toolSlug="sip-calculator"
       title="SIP Calculator India"
       description="Calculate mutual fund SIP returns, lumpsum growth, CAGR, inflation-adjusted real value, post-tax corpus and year-by-year wealth. Includes step-up SIP and goal planning."
       icon="📈"

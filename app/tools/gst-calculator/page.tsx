@@ -207,6 +207,7 @@ export default function GSTCalculatorPage() {
 
   return (
     <ToolLayout
+        toolSlug="gst-calculator"
       title="GST Calculator India"
       description="Calculate GST in India instantly. Add or remove GST from any amount at 5%, 12%, 18%, 28% rates. CGST, SGST, and IGST breakdown."
       icon="🧮"

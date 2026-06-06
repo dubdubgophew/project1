@@ -199,6 +199,7 @@ export default function ImageConverterPage() {
 
   return (
     <ToolLayout
+        toolSlug="image-converter"
       title="Image Converter"
       icon="🔄"
       description="Convert images between JPG, PNG, and WebP formats instantly in your browser. No upload, 100% private."

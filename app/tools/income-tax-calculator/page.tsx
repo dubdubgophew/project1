@@ -310,6 +310,7 @@ export default function IncomeTaxCalculatorPage() {
 
   return (
     <ToolLayout
+        toolSlug="income-tax-calculator"
       title="Income Tax Calculator India FY 2025-26"
       description="Calculate income tax for FY 2025-26 (AY 2026-27). Compare new vs old tax regime. Includes capital gains, rental income, 87A rebate, surcharge, cess, advance tax schedule. Budget 2024 & 2025 rates."
       icon="📊"
