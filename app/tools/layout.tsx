@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'All 47 Free AI Tools — Image Compressor, PDF Merger, Resume Builder & More | Formly',
-  description: 'Browse all 47 free tools on Formly: image compressor, merge PDF, split PDF, image converter, pay stub generator, resume builder, grammar checker, PDF summarizer & more. No signup needed.',
+  title: 'All 48 Free AI Tools — Image Compressor, PDF Merger, Resume Builder & More | Formly',
+  description: 'Browse all 48 free tools on Formly: image compressor, merge PDF, split PDF, image converter, pay stub generator, resume builder, grammar checker, PDF summarizer & more. No signup needed.',
   keywords: ['free ai tools online', 'image compressor free', 'merge pdf online free', 'split pdf online', 'pdf to jpg converter', 'pay stub generator free', 'ai resume builder', 'free grammar checker', 'ai paraphraser', 'pdf summarizer free', 'free code reviewer', 'contract generator online', 'image converter online free'],
   openGraph: {
-    title: 'All 47 Free AI Tools | Formly',
+    title: 'All 48 Free AI Tools | Formly',
     description: 'Image compressor, merge PDF, split PDF, PDF to JPG, pay stub generator, resume builder, grammar checker & 40 more free tools.',
     url: 'https://formly.tools/tools',
     type: 'website',
@@ -13,8 +13,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'All 47 Free AI Tools | Formly',
-    description: '47 free tools: image compressor, merge PDF, split PDF, pay stub generator, resume builder, paraphraser, grammar checker & more. No signup needed.',
+    title: 'All 48 Free AI Tools | Formly',
+    description: '48 free tools: image compressor, merge PDF, split PDF, pay stub generator, resume builder, paraphraser, grammar checker & more. No signup needed.',
   },
   alternates: { canonical: 'https://formly.tools/tools' },
 };
@@ -29,9 +29,9 @@ export default function ToolsLayout({ children }: { children: React.ReactNode })
             '@context': 'https://schema.org',
             '@type': 'ItemList',
             name: 'Formly Free AI Tools',
-            description: 'Complete list of 47 free tools available on Formly — AI tools, file converters, PDF tools, calculators & more',
+            description: 'Complete list of 48 free tools available on Formly — AI tools, file converters, PDF tools, calculators & more',
             url: 'https://formly.tools/tools',
-            numberOfItems: 47,
+            numberOfItems: 48,
             itemListElement: [
               { '@type': 'ListItem', position: 1, name: 'Pay Stub Generator', url: 'https://formly.tools/tools/paystub-generator', description: 'Free pay stub maker with 2025 tax calculations for USA, UK, Canada, India, Australia' },
               { '@type': 'ListItem', position: 2, name: 'Resume Builder', url: 'https://formly.tools/tools/resume-builder', description: 'AI-powered ATS-optimized resume creator with real-time ATS score' },

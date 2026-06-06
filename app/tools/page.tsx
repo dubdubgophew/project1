@@ -113,6 +113,16 @@ const TOOLS: Tool[] = [
     category: 'AI Writing',
   },
   {
+    icon: '🔍',
+    name: 'Plagiarism Checker',
+    description: 'AI-powered originality detector. Get a segment-level plagiarism risk score and rewriting suggestions.',
+    href: '/tools/plagiarism-checker',
+    badge: 'New',
+    color: 'from-rose-500/10 to-pink-600/5 border-rose-500/20 hover:border-rose-500/40',
+    tags: ['plagiarism', 'originality', 'academic', 'writing', 'turnitin alternative'],
+    category: 'AI Writing',
+  },
+  {
     icon: '📧',
     name: 'Email Writer',
     description: 'Generate professional emails in seconds. Choose your tone — formal, casual, or persuasive.',

@@ -13,6 +13,7 @@ const STATIC_ROUTES: Array<{ url: string; priority: number; changeFrequency: Met
   { url: '/tools/pdf-summarizer', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-05-31' },
   { url: '/tools/paraphraser', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-05-31' },
   { url: '/tools/grammar-checker', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-05-31' },
+  { url: '/tools/plagiarism-checker', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-06-06' },
   { url: '/tools/email-writer', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-05-31' },
   { url: '/tools/code-explainer', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-05-31' },
   { url: '/tools/paystub-generator', priority: 0.8, changeFrequency: 'weekly', lastModified: '2026-05-31' },
