@@ -6,6 +6,7 @@ import { POST as fetchPoliticsNews }     from '@/app/api/cron/fetch-politics-new
 import { POST as fetchRegionalNews }     from '@/app/api/cron/fetch-regional-news/route';
 import { POST as generateContent }       from '@/app/api/cron/generate-content/route';
 import { POST as generateBrandContent }  from '@/app/api/cron/generate-brand-content/route';
+import { POST as publishArticles }       from '@/app/api/cron/publish-articles/route';
 
 export const maxDuration = 300;
 
@@ -20,6 +21,7 @@ const HANDLERS: Record<string, (req: NextRequest) => Promise<NextResponse>> = {
   'fetch-regional-news':     fetchRegionalNews,
   'generate-content':        generateContent,
   'generate-brand-content':  generateBrandContent,
+  'publish-articles':        publishArticles,
 };
 
 export async function GET(req: NextRequest) {

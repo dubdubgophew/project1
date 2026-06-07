@@ -51,6 +51,10 @@
     {
       "path": "/api/cron/fetch-stocks-news",
       "schedule": "0 14 * * *"
+    },
+    {
+      "path": "/api/cron/publish-articles",
+      "schedule": "0 5 * * *"
     }
   ],
   "functions": {
@@ -97,6 +101,9 @@
       "maxDuration": 300
     },
     "app/api/cron/fetch-stocks-news/route.ts": {
+      "maxDuration": 300
+    },
+    "app/api/cron/publish-articles/route.ts": {
       "maxDuration": 300
     }
   }
