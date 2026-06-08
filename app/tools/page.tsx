@@ -256,6 +256,17 @@ const TOOLS: Tool[] = [
   },
   // Finance
   {
+    icon: '🛡️',
+    name: 'Compliance AI',
+    description: 'SOC 2, ISO 27001, HIPAA, GDPR, PCI DSS, CCPA, NIST CSF & 6 more frameworks. AI gap analysis, 24 policy templates, risk register, audit prep. Free & Pro.',
+    href: '/tools/compliance-ai',
+    badge: 'New',
+    color: 'from-violet-500/10 to-purple-600/5 border-violet-500/20 hover:border-violet-500/40',
+    tags: ['compliance', 'soc2', 'iso27001', 'hipaa', 'gdpr', 'security', 'legal'],
+    category: 'Payroll & Legal',
+  },
+  // Finance
+  {
     icon: '🏦',
     name: 'Bank Statement Analyzer',
     description: 'Upload a PDF bank statement to extract all transactions, convert to Excel or CSV, and get an AI-powered spending summary with category breakdowns.',

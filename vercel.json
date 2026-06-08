@@ -108,6 +108,12 @@
     },
     "app/api/tools/bank-statement/route.ts": {
       "maxDuration": 120
+    },
+    "app/api/tools/compliance/assess/route.ts": {
+      "maxDuration": 60
+    },
+    "app/api/tools/compliance/policy/route.ts": {
+      "maxDuration": 60
     }
   }
 }

@@ -7,7 +7,7 @@ import { Zap, Target, Heart, Shield, Users, Globe, Mail, Star } from 'lucide-rea
 export const metadata: Metadata = {
   title: 'About Formly — Free AI Tools Platform | Who We Are',
   description:
-    'Formly is a free AI productivity tools platform built in India. 49 professional tools including pay stub generator, resume builder, grammar checker, PDF summarizer & more. No subscriptions. Powered by Groq AI.',
+    'Formly is a free AI productivity tools platform built in India. 50 professional tools including pay stub generator, resume builder, grammar checker, PDF summarizer & more. No subscriptions. Powered by Groq AI.',
   alternates: { canonical: 'https://formly.tools/about' },
   openGraph: {
     title: 'About Formly — Free AI Tools for Everyone',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 const STATS = [
-  { value: '49', label: 'Free AI Tools' },
+  { value: '50', label: 'Free AI Tools' },
   { value: '50,000+', label: 'Monthly Users' },
   { value: '100+', label: 'Countries Served' },
   { value: '0', label: 'Mandatory Signups' },
@@ -32,7 +32,7 @@ const VALUES = [
     color: 'text-orange-500',
     bg: 'bg-orange-50 border border-orange-200',
     title: 'Our Mission',
-    text: 'Formly was built to democratize professional AI tools. The best writing assistants, resume builders, legal document generators, and finance calculators were locked behind expensive SaaS paywalls charging $30–100 per month. We changed that. All 49 tools are free to use every day — no credit card required.',
+    text: 'Formly was built to democratize professional AI tools. The best writing assistants, resume builders, legal document generators, and finance calculators were locked behind expensive SaaS paywalls charging $30–100 per month. We changed that. All 50 tools are free to use every day — no credit card required.',
   },
   {
     icon: Zap,
@@ -187,7 +187,7 @@ export default function AboutPage() {
             </div>
             <div className="mt-4 text-center">
               <Link href="/tools" className="text-sm text-orange-500 hover:text-orange-600 font-medium">
-                View all 49 free tools →
+                View all 50 free tools →
               </Link>
             </div>
           </div>
@@ -223,7 +223,7 @@ export default function AboutPage() {
               49 tools. No signup required for basic use. No credit card ever.
             </p>
             <Link href="/tools" className="btn-primary inline-flex">
-              Try All 49 Tools Free →
+              Try All 50 Tools Free →
             </Link>
           </div>
 

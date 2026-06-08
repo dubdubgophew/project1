@@ -1187,6 +1187,32 @@ const DATA: Record<string, ToolSEOData> = {
     ],
     extra: 'Popular searches: AI code reviewer free, code quality checker, automated code review, code review tool online free, check code for bugs AI, code quality analyzer.',
   },
+  'compliance-ai': {
+    name: 'Compliance AI',
+    what: 'Compliance AI is a free enterprise-grade compliance platform that covers 12 major regulatory frameworks: SOC 2 Type I/II, ISO 27001:2022, HIPAA, GDPR, PCI DSS v4.0, CCPA/CPRA, NIST Cybersecurity Framework v2.0, SOX IT General Controls, FedRAMP Moderate, CIS Controls v8, OWASP Top 10, and Internal Company Compliance. Upload your company profile — industry, size, region, data types — and answer 25 evidence-based control questions to receive an AI-powered gap analysis with a compliance score (0-100), critical and medium gaps with remediation steps, a 3-phase roadmap, estimated certification timeline, and budget guidance. The Policy Builder tab generates 24 professional compliance policy templates including Information Security Policy, Incident Response Policy, GDPR Data Processing Agreements, Business Continuity Plans, Acceptable Use Policies, and more — fully customized for your company. Advanced tiers unlock multi-framework simultaneous assessment, AI risk register with heat map, cross-framework control mapping, vendor risk assessment, and downloadable audit-ready reports.',
+    why: [
+      '12 frameworks in one tool — SOC 2, ISO 27001, HIPAA, GDPR, PCI DSS, CCPA, NIST CSF, SOX, FedRAMP, CIS, OWASP, Internal.',
+      'Instant gap analysis — no integration setup, no agent installation, no waiting weeks for onboarding.',
+      '24 professionally written policy templates customized for your company\'s industry and frameworks.',
+      'More detailed than Comp AI (trycomp.ai) — includes risk register, vendor risk, and cross-framework mapping.',
+      'Free tier covers Quick Scan for all 12 frameworks + 3 policy documents — no credit card, no signup.',
+      'AI-generated remediation roadmap with timeline and budget estimates — not just a checklist.',
+    ],
+    altTo: [
+      { name: 'Comp AI (trycomp.ai)', why: 'Comp AI requires signup, integration setup, and system agent installation. Formly works instantly with no accounts or integrations needed.' },
+      { name: 'Vanta', why: 'Vanta costs $7,500-$20,000/year. Formly\'s compliance AI is free to start and $9.99/month for full access.' },
+      { name: 'Drata', why: 'Drata requires enterprise contracts and onboarding. Formly delivers gap analysis and policy documents in under 2 minutes.' },
+      { name: 'Secureframe', why: 'Secureframe charges $800-$2,000/month. Formly covers the same frameworks at a fraction of the cost.' },
+    ],
+    usedBy: [
+      { who: 'SaaS startups preparing for SOC 2', how: 'Run a SOC 2 gap analysis in minutes, identify the critical gaps, generate the required policies, and build a certification roadmap without hiring a consultant.' },
+      { who: 'Healthcare technology companies', how: 'Assess HIPAA administrative, physical, and technical safeguard compliance, generate BAA templates, and create incident response policies for healthcare data.' },
+      { who: 'European companies and GDPR officers', how: 'Run a GDPR gap analysis, generate GDPR-compliant privacy policies, data retention policies, and Data Processing Agreements (DPAs) for all vendors.' },
+      { who: 'CISOs and security managers', how: 'Get an instant multi-framework compliance score, generate the ISO 27001 or NIST CSF gap analysis, and build board-ready compliance reports.' },
+    ],
+    extra: 'Popular searches: SOC 2 compliance tool free, ISO 27001 gap analysis free online, HIPAA compliance checklist, GDPR compliance checker free, PCI DSS assessment tool, CCPA compliance tool, NIST CSF assessment, compliance policy generator AI, SOC 2 readiness assessment, trycomp ai alternative free, vanta alternative free, information security policy template, incident response policy template.',
+  },
+
   'bank-statement-analyzer': {
     name: 'Bank Statement Analyzer',
     what: 'A bank statement analyzer is a tool that reads a PDF bank statement, extracts all individual transactions, categorizes spending, and produces a structured financial summary. Formly\'s free bank statement analyzer uses AI to parse statements from any major bank worldwide — Chase, Bank of America, HSBC, Barclays, HDFC, SBI, ANZ, TD Bank, RBC, and more. Upload your PDF and get all transactions in a searchable table, downloadable as Excel (.xlsx) or CSV for use in Microsoft Excel, Google Sheets, or Apple Numbers. The AI automatically categorizes transactions across 15 spending categories: Shopping, Food & Dining, Transport, Utilities, Healthcare, Entertainment, Salary/Income, Transfer, ATM/Cash, Housing, Investment, Insurance, Subscription, Tax, and Other. A financial insights summary highlights your spending patterns, largest expenses, and net change for the statement period.',

@@ -32,7 +32,7 @@ const dmSerifDisplay = DM_Serif_Display({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://formly.tools'),
   title: {
-    default: 'Formly Tools — 49 Free AI Tools Online | No Signup Required',
+    default: 'Formly Tools — 50 Free AI Tools Online | No Signup Required',
     template: '%s | Formly Tools',
   },
   description:
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://formly.tools',
     siteName: 'Formly Tools',
-    title: 'Formly Tools — 49 Free AI Tools Online | No Signup',
+    title: 'Formly Tools — 50 Free AI Tools Online | No Signup',
     description:
       'Free AI tools: image compressor, merge PDF, split PDF, pay stub generator, resume builder, grammar checker, paraphraser, contract generator, PDF summarizer & 38 more. No signup required.',
     images: [
@@ -80,13 +80,13 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Formly Tools — 49 Free AI Tools Online',
+        alt: 'Formly Tools — 50 Free AI Tools Online',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Formly Tools — 49 Free AI Tools Online',
+    title: 'Formly Tools — 50 Free AI Tools Online',
     description: 'Free AI tools: image compressor, merge PDF, pay stubs, resume builder, grammar checker, diagrams, contracts & 39 more. No signup required.',
     images: ['/og-image.png'],
     creator: '@formlytools',
@@ -156,7 +156,7 @@ export default function RootLayout({
           name: 'Formly Tools',
           alternateName: ['Formly', 'formly.tools'],
           url: 'https://formly.tools',
-          description: 'Formly Tools provides 49 free tools for professionals worldwide — image compressor, merge PDF, split PDF, pay stub generator, resume builder, grammar checker, AI paraphraser, contract generator, PDF summarizer, diagram maker, and more. No signup required. Used by 50,000+ professionals in the USA, UK, India, Australia, and Canada.',
+          description: 'Formly Tools provides 50 free tools for professionals worldwide — image compressor, merge PDF, split PDF, pay stub generator, resume builder, grammar checker, AI paraphraser, contract generator, PDF summarizer, diagram maker, and more. No signup required. Used by 50,000+ professionals in the USA, UK, India, Australia, and Canada.',
           inLanguage: ['en-US', 'en-GB', 'en-IN', 'en-AU', 'en-CA'],
           dateModified: '2026-05-31',
           publisher: { '@type': 'Organization', name: 'Formly Tools', url: 'https://formly.tools' },
@@ -180,14 +180,14 @@ export default function RootLayout({
           alternateName: 'Formly',
           url: 'https://formly.tools',
           logo: { '@type': 'ImageObject', url: 'https://formly.tools/favicon.svg', width: 512, height: 512 },
-          description: 'Formly Tools is a free tools platform used by 50,000+ professionals. It offers 49 free tools including an image compressor, merge PDF, split PDF, PDF to JPG, image converter, pay stub generator, AI resume builder, grammar checker, paraphraser, contract generator, PDF summarizer, AI diagram generator (Diagrify), QR code generator, digital signature, income tax calculators for India, and developer utilities — all free with no signup required.',
+          description: 'Formly Tools is a free tools platform used by 50,000+ professionals. It offers 50 free tools including an image compressor, merge PDF, split PDF, PDF to JPG, image converter, pay stub generator, AI resume builder, grammar checker, paraphraser, contract generator, PDF summarizer, AI diagram generator (Diagrify), QR code generator, digital signature, income tax calculators for India, and developer utilities — all free with no signup required.',
           foundingDate: '2024',
           sameAs: ['https://twitter.com/formlytools'],
           contactPoint: { '@type': 'ContactPoint', contactType: 'customer support', url: 'https://formly.tools/contact', availableLanguage: 'English' },
           hasOfferCatalog: {
             '@type': 'OfferCatalog',
             name: 'Free AI Tools — No Signup Required',
-            numberOfItems: 49,
+            numberOfItems: 50,
             itemListElement: [
               { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Free Pay Stub Generator', description: 'Generate pay stubs for USA, UK, Canada, India, Australia. 2026 tax tables.', url: 'https://formly.tools/tools/paystub-generator' } },
               { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'AI Resume Builder', description: 'Build ATS-optimized resumes with AI. Free, no signup.', url: 'https://formly.tools/tools/resume-builder' } },
@@ -237,7 +237,7 @@ export default function RootLayout({
           name: 'Formly Tools — Free AI Tool Categories',
           description: 'Browse 40 free AI tools organized by category: AI Writing, Payroll & Legal, Developer Tools, Finance, Utilities, and more.',
           url: 'https://formly.tools/tools',
-          numberOfItems: 49,
+          numberOfItems: 50,
           itemListElement: [
             { '@type': 'ListItem', position: 1, name: 'AI Writing Tools', item: 'https://formly.tools/tools#writing' },
             { '@type': 'ListItem', position: 2, name: 'Payroll & Legal Tools', item: 'https://formly.tools/tools#payroll' },

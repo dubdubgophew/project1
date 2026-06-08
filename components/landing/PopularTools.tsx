@@ -175,7 +175,7 @@ export function PopularTools() {
             href="/tools"
             className="text-sm text-orange-500 hover:text-orange-600 font-medium transition-colors whitespace-nowrap self-start sm:self-auto"
           >
-            View all 49 tools →
+            View all 50 tools →
           </Link>
         </div>
 
@@ -232,7 +232,7 @@ export function PopularTools() {
             href="/tools"
             className="text-sm text-orange-500 hover:text-orange-600 font-medium transition-colors"
           >
-            View all 49 tools →
+            View all 50 tools →
           </Link>
         </div>
       </div>
