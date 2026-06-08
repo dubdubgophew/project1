@@ -2859,6 +2859,57 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
     countriesServed: ['United States', 'United Kingdom', 'India', 'Canada', 'Australia', 'Germany', 'Singapore'],
   },
+
+  // ─── Bank Statement Analyzer ──────────────────────────────────────────────
+  {
+    slug: 'bank-statement-to-excel-csv-free',
+    title: 'How to Convert a Bank Statement PDF to Excel or CSV — Free in 2026',
+    category: 'finance',
+    toolSlug: 'bank-statement-analyzer',
+    toolName: 'Bank Statement Analyzer',
+    readingTime: 6,
+    publishedAt: '2026-06-08',
+    updatedAt: '2026-06-08',
+    metaDescription:
+      'Convert any bank statement PDF to Excel or CSV instantly with AI. Extract transactions, categorize spending, and get a financial summary — free, no signup.',
+    intro:
+      'Your bank statement PDF is locked data. The numbers are there, but you can\'t filter them, chart them, or build a budget from a PDF. Converting a bank statement to Excel or CSV opens it up — you can sort by merchant, total by category, and track spending across months. This guide covers how to do it instantly for free using an AI-powered tool, plus what to do with the data once you have it.',
+    sections: [
+      {
+        heading: 'Why Convert a Bank Statement PDF to Excel?',
+        body: 'PDF bank statements are designed for printing and reading — not analysis. Once your statement data is in Excel or CSV format, you can: filter transactions by category, merchant, or date range; create pivot tables to see monthly spending by category; compare spending month-over-month; import into accounting software (QuickBooks, Xero, FreshBooks); and submit to lenders who require statement data in spreadsheet format. Doing this manually — typing each transaction — takes 2–4 hours for a 3-month statement. An AI converter does the same work in under 60 seconds.',
+      },
+      {
+        heading: 'How to Convert a Bank Statement PDF to Excel Free',
+        body: '1. Download your bank statement PDF from your bank\'s online portal or app.\n2. Go to Formly\'s free Bank Statement Analyzer at formly.tools/tools/bank-statement-analyzer.\n3. Drag and drop your PDF or click to upload (up to 15 MB).\n4. Click "Analyze Bank Statement" — the AI extracts all transactions in 30–60 seconds.\n5. Review the summary cards (total in, total out, net change, transaction count).\n6. Click "Excel" to download as a native .xlsx file with a Summary sheet and Transactions sheet, or "CSV" for a universal format that opens in any spreadsheet app.',
+      },
+      {
+        heading: 'What the AI Extracts From Your Statement',
+        body: 'The analyzer extracts every line-item transaction — date, description, amount (debit or credit), and running balance where present. It then classifies each transaction into one of 15 spending categories: Shopping, Food & Dining, Transport, Utilities, Healthcare, Entertainment, Salary/Income, Transfer, ATM/Cash, Housing, Investment, Insurance, Subscription, Tax, or Other. The tool also detects your account holder name, bank name, statement period, opening balance, and closing balance. An AI paragraph summarizes your spending patterns and highlights notable observations specific to your statement figures.',
+      },
+      {
+        heading: 'Which Banks and Statement Formats Are Supported?',
+        body: 'The tool works with any text-based PDF bank statement — the standard format that major banks produce when you download a statement from online banking. This includes Chase, Bank of America, Wells Fargo, Citi, HSBC, Barclays, Lloyds, NatWest, HDFC Bank, SBI, ICICI, Axis Bank, ANZ, Commonwealth Bank, Westpac, TD Bank, RBC, Scotiabank, and hundreds of others. Credit card statements work the same way. The only limitation: scanned or photographed statements (where you cannot select text in the PDF) cannot be processed, as they contain no machine-readable text.',
+      },
+      {
+        heading: 'Using Your Excel Export for Budgeting and Tax',
+        body: 'Once your transactions are in Excel, sort by Category column to group all food spending, transport costs, or subscriptions. Use a SUM formula per category to get monthly totals. For self-employed workers and freelancers, filter by business-related categories and copy those rows to a separate sheet for your tax deduction records. For mortgage or loan applications, lenders often want a spreadsheet of the last 3–6 months of transactions — download multiple statements and paste the Transactions sheets together in a single Excel file. For annual spending reviews, download 12 months of statements, combine them, and use a pivot table with Category as rows and Month as columns.',
+      },
+      {
+        heading: 'Privacy and Data Security',
+        body: 'Your PDF is sent to the server only to extract the text content. The text is processed by AI to identify transactions, and the PDF is discarded immediately. No financial data is stored in any database. The tool does not require bank login credentials — you are simply uploading a PDF file, the same as uploading any document. For extra caution, you can redact your account number before uploading since the tool does not use account numbers for analysis.',
+      },
+    ],
+    faqs: [
+      { q: 'Can I convert a bank statement PDF to Excel for free?', a: 'Yes. Formly\'s Bank Statement Analyzer is completely free with no signup required. Upload your PDF and download the Excel file at no cost.' },
+      { q: 'Does it work with scanned bank statements?', a: 'No. Scanned PDFs contain images of text, not machine-readable text. The tool requires digital bank statement PDFs, which is the standard format banks produce when you download a statement from online banking.' },
+      { q: 'Is it safe to upload my bank statement?', a: 'Yes. Your PDF is processed to extract transaction text and immediately discarded. No financial data is stored, and the tool does not require your bank login. You are uploading a PDF file, not sharing account access.' },
+      { q: 'What is the difference between the CSV and Excel downloads?', a: 'CSV is a plain text format that opens in Excel, Google Sheets, and Apple Numbers — it contains transaction data only. The Excel (.xlsx) download includes two sheets: a Summary sheet with totals, AI insights, and category breakdowns, plus a Transactions sheet with all transaction rows.' },
+      { q: 'Can I use this for credit card statements?', a: 'Yes. Credit card PDF statements work the same way as bank statements. Purchases, payments, refunds, interest charges, and fees are all extracted and categorized.' },
+      { q: 'How many months of transactions can I extract at once?', a: 'You can upload one PDF at a time. For multi-month exports, download each month\'s statement separately, convert each one, and combine the Transaction sheets in Excel manually.' },
+    ],
+    countriesServed: ['United States', 'United Kingdom', 'India', 'Canada', 'Australia', 'Singapore', 'New Zealand'],
+  },
 ];
 
 export const BLOG_CATEGORIES = [

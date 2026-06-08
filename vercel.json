@@ -105,6 +105,9 @@
     },
     "app/api/cron/publish-articles/route.ts": {
       "maxDuration": 300
+    },
+    "app/api/tools/bank-statement/route.ts": {
+      "maxDuration": 120
     }
   }
 }

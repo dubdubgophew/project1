@@ -64,6 +64,7 @@ const STATIC_ROUTES: Array<{ url: string; priority: number; changeFrequency: Met
   { url: '/tools/merge-pdf', priority: 0.9, changeFrequency: 'monthly', lastModified: '2026-06-05' },
   { url: '/tools/pdf-to-jpg', priority: 0.9, changeFrequency: 'monthly', lastModified: '2026-06-05' },
   { url: '/tools/split-pdf', priority: 0.9, changeFrequency: 'monthly', lastModified: '2026-06-05' },
+  { url: '/tools/bank-statement-analyzer', priority: 0.9, changeFrequency: 'monthly', lastModified: '2026-06-08' },
   // Comparison / alternatives pages (high-intent SEO)
   { url: '/alternatives', priority: 0.8, changeFrequency: 'monthly', lastModified: '2026-05-31' },
   // Static marketing & informational pages

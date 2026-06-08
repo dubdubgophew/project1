@@ -7,12 +7,12 @@ import { Zap, Target, Heart, Shield, Users, Globe, Mail, Star } from 'lucide-rea
 export const metadata: Metadata = {
   title: 'About Formly — Free AI Tools Platform | Who We Are',
   description:
-    'Formly is a free AI productivity tools platform built in India. 48 professional tools including pay stub generator, resume builder, grammar checker, PDF summarizer & more. No subscriptions. Powered by Groq AI.',
+    'Formly is a free AI productivity tools platform built in India. 49 professional tools including pay stub generator, resume builder, grammar checker, PDF summarizer & more. No subscriptions. Powered by Groq AI.',
   alternates: { canonical: 'https://formly.tools/about' },
   openGraph: {
     title: 'About Formly — Free AI Tools for Everyone',
     description:
-      'Learn about Formly — who we are, our mission, and why we built 48 free AI tools for professionals worldwide. No credit card. No subscriptions.',
+      'Learn about Formly — who we are, our mission, and why we built 49 free AI tools for professionals worldwide. No credit card. No subscriptions.',
     url: 'https://formly.tools/about',
     type: 'website',
     siteName: 'Formly Tools',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 const STATS = [
-  { value: '48', label: 'Free AI Tools' },
+  { value: '49', label: 'Free AI Tools' },
   { value: '50,000+', label: 'Monthly Users' },
   { value: '100+', label: 'Countries Served' },
   { value: '0', label: 'Mandatory Signups' },
@@ -32,7 +32,7 @@ const VALUES = [
     color: 'text-orange-500',
     bg: 'bg-orange-50 border border-orange-200',
     title: 'Our Mission',
-    text: 'Formly was built to democratize professional AI tools. The best writing assistants, resume builders, legal document generators, and finance calculators were locked behind expensive SaaS paywalls charging $30–100 per month. We changed that. All 48 tools are free to use every day — no credit card required.',
+    text: 'Formly was built to democratize professional AI tools. The best writing assistants, resume builders, legal document generators, and finance calculators were locked behind expensive SaaS paywalls charging $30–100 per month. We changed that. All 49 tools are free to use every day — no credit card required.',
   },
   {
     icon: Zap,
@@ -91,7 +91,7 @@ export default function AboutPage() {
     url: 'https://formly.tools',
     logo: 'https://formly.tools/favicon.svg',
     description:
-      'Formly provides 48 free AI-powered productivity tools for professionals worldwide — pay stub generator, resume builder, contract generator, PDF summarizer, AI paraphraser, grammar checker, digital signature, QR code generator, image compressor, and more. Built in India, used by 50,000+ professionals in 100+ countries.',
+      'Formly provides 49 free AI-powered productivity tools for professionals worldwide — pay stub generator, resume builder, contract generator, PDF summarizer, AI paraphraser, grammar checker, digital signature, QR code generator, image compressor, and more. Built in India, used by 50,000+ professionals in 100+ countries.',
     foundingDate: '2024',
     foundingLocation: { '@type': 'Place', name: 'India', addressCountry: 'IN' },
     address: {
@@ -115,7 +115,7 @@ export default function AboutPage() {
       '@type': 'Offer',
       price: '0',
       priceCurrency: 'USD',
-      description: 'Free daily usage for all 48 tools — no credit card required',
+      description: 'Free daily usage for all 49 tools — no credit card required',
     },
     numberOfEmployees: { '@type': 'QuantitativeValue', minValue: 1, maxValue: 10 },
   };
@@ -187,7 +187,7 @@ export default function AboutPage() {
             </div>
             <div className="mt-4 text-center">
               <Link href="/tools" className="text-sm text-orange-500 hover:text-orange-600 font-medium">
-                View all 48 free tools →
+                View all 49 free tools →
               </Link>
             </div>
           </div>
@@ -220,10 +220,10 @@ export default function AboutPage() {
           <div className="p-8 rounded-2xl bg-gradient-to-br from-orange-500/10 to-amber-500/5 border border-orange-200 text-center">
             <h2 className="text-xl font-bold text-stone-900 mb-2">Start Using Formly — It&apos;s Free</h2>
             <p className="text-stone-600 text-sm mb-5">
-              48 tools. No signup required for basic use. No credit card ever.
+              49 tools. No signup required for basic use. No credit card ever.
             </p>
             <Link href="/tools" className="btn-primary inline-flex">
-              Try All 48 Tools Free →
+              Try All 49 Tools Free →
             </Link>
           </div>
 

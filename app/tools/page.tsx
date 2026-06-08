@@ -256,6 +256,16 @@ const TOOLS: Tool[] = [
   },
   // Finance
   {
+    icon: '🏦',
+    name: 'Bank Statement Analyzer',
+    description: 'Upload a PDF bank statement to extract all transactions, convert to Excel or CSV, and get an AI-powered spending summary with category breakdowns.',
+    href: '/tools/bank-statement-analyzer',
+    badge: 'New',
+    color: 'from-green-500/10 to-teal-600/5 border-green-500/20 hover:border-green-500/40',
+    tags: ['bank statement', 'pdf to excel', 'transaction extractor', 'finance', 'csv'],
+    category: 'Finance',
+  },
+  {
     icon: '💰',
     name: 'Expense Splitter',
     description: 'Split group expenses fairly. Track who paid what and get a simplified debt settlement plan.',

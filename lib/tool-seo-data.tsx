@@ -1187,6 +1187,32 @@ const DATA: Record<string, ToolSEOData> = {
     ],
     extra: 'Popular searches: AI code reviewer free, code quality checker, automated code review, code review tool online free, check code for bugs AI, code quality analyzer.',
   },
+  'bank-statement-analyzer': {
+    name: 'Bank Statement Analyzer',
+    what: 'A bank statement analyzer is a tool that reads a PDF bank statement, extracts all individual transactions, categorizes spending, and produces a structured financial summary. Formly\'s free bank statement analyzer uses AI to parse statements from any major bank worldwide — Chase, Bank of America, HSBC, Barclays, HDFC, SBI, ANZ, TD Bank, RBC, and more. Upload your PDF and get all transactions in a searchable table, downloadable as Excel (.xlsx) or CSV for use in Microsoft Excel, Google Sheets, or Apple Numbers. The AI automatically categorizes transactions across 15 spending categories: Shopping, Food & Dining, Transport, Utilities, Healthcare, Entertainment, Salary/Income, Transfer, ATM/Cash, Housing, Investment, Insurance, Subscription, Tax, and Other. A financial insights summary highlights your spending patterns, largest expenses, and net change for the statement period.',
+    why: [
+      'Converts any bank statement PDF to Excel or CSV in under 60 seconds — no manual data entry.',
+      'AI categorizes every transaction automatically across 15 spending categories.',
+      'Generates an AI financial insights summary — spending patterns, net change, and observations.',
+      'Supports all major currencies: USD, GBP, EUR, INR, AUD, CAD, SGD, NZD and more.',
+      'Private and secure — your PDF text is never stored or logged.',
+      'Free with no account required — no credit card, no watermarks on exports.',
+    ],
+    altTo: [
+      { name: 'Cleo', why: 'Cleo requires linking your live bank account. Formly works with any PDF — no bank login needed.' },
+      { name: 'Copilot Money', why: 'Copilot charges $13/month. Formly\'s bank statement analysis is completely free.' },
+      { name: 'Tiller Money', why: 'Tiller costs $79/year. Formly converts statements to spreadsheets for free.' },
+      { name: 'Monarch Money', why: 'Monarch Money requires account linking. Formly analyzes uploaded PDFs privately.' },
+    ],
+    usedBy: [
+      { who: 'Freelancers and self-employed professionals', how: 'Extract and categorize business transactions from bank statements for quarterly tax filing and expense reporting.' },
+      { who: 'Personal finance managers', how: 'Convert months of bank statements to Excel to track spending categories, build budgets, and identify saving opportunities.' },
+      { who: 'Accountants and bookkeepers', how: 'Quickly extract client bank statement data into spreadsheets without manual data entry, saving hours per client.' },
+      { who: 'Loan and mortgage applicants', how: 'Organize bank statement transactions into clean spreadsheets required by lenders and mortgage advisors.' },
+    ],
+    extra: 'Popular searches: bank statement to excel free, convert bank statement pdf to csv, bank statement analyzer free online, pdf bank statement converter, extract transactions from bank statement pdf, bank statement summary generator, bank statement categorizer free, bank account analysis tool.',
+  },
+
 };
 
 export function getToolSEOData(slug: string): ToolSEOData | undefined {
