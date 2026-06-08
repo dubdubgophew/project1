@@ -25,6 +25,7 @@ import {
   applyBlogPostUpdate,
 } from '@/lib/seo-agent/tracker';
 import { submitToIndexNow } from '@/lib/indexnow';
+import { submitUrlsToBing } from '@/lib/bing-webmaster';
 import { generateBlogPost } from './seo-content-agent';
 
 const MAX_IMPROVEMENTS_PER_RUN = 5;
@@ -199,13 +200,21 @@ export async function runTrafficSEOAgent(trigger = 'cron'): Promise<{
         }
       }
 
-      // ── Phase 6: IndexNow submission for updated pages ──────────────────────
+      // ── Phase 6: IndexNow + Bing Webmaster submission for updated pages ───────
       if (updatedUrls.length > 0) {
         try {
           await submitToIndexNow(updatedUrls);
           console.log(`[SEO Agent] IndexNow submitted: ${updatedUrls.length} URLs`);
         } catch (err) {
           console.error('[SEO Agent] IndexNow error:', err);
+        }
+        try {
+          const bingResult = await submitUrlsToBing(updatedUrls);
+          if (!bingResult.error) {
+            console.log(`[SEO Agent] Bing Webmaster submitted: ${bingResult.submitted} URLs`);
+          }
+        } catch (err) {
+          console.error('[SEO Agent] Bing Webmaster error:', err);
         }
       }
     } catch (err) {

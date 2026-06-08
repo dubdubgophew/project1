@@ -13,7 +13,7 @@ import { DiagrifBanner } from '@/components/landing/DiagrifBanner';
 export const metadata: Metadata = {
   title: 'Formly Tools — 50 Free AI Tools Online | No Signup Required',
   description:
-    'Free AI-powered tools: ATS resume scanner, pay stub generator, compliance AI, resume builder, grammar checker, PDF summarizer, image compressor, merge PDF & 42 more. No signup. No credit card. Works instantly in your browser.',
+    '50 free AI tools: pay stubs, ATS scanner, compliance AI, resume builder, grammar checker, PDF summarizer, merge PDF & more. No signup, no credit card.',
   keywords: [
     'free ai tools online', 'free tools no signup', 'ai productivity tools free',
     'pay stub generator free', 'resume builder free ai', 'grammar checker free online',
@@ -40,12 +40,12 @@ const webPageSchema = {
   '@type': 'WebPage',
   '@id': 'https://formly.tools/#webpage',
   url: 'https://formly.tools',
-  name: 'Formly Tools — 49 Free AI Tools Online',
-  description: 'Free AI-powered tools: pay stub generator, resume builder, grammar checker, PDF summarizer, image compressor, merge PDF, contract generator, income tax calculator, diagram maker & 38 more. No signup required.',
+  name: 'Formly Tools — 50 Free AI Tools Online',
+  description: '50 free AI tools: pay stubs, ATS scanner, compliance AI, resume builder, grammar checker, PDF summarizer, merge PDF & more. No signup required.',
   isPartOf: { '@id': 'https://formly.tools/#website' },
   about: { '@type': 'Thing', name: 'Free AI Tools' },
   datePublished: '2024-01-15',
-  dateModified: '2026-05-31',
+  dateModified: '2026-06-08',
   inLanguage: 'en-US',
   breadcrumb: {
     '@type': 'BreadcrumbList',
@@ -63,7 +63,7 @@ const softwareAppListSchema = {
   name: 'Top Free AI Tools — Formly Tools',
   description: 'The most popular free AI-powered productivity tools on Formly Tools. No signup required.',
   url: 'https://formly.tools/tools',
-  numberOfItems: 49,
+  numberOfItems: 50,
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Free Pay Stub Generator', url: 'https://formly.tools/tools/paystub-generator' },
     { '@type': 'ListItem', position: 2, name: 'Free Resume Builder', url: 'https://formly.tools/tools/resume-builder' },
@@ -75,6 +75,7 @@ const softwareAppListSchema = {
     { '@type': 'ListItem', position: 8, name: 'Free Email Writer', url: 'https://formly.tools/tools/email-writer' },
     { '@type': 'ListItem', position: 9, name: 'Free Cover Letter Generator', url: 'https://formly.tools/tools/cover-letter' },
     { '@type': 'ListItem', position: 10, name: 'Free Paraphraser Tool', url: 'https://formly.tools/tools/paraphraser' },
+    { '@type': 'ListItem', position: 11, name: 'Compliance AI — SOC 2, HIPAA, GDPR', url: 'https://formly.tools/tools/compliance-ai' },
   ],
 };
 
@@ -118,7 +119,7 @@ export default function HomePage() {
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <a href="/tools" className="btn-primary text-base px-8 py-4 w-full sm:w-auto">
-                  Try All 49 Tools Free →
+                  Try All 50 Tools Free →
                 </a>
                 <a href="/pricing" className="inline-flex items-center justify-center gap-2 text-base px-8 py-4 rounded-xl font-semibold border border-orange-500/40 text-orange-400 hover:bg-orange-500/10 hover:border-orange-500/70 transition-all duration-200 w-full sm:w-auto">
                   View Pro Plans

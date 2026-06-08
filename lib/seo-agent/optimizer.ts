@@ -42,14 +42,15 @@ export async function generateMetaImprovement(
     {
       role: 'system',
       content: `You are an elite SEO conversion specialist for ${SITE}, a free AI tools platform.
-Write a meta description that maximizes Google click-through rate.
+Write a meta description that maximizes click-through rate on Google and Bing.
 Hard rules:
-• 148–158 characters (count every character including spaces)
+• 148–158 characters (Bing cuts off at 160 — stay under)
 • Primary keyword in first 60 characters
 • Include the word "free"
 • Specific benefit/number where possible ("in seconds", "2026", "no signup")
 • No generic filler ("In this article…", "Click here…")
 • No quotes or special symbols
+• Prefer exact keyword phrases over paraphrases (Bing weights exact match in snippets)
 Return ONLY the meta description text — nothing else.`,
     },
     {
@@ -80,13 +81,13 @@ export async function generateTitleImprovement(
     {
       role: 'system',
       content: `You are an SEO title optimizer for ${SITE}.
-Write a page title that ranks higher and gets more clicks.
+Write a page title that ranks higher on both Google and Bing.
 Rules:
-• 50–62 characters
-• Primary keyword near the start
+• 50–60 characters (Bing truncates at 60 — do not exceed)
+• Primary keyword in first 4 words
 • Include year (2026) or "Free" if natural
 • Brand suffix: " | Formly" or " — Formly"
-• Be specific, not generic
+• Exact keyword match preferred over paraphrase (Bing ranks exact match higher)
 Return ONLY the title — nothing else.`,
     },
     {

@@ -33,8 +33,17 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-# Microsoft / Bing AI (Copilot)
+# Microsoft / Bing AI (Copilot, image crawler, legacy msnbot)
 User-agent: Bingbot
+Allow: /
+
+User-agent: BingPreview
+Allow: /
+
+User-agent: msnbot
+Allow: /
+
+User-agent: msnbot-media
 Allow: /
 
 User-agent: DuckAssistBot

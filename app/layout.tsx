@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     template: '%s | Formly Tools',
   },
   description:
-    'Free AI tools online — image compressor, merge PDF, split PDF, pay stub generator, resume builder, grammar checker, paraphraser, contract generator, PDF summarizer & 38 more. No signup. No credit card. Used by 50,000+ professionals.',
+    '50 free AI tools: image compressor, merge PDF, pay stubs, resume builder, grammar checker, paraphraser, PDF summarizer & more. No signup. No credit card.',
   keywords: [
     'free ai tools online',
     'free tools no signup',
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
     siteName: 'Formly Tools',
     title: 'Formly Tools — 50 Free AI Tools Online | No Signup',
     description:
-      'Free AI tools: image compressor, merge PDF, split PDF, pay stub generator, resume builder, grammar checker, paraphraser, contract generator, PDF summarizer & 38 more. No signup required.',
+      '50 free AI tools: image compressor, merge PDF, pay stubs, resume builder, grammar checker, paraphraser, PDF summarizer & more. No signup needed.',
     images: [
       {
         url: '/og-image.png',
@@ -140,6 +140,8 @@ export default function RootLayout({
         <meta name="monetag" content="701dad6c34191d949e21404ca1901f4f" />
         {/* Bing Webmaster Tools verification */}
         <meta name="msvalidate.01" content="6D08415757455297A4CA4ED033A20EDA" />
+        {/* Bing-specific crawl directives — mirror Google's rich-result allowances */}
+        <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         {/* hreflang — geo targeting for English-speaking markets */}
         <link rel="alternate" hrefLang="en" href="https://formly.tools" />
         <link rel="alternate" hrefLang="en-US" href="https://formly.tools" />
@@ -158,7 +160,7 @@ export default function RootLayout({
           url: 'https://formly.tools',
           description: 'Formly Tools provides 50 free tools for professionals worldwide — image compressor, merge PDF, split PDF, pay stub generator, resume builder, grammar checker, AI paraphraser, contract generator, PDF summarizer, diagram maker, and more. No signup required. Used by 50,000+ professionals in the USA, UK, India, Australia, and Canada.',
           inLanguage: ['en-US', 'en-GB', 'en-IN', 'en-AU', 'en-CA'],
-          dateModified: '2026-05-31',
+          dateModified: '2026-06-08',
           publisher: { '@type': 'Organization', name: 'Formly Tools', url: 'https://formly.tools' },
           audience: {
             '@type': 'Audience',
@@ -226,6 +228,7 @@ export default function RootLayout({
               { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'SIP Calculator India', description: 'Calculate mutual fund SIP returns with step-up SIP and goal planner.', url: 'https://formly.tools/tools/sip-calculator' } },
               { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Home Loan EMI Calculator', description: 'Calculate home loan EMI, total interest, Section 24b tax benefit.', url: 'https://formly.tools/tools/home-loan-emi-calculator' } },
               { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Iron Core Military Workout', description: '30-day military calisthenics program. No equipment needed.', url: 'https://formly.tools/tools/iron-core-workout' } },
+              { '@type': 'Offer', itemOffered: { '@type': 'WebApplication', name: 'Compliance AI', description: 'Assess SOC 2, ISO 27001, HIPAA, GDPR, PCI DSS, NIST CSF readiness. Generate 16 policy templates. No signup.', url: 'https://formly.tools/tools/compliance-ai' } },
             ],
           },
         }) }} />

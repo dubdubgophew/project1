@@ -64,18 +64,34 @@ export async function pingSitemaps(): Promise<{ engine: string; status: number }
 
 export function allToolUrls(): string[] {
   const tools = [
+    // Writing & AI
     'pdf-summarizer', 'paraphraser', 'grammar-checker', 'email-writer',
-    'code-explainer', 'paystub-generator', 'resume-builder', 'contract-generator',
-    'hashtag-generator', 'bio-writer', 'cover-letter', 'code-reviewer',
-    'terms-simplifier', 'json-formatter', 'base64', 'password-generator',
-    'word-counter', 'expense-splitter', 'loan-calculator', 'unit-converter',
-    'age-calculator', 'text-case', 'color-converter', 'regex-tester',
-    'diff-checker', 'pdf-to-markdown',
+    'cover-letter', 'bio-writer', 'hashtag-generator', 'youtube-summarizer',
+    'plagiarism-checker',
+    // Code & Developer
+    'code-explainer', 'code-reviewer', 'json-formatter', 'base64',
+    'password-generator', 'regex-tester', 'diff-checker', 'color-converter',
+    'text-case', 'word-counter',
+    // Payroll & Legal
+    'paystub-generator', 'resume-builder', 'contract-generator', 'terms-simplifier',
+    'ats-resume-scanner', 'will-ai-replace-me', 'compliance-ai',
+    // PDF & Image
+    'pdf-to-markdown', 'merge-pdf', 'split-pdf', 'pdf-to-jpg', 'image-to-pdf',
+    'compress-image', 'image-converter',
+    // Finance & Calculators
+    'expense-splitter', 'loan-calculator', 'unit-converter', 'age-calculator',
+    'hand-salary-calculator', 'income-tax-calculator', 'hra-calculator',
+    'gratuity-calculator', 'gst-calculator', 'sip-calculator', 'home-loan-emi-calculator',
+    // Utilities & Design
+    'qr-code', 'digital-signature', 'diagrify', 'aetherboard',
+    'bank-statement-analyzer', 'iron-core-workout', 'vibe-check',
   ];
   return [
     SITE_URL,
     `${SITE_URL}/tools`,
     `${SITE_URL}/pricing`,
+    `${SITE_URL}/blog`,
+    `${SITE_URL}/alternatives`,
     ...tools.map(t => `${SITE_URL}/tools/${t}`),
   ];
 }
