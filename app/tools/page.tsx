@@ -81,6 +81,16 @@ const TOOLS: Tool[] = [
     tags: ['legal', 'privacy', 'terms'],
     category: 'Payroll & Legal',
   },
+  {
+    icon: '🛡️',
+    name: 'Compliance AI',
+    description: 'Assess SOC 2, ISO 27001, HIPAA, GDPR, PCI DSS, NIST CSF readiness instantly. Generate 16 professional policy templates. No signup.',
+    href: '/tools/compliance-ai',
+    badge: 'New',
+    color: 'from-violet-500/10 to-purple-600/5 border-violet-500/20 hover:border-violet-500/40',
+    tags: ['compliance', 'soc2', 'iso 27001', 'hipaa', 'gdpr', 'security', 'policy generator', 'compliance checker'],
+    category: 'Payroll & Legal',
+  },
   // AI Writing
   {
     icon: '📄',

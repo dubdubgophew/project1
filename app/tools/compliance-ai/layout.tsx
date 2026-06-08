@@ -2,30 +2,28 @@ import type { Metadata } from 'next';
 import { ToolSchemas } from '@/components/shared/ToolSchemas';
 
 export const metadata: Metadata = {
-  title: 'Compliance AI — SOC 2, ISO 27001, HIPAA, GDPR Compliance Tool Free | Formly',
-  description: 'AI-powered compliance platform covering 12 frameworks: SOC 2, ISO 27001, HIPAA, GDPR, PCI DSS, CCPA, NIST CSF, SOX, FedRAMP, CIS Controls & more. Gap analysis, 24 policy templates, risk register. Free & Pro.',
+  title: 'Compliance AI — SOC 2, ISO 27001, HIPAA, GDPR Checker & Policy Generator | Formly',
+  description: 'Free AI compliance tool. Assess your SOC 2, ISO 27001, HIPAA, GDPR, PCI DSS, NIST CSF readiness instantly. Generate 16 policy templates. No signup. Better than Comp AI.',
   keywords: [
-    'compliance ai tool free', 'soc 2 compliance tool', 'iso 27001 gap analysis free', 'hipaa compliance checker',
-    'gdpr compliance tool free', 'pci dss compliance checklist', 'ccpa compliance tool', 'nist csf assessment free',
-    'compliance gap analysis ai', 'information security policy generator', 'compliance management platform free',
-    'sox it general controls', 'fedramp compliance tool', 'cis controls assessment', 'owasp compliance checker',
-    'data protection policy generator free', 'incident response policy template', 'access control policy template',
-    'trycomp ai alternative free', 'vanta alternative free', 'drata alternative free', 'compliance software free',
-    'soc 2 readiness assessment free', 'iso 27001 readiness tool', 'hipaa risk assessment free',
-    'gdpr gap analysis free online', 'compliance policy generator ai', 'enterprise compliance tool free',
-    'security compliance platform', 'compliance audit tool', 'compliance framework comparison tool',
+    'compliance ai tool free', 'soc 2 compliance checker', 'iso 27001 gap assessment', 'hipaa compliance checker free',
+    'gdpr compliance tool', 'pci dss assessment', 'nist csf assessment', 'compliance gap analysis free',
+    'security compliance tool', 'compliance policy generator', 'information security policy template',
+    'soc 2 readiness assessment', 'iso 27001 checklist free', 'hipaa security rule checklist',
+    'gdpr compliance checklist', 'ccpa compliance tool', 'sox compliance checklist', 'fedramp compliance',
+    'cis controls assessment', 'owasp top 10 checker', 'compliance platform free',
+    'compliance management tool', 'security policy generator free', 'compliance ai alternative',
   ],
   openGraph: {
-    title: 'Compliance AI — SOC 2, ISO 27001, HIPAA, GDPR & 9 More Frameworks | Formly',
-    description: 'Free AI compliance platform. Gap analysis for 12 frameworks, 24 policy templates, risk register, audit prep. More advanced than Comp AI — no signup required.',
+    title: 'Compliance AI — SOC 2, ISO 27001, HIPAA, GDPR + Policy Generator | Formly',
+    description: 'Assess compliance across 12 frameworks instantly. Generate 16 professional policy templates. Free, no signup. Covers US, EU, UK, India, Australia.',
     url: 'https://formly.tools/tools/compliance-ai',
     type: 'website',
     siteName: 'Formly',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Compliance AI — SOC 2, HIPAA, GDPR, ISO 27001 & More | Free | Formly',
-    description: 'AI gap analysis for 12 compliance frameworks + 24 policy templates + risk register. Free tier available. No signup required.',
+    title: 'Compliance AI — SOC 2, ISO 27001, HIPAA, GDPR Free Tool | Formly',
+    description: 'Instant compliance gap assessment for 12 frameworks. Generate policy documents free. No signup required.',
   },
   alternates: { canonical: 'https://formly.tools/tools/compliance-ai' },
   robots: { index: true, follow: true },
@@ -37,68 +35,59 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <ToolSchemas
         name="Compliance AI"
         url="https://formly.tools/tools/compliance-ai"
-        description="Enterprise AI compliance platform covering 12 frameworks including SOC 2 Type I/II, ISO 27001:2022, HIPAA, GDPR, PCI DSS v4.0, CCPA/CPRA, NIST CSF v2.0, SOX, FedRAMP, CIS Controls v8, OWASP Top 10, and Internal Compliance. Features 25-question gap assessments, AI-generated compliance reports, 24 ready-to-use policy templates, risk register, and audit preparation kits."
+        description="Free AI-powered compliance platform. Assess readiness across 12 frameworks including SOC 2, ISO 27001, HIPAA, GDPR, PCI DSS, NIST CSF. Generate 16 professional policy templates instantly. No signup required."
         category="BusinessApplication"
         features={[
-          'SOC 2 Type I/II gap analysis and readiness assessment',
-          'ISO 27001:2022 control assessment (93 controls, 11 domains)',
-          'HIPAA Administrative, Physical & Technical Safeguards assessment',
-          'GDPR compliance gap analysis (99 articles, data subject rights)',
-          'PCI DSS v4.0 12-requirement assessment',
-          'CCPA/CPRA consumer rights compliance checker',
+          'Compliance gap assessment for 12 frameworks',
+          'SOC 2 Type II readiness assessment',
+          'ISO 27001:2022 gap analysis',
+          'HIPAA Security Rule checklist',
+          'GDPR compliance assessment',
+          'PCI DSS v4.0 readiness check',
           'NIST Cybersecurity Framework v2.0 assessment',
-          'SOX IT General Controls assessment',
-          'FedRAMP Moderate baseline assessment',
-          'CIS Controls v8 implementation assessment',
-          'OWASP Top 10 application security assessment',
-          'Internal company compliance assessment',
-          '25-question evidence-based compliance questionnaire',
-          'AI-powered gap analysis with remediation roadmap',
-          'Priority-scored gap register (Critical/High/Medium/Low)',
-          '24 professional policy templates (Security, Privacy, HR, Vendor, BCP)',
-          'Information Security Policy, Incident Response Policy, Access Control Policy',
-          'GDPR Data Processing Agreement (DPA) generator',
-          'Business Continuity Plan and Disaster Recovery Plan templates',
-          'Compliance score (0-100) with level classification',
-          'Estimated certification timeline and budget guidance',
-          '3-phase remediation roadmap (Quick Wins, Core Controls, Advanced Maturity)',
-          'Company profile customization (industry, size, region, data types)',
-          'HTML policy document download',
-          'Free tier: Quick Scan for all frameworks + 3 policy templates',
-          'No signup required for free features',
+          'CCPA/CPRA compliance checker',
+          'CIS Controls v8 assessment',
+          'OWASP Top 10 security review',
+          '16 professional policy templates',
+          'Which framework do I need? recommender for beginners',
+          'Plain-English framework explanations',
+          'Compliance roadmap with phased actions',
+          'Quick wins identification',
+          'Risk register (premium)',
+          'Vendor risk assessment (premium)',
+          'No signup required — completely free',
         ]}
         faqs={[
           {
-            q: 'Which compliance frameworks does Formly Compliance AI cover?',
-            a: 'Formly Compliance AI covers 12 frameworks: SOC 2 Type I/II, ISO/IEC 27001:2022, HIPAA (Privacy, Security, Breach Notification Rules), GDPR, PCI DSS v4.0, CCPA/CPRA, NIST Cybersecurity Framework v2.0, SOX IT General Controls, FedRAMP Moderate, CIS Controls v8, OWASP Top 10, and Internal Company Compliance.',
+            q: 'What is SOC 2 and do I need it?',
+            a: 'SOC 2 is a compliance certification that proves your company handles customer data securely. It is required by most enterprise companies before they will sign a contract with you. If you are a SaaS company or B2B technology provider, SOC 2 is typically your most important compliance milestone.',
           },
           {
-            q: 'Is the compliance gap analysis free?',
-            a: 'Yes. The Quick Scan (25 questions, any of the 12 frameworks) is free for all users with no signup required. The AI-powered detailed gap analysis with remediation roadmap, budget estimates, and certification timeline is also included in the free tier.',
+            q: 'What is the difference between SOC 2 and ISO 27001?',
+            a: 'SOC 2 is a US-specific audit standard primarily used for B2B software companies selling to American enterprises. ISO 27001 is a global standard recognized worldwide and is preferred for companies with European or international customers. Both cover similar security controls but have different audit processes and market recognition.',
           },
           {
-            q: 'How is this different from Comp AI (trycomp.ai) or Vanta?',
-            a: 'Vanta and Drata require long integrations, agent installations, and enterprise contracts ($7,500-$20,000/year). Comp AI requires signup and system integration. Formly Compliance AI works instantly with no signup — you answer 25 targeted questions and get a detailed AI-powered gap analysis and professional policy documents in under 2 minutes.',
+            q: 'Do I need HIPAA compliance?',
+            a: 'Yes, if your product or service handles Protected Health Information (PHI) including patient records, health data, or medical billing. This includes healthcare providers, health insurance companies, medical apps, and any software vendor that processes health data on behalf of healthcare organizations.',
           },
           {
-            q: 'Are the policy templates legally compliant?',
-            a: 'The generated policies follow official guidance from NIST, ISO, GDPR supervisory authorities, HHS (HIPAA), and PCI SSC. They are professional-quality starting points that should be reviewed by your legal counsel before formal adoption, especially for regulatory-specific documents like GDPR Data Processing Agreements.',
-          },
-          {
-            q: 'What is a SOC 2 gap analysis?',
-            a: 'A SOC 2 gap analysis compares your current security controls against the AICPA Trust Service Criteria (TSC) requirements. It identifies which controls you have implemented, which are partially in place, and which are missing — with a prioritized remediation plan to achieve SOC 2 readiness.',
+            q: 'Does my company need GDPR compliance?',
+            a: 'GDPR applies to any organization that collects or processes personal data of people in the European Union regardless of where your company is based. If you have EU website visitors, EU customers, or EU employees, you need GDPR compliance.',
           },
           {
             q: 'How long does SOC 2 certification take?',
-            a: 'SOC 2 Type I typically takes 3-6 months to achieve from gap analysis completion. Type II (which covers a 6-12 month observation period) typically takes 9-18 months total. The actual timeline depends on how many gaps need remediation and your organization\'s size and complexity.',
+            a: 'SOC 2 Type I (point-in-time assessment) typically takes 2-4 months to prepare and audit. SOC 2 Type II (continuous monitoring over 6-12 months) takes 8-14 months total. Using this tool helps you identify and close gaps before engaging an auditor, reducing your preparation time significantly.',
+          },
+          {
+            q: 'Is this tool better than Comp AI (trycomp.ai)?',
+            a: "Formly Compliance AI offers 12 frameworks vs Comp AI's 6, requires no signup or integrations, includes a risk register and vendor risk assessment, generates 16 policy templates, and is completely free. Comp AI costs $199-$997/month and requires company system integrations before providing any assessment.",
           },
         ]}
         steps={[
-          { name: 'Set up your company profile', text: 'Enter your company name, industry, size, region, and the types of data you process to customize the assessment.' },
-          { name: 'Select a compliance framework', text: 'Choose from 12 frameworks including SOC 2, ISO 27001, HIPAA, GDPR, PCI DSS, CCPA, NIST CSF, SOX, FedRAMP, CIS Controls, OWASP, or Internal Compliance.' },
-          { name: 'Answer the 25-question assessment', text: 'Answer each control question as Yes (fully implemented), Partial (partially implemented), or No (not implemented). Your live score updates as you go.' },
-          { name: 'Get your AI gap analysis', text: 'Click Run Assessment to receive a detailed gap analysis with critical and medium gaps, remediation steps, a 3-phase roadmap, estimated timeline, and budget guidance.' },
-          { name: 'Generate compliance policies', text: 'Switch to the Policy Builder tab to generate any of 24 professional policy templates customized for your company. Download as HTML documents ready for review and adoption.' },
+          { name: 'Select your framework', text: 'Choose from 12 compliance frameworks. Not sure which one? Use the Which framework do I need? helper to get a recommendation based on your situation.' },
+          { name: 'Answer the assessment', text: 'Answer yes/no/partial to framework-specific controls. Each question includes a plain-English explanation of what it means and why it matters.' },
+          { name: 'Get your gap analysis', text: 'Receive your compliance score, risk level, identified gaps with severity ratings, and a phased remediation roadmap.' },
+          { name: 'Generate policy documents', text: 'Use the Policy Generator to create professional compliance policy documents tailored to your framework and organization.' },
         ]}
       />
       {children}
