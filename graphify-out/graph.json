@@ -5767,7 +5767,7 @@
       "source_file": "app/tools/code-reviewer/layout.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 39,
+      "community": 41,
       "norm_label": "layout.tsx",
       "id": "code_reviewer_layout"
     },
@@ -5777,7 +5777,7 @@
       "source_file": "app/tools/code-reviewer/layout.tsx",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 39,
+      "community": 41,
       "norm_label": "metadata",
       "id": "code_reviewer_layout_metadata"
     },
@@ -5787,7 +5787,7 @@
       "source_file": "app/tools/code-reviewer/layout.tsx",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 39,
+      "community": 41,
       "norm_label": "layout()",
       "id": "code_reviewer_layout_layout"
     },
@@ -7117,7 +7117,7 @@
       "source_file": "app/tools/email-writer/layout.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 41,
+      "community": 39,
       "norm_label": "layout.tsx",
       "id": "email_writer_layout"
     },
@@ -7127,7 +7127,7 @@
       "source_file": "app/tools/email-writer/layout.tsx",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 41,
+      "community": 39,
       "norm_label": "metadata",
       "id": "email_writer_layout_metadata"
     },
@@ -7137,7 +7137,7 @@
       "source_file": "app/tools/email-writer/layout.tsx",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 41,
+      "community": 39,
       "norm_label": "layout()",
       "id": "email_writer_layout_layout"
     },
@@ -39356,5 +39356,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "cc516b517116b72f16fa4bb4ff231a9046d7550b"
+  "built_at_commit": "26c132f54457d0281cec946fafebc64424d45bab"
 }
