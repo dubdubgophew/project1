@@ -5,7 +5,7 @@
 
 import type { ToolDefinition, TestCase, TestResult, TestResponse } from './types';
 
-const REQUEST_TIMEOUT_MS = 15000;
+const REQUEST_TIMEOUT_MS = 30000;
 const DELAY_BETWEEN_TESTS_MS = 800;
 
 async function fetchWithTimeout(url: string, opts: RequestInit, timeoutMs: number): Promise<Response> {

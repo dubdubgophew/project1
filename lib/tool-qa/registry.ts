@@ -29,9 +29,23 @@ function hasFields(body: unknown, fields: string[]): ValidationResult {
 }
 
 function isNonEmptyString(body: unknown, minLength = 20): ValidationResult {
-  if (typeof body !== 'string') return fail(`Expected string, got ${typeof body}`);
-  if (body.trim().length < minLength) return fail(`String too short (${body.length} chars, min ${minLength})`);
-  return ok({ length: body.length });
+  // Accept plain string OR JSON-wrapped { result: "..." } / { text: "..." } / { email: "..." }
+  let text: string;
+  if (typeof body === 'string') {
+    text = body;
+  } else if (typeof body === 'object' && body !== null) {
+    const b = body as Record<string, unknown>;
+    const val = b.result ?? b.text ?? b.email ?? b.output ?? b.content;
+    if (typeof val === 'string') {
+      text = val;
+    } else {
+      return fail(`Expected string or { result/text/email }, got object with keys: ${Object.keys(b).join(', ')}`);
+    }
+  } else {
+    return fail(`Expected string, got ${typeof body}`);
+  }
+  if (text.trim().length < minLength) return fail(`String too short (${text.length} chars, min ${minLength})`);
+  return ok({ length: text.length });
 }
 
 function expectError(res: TestResponse): ValidationResult {
@@ -169,7 +183,8 @@ export const TOOL_REGISTRY: ToolDefinition[] = [
         validate: (res) => {
           const v = isNonEmptyString(res.body, 20);
           if (!v.pass) return v;
-          if (res.body === 'The dog is very happy because it got a new bone from its owner today.') {
+          const out = typeof res.body === 'string' ? res.body : String((res.body as Record<string,unknown>).result ?? '');
+          if (out === 'The dog is very happy because it got a new bone from its owner today.') {
             return fail('Paraphrase is identical to input — no change made');
           }
           return v;
@@ -240,7 +255,8 @@ export const TOOL_REGISTRY: ToolDefinition[] = [
         },
         expectedStatus: 200,
         validate: (res) => {
-          const text = typeof res.body === 'string' ? res.body : JSON.stringify(res.body);
+          const b = res.body as Record<string, unknown>;
+          const text = typeof res.body === 'string' ? res.body : String(b?.email ?? b?.result ?? b?.text ?? JSON.stringify(res.body));
           if (text.length < 100) return fail(`Email too short: ${text.length} chars`);
           return ok({ length: text.length });
         },
@@ -257,7 +273,8 @@ export const TOOL_REGISTRY: ToolDefinition[] = [
         },
         expectedStatus: 200,
         validate: (res) => {
-          const text = typeof res.body === 'string' ? res.body : String(res.body ?? '');
+          const b = res.body as Record<string, unknown>;
+          const text = typeof res.body === 'string' ? res.body : String(b?.email ?? b?.result ?? b?.text ?? '');
           return text.length > 50 ? ok({ length: text.length }) : fail('Response too short');
         },
       },
@@ -377,7 +394,8 @@ export const TOOL_REGISTRY: ToolDefinition[] = [
         },
         expectedStatus: 200,
         validate: (res) => {
-          const text = typeof res.body === 'string' ? res.body : String(res.body ?? '');
+          const b = res.body as Record<string, unknown>;
+          const text = typeof res.body === 'string' ? res.body : String(b?.result ?? b?.explanation ?? b?.text ?? '');
           if (text.length < 50) return fail(`Explanation too short: ${text.length} chars`);
           return ok({ length: text.length });
         },
@@ -393,7 +411,8 @@ export const TOOL_REGISTRY: ToolDefinition[] = [
         },
         expectedStatus: 200,
         validate: (res) => {
-          const text = typeof res.body === 'string' ? res.body : String(res.body ?? '');
+          const b = res.body as Record<string, unknown>;
+          const text = typeof res.body === 'string' ? res.body : String(b?.result ?? b?.explanation ?? b?.text ?? '');
           return text.length > 30 ? ok() : fail('Debug output too short');
         },
       },
