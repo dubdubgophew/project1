@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from 'next';
-import Script from 'next/script';
 import { Plus_Jakarta_Sans, JetBrains_Mono, DM_Serif_Display } from 'next/font/google';
 import './globals.css';
 import { GoogleAnalytics } from '@/components/shared/GoogleAnalytics';
 import { AdSenseScript } from '@/components/shared/AdSense';
+import { CookieConsent } from '@/components/shared/CookieConsent';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -134,10 +134,8 @@ export default function RootLayout({
         {/* Preconnect for third-party origins used above the fold */}
         <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://quge5.com" />
         <meta name="google-adsense-account" content="ca-pub-7233937066598688" />
         <AdSenseScript />
-        <meta name="monetag" content="701dad6c34191d949e21404ca1901f4f" />
         {/* Bing Webmaster Tools verification */}
         <meta name="msvalidate.01" content="6D08415757455297A4CA4ED033A20EDA" />
         {/* Bing-specific crawl directives — mirror Google's rich-result allowances */}
@@ -238,7 +236,7 @@ export default function RootLayout({
           '@context': 'https://schema.org',
           '@type': 'ItemList',
           name: 'Formly Tools — Free AI Tool Categories',
-          description: 'Browse 40 free AI tools organized by category: AI Writing, Payroll & Legal, Developer Tools, Finance, Utilities, and more.',
+          description: 'Browse 50 free AI tools organized by category: AI Writing, Payroll & Legal, Developer Tools, Finance, Utilities, and more.',
           url: 'https://formly.tools/tools',
           numberOfItems: 50,
           itemListElement: [
@@ -251,33 +249,11 @@ export default function RootLayout({
           ],
         }) }} />
 
-        {/* Schema: AggregateRating — trust signal across all tools */}
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'Product',
-          name: 'Formly Tools — Free AI Tools Suite',
-          description: 'Free AI-powered productivity tools for professionals, freelancers, and students worldwide.',
-          brand: { '@type': 'Brand', name: 'Formly Tools' },
-          url: 'https://formly.tools',
-          aggregateRating: {
-            '@type': 'AggregateRating',
-            ratingValue: '4.8',
-            reviewCount: '3241',
-            bestRating: '5',
-            worstRating: '1',
-          },
-        }) }} />
       </head>
       <body className="font-sans antialiased bg-[#F9F7F4] text-stone-900 min-h-screen">
         <GoogleAnalytics />
         {children}
-        {/* Monetag — lazyOnload so it never blocks initial render */}
-        <Script
-          src="https://quge5.com/88/tag.min.js"
-          data-zone="242055"
-          data-cfasync="false"
-          strategy="lazyOnload"
-        />
+        <CookieConsent />
       </body>
     </html>
   );

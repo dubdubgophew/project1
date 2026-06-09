@@ -41,7 +41,7 @@ export function AdSenseScript() {
       async
       src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`}
       crossOrigin="anonymous"
-      strategy="lazyOnload"
+      strategy="afterInteractive"
     />
   );
 }
@@ -73,7 +73,7 @@ export function AdUnit({ slot, format = 'auto', responsive = true, className = '
   return (
     <div ref={adRef} className={`adsense-container ${className}`}>
       <div className="w-full">
-        <p className="text-xs text-gray-500 text-center mb-1">Sponsored</p>
+        <p className="text-xs text-gray-500 text-center mb-1">Advertisements</p>
         <ins
           className="adsbygoogle"
           style={{ display: 'block' }}
