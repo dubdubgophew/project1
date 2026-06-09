@@ -3,6 +3,7 @@ Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /dashboard
+Disallow: /dashboard/seo
 Disallow: /settings
 Disallow: /login
 Disallow: /signup
