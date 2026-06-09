@@ -76,6 +76,9 @@ export default async function PoliticsPage({ searchParams }: PageProps) {
               🏛️ <span className="gradient-text">Politics</span> — Trending &amp; Latest
             </h1>
             <p className="text-stone-500 text-sm">Global political news · 10+ countries · AI-summarized daily</p>
+            <p className="text-stone-500 text-sm mt-2 max-w-2xl leading-relaxed">
+              Real-time coverage of political developments worldwide — <strong className="text-stone-700 font-semibold">elections, legislation, government decisions, and foreign policy</strong> across the USA, India, UK, Canada, Australia, and Europe. Sourced from <strong className="text-stone-700 font-semibold">NPR Politics, BBC Politics, Al Jazeera, Reuters, The Wire, Der Spiegel, Le Monde,</strong> and 12 more outlets in 5 languages. Each story is AI-analyzed to explain <em>what happened, why it happened, and who it affects</em>.
+            </p>
           </div>
 
           <div className="grid lg:grid-cols-[1fr_260px] gap-8">
@@ -103,6 +106,29 @@ export default async function PoliticsPage({ searchParams }: PageProps) {
         </div>
       </main>
       <Footer />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          name: 'Trending Political News',
+          description: 'Today\'s top political news stories from 10+ countries, AI-summarized.',
+          numberOfItems: items.length,
+          itemListElement: items.map((item, i) => ({
+            '@type': 'ListItem',
+            position: i + 1,
+            item: {
+              '@type': 'NewsArticle',
+              headline: item.topic,
+              description: item.summary,
+              url: item.source_url,
+              datePublished: item.fetched_at,
+              about: { '@type': 'Thing', name: 'Politics' },
+              publisher: { '@type': 'Organization', name: item.source_name },
+            },
+          })),
+        }) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify({

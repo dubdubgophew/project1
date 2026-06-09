@@ -142,6 +142,9 @@ export default async function NewsPage({ searchParams }: PageProps) {
               What&apos;s <span className="gradient-text">Trending</span> Right Now
             </h1>
             <p className="text-stone-500 text-sm">Updated daily · 50 topics · 10 countries</p>
+            <p className="text-stone-500 text-sm mt-2 max-w-2xl leading-relaxed">
+              Today&apos;s top trending stories from <strong className="text-stone-700 font-semibold">USA, India, UK, Canada, Australia, Germany, France, Brazil, Japan, and Indonesia</strong> — sourced from NPR, BBC News, Times of India, ABC Australia, Japan Times, and more. Every headline is AI-analyzed with a full summary and five structured key takeaways, so you understand not just <em>what</em> happened but <em>why it matters</em>.
+            </p>
           </div>
 
           <div className="grid lg:grid-cols-[1fr_260px] gap-8">

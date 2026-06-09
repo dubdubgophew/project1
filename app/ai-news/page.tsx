@@ -130,6 +130,9 @@ export default async function AINewsPage({ searchParams }: PageProps) {
               Latest in <span className="gradient-text">AI</span>
             </h1>
             <p className="text-stone-500 text-sm">Updated daily · 50 stories · 10 sources</p>
+            <p className="text-stone-500 text-sm mt-2 max-w-2xl leading-relaxed">
+              Your daily briefing on <strong className="text-stone-700 font-semibold">artificial intelligence</strong> — new models, research papers, funding rounds, hardware launches, and open-source releases. Curated from <strong className="text-stone-700 font-semibold">TechCrunch, VentureBeat, MIT Technology Review, Hugging Face, Google AI Blog,</strong> and top AI communities, then AI-analyzed so you get the <em>what, why, and what it means</em> — not just a headline.
+            </p>
           </div>
 
           <div className="grid lg:grid-cols-[1fr_260px] gap-8">
