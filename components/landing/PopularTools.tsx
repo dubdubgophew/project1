@@ -155,6 +155,22 @@ const POPULAR_TOOLS = [
     category: 'File Tools',
     pinned: false,
   },
+  {
+    icon: '🔥',
+    name: 'FIRE Calculator',
+    href: '/tools/fire-calculator',
+    desc: 'When can you retire early? Get your FIRE number, retirement age & Lean/Fat/Coast milestones.',
+    category: 'Finance',
+    pinned: true,
+  },
+  {
+    icon: '🍽️',
+    name: 'AI Meal Planner',
+    href: '/tools/meal-planner',
+    desc: 'Personalized 7-day meal plan + grocery list in 30 seconds. Any diet, calories & budget.',
+    category: 'Lifestyle',
+    pinned: true,
+  },
 ];
 
 export function PopularTools() {
@@ -175,7 +191,7 @@ export function PopularTools() {
             href="/tools"
             className="text-sm text-orange-500 hover:text-orange-600 font-medium transition-colors whitespace-nowrap self-start sm:self-auto"
           >
-            View all 50 tools →
+            View all 52 tools →
           </Link>
         </div>
 
@@ -232,7 +248,7 @@ export function PopularTools() {
             href="/tools"
             className="text-sm text-orange-500 hover:text-orange-600 font-medium transition-colors"
           >
-            View all 50 tools →
+            View all 52 tools →
           </Link>
         </div>
       </div>

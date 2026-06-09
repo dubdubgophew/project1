@@ -29,7 +29,7 @@
 - Runs daily at 3am UTC via Vercel cron
 
 ## Tool count
-Currently 37 tools. Update in: `app/page.tsx` title/description, `components/landing/PopularTools.tsx` "View all" links, `app/tools/page.tsx` auto-counts via TOOLS.length.
+Currently 52 tools. Update in: `app/page.tsx` title/description, `components/landing/PopularTools.tsx` "View all" links, `app/tools/page.tsx` auto-counts via TOOLS.length.
 
 ## Adding a new tool
 1. Create `app/tools/[slug]/page.tsx` + `layout.tsx`

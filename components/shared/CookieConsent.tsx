@@ -51,7 +51,7 @@ export function CookieConsent() {
       <div className="max-w-3xl mx-auto bg-white border border-stone-200 rounded-2xl shadow-2xl p-5 sm:flex sm:items-center sm:gap-5">
         <p className="text-sm text-stone-600 leading-relaxed flex-1">
           <span className="font-semibold text-stone-900">🍪 We value your privacy.</span>{' '}
-          We use cookies for analytics and to show personalized ads that keep our 50 tools free.
+          We use cookies for analytics and to show personalized ads that keep our 52 tools free.
           You can accept or decline — the tools work either way. See our{' '}
           <Link href="/privacy" className="text-orange-600 hover:underline">Privacy Policy</Link>.
         </p>

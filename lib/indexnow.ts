@@ -82,9 +82,10 @@ export function allToolUrls(): string[] {
     'expense-splitter', 'loan-calculator', 'unit-converter', 'age-calculator',
     'hand-salary-calculator', 'income-tax-calculator', 'hra-calculator',
     'gratuity-calculator', 'gst-calculator', 'sip-calculator', 'home-loan-emi-calculator',
-    // Utilities & Design
-    'qr-code', 'digital-signature', 'diagrify', 'aetherboard',
+    // Utilities & Design — note: aetherboard removed (301-redirects to diagrify)
+    'qr-code', 'digital-signature', 'diagrify',
     'bank-statement-analyzer', 'iron-core-workout', 'vibe-check',
+    'fire-calculator', 'meal-planner',
   ];
   return [
     SITE_URL,

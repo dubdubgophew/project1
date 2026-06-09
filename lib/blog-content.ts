@@ -31,6 +31,129 @@ export interface BlogPost {
 }
 
 export const BLOG_POSTS: BlogPost[] = [
+  // ─── Finance & Lifestyle ─────────────────────────────────────────────────
+  {
+    slug: 'fire-calculator',
+    title: 'FIRE Calculator: Find Out Exactly When You Can Retire Early',
+    category: 'finance',
+    toolSlug: 'fire-calculator',
+    toolName: 'FIRE Calculator',
+    readingTime: 8,
+    publishedAt: '2026-06-09',
+    updatedAt: '2026-06-09',
+    metaDescription:
+      'Calculate your FIRE number and early retirement age with the 4% rule. Understand Lean FIRE, Fat FIRE, and Coast FIRE — with a free interactive calculator.',
+    intro:
+      'FIRE — Financial Independence, Retire Early — turns retirement from a vague dream into a math problem. Once your investments reach roughly 25 times your annual expenses, you can stop working forever. This guide explains the 4% rule, the three FIRE variants, and how to find your exact retirement age with our free calculator.',
+    sections: [
+      {
+        heading: 'What Is a FIRE Number?',
+        body: 'Your FIRE number is the portfolio size that lets you live off investment withdrawals indefinitely. The standard formula is annual expenses × 25, derived from the 4% safe withdrawal rate. If you spend $40,000 a year, your FIRE number is $1,000,000. Spend $80,000, and it\'s $2,000,000. Note that the number depends on your expenses, not your income — a high earner who spends little reaches FIRE far faster than a higher earner who spends everything.',
+      },
+      {
+        heading: 'The 4% Rule Explained',
+        body: 'The 4% rule comes from the Trinity Study, which analyzed historical US market data and found that withdrawing 4% of a stock/bond portfolio in the first year of retirement (then adjusting for inflation annually) survived virtually every 30-year period in history. Conservative planners use 3.5% or even 3% for longer retirements; aggressive ones use 4.5%. Our calculator lets you adjust the withdrawal rate from 2.5% to 6% to see how it changes your target.',
+      },
+      {
+        heading: 'Lean FIRE vs Fat FIRE vs Coast FIRE',
+        body: 'Lean FIRE: retiring on a minimal budget — roughly 60% of typical expenses. Smaller target, reached years earlier, but little slack for luxuries. Fat FIRE: retiring with 150% or more of your current spending — first-class travel, no budget anxiety, but a much larger target. Coast FIRE: the most underrated milestone — you\'ve saved enough that compound growth alone will fund a normal retirement at 65. After hitting Coast FIRE you only need to earn enough to cover current living costs; saving becomes optional.',
+      },
+      {
+        heading: 'Your Savings Rate Matters More Than Returns',
+        body: 'The single biggest lever in FIRE math is your savings rate — the percentage of income you invest. At a 10% savings rate, retirement takes roughly 50 years. At 25%, about 32 years. At 50%, just 17 years. At 65%, around 10 years. This is why the FIRE community obsesses over cutting expenses: every dollar not spent both grows your portfolio and shrinks the target it needs to hit.',
+      },
+      {
+        heading: 'How to Use the Formly FIRE Calculator',
+        body: '1. Enter your current age and total invested savings.\n2. Add your annual post-tax income and annual expenses — the gap becomes your monthly investment.\n3. Set expected return (8% is the long-term stock market average), inflation (3%), and withdrawal rate (4%).\n4. Read your results instantly: FIRE number, exact retirement age, and the ages you\'ll hit Coast, Lean, and Fat FIRE.\nEverything updates live as you move the sliders, and all math runs in your browser — your financial data never leaves your device.',
+      },
+      {
+        heading: 'Common FIRE Mistakes to Avoid',
+        body: 'Ignoring inflation — always plan in real (inflation-adjusted) returns, as our calculator does. Forgetting healthcare — early retirees lose employer coverage years before government programs kick in. Underestimating expenses — track actual spending for 3 months before trusting your number. Going 100% stocks at retirement — sequence-of-returns risk means a crash in your first retirement years can break the 4% rule; most FIRE retirees hold 10-40% bonds.',
+      },
+    ],
+    faqs: [
+      {
+        q: 'What is my FIRE number?',
+        a: 'Your annual expenses multiplied by 25 (using the 4% rule). If you spend $50,000 a year, your FIRE number is $1.25 million.',
+      },
+      {
+        q: 'Is the 4% rule still safe?',
+        a: 'It remains the standard baseline, backed by historical data over 30-year retirements. For retirements longer than 40 years, many planners recommend 3.25-3.75% instead. Our calculator lets you test any rate.',
+      },
+      {
+        q: 'What is Coast FIRE?',
+        a: 'Having enough invested that compound growth alone — with zero further contributions — will fund a normal retirement at 65. It\'s often reachable in your 30s and removes the pressure to save aggressively.',
+      },
+      {
+        q: 'Does the calculator account for inflation?',
+        a: 'Yes. It converts your expected return to a real (inflation-adjusted) return, so all results are in today\'s money.',
+      },
+      {
+        q: 'Is my financial data stored anywhere?',
+        a: 'No. The FIRE calculator runs entirely in your browser — nothing is uploaded or stored.',
+      },
+    ],
+  },
+
+  {
+    slug: 'meal-planner',
+    title: 'AI Meal Planner: Get a Free 7-Day Meal Plan + Grocery List in 30 Seconds',
+    category: 'productivity',
+    toolSlug: 'meal-planner',
+    toolName: 'AI Meal Planner',
+    readingTime: 6,
+    publishedAt: '2026-06-09',
+    updatedAt: '2026-06-09',
+    metaDescription:
+      'Generate a free personalized 7-day meal plan with grocery list using AI. Keto, vegan, vegetarian, high-protein — with calorie targets, allergies, and budget handled automatically.',
+    intro:
+      'Research suggests the average adult spends over half an hour a day just deciding what to eat — and decision fatigue is exactly why takeout wins so often. An AI meal planner removes the decision entirely: tell it your diet, calories, and budget once, and get a complete week of meals plus a ready-made grocery list. Here\'s how it works and how to get the most out of it.',
+    sections: [
+      {
+        heading: 'What an AI Meal Planner Does',
+        body: 'You provide your constraints — diet type (keto, vegan, vegetarian, Mediterranean, high-protein, paleo, halal, or anything), a daily calorie target, meals per day, allergies or hated ingredients, cuisine preferences, and grocery budget. The AI generates a 7-day plan with named dishes, one-line descriptions, and per-meal calories and protein, plus a categorized grocery list with realistic quantities for the week.',
+      },
+      {
+        heading: 'Why Meal Planning Saves Money and Time',
+        body: 'Shopping from a plan eliminates the two most expensive grocery habits: impulse buys and waste. Studies consistently show households throw away 25-30% of the food they buy, largely because it was purchased without a plan. A weekly plan that deliberately reuses ingredients — the same bag of spinach across three dinners — cuts both the bill and the bin. Most users save 60-90 minutes a week in decision time alone.',
+      },
+      {
+        heading: 'How to Generate Your Plan — Step by Step',
+        body: '1. Pick your diet type — or leave it on "Anything".\n2. Set your daily calorie target (1,200-4,000 kcal) with the slider.\n3. Choose 2, 3, or 4 meals per day.\n4. List allergies and dislikes — the AI strictly avoids them.\n5. Optionally set a cuisine preference like "Indian" or "Mexican mix".\n6. Pick a budget level: budget staples, moderate, or premium.\n7. Generate — your full week appears in about 30 seconds.\n8. Copy or print the grocery list and you\'re done shopping prep for the week.',
+      },
+      {
+        heading: 'Built for Real Cooking, Not Instagram',
+        body: 'Every dinner in the plan is cookable in under 40 minutes and breakfasts in under 15 — no obscure ingredients, no 14-step techniques. Dishes repeat at most twice in a week, and the plan deliberately shares ingredients across days to keep your basket small. If you don\'t like a plan, regenerate — it\'s free and unlimited.',
+      },
+      {
+        heading: 'Using It for Specific Goals',
+        body: 'Weight loss: set calories 300-500 below maintenance and choose High-Protein to preserve muscle. Muscle gain: set a 200-300 surplus with High-Protein — every meal shows protein grams so you can hit 1.6-2.2 g/kg. Keto: the plan keeps net carbs low automatically. Busy weeks: pick 2 meals a day and batch-cook — the meal-prep tips included with every plan tell you what to cook ahead on Sunday.',
+      },
+    ],
+    faqs: [
+      {
+        q: 'Is the AI meal planner really free?',
+        a: 'Yes — generating plans is completely free with no account or signup required. Regenerate as many times as you like.',
+      },
+      {
+        q: 'Can it handle allergies?',
+        a: 'Yes. Anything you list in the allergies/dislikes field is strictly excluded from every meal and the grocery list.',
+      },
+      {
+        q: 'Does it work for keto and vegan diets?',
+        a: 'Yes — keto, vegan, vegetarian, Mediterranean, high-protein, paleo, and halal are all supported, plus a free-text cuisine preference.',
+      },
+      {
+        q: 'How accurate are the calorie counts?',
+        a: 'Per-meal calories and protein are AI estimates suitable for everyday planning. For medical or competition-level precision, weigh ingredients and verify with a nutrition database.',
+      },
+      {
+        q: 'Can I print the grocery list?',
+        a: 'Yes — there\'s a one-click copy button and a print button right above the grocery list.',
+      },
+    ],
+  },
+
   // ─── AI Tools ────────────────────────────────────────────────────────────
   {
     slug: 'paystub-generator',
