@@ -28,18 +28,19 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   let description = 'Live stock market news from NYSE, NASDAQ, LSE, NSE, ASX and more. AI-summarized earnings, macro, IPO and market analysis — updated daily.';
 
   if (category && category !== 'all') {
-    title = `${category} — Stock Market News | Formly`;
-    description = `Latest ${category} news from global stock markets, AI-summarized daily.`;
+    title = `${category} Stock Market News — Global Markets | Formly`;
+    description = `Latest ${category} news from NYSE, NASDAQ, LSE, NSE, ASX and global markets — AI-summarized daily.`;
   } else if (country && country !== 'all') {
-    title = `${country} Stock Market News | Formly`;
-    description = `Top stock market stories from ${country} — AI-summarized daily.`;
+    title = `${country} Stock Market News — Formly`;
+    description = `Top stock market stories from ${country} — earnings, macro, IPO and analysis, AI-summarized daily.`;
   }
 
   return {
     title,
     description,
     alternates: { canonical: 'https://formly.tools/stocks' },
-    openGraph: { title, description, type: 'website', url: 'https://formly.tools/stocks' },
+    openGraph: { title, description, type: 'website', url: 'https://formly.tools/stocks', siteName: 'Formly' },
+    twitter: { card: 'summary_large_image', title, description },
   };
 }
 
@@ -119,6 +120,9 @@ export default async function StocksPage({ searchParams }: PageProps) {
               📈 <span className="gradient-text">Stock Market</span> — Global News
             </h1>
             <p className="text-stone-500 text-sm">NYSE · NASDAQ · LSE · NSE · ASX · TSE · XETRA · AI-summarized daily</p>
+            <p className="text-stone-500 text-sm mt-2 max-w-2xl leading-relaxed">
+              Today&apos;s top stories across global financial markets — <strong className="text-stone-700 font-semibold">earnings reports, IPOs, macro trends, commodities, and crypto</strong> — sourced from <strong className="text-stone-700 font-semibold">CNBC, Reuters, MarketWatch, Financial Times, ET Markets, Nikkei Asia, AFR,</strong> and more. Each story is AI-analyzed to explain market impact and what it means for investors, not just the headline numbers.
+            </p>
           </div>
 
           <div className="grid lg:grid-cols-[1fr_260px] gap-8">
@@ -152,7 +156,7 @@ export default async function StocksPage({ searchParams }: PageProps) {
           '@context': 'https://schema.org',
           '@type': 'ItemList',
           name: 'Global Stock Market News',
-          description: 'Daily stock market news from NYSE, NASDAQ, LSE, NSE, ASX and more — AI-summarized.',
+          description: 'Daily stock market news from NYSE, NASDAQ, LSE, NSE, ASX, TSE, and XETRA — AI-summarized.',
           numberOfItems: items.length,
           itemListElement: items.map((item, i) => ({
             '@type': 'ListItem',
@@ -163,6 +167,7 @@ export default async function StocksPage({ searchParams }: PageProps) {
               description: item.summary,
               url: item.source_url,
               datePublished: item.fetched_at,
+              about: { '@type': 'Thing', name: item.category || 'Stock Market' },
               publisher: { '@type': 'Organization', name: item.source_name },
             },
           })),
