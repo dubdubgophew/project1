@@ -1,6 +1,8 @@
-# Claude Code session data — keep settings.json tracked
+# Claude Code session data — keep settings.json and hooks tracked
 .claude/*
 !.claude/settings.json
+!.claude/hooks
+!.claude/hooks/*
 
 # Dependencies
 node_modules/
