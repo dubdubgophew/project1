@@ -46,7 +46,7 @@ async function generatePoliticsSummaries(sourceName: string, country: string, la
 
   const langNote = langCode !== 'en' ? ` Write ALL output (topic, summary, key_points) in ${langName}.` : '';
 
-  const prompt = `You are a senior political analyst covering ${country} politics. Your reader is an educated global audience. For each headline, deliver a proper analytical piece — not a summary. Give real understanding of the political dynamics at play.${langNote}
+  const prompt = `You are a senior political analyst covering ${country} politics. Your reader is an educated global audience. For each headline, deliver a proper analytical piece — not a summary. Give real understanding of the political dynamics at play. Use your own knowledge to enrich context where provided snippets are thin.${langNote}
 
 Each object in your JSON array:
 - "topic": restate headline clearly (max 12 words)
@@ -113,7 +113,7 @@ export async function POST(_req: NextRequest) {
       } catch (err) {
         console.error(`[fetch-politics-news] Feed failed for ${feed.key}:`, err);
         results.push({ key: feed.key, inserted: 0, skipped: 0, error: String(err) });
-        await sleep(300);
+        await sleep(800);
         continue;
       }
 
@@ -122,7 +122,7 @@ export async function POST(_req: NextRequest) {
 
       if (!newItems.length) {
         results.push({ key: feed.key, inserted: 0, skipped, error: skipped ? undefined : 'No items' });
-        await sleep(300);
+        await sleep(800);
         continue;
       }
 
@@ -182,7 +182,8 @@ export async function POST(_req: NextRequest) {
     } catch (err) {
       results.push({ key: feed.key, inserted: 0, skipped: 0, error: String(err) });
     }
-    await sleep(300);
+    // Longer pause between feeds to avoid Groq rate limits
+    await sleep(1500);
   }
 
   const totalInserted = results.reduce((s, r) => s + r.inserted, 0);

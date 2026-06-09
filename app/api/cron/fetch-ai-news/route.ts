@@ -58,7 +58,7 @@ async function generateAISummaries(
     ? `\nIMPORTANT: Write "topic", "summary", and all "key_points" content in ${langName}. Keep "category" values in English.\n`
     : '';
 
-  const prompt = `You are a senior AI industry analyst writing for ${sourceName}. For each headline, deliver a proper multi-angle analysis — not a description. Give readers real understanding of what this means for the AI field.${langInstruction}
+  const prompt = `You are a senior AI industry analyst writing for ${sourceName}. For each headline, deliver a proper multi-angle analysis — not a description. Give readers real understanding of what this means for the AI field. Use your own knowledge to enrich context where provided snippets are thin.${langInstruction}
 
 Produce a JSON array with exactly ${items.length} objects in the SAME ORDER.
 
@@ -128,7 +128,7 @@ export async function POST(_req: NextRequest) {
       } catch (err) {
         console.error(`[fetch-ai-news] Feed failed for ${source.key}:`, err);
         results.push({ source: source.key, inserted: 0, skipped: 0, error: String(err) });
-        await sleep(400);
+        await sleep(1000);
         continue;
       }
 
@@ -138,7 +138,7 @@ export async function POST(_req: NextRequest) {
 
       if (!newItems.length) {
         results.push({ source: source.key, inserted: 0, skipped, error: skipped ? undefined : 'No items in feed' });
-        await sleep(400);
+        await sleep(1000);
         continue;
       }
 
@@ -206,7 +206,8 @@ export async function POST(_req: NextRequest) {
       results.push({ source: source.key, inserted: 0, skipped: 0, error: String(err) });
     }
 
-    await sleep(400);
+    // Longer pause between sources to avoid Groq rate limits
+    await sleep(2000);
   }
 
   // Prune articles older than 30 days to keep the database lean

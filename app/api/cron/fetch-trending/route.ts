@@ -68,7 +68,7 @@ async function generateSummariesBatch(
     })
     .join('\n\n');
 
-  const prompt = `You are a sharp investigative journalist covering ${countryName}. For each headline below, write a proper multi-angle analysis — not a summary. Your job is to give readers real understanding, not just facts.
+  const prompt = `You are a sharp investigative journalist covering ${countryName}. For each headline below, write a proper multi-angle analysis — not a summary. Your job is to give readers real understanding, not just facts. Use your own knowledge to enrich the context where provided snippets are thin.
 
 Produce a JSON array with exactly ${trends.length} objects in the SAME ORDER.
 
@@ -129,7 +129,7 @@ export async function POST(_req: NextRequest) {
       } catch (err) {
         console.error(`[fetch-trending] Feed failed for ${country.code}:`, err);
         results.push({ country: country.code, inserted: 0, skipped: 0, error: String(err) });
-        await sleep(400);
+        await sleep(1000);
         continue;
       }
 
@@ -139,7 +139,7 @@ export async function POST(_req: NextRequest) {
 
       if (!newTrends.length) {
         results.push({ country: country.code, inserted: 0, skipped, error: skipped ? undefined : 'No items in feed' });
-        await sleep(400);
+        await sleep(1000);
         continue;
       }
 
@@ -205,7 +205,8 @@ export async function POST(_req: NextRequest) {
       results.push({ country: country.code, inserted: 0, skipped: 0, error: String(err) });
     }
 
-    await sleep(400);
+    // Longer pause between countries to avoid Groq rate limits
+    await sleep(2000);
   }
 
   // Prune articles older than 30 days to keep the database lean

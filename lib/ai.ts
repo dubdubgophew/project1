@@ -78,6 +78,21 @@ export async function callAI(
       error instanceof Error &&
       (error.message.includes('rate_limit') || error.message.includes('429'))
     ) {
+      // Wait and retry with the same model before degrading to a smaller one
+      await new Promise(r => setTimeout(r, 8000));
+      try {
+        const retry = await getGroq().chat.completions.create({
+          model,
+          messages,
+          max_tokens: maxTokens,
+          temperature,
+        });
+        const result = retry.choices[0]?.message?.content ?? '';
+        if (key && result) _cacheSet(key, result);
+        return result;
+      } catch {
+        // Still rate-limited — fall back to faster model as last resort
+      }
       const fallback = await getGroq().chat.completions.create({
         model: 'llama-3.1-8b-instant',
         messages,
