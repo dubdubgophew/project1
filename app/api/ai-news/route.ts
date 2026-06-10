@@ -32,7 +32,13 @@ export async function GET(req: NextRequest) {
 
     if (category && category !== 'all') query = query.eq('category', category);
     if (country  && country  !== 'all') query = query.eq('country_code', country.toUpperCase());
-    if (language && language !== 'all') query = query.eq('language_code', language);
+    if (language && language !== 'all') {
+      if (language === 'en') {
+        query = query.or('language_code.eq.en,language_code.is.null');
+      } else {
+        query = query.eq('language_code', language);
+      }
+    }
     if (q.trim()) query = query.or(`topic.ilike.%${q.trim()}%,summary.ilike.%${q.trim()}%`);
 
     const { data: items, count } = await query;

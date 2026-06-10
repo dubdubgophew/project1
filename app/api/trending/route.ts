@@ -49,7 +49,11 @@ export async function GET(req: NextRequest) {
       countQuery = countQuery.eq('category', category);
     }
     if (language !== 'all' && language) {
-      countQuery = countQuery.eq('language_code', language);
+      if (language === 'en') {
+        countQuery = countQuery.or('language_code.eq.en,language_code.is.null');
+      } else {
+        countQuery = countQuery.eq('language_code', language);
+      }
     }
     if (q.trim()) {
       countQuery = countQuery.or(
@@ -75,7 +79,11 @@ export async function GET(req: NextRequest) {
       dataQuery = dataQuery.eq('category', category);
     }
     if (language !== 'all' && language) {
-      dataQuery = dataQuery.eq('language_code', language);
+      if (language === 'en') {
+        dataQuery = dataQuery.or('language_code.eq.en,language_code.is.null');
+      } else {
+        dataQuery = dataQuery.eq('language_code', language);
+      }
     }
     if (q.trim()) {
       dataQuery = dataQuery.or(

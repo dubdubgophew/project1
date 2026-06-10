@@ -17,17 +17,17 @@ export const maxDuration = 300;
 // Google Trends RSS blocks Vercel/AWS IPs. Using reputable country-specific
 // news RSS feeds instead — free, no API key, no IP restrictions.
 
-const COUNTRY_FEEDS: Record<string, { url: string; name: string }> = {
-  US: { url: 'https://feeds.npr.org/1001/rss.xml',                           name: 'NPR News' },
-  IN: { url: 'https://timesofindia.indiatimes.com/rssfeedstopstories.cms',   name: 'Times of India' },
-  GB: { url: 'https://feeds.bbci.co.uk/news/rss.xml',                        name: 'BBC News' },
-  CA: { url: 'https://globalnews.ca/feed/',                                   name: 'Global News' },
-  AU: { url: 'https://www.abc.net.au/news/feed/51120/rss.xml',               name: 'ABC Australia' },
-  DE: { url: 'https://feeds.feedburner.com/euronews/en/news/',               name: 'Euronews' },
-  FR: { url: 'https://www.france24.com/en/rss',                              name: 'France 24' },
-  BR: { url: 'https://feeds.feedburner.com/euronews/en/news/latin-america',  name: 'Euronews Americas' },
-  JP: { url: 'https://www.japantimes.co.jp/feed/',                           name: 'Japan Times' },
-  ID: { url: 'https://www.antaranews.com/rss/terkini.xml',                   name: 'Antara News' },
+const COUNTRY_FEEDS: Record<string, { url: string; name: string; langCode: string; langName: string }> = {
+  US: { url: 'https://feeds.npr.org/1001/rss.xml',                           name: 'NPR News',        langCode: 'en', langName: 'English' },
+  IN: { url: 'https://timesofindia.indiatimes.com/rssfeedstopstories.cms',   name: 'Times of India',  langCode: 'en', langName: 'English' },
+  GB: { url: 'https://feeds.bbci.co.uk/news/rss.xml',                        name: 'BBC News',        langCode: 'en', langName: 'English' },
+  CA: { url: 'https://globalnews.ca/feed/',                                   name: 'Global News',     langCode: 'en', langName: 'English' },
+  AU: { url: 'https://www.abc.net.au/news/feed/51120/rss.xml',               name: 'ABC Australia',   langCode: 'en', langName: 'English' },
+  DE: { url: 'https://feeds.feedburner.com/euronews/en/news/',               name: 'Euronews',        langCode: 'en', langName: 'English' },
+  FR: { url: 'https://www.france24.com/en/rss',                              name: 'France 24',       langCode: 'en', langName: 'English' },
+  BR: { url: 'https://feeds.feedburner.com/euronews/en/news/latin-america',  name: 'Euronews Americas', langCode: 'en', langName: 'English' },
+  JP: { url: 'https://www.japantimes.co.jp/feed/',                           name: 'Japan Times',     langCode: 'en', langName: 'English' },
+  ID: { url: 'https://www.antaranews.com/rss/terkini.xml',                   name: 'Antara News',     langCode: 'id', langName: 'Indonesia' },
 };
 
 interface AISummaryItem {
@@ -96,7 +96,7 @@ Respond ONLY with a valid JSON array. No markdown, no extra text.`;
       { role: 'system', content: 'You are a professional investigative journalist. Always respond with valid JSON only.' },
       { role: 'user', content: prompt },
     ],
-    { model: 'llama-3.3-70b-versatile', maxTokens: 6000, temperature: 0.35 }
+    { model: 'llama-3.3-70b-versatile', maxTokens: 4000, temperature: 0.35 }
   );
 
   const jsonStr = extractJsonArray(raw);
@@ -151,17 +151,25 @@ export async function POST(_req: NextRequest) {
         toFetch.forEach((t, i) => { if (ogImages[i]) t.imageUrl = ogImages[i]!; });
       }
 
-      let summaries: AISummaryItem[];
-      try {
-        summaries = await generateSummariesBatch(country.name, newTrends);
-      } catch (aiErr) {
-        console.error(`[fetch-trending] AI failed for ${country.code}, using fallback:`, aiErr);
-        summaries = newTrends.map(t => ({
-          topic: t.topic,
-          summary: t.snippets.join(' ').slice(0, 600) || `${t.topic} — latest news from ${country.name}.`,
-          key_points: [],
-          category: detectCategory(t.topic, t.snippets),
-        }));
+      // Batch into groups of 4 so each call stays well under the token limit.
+      // 4 items × ~500 output tokens = ~2000 tokens + ~700 input = ~2700 total, safe under maxTokens:4000.
+      const MAX_BATCH = 4;
+      const summaries: AISummaryItem[] = [];
+      for (let bStart = 0; bStart < newTrends.length; bStart += MAX_BATCH) {
+        const batch = newTrends.slice(bStart, bStart + MAX_BATCH);
+        try {
+          const batchSummaries = await generateSummariesBatch(country.name, batch);
+          summaries.push(...batchSummaries);
+        } catch (aiErr) {
+          console.error(`[fetch-trending] AI failed batch ${bStart}-${bStart + batch.length} for ${country.code}:`, aiErr);
+          summaries.push(...batch.map(t => ({
+            topic: t.topic,
+            summary: t.snippets.join(' ').slice(0, 600) || `${t.topic} — latest news from ${country.name}.`,
+            key_points: [] as string[],
+            category: detectCategory(t.topic, t.snippets),
+          })));
+        }
+        if (bStart + MAX_BATCH < newTrends.length) await sleep(800);
       }
 
       const now = new Date();
@@ -176,6 +184,7 @@ export async function POST(_req: NextRequest) {
         };
         // Track newly inserted URLs so subsequent countries don't double-insert
         if (trend.newsUrl) existingUrls.add(trend.newsUrl);
+        const feed = COUNTRY_FEEDS[country.code];
         return {
           country_code:   country.code,
           country_name:   country.name,
@@ -191,6 +200,8 @@ export async function POST(_req: NextRequest) {
           fetched_at:     now.toISOString(),
           expires_at:     expiresAt.toISOString(),
           rank:           idx + 1,
+          language_code:  feed?.langCode ?? 'en',
+          language_name:  feed?.langName ?? 'English',
         };
       });
 

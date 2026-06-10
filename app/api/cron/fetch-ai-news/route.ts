@@ -95,7 +95,7 @@ Respond ONLY with a valid JSON array. No markdown, no extra text.`;
       { role: 'system', content: 'You are a professional AI industry analyst. Always respond with valid JSON only.' },
       { role: 'user', content: prompt },
     ],
-    { model: 'llama-3.3-70b-versatile', maxTokens: 6000, temperature: 0.35 }
+    { model: 'llama-3.3-70b-versatile', maxTokens: 4000, temperature: 0.35 }
   );
 
   const jsonStr = extractJsonArray(raw);
@@ -150,17 +150,24 @@ export async function POST(_req: NextRequest) {
         toFetch.forEach((t, i) => { if (ogImages[i]) t.imageUrl = ogImages[i]!; });
       }
 
-      let summaries: AISummaryItem[];
-      try {
-        summaries = await generateAISummaries(source.name, newItems, source.langCode, source.langName);
-      } catch (aiErr) {
-        console.error(`[fetch-ai-news] AI failed for ${source.key}, using fallback:`, aiErr);
-        summaries = newItems.map(t => ({
-          topic: t.topic,
-          summary: t.snippets.join(' ').slice(0, 600) || `${t.topic} — latest AI news.`,
-          key_points: [],
-          category: 'Industry',
-        }));
+      // Batch into groups of 4 so each call stays well under the token limit.
+      const MAX_BATCH = 4;
+      const summaries: AISummaryItem[] = [];
+      for (let bStart = 0; bStart < newItems.length; bStart += MAX_BATCH) {
+        const batch = newItems.slice(bStart, bStart + MAX_BATCH);
+        try {
+          const batchSummaries = await generateAISummaries(source.name, batch, source.langCode, source.langName);
+          summaries.push(...batchSummaries);
+        } catch (aiErr) {
+          console.error(`[fetch-ai-news] AI failed batch ${bStart}-${bStart + batch.length} for ${source.key}:`, aiErr);
+          summaries.push(...batch.map(t => ({
+            topic: t.topic,
+            summary: t.snippets.join(' ').slice(0, 600) || `${t.topic} — latest AI news.`,
+            key_points: [] as string[],
+            category: 'Industry',
+          })));
+        }
+        if (bStart + MAX_BATCH < newItems.length) await sleep(800);
       }
 
       const now = new Date();

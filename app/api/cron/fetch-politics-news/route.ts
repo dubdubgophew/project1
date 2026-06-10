@@ -72,7 +72,7 @@ Return ONLY a valid JSON array with exactly ${items.length} objects. No markdown
       { role: 'system', content: 'You are a professional political analyst. Always respond with valid JSON only.' },
       { role: 'user', content: prompt },
     ],
-    { model: 'llama-3.3-70b-versatile', maxTokens: 6000, temperature: 0.3 }
+    { model: 'llama-3.3-70b-versatile', maxTokens: 4000, temperature: 0.3 }
   );
 
   const jsonStr = extractJsonArray(raw);
@@ -134,17 +134,24 @@ export async function POST(_req: NextRequest) {
         toFetch.forEach((t, i) => { if (ogImages[i]) t.imageUrl = ogImages[i]!; });
       }
 
-      let summaries: { topic: string; summary: string; key_points: string[]; category: string }[];
-      try {
-        summaries = await generatePoliticsSummaries(feed.name, feed.countryName, feed.langCode, feed.langName, newItems);
-      } catch (aiErr) {
-        console.error(`[fetch-politics-news] AI failed for ${feed.key}:`, aiErr);
-        summaries = newItems.map(t => ({
-          topic: t.topic,
-          summary: t.snippets.join(' ').slice(0, 600) || t.topic,
-          key_points: [],
-          category: 'Politics',
-        }));
+      // Batch into groups of 4 so each call stays well under the token limit.
+      const MAX_BATCH = 4;
+      const summaries: { topic: string; summary: string; key_points: string[]; category: string }[] = [];
+      for (let bStart = 0; bStart < newItems.length; bStart += MAX_BATCH) {
+        const batch = newItems.slice(bStart, bStart + MAX_BATCH);
+        try {
+          const batchSummaries = await generatePoliticsSummaries(feed.name, feed.countryName, feed.langCode, feed.langName, batch);
+          summaries.push(...batchSummaries);
+        } catch (aiErr) {
+          console.error(`[fetch-politics-news] AI failed batch ${bStart}-${bStart + batch.length} for ${feed.key}:`, aiErr);
+          summaries.push(...batch.map(t => ({
+            topic: t.topic,
+            summary: t.snippets.join(' ').slice(0, 600) || t.topic,
+            key_points: [] as string[],
+            category: 'Politics',
+          })));
+        }
+        if (bStart + MAX_BATCH < newItems.length) await sleep(300);
       }
 
       const now = new Date();

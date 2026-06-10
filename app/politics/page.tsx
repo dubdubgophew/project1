@@ -34,7 +34,13 @@ async function fetchInitialData(sp: PageProps['searchParams']) {
 
     if (category && category !== 'all') query = query.eq('category', category);
     if (country  && country !== 'ALL' && country.length === 2) query = query.eq('country_code', country);
-    if (language && language !== 'all') query = query.eq('language_code', language);
+    if (language && language !== 'all') {
+      if (language === 'en') {
+        query = query.or('language_code.eq.en,language_code.is.null');
+      } else {
+        query = query.eq('language_code', language);
+      }
+    }
     if (q.trim()) query = query.or(`topic.ilike.%${q.trim()}%,summary.ilike.%${q.trim()}%`);
 
     const { data: items } = await query;
