@@ -58,6 +58,32 @@ export default function HashtagGeneratorPage() {
       description="Generate perfectly curated hashtags for any topic and platform. Mix of popular, niche, and trending hashtags to maximize reach."
       icon="#️⃣"
       relatedTools={RELATED}
+      faqs={[
+        {
+          q: 'Is the AI Hashtag Generator free?',
+          a: 'Yes, completely free. No account or sign-up required. Generate up to 30 hashtags per request as many times as you need.',
+        },
+        {
+          q: 'Which social media platforms are supported?',
+          a: 'It generates platform-optimized hashtags for Instagram, Twitter/X, LinkedIn, TikTok, YouTube, Pinterest, and Facebook. Each platform has different hashtag conventions and the AI tailors its output accordingly.',
+        },
+        {
+          q: 'How does this compare to paid tools like Flick or Hashtagify?',
+          a: 'Flick and Hashtagify charge $14–$49/month for hashtag research. Our tool is free, AI-powered, and generates a ready-to-use mix of popular, niche, and targeted hashtags in seconds — no subscription needed.',
+        },
+        {
+          q: 'What is the difference between popular, niche, and targeted hashtags?',
+          a: 'Popular hashtags have millions of posts and maximize exposure but are competitive. Niche hashtags have smaller, more engaged audiences. Targeted hashtags are specific to your topic or brand. Using a mix of all three is the recommended strategy for best reach.',
+        },
+        {
+          q: 'How many hashtags should I use on Instagram vs other platforms?',
+          a: 'Instagram allows up to 30 hashtags — 15–20 is a common sweet spot. Twitter/X works best with 1–2. LinkedIn recommends 3–5. TikTok allows many but 5–10 is typical. The tool generates the right volume per platform by default.',
+        },
+        {
+          q: 'Can I use this for a business or brand account?',
+          a: 'Yes. Describe your product, niche, or content topic in detail and the AI will generate a relevant mix including community, industry, and brand-appropriate hashtags to grow your account organically.',
+        },
+      ]}
     >
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
@@ -83,7 +109,7 @@ export default function HashtagGeneratorPage() {
                   className={`px-3 py-2 rounded-xl text-sm font-medium border transition-all ${
                     platform === p
                       ? 'bg-violet-600 border-violet-600 text-white'
-                      : 'bg-gray-800 border-gray-700 text-gray-400 hover:border-gray-600'
+                      : 'bg-white border-stone-200 text-stone-600 hover:border-stone-400'
                   }`}
                 >
                   {p}
@@ -102,7 +128,7 @@ export default function HashtagGeneratorPage() {
                   className={`flex-1 py-2 px-3 rounded-xl text-sm font-medium border transition-all ${
                     count === c
                       ? 'bg-violet-600 border-violet-600 text-white'
-                      : 'bg-gray-800 border-gray-700 text-gray-400 hover:border-gray-600'
+                      : 'bg-white border-stone-200 text-stone-600 hover:border-stone-400'
                   }`}
                 >
                   {c}
@@ -113,7 +139,7 @@ export default function HashtagGeneratorPage() {
         </div>
 
         {error && (
-          <div className="flex items-start gap-2.5 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+          <div className="flex items-start gap-2.5 p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm">
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
             {error}
           </div>
@@ -132,36 +158,40 @@ export default function HashtagGeneratorPage() {
         <div className="space-y-4">
           {/* Copy all */}
           <div className="flex items-center justify-between">
-            <h2 className="font-semibold text-white">Your Hashtags</h2>
+            <h2 className="font-semibold text-stone-900">Your Hashtags</h2>
             <button
               onClick={() => { navigator.clipboard.writeText(result.all.join(' ')); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800 transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-all"
             >
-              {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+              {copied ? <Check className="w-4 h-4 text-emerald-700" /> : <Copy className="w-4 h-4" />}
               {copied ? 'Copied!' : 'Copy All'}
             </button>
           </div>
 
           {/* All hashtags copyable block */}
-          <div className="card cursor-pointer" onClick={() => { navigator.clipboard.writeText(result.all.join(' ')); setCopied(true); setTimeout(() => setCopied(false), 2000); }}>
-            <p className="text-violet-300 text-sm leading-loose">{result.all.join(' ')}</p>
+          <div
+            className="card cursor-pointer border-2 border-dashed border-stone-200 hover:border-violet-300 transition-colors"
+            onClick={() => { navigator.clipboard.writeText(result.all.join(' ')); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+          >
+            <p className="text-xs text-stone-400 mb-2">Click to copy all</p>
+            <p className="text-violet-700 text-sm leading-loose">{result.all.join(' ')}</p>
           </div>
 
           {/* Categories */}
           <div className="grid sm:grid-cols-3 gap-4">
-            {[
-              { label: 'Popular', tags: result.popular, color: 'blue' },
-              { label: 'Niche', tags: result.niche, color: 'violet' },
-              { label: 'Targeted', tags: result.branded, color: 'emerald' },
-            ].map(({ label, tags, color }) => (
+            {([
+              { label: 'Popular', tags: result.popular, headerClass: 'text-blue-700', tagClass: 'bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100' },
+              { label: 'Niche', tags: result.niche, headerClass: 'text-violet-600', tagClass: 'bg-violet-50 text-violet-700 border-violet-200 hover:bg-violet-100' },
+              { label: 'Targeted', tags: result.branded, headerClass: 'text-emerald-700', tagClass: 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100' },
+            ] as const).map(({ label, tags, headerClass, tagClass }) => (
               <div key={label} className="card">
-                <h3 className={`text-xs font-semibold text-${color}-400 uppercase tracking-wider mb-3`}>{label}</h3>
+                <h3 className={`text-xs font-semibold ${headerClass} uppercase tracking-wider mb-3`}>{label}</h3>
                 <div className="flex flex-wrap gap-1.5">
                   {tags.map((tag) => (
                     <span
                       key={tag}
                       onClick={() => { navigator.clipboard.writeText(tag); }}
-                      className={`text-xs px-2 py-1 rounded-md bg-${color}-500/10 text-${color}-300 border border-${color}-500/20 cursor-pointer hover:bg-${color}-500/20 transition-colors`}
+                      className={`text-xs px-2 py-1 rounded-md border cursor-pointer transition-colors ${tagClass}`}
                     >
                       {tag}
                     </span>

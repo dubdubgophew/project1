@@ -37,12 +37,12 @@ function PieChart({ segments }: { segments: PieSegment[] }) {
       <div className="flex-1 space-y-2 w-full">
         {paths.map((p, i) => (
           <div key={i} className="flex items-center justify-between gap-2 text-xs">
-            <span className="flex items-center gap-1.5 text-gray-400 min-w-0">
+            <span className="flex items-center gap-1.5 text-stone-500 min-w-0">
               <span className="w-2.5 h-2.5 rounded-sm flex-shrink-0" style={{ background: p.color }} />
               <span className="truncate">{p.label}</span>
             </span>
-            <span className="text-gray-300 font-medium whitespace-nowrap">
-              {fmtINR(p.value)} <span className="text-gray-500">({(p.pct * 100).toFixed(1)}%)</span>
+            <span className="text-stone-700 font-medium whitespace-nowrap">
+              {fmtINR(p.value)} <span className="text-stone-500">({(p.pct * 100).toFixed(1)}%)</span>
             </span>
           </div>
         ))}
@@ -319,13 +319,35 @@ export default function IncomeTaxCalculatorPage() {
         { name: 'Loan / EMI Calculator', href: '/tools/loan-calculator', icon: '🏦' },
         { name: 'Expense Splitter', href: '/tools/expense-splitter', icon: '💰' },
       ]}
+      faqs={[
+        {
+          q: 'Is this income tax calculator free to use?',
+          a: 'Yes, completely free. No sign-up, no download, and no hidden charges. You can calculate your income tax for FY 2025-26 as many times as you need.',
+        },
+        {
+          q: 'Which country\'s tax rules does this calculator follow?',
+          a: 'This calculator is built for India (FY 2025-26 / AY 2026-27). It uses the latest Union Budget 2025 slabs for both the New Regime (87A rebate up to ₹12L, standard deduction ₹75,000) and the Old Regime (standard deduction ₹50,000, HRA, 80C, 80D, NPS etc.).',
+        },
+        {
+          q: 'How do I use the income tax calculator?',
+          a: 'Enter your annual gross salary, select your age group and preferred tax regime. Optionally add other income sources like rental income, FD interest, or capital gains. For the Old Regime, fill in your deductions (80C, 80D, HRA exemption, home loan interest, NPS). The calculator instantly shows your total tax, slab-wise breakdown, effective tax rate, and which regime saves you more money.',
+        },
+        {
+          q: 'What does this calculator compute?',
+          a: 'It calculates total income tax payable (base slab tax + surcharge + 4% cess), compares New vs Old tax regime side by side, computes STCG (20%) and LTCG (12.5% above ₹1.25L) tax separately, shows advance tax schedule (Jun/Sep/Dec/Mar instalments), displays monthly TDS estimate, and highlights the 87A rebate if applicable.',
+        },
+        {
+          q: 'How accurate are the results? Should I use them for filing?',
+          a: 'The calculator uses official FY 2025-26 tax slabs and Budget 2025 rules and is very accurate for standard salary income. However, it is for estimation purposes only. For complex situations (multiple employers, foreign income, business income, property transactions) or for actual ITR filing, please consult a Chartered Accountant.',
+        },
+      ]}
     >
       <div className="space-y-6">
 
         {/* Country Selector */}
         <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-500 uppercase tracking-wider">Country</span>
-          <select className="text-sm bg-gray-800 border border-gray-700 rounded-lg px-3 py-1.5 text-white">
+          <span className="text-xs text-stone-500 uppercase tracking-wider">Country</span>
+          <select className="text-sm bg-white border border-stone-200 rounded-lg px-3 py-1.5 text-stone-900">
             <option value="IN">🇮🇳 India</option>
             <option disabled value="US">🇺🇸 USA (coming soon)</option>
             <option disabled value="UK">🇬🇧 UK (coming soon)</option>
@@ -335,23 +357,23 @@ export default function IncomeTaxCalculatorPage() {
         {/* Regime Toggle */}
         <div className="card space-y-4">
           <div className="flex items-center justify-between flex-wrap gap-3">
-            <h2 className="text-sm font-semibold text-white">Tax Regime</h2>
-            <div className="flex rounded-xl overflow-hidden border border-gray-700">
+            <h2 className="text-sm font-semibold text-stone-900">Tax Regime</h2>
+            <div className="flex rounded-xl overflow-hidden border border-stone-200">
               <button
                 onClick={() => setRegime('new')}
-                className={`px-5 py-2 text-sm font-medium transition-colors ${regime === 'new' ? 'bg-violet-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-gray-200'}`}
+                className={`px-5 py-2 text-sm font-medium transition-colors ${regime === 'new' ? 'bg-violet-600 text-white' : 'bg-stone-50 text-stone-500 hover:text-stone-800'}`}
               >
                 New Regime
               </button>
               <button
                 onClick={() => setRegime('old')}
-                className={`px-5 py-2 text-sm font-medium transition-colors ${regime === 'old' ? 'bg-violet-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-gray-200'}`}
+                className={`px-5 py-2 text-sm font-medium transition-colors ${regime === 'old' ? 'bg-violet-600 text-white' : 'bg-stone-50 text-stone-500 hover:text-stone-800'}`}
               >
                 Old Regime
               </button>
             </div>
           </div>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-stone-500">
             {regime === 'new'
               ? 'New Regime (Budget 2025): Standard deduction ₹75,000 • 87A rebate up to ₹12L • No HRA/80C exemptions allowed'
               : 'Old Regime: Standard deduction ₹50,000 • HRA + 80C (₹1.5L) + 80D + NPS + other deductions applicable'}
@@ -360,29 +382,29 @@ export default function IncomeTaxCalculatorPage() {
 
         {/* Age Group */}
         <div className="card space-y-3">
-          <h2 className="text-sm font-semibold text-white">Age Group</h2>
-          <div className="flex rounded-xl overflow-hidden border border-gray-700">
+          <h2 className="text-sm font-semibold text-stone-900">Age Group</h2>
+          <div className="flex rounded-xl overflow-hidden border border-stone-200">
             <button
               onClick={() => setAge('below60')}
-              className={`flex-1 py-2.5 text-xs sm:text-sm font-medium transition-colors ${age === 'below60' ? 'bg-violet-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-gray-200'}`}
+              className={`flex-1 py-2.5 text-xs sm:text-sm font-medium transition-colors ${age === 'below60' ? 'bg-violet-600 text-white' : 'bg-stone-50 text-stone-500 hover:text-stone-800'}`}
             >
               Below 60
             </button>
             <button
               onClick={() => setAge('60to80')}
-              className={`flex-1 py-2.5 text-xs sm:text-sm font-medium transition-colors ${age === '60to80' ? 'bg-violet-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-gray-200'}`}
+              className={`flex-1 py-2.5 text-xs sm:text-sm font-medium transition-colors ${age === '60to80' ? 'bg-violet-600 text-white' : 'bg-stone-50 text-stone-500 hover:text-stone-800'}`}
             >
               60–80 (Senior)
             </button>
             <button
               onClick={() => setAge('above80')}
-              className={`flex-1 py-2.5 text-xs sm:text-sm font-medium transition-colors ${age === 'above80' ? 'bg-violet-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-gray-200'}`}
+              className={`flex-1 py-2.5 text-xs sm:text-sm font-medium transition-colors ${age === 'above80' ? 'bg-violet-600 text-white' : 'bg-stone-50 text-stone-500 hover:text-stone-800'}`}
             >
               80+ (Super Senior)
             </button>
           </div>
           {age !== 'below60' && (
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-stone-500">
               {age === '60to80'
                 ? 'Senior citizen: basic exemption ₹3,00,000 (old regime) • 80TTB ₹50K instead of 80TTA'
                 : 'Super senior: basic exemption ₹5,00,000 (old regime) • 80TTB ₹50K instead of 80TTA'}
@@ -392,7 +414,7 @@ export default function IncomeTaxCalculatorPage() {
 
         {/* Income Details */}
         <div className="card space-y-4">
-          <h2 className="text-sm font-semibold text-white">Income Details</h2>
+          <h2 className="text-sm font-semibold text-stone-900">Income Details</h2>
 
           {/* Salary */}
           <div>
@@ -405,7 +427,7 @@ export default function IncomeTaxCalculatorPage() {
               value={grossSalary}
               onChange={e => setGrossSalary(e.target.value)}
             />
-            <p className="text-xs text-gray-500 mt-1">CTC / gross before deductions. Standard deduction applied automatically.</p>
+            <p className="text-xs text-stone-500 mt-1">CTC / gross before deductions. Standard deduction applied automatically.</p>
           </div>
 
           <div className="grid sm:grid-cols-2 gap-4">
@@ -420,7 +442,7 @@ export default function IncomeTaxCalculatorPage() {
                 value={rentalIncome}
                 onChange={e => setRentalIncome(e.target.value)}
               />
-              <p className="text-xs text-gray-500 mt-1">Added to total income and taxed at slab rates</p>
+              <p className="text-xs text-stone-500 mt-1">Added to total income and taxed at slab rates</p>
             </div>
 
             {/* FD / Savings Bank Interest */}
@@ -434,7 +456,7 @@ export default function IncomeTaxCalculatorPage() {
                 value={fdInterest}
                 onChange={e => setFdInterest(e.target.value)}
               />
-              <p className="text-xs text-gray-500 mt-1">Taxed at slab rates. Use 80TTA/80TTB deduction (old regime) to offset.</p>
+              <p className="text-xs text-stone-500 mt-1">Taxed at slab rates. Use 80TTA/80TTB deduction (old regime) to offset.</p>
             </div>
 
             {/* STCG */}
@@ -451,14 +473,14 @@ export default function IncomeTaxCalculatorPage() {
                 value={stcg}
                 onChange={e => setStcg(e.target.value)}
               />
-              <p className="text-xs text-gray-500 mt-1">Equity / MF held &lt; 1 yr. Taxed @ 20% (Budget 2024, effective 23 Jul 2024). Old regime: taxed at 30% slab.</p>
+              <p className="text-xs text-stone-500 mt-1">Equity / MF held &lt; 1 yr. Taxed @ 20% (Budget 2024, effective 23 Jul 2024). Old regime: taxed at 30% slab.</p>
             </div>
 
             {/* LTCG */}
             <div>
               <label className="label flex items-center gap-1.5">
                 Long-Term Capital Gains — LTCG on Equity (₹)
-                <span className="text-xs text-violet-400 bg-violet-500/10 px-1.5 py-0.5 rounded">12.5% above ₹1.25L</span>
+                <span className="text-xs text-violet-600 bg-violet-50 px-1.5 py-0.5 rounded">12.5% above ₹1.25L</span>
               </label>
               <input
                 className="input"
@@ -468,7 +490,7 @@ export default function IncomeTaxCalculatorPage() {
                 value={ltcg}
                 onChange={e => setLtcg(e.target.value)}
               />
-              <p className="text-xs text-gray-500 mt-1">Equity / equity MF held &gt; 1 yr. First ₹1,25,000 exempt. Balance @ 12.5% (Budget 2024).</p>
+              <p className="text-xs text-stone-500 mt-1">Equity / equity MF held &gt; 1 yr. First ₹1,25,000 exempt. Balance @ 12.5% (Budget 2024).</p>
             </div>
           </div>
 
@@ -476,7 +498,7 @@ export default function IncomeTaxCalculatorPage() {
           <div>
             <label className="label flex items-center gap-1.5">
               TDS Already Deducted (₹)
-              <span className="text-xs text-gray-500">by employer / bank</span>
+              <span className="text-xs text-stone-500">by employer / bank</span>
             </label>
             <input
               className="input"
@@ -486,16 +508,16 @@ export default function IncomeTaxCalculatorPage() {
               value={tdsDeducted}
               onChange={e => setTdsDeducted(e.target.value)}
             />
-            <p className="text-xs text-gray-500 mt-1">Deducted at source. Shows "Tax Still Payable" in results.</p>
+            <p className="text-xs text-stone-500 mt-1">Deducted at source. Shows "Tax Still Payable" in results.</p>
           </div>
         </div>
 
         {/* Deductions — Old Regime Only */}
         <div className={`card space-y-4 transition-opacity duration-200 ${oldRegimeDisabled ? 'opacity-40 pointer-events-none' : ''}`}>
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-white">Deductions (Old Regime)</h2>
+            <h2 className="text-sm font-semibold text-stone-900">Deductions (Old Regime)</h2>
             {oldRegimeDisabled && (
-              <span className="text-xs text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2 py-1 rounded-lg">
+              <span className="text-xs text-amber-700 bg-amber-400/10 border border-amber-400/20 px-2 py-1 rounded-lg">
                 Old Regime only
               </span>
             )}
@@ -506,7 +528,7 @@ export default function IncomeTaxCalculatorPage() {
             <div>
               <label className="label flex items-center gap-1.5">
                 Section 80C (₹)
-                <span className="text-xs text-gray-500">max ₹1,50,000</span>
+                <span className="text-xs text-stone-500">max ₹1,50,000</span>
               </label>
               <input
                 className="input"
@@ -517,14 +539,14 @@ export default function IncomeTaxCalculatorPage() {
                 value={ded80C}
                 onChange={e => setDed80C(e.target.value)}
               />
-              <p className="text-xs text-gray-500 mt-1">PPF, ELSS, LIC, EPF, NSC, etc.</p>
+              <p className="text-xs text-stone-500 mt-1">PPF, ELSS, LIC, EPF, NSC, etc.</p>
             </div>
 
             {/* 80D Self & Family */}
             <div>
               <label className="label flex items-center gap-1.5">
                 Section 80D — Self &amp; Family (₹)
-                <span className="text-xs text-gray-500">
+                <span className="text-xs text-stone-500">
                   max {age === '60to80' || age === 'above80' ? '₹50,000' : '₹25,000'}
                 </span>
               </label>
@@ -536,7 +558,7 @@ export default function IncomeTaxCalculatorPage() {
                 value={ded80DSelf}
                 onChange={e => setDed80DSelf(e.target.value)}
               />
-              <p className="text-xs text-gray-500 mt-1">Health insurance premium for self, spouse, children</p>
+              <p className="text-xs text-stone-500 mt-1">Health insurance premium for self, spouse, children</p>
             </div>
 
             {/* 80D Parents */}
@@ -544,7 +566,7 @@ export default function IncomeTaxCalculatorPage() {
               <div className="flex items-center justify-between mb-1">
                 <label className="label flex items-center gap-1.5">
                   Section 80D — Parents (₹)
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-stone-500">
                     max {parentsAge === 'senior' ? '₹50,000' : '₹25,000'}
                   </span>
                 </label>
@@ -560,18 +582,18 @@ export default function IncomeTaxCalculatorPage() {
               <div className="flex gap-2">
                 <button
                   onClick={() => setParentsAge('below60')}
-                  className={`flex-1 py-1.5 text-xs rounded-lg border transition-colors ${parentsAge === 'below60' ? 'bg-violet-600/20 border-violet-500/40 text-violet-300' : 'border-gray-700 bg-gray-800 text-gray-400 hover:text-gray-300'}`}
+                  className={`flex-1 py-1.5 text-xs rounded-lg border transition-colors ${parentsAge === 'below60' ? 'bg-violet-600/20 border-violet-500/40 text-violet-700' : 'border-stone-200 bg-stone-50 text-stone-500 hover:text-stone-700'}`}
                 >
                   Parents Below 60
                 </button>
                 <button
                   onClick={() => setParentsAge('senior')}
-                  className={`flex-1 py-1.5 text-xs rounded-lg border transition-colors ${parentsAge === 'senior' ? 'bg-violet-600/20 border-violet-500/40 text-violet-300' : 'border-gray-700 bg-gray-800 text-gray-400 hover:text-gray-300'}`}
+                  className={`flex-1 py-1.5 text-xs rounded-lg border transition-colors ${parentsAge === 'senior' ? 'bg-violet-600/20 border-violet-500/40 text-violet-700' : 'border-stone-200 bg-stone-50 text-stone-500 hover:text-stone-700'}`}
                 >
                   Parents Senior (60+)
                 </button>
               </div>
-              <p className="text-xs text-gray-500 mt-1">Total 80D (self + parents) can be up to ₹1,00,000</p>
+              <p className="text-xs text-stone-500 mt-1">Total 80D (self + parents) can be up to ₹1,00,000</p>
             </div>
 
             {/* HRA */}
@@ -585,14 +607,14 @@ export default function IncomeTaxCalculatorPage() {
                 value={hraExemption}
                 onChange={e => setHraExemption(e.target.value)}
               />
-              <p className="text-xs text-gray-500 mt-1">Use Hand Salary Calculator to compute HRA exemption</p>
+              <p className="text-xs text-stone-500 mt-1">Use Hand Salary Calculator to compute HRA exemption</p>
             </div>
 
             {/* Home Loan 24b */}
             <div>
               <label className="label flex items-center gap-1.5">
                 Home Loan Interest — Section 24b (₹)
-                <span className="text-xs text-gray-500">max ₹2,00,000</span>
+                <span className="text-xs text-stone-500">max ₹2,00,000</span>
               </label>
               <input
                 className="input"
@@ -609,7 +631,7 @@ export default function IncomeTaxCalculatorPage() {
             <div>
               <label className="label flex items-center gap-1.5">
                 NPS — Section 80CCD(1B) (₹)
-                <span className="text-xs text-gray-500">max ₹50,000</span>
+                <span className="text-xs text-stone-500">max ₹50,000</span>
               </label>
               <input
                 className="input"
@@ -626,7 +648,7 @@ export default function IncomeTaxCalculatorPage() {
             <div>
               <label className="label flex items-center gap-1.5">
                 {result?.ttaLabel ?? (age === 'below60' ? '80TTA – Savings Bank Interest' : '80TTB – FD + Savings Interest')} (₹)
-                <span className="text-xs text-gray-500">
+                <span className="text-xs text-stone-500">
                   max {age === 'below60' ? '₹10,000' : '₹50,000'}
                 </span>
               </label>
@@ -638,7 +660,7 @@ export default function IncomeTaxCalculatorPage() {
                 value={ded80TTA}
                 onChange={e => setDed80TTA(e.target.value)}
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-stone-500 mt-1">
                 {age === 'below60'
                   ? '80TTA: deduction on savings account interest only (max ₹10K)'
                   : '80TTB: deduction for seniors on FD + savings bank interest (max ₹50K)'}
@@ -656,7 +678,7 @@ export default function IncomeTaxCalculatorPage() {
                 value={otherDed}
                 onChange={e => setOtherDed(e.target.value)}
               />
-              <p className="text-xs text-gray-500 mt-1">80G donations, 80E education loan interest, etc.</p>
+              <p className="text-xs text-stone-500 mt-1">80G donations, 80E education loan interest, etc.</p>
             </div>
           </div>
         </div>
@@ -667,8 +689,8 @@ export default function IncomeTaxCalculatorPage() {
             {/* Income Breakup Bar */}
             {(result.rental > 0 || result.fdInt > 0 || result.stcgAmt > 0 || result.ltcgAmt > 0) && (
               <div className="card space-y-3">
-                <h3 className="text-sm font-semibold text-white">Income Composition</h3>
-                <div className="flex rounded-full overflow-hidden h-4 bg-gray-800">
+                <h3 className="text-sm font-semibold text-stone-900">Income Composition</h3>
+                <div className="flex rounded-full overflow-hidden h-4 bg-stone-50">
                   {result.salaryPct > 0 && (
                     <div
                       className="bg-violet-500 h-full transition-all duration-500"
@@ -688,7 +710,7 @@ export default function IncomeTaxCalculatorPage() {
                     />
                   )}
                 </div>
-                <div className="flex flex-wrap gap-4 text-xs text-gray-400">
+                <div className="flex flex-wrap gap-4 text-xs text-stone-500">
                   <span className="flex items-center gap-1.5">
                     <span className="w-2.5 h-2.5 rounded-full bg-violet-500 inline-block" />
                     Salary {fmtINR(result.gross)} ({result.salaryPct.toFixed(0)}%)
@@ -710,14 +732,14 @@ export default function IncomeTaxCalculatorPage() {
             )}
 
             {/* Better Regime Banner */}
-            <div className={`card border ${result.betterRegime === 'new' ? 'border-emerald-500/30 bg-emerald-500/5' : 'border-amber-500/30 bg-amber-500/5'}`}>
+            <div className={`card border ${result.betterRegime === 'new' ? 'border-emerald-500/30 bg-emerald-50/80' : 'border-amber-500/30 bg-amber-500/5'}`}>
               <div className="flex items-center justify-between flex-wrap gap-3">
                 <div>
-                  <p className="text-base font-semibold text-white">
+                  <p className="text-base font-semibold text-stone-900">
                     {result.betterRegime === 'new' ? '✓ New Regime is better for you' : '✓ Old Regime is better for you'}
                   </p>
-                  <p className="text-sm text-gray-400 mt-0.5">
-                    Save <span className="text-emerald-400 font-semibold">{fmtINR(result.savings)}/year</span> by choosing the{' '}
+                  <p className="text-sm text-stone-500 mt-0.5">
+                    Save <span className="text-emerald-700 font-semibold">{fmtINR(result.savings)}/year</span> by choosing the{' '}
                     {result.betterRegime === 'new' ? 'New' : 'Old'} Regime
                   </p>
                 </div>
@@ -732,76 +754,76 @@ export default function IncomeTaxCalculatorPage() {
               {/* New Regime Card */}
               <div className={`card space-y-3 ${regime === 'new' ? 'border-violet-500/30 bg-violet-500/5' : ''}`}>
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-semibold text-white">New Regime</h3>
+                  <h3 className="text-sm font-semibold text-stone-900">New Regime</h3>
                   {result.betterRegime === 'new' && (
-                    <span className="text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full">Better</span>
+                    <span className="text-xs bg-emerald-500/20 text-emerald-700 border border-emerald-500/30 px-2 py-0.5 rounded-full">Better</span>
                   )}
                 </div>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Total Income</span>
-                    <span className="text-gray-200">{fmtINR(result.totalIncomeDisplay)}</span>
+                    <span className="text-stone-500">Total Income</span>
+                    <span className="text-stone-800">{fmtINR(result.totalIncomeDisplay)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Standard Deduction</span>
-                    <span className="text-gray-200">−{fmtINR(result.stdDedNew)}</span>
+                    <span className="text-stone-500">Standard Deduction</span>
+                    <span className="text-stone-800">−{fmtINR(result.stdDedNew)}</span>
                   </div>
-                  <div className="flex justify-between font-medium border-t border-gray-700 pt-2">
-                    <span className="text-gray-300">Taxable (Regular)</span>
-                    <span className="text-white">{fmtINR(result.taxableNew)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Base Tax (slabs)</span>
-                    <span className="text-amber-400">{fmtINR(result.baseTaxNew)}</span>
+                  <div className="flex justify-between font-medium border-t border-stone-200 pt-2">
+                    <span className="text-stone-700">Taxable (Regular)</span>
+                    <span className="text-stone-900">{fmtINR(result.taxableNew)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Surcharge</span>
-                    <span className="text-gray-300">{fmtINR(result.surchargeNew)}</span>
+                    <span className="text-stone-500">Base Tax (slabs)</span>
+                    <span className="text-amber-700">{fmtINR(result.baseTaxNew)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Cess (4%)</span>
-                    <span className="text-gray-300">{fmtINR(result.cessNew)}</span>
+                    <span className="text-stone-500">Surcharge</span>
+                    <span className="text-stone-700">{fmtINR(result.surchargeNew)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-stone-500">Cess (4%)</span>
+                    <span className="text-stone-700">{fmtINR(result.cessNew)}</span>
                   </div>
                   {result.stcgAmt > 0 && (
                     <div className="flex justify-between">
-                      <span className="text-gray-400">STCG Tax (20%)</span>
+                      <span className="text-stone-500">STCG Tax (20%)</span>
                       <span className="text-orange-400">{fmtINR(result.stcgTax * 1.04)}</span>
                     </div>
                   )}
                   {result.ltcgAmt > 0 && (
                     <div className="flex justify-between">
-                      <span className="text-gray-400">LTCG Tax (12.5%)</span>
+                      <span className="text-stone-500">LTCG Tax (12.5%)</span>
                       <span className="text-orange-400">{fmtINR(result.ltcgTax * 1.04)}</span>
                     </div>
                   )}
-                  <div className="flex justify-between font-semibold border-t border-gray-700 pt-2">
-                    <span className="text-white">Total Tax Payable</span>
-                    <span className="text-amber-400 text-base">{fmtINR(result.totalTaxNew)}</span>
+                  <div className="flex justify-between font-semibold border-t border-stone-200 pt-2">
+                    <span className="text-stone-900">Total Tax Payable</span>
+                    <span className="text-amber-700 text-base">{fmtINR(result.totalTaxNew)}</span>
                   </div>
                   {result.tds > 0 && (
                     <>
                       <div className="flex justify-between">
-                        <span className="text-gray-400">TDS Deducted</span>
-                        <span className="text-emerald-400">−{fmtINR(result.tds)}</span>
+                        <span className="text-stone-500">TDS Deducted</span>
+                        <span className="text-emerald-700">−{fmtINR(result.tds)}</span>
                       </div>
                       <div className="flex justify-between font-semibold">
-                        <span className="text-gray-200">Tax Still Payable</span>
-                        <span className={result.netTaxNew <= 0 ? 'text-emerald-400' : 'text-red-400'}>
+                        <span className="text-stone-800">Tax Still Payable</span>
+                        <span className={result.netTaxNew <= 0 ? 'text-emerald-700' : 'text-red-600'}>
                           {result.netTaxNew <= 0 ? 'Refund: ' + fmtINR(-result.netTaxNew) : fmtINR(result.netTaxNew)}
                         </span>
                       </div>
                     </>
                   )}
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Monthly TDS</span>
-                    <span className="text-gray-200">{fmtINR(result.monthlyTDSNew)}</span>
+                    <span className="text-stone-500">Monthly TDS</span>
+                    <span className="text-stone-800">{fmtINR(result.monthlyTDSNew)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Effective Rate</span>
-                    <span className="text-gray-200">{fmtPct(result.effRateNew)}</span>
+                    <span className="text-stone-500">Effective Rate</span>
+                    <span className="text-stone-800">{fmtPct(result.effRateNew)}</span>
                   </div>
                   {result.isNew87A && (
-                    <p className="text-xs text-emerald-400 bg-emerald-500/10 rounded-lg px-2 py-1.5">
+                    <p className="text-xs text-emerald-700 bg-emerald-500/10 rounded-lg px-2 py-1.5">
                       87A rebate: zero slab tax (income ≤ ₹12L)
                     </p>
                   )}
@@ -811,76 +833,76 @@ export default function IncomeTaxCalculatorPage() {
               {/* Old Regime Card */}
               <div className={`card space-y-3 ${regime === 'old' ? 'border-violet-500/30 bg-violet-500/5' : ''}`}>
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-semibold text-white">Old Regime</h3>
+                  <h3 className="text-sm font-semibold text-stone-900">Old Regime</h3>
                   {result.betterRegime === 'old' && (
-                    <span className="text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full">Better</span>
+                    <span className="text-xs bg-emerald-500/20 text-emerald-700 border border-emerald-500/30 px-2 py-0.5 rounded-full">Better</span>
                   )}
                 </div>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Total Income</span>
-                    <span className="text-gray-200">{fmtINR(result.totalIncomeDisplay)}</span>
+                    <span className="text-stone-500">Total Income</span>
+                    <span className="text-stone-800">{fmtINR(result.totalIncomeDisplay)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Total Deductions</span>
-                    <span className="text-gray-200">−{fmtINR(result.totalDedOld)}</span>
+                    <span className="text-stone-500">Total Deductions</span>
+                    <span className="text-stone-800">−{fmtINR(result.totalDedOld)}</span>
                   </div>
-                  <div className="flex justify-between font-medium border-t border-gray-700 pt-2">
-                    <span className="text-gray-300">Taxable (Regular)</span>
-                    <span className="text-white">{fmtINR(result.taxableOldRegular)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Base Tax (slabs)</span>
-                    <span className="text-amber-400">{fmtINR(result.baseTaxOldNoSTCG)}</span>
+                  <div className="flex justify-between font-medium border-t border-stone-200 pt-2">
+                    <span className="text-stone-700">Taxable (Regular)</span>
+                    <span className="text-stone-900">{fmtINR(result.taxableOldRegular)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Surcharge</span>
-                    <span className="text-gray-300">{fmtINR(result.surchargeOld)}</span>
+                    <span className="text-stone-500">Base Tax (slabs)</span>
+                    <span className="text-amber-700">{fmtINR(result.baseTaxOldNoSTCG)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Cess (4%)</span>
-                    <span className="text-gray-300">{fmtINR(result.cessOld)}</span>
+                    <span className="text-stone-500">Surcharge</span>
+                    <span className="text-stone-700">{fmtINR(result.surchargeOld)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-stone-500">Cess (4%)</span>
+                    <span className="text-stone-700">{fmtINR(result.cessOld)}</span>
                   </div>
                   {result.stcgAmt > 0 && (
                     <div className="flex justify-between">
-                      <span className="text-gray-400">STCG Tax (30% slab)</span>
+                      <span className="text-stone-500">STCG Tax (30% slab)</span>
                       <span className="text-orange-400">{fmtINR(result.stcgTaxOld * 1.04)}</span>
                     </div>
                   )}
                   {result.ltcgAmt > 0 && (
                     <div className="flex justify-between">
-                      <span className="text-gray-400">LTCG Tax (12.5%)</span>
+                      <span className="text-stone-500">LTCG Tax (12.5%)</span>
                       <span className="text-orange-400">{fmtINR(result.ltcgTax * 1.04)}</span>
                     </div>
                   )}
-                  <div className="flex justify-between font-semibold border-t border-gray-700 pt-2">
-                    <span className="text-white">Total Tax Payable</span>
-                    <span className="text-amber-400 text-base">{fmtINR(result.totalTaxOld)}</span>
+                  <div className="flex justify-between font-semibold border-t border-stone-200 pt-2">
+                    <span className="text-stone-900">Total Tax Payable</span>
+                    <span className="text-amber-700 text-base">{fmtINR(result.totalTaxOld)}</span>
                   </div>
                   {result.tds > 0 && (
                     <>
                       <div className="flex justify-between">
-                        <span className="text-gray-400">TDS Deducted</span>
-                        <span className="text-emerald-400">−{fmtINR(result.tds)}</span>
+                        <span className="text-stone-500">TDS Deducted</span>
+                        <span className="text-emerald-700">−{fmtINR(result.tds)}</span>
                       </div>
                       <div className="flex justify-between font-semibold">
-                        <span className="text-gray-200">Tax Still Payable</span>
-                        <span className={result.netTaxOld <= 0 ? 'text-emerald-400' : 'text-red-400'}>
+                        <span className="text-stone-800">Tax Still Payable</span>
+                        <span className={result.netTaxOld <= 0 ? 'text-emerald-700' : 'text-red-600'}>
                           {result.netTaxOld <= 0 ? 'Refund: ' + fmtINR(-result.netTaxOld) : fmtINR(result.netTaxOld)}
                         </span>
                       </div>
                     </>
                   )}
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Monthly TDS</span>
-                    <span className="text-gray-200">{fmtINR(result.monthlyTDSOld)}</span>
+                    <span className="text-stone-500">Monthly TDS</span>
+                    <span className="text-stone-800">{fmtINR(result.monthlyTDSOld)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Effective Rate</span>
-                    <span className="text-gray-200">{fmtPct(result.effRateOld)}</span>
+                    <span className="text-stone-500">Effective Rate</span>
+                    <span className="text-stone-800">{fmtPct(result.effRateOld)}</span>
                   </div>
                   {result.isOld87A && (
-                    <p className="text-xs text-emerald-400 bg-emerald-500/10 rounded-lg px-2 py-1.5">
+                    <p className="text-xs text-emerald-700 bg-emerald-500/10 rounded-lg px-2 py-1.5">
                       87A rebate: zero slab tax (income ≤ ₹5L)
                     </p>
                   )}
@@ -890,7 +912,7 @@ export default function IncomeTaxCalculatorPage() {
 
             {/* Income vs Tax breakdown donut */}
             <div className="card">
-              <h3 className="text-sm font-semibold text-white mb-4">
+              <h3 className="text-sm font-semibold text-stone-900 mb-4">
                 Income Breakdown — {regime === 'new' ? 'New' : 'Old'} Regime
               </h3>
               <PieChart segments={[
@@ -906,48 +928,48 @@ export default function IncomeTaxCalculatorPage() {
             {/* Capital Gains Detail */}
             {(result.stcgAmt > 0 || result.ltcgAmt > 0) && (
               <div className="card space-y-3">
-                <h3 className="text-sm font-semibold text-white">Capital Gains Tax Detail</h3>
+                <h3 className="text-sm font-semibold text-stone-900">Capital Gains Tax Detail</h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-gray-700">
-                        <th className="text-left py-2 px-3 text-gray-400 font-medium">Type</th>
-                        <th className="text-right py-2 px-3 text-gray-400 font-medium">Gains</th>
-                        <th className="text-right py-2 px-3 text-gray-400 font-medium">Taxable</th>
-                        <th className="text-right py-2 px-3 text-gray-400 font-medium">Rate</th>
-                        <th className="text-right py-2 px-3 text-gray-400 font-medium">Tax (incl. cess)</th>
+                      <tr className="border-b border-stone-200">
+                        <th className="text-left py-2 px-3 text-stone-500 font-medium">Type</th>
+                        <th className="text-right py-2 px-3 text-stone-500 font-medium">Gains</th>
+                        <th className="text-right py-2 px-3 text-stone-500 font-medium">Taxable</th>
+                        <th className="text-right py-2 px-3 text-stone-500 font-medium">Rate</th>
+                        <th className="text-right py-2 px-3 text-stone-500 font-medium">Tax (incl. cess)</th>
                       </tr>
                     </thead>
                     <tbody>
                       {result.stcgAmt > 0 && (
-                        <tr className="border-b border-gray-800">
-                          <td className="py-2 px-3 text-gray-300">STCG (equity/MF)</td>
-                          <td className="py-2 px-3 text-right text-gray-300">{fmtINR(result.stcgAmt)}</td>
-                          <td className="py-2 px-3 text-right text-gray-300">{fmtINR(result.stcgAmt)}</td>
-                          <td className="py-2 px-3 text-right text-gray-400">20%*</td>
+                        <tr className="border-b border-stone-200">
+                          <td className="py-2 px-3 text-stone-700">STCG (equity/MF)</td>
+                          <td className="py-2 px-3 text-right text-stone-700">{fmtINR(result.stcgAmt)}</td>
+                          <td className="py-2 px-3 text-right text-stone-700">{fmtINR(result.stcgAmt)}</td>
+                          <td className="py-2 px-3 text-right text-stone-500">20%*</td>
                           <td className="py-2 px-3 text-right text-orange-400">{fmtINR(result.stcgTax * 1.04)}</td>
                         </tr>
                       )}
                       {result.ltcgAmt > 0 && (
-                        <tr className="border-b border-gray-800">
-                          <td className="py-2 px-3 text-gray-300">LTCG (equity/MF)</td>
-                          <td className="py-2 px-3 text-right text-gray-300">{fmtINR(result.ltcgAmt)}</td>
-                          <td className="py-2 px-3 text-right text-gray-300">{fmtINR(result.ltcgTaxable)}</td>
-                          <td className="py-2 px-3 text-right text-gray-400">12.5%</td>
+                        <tr className="border-b border-stone-200">
+                          <td className="py-2 px-3 text-stone-700">LTCG (equity/MF)</td>
+                          <td className="py-2 px-3 text-right text-stone-700">{fmtINR(result.ltcgAmt)}</td>
+                          <td className="py-2 px-3 text-right text-stone-700">{fmtINR(result.ltcgTaxable)}</td>
+                          <td className="py-2 px-3 text-right text-stone-500">12.5%</td>
                           <td className="py-2 px-3 text-right text-orange-400">{fmtINR(result.ltcgTax * 1.04)}</td>
                         </tr>
                       )}
                     </tbody>
                     <tfoot>
-                      <tr className="bg-gray-800/30">
-                        <td colSpan={4} className="py-2 px-3 text-gray-400">Total Capital Gains Tax</td>
+                      <tr className="bg-stone-50/30">
+                        <td colSpan={4} className="py-2 px-3 text-stone-500">Total Capital Gains Tax</td>
                         <td className="py-2 px-3 text-right text-orange-400 font-semibold">
                           {fmtINR((result.stcgTax + result.ltcgTax) * 1.04)}
                         </td>
                       </tr>
                     </tfoot>
                   </table>
-                  <p className="text-xs text-gray-500 mt-2">
+                  <p className="text-xs text-stone-500 mt-2">
                     * STCG rate shown for new regime. Under old regime, STCG is taxed at 30% slab rate. LTCG: first ₹1,25,000 is exempt (shown in Taxable column). No surcharge on LTCG from listed equity.
                   </p>
                 </div>
@@ -957,7 +979,7 @@ export default function IncomeTaxCalculatorPage() {
             {/* Old Regime Deductions Breakdown */}
             {regime === 'old' && (
               <div className="card space-y-3">
-                <h3 className="text-sm font-semibold text-white">Deductions Breakdown (Old Regime)</h3>
+                <h3 className="text-sm font-semibold text-stone-900">Deductions Breakdown (Old Regime)</h3>
                 <div className="space-y-1.5 text-sm">
                   {[
                     ['Standard Deduction', result.stdDedOld],
@@ -971,13 +993,13 @@ export default function IncomeTaxCalculatorPage() {
                     ['Other Deductions', result.cOther],
                   ].filter(([, v]) => (v as number) > 0).map(([label, val]) => (
                     <div key={label as string} className="flex justify-between">
-                      <span className="text-gray-400">{label as string}</span>
-                      <span className="text-emerald-400">−{fmtINR(val as number)}</span>
+                      <span className="text-stone-500">{label as string}</span>
+                      <span className="text-emerald-700">−{fmtINR(val as number)}</span>
                     </div>
                   ))}
-                  <div className="flex justify-between font-semibold border-t border-gray-700 pt-2">
-                    <span className="text-gray-300">Total Deductions</span>
-                    <span className="text-emerald-400">−{fmtINR(result.totalDedOld)}</span>
+                  <div className="flex justify-between font-semibold border-t border-stone-200 pt-2">
+                    <span className="text-stone-700">Total Deductions</span>
+                    <span className="text-emerald-700">−{fmtINR(result.totalDedOld)}</span>
                   </div>
                 </div>
               </div>
@@ -985,61 +1007,61 @@ export default function IncomeTaxCalculatorPage() {
 
             {/* Slab-wise Tax Breakdown */}
             <div className="card">
-              <h3 className="text-sm font-semibold text-white mb-4">
+              <h3 className="text-sm font-semibold text-stone-900 mb-4">
                 Slab-wise Tax Breakdown — {regime === 'new' ? 'New' : 'Old'} Regime
               </h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-gray-700">
-                      <th className="text-left py-2 px-3 text-gray-400 font-medium">Income Slab</th>
-                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Rate</th>
-                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Tax on Slab</th>
+                    <tr className="border-b border-stone-200">
+                      <th className="text-left py-2 px-3 text-stone-500 font-medium">Income Slab</th>
+                      <th className="text-right py-2 px-3 text-stone-500 font-medium">Rate</th>
+                      <th className="text-right py-2 px-3 text-stone-500 font-medium">Tax on Slab</th>
                     </tr>
                   </thead>
                   <tbody>
                     {(regime === 'new' ? result.slabsNew : result.slabsOld).map((row, i) => (
-                      <tr key={i} className="border-b border-gray-800 hover:bg-gray-800/30">
-                        <td className="py-2 px-3 text-gray-300">
+                      <tr key={i} className="border-b border-stone-200 hover:bg-stone-50/30">
+                        <td className="py-2 px-3 text-stone-700">
                           {fmtINR(row.from)} – {row.to === Infinity ? 'Above' : fmtINR(row.to)}
                         </td>
-                        <td className="py-2 px-3 text-right text-gray-400">{(row.rate * 100).toFixed(0)}%</td>
-                        <td className="py-2 px-3 text-right text-amber-400">{fmtINR(row.taxOnSlab)}</td>
+                        <td className="py-2 px-3 text-right text-stone-500">{(row.rate * 100).toFixed(0)}%</td>
+                        <td className="py-2 px-3 text-right text-amber-700">{fmtINR(row.taxOnSlab)}</td>
                       </tr>
                     ))}
                     {(regime === 'new' ? result.slabsNew : result.slabsOld).length === 0 && (
                       <tr>
-                        <td colSpan={3} className="py-4 text-center text-gray-500 text-sm">
+                        <td colSpan={3} className="py-4 text-center text-stone-500 text-sm">
                           No slab tax — income below exemption or 87A rebate applied
                         </td>
                       </tr>
                     )}
                   </tbody>
                   <tfoot>
-                    <tr className="border-t border-gray-700 bg-gray-800/30">
-                      <td className="py-2.5 px-3 text-gray-300 font-medium">Base Tax Subtotal</td>
+                    <tr className="border-t border-stone-200 bg-stone-50/30">
+                      <td className="py-2.5 px-3 text-stone-700 font-medium">Base Tax Subtotal</td>
                       <td />
-                      <td className="py-2.5 px-3 text-right text-amber-400 font-semibold">
+                      <td className="py-2.5 px-3 text-right text-amber-700 font-semibold">
                         {fmtINR(regime === 'new' ? result.baseTaxNew : result.baseTaxOldNoSTCG)}
                       </td>
                     </tr>
-                    <tr className="bg-gray-800/30">
-                      <td className="py-2 px-3 text-gray-400">+ Surcharge</td>
+                    <tr className="bg-stone-50/30">
+                      <td className="py-2 px-3 text-stone-500">+ Surcharge</td>
                       <td />
-                      <td className="py-2 px-3 text-right text-gray-300">
+                      <td className="py-2 px-3 text-right text-stone-700">
                         {fmtINR(regime === 'new' ? result.surchargeNew : result.surchargeOld)}
                       </td>
                     </tr>
-                    <tr className="bg-gray-800/30">
-                      <td className="py-2 px-3 text-gray-400">+ Health & Education Cess (4%)</td>
+                    <tr className="bg-stone-50/30">
+                      <td className="py-2 px-3 text-stone-500">+ Health & Education Cess (4%)</td>
                       <td />
-                      <td className="py-2 px-3 text-right text-gray-300">
+                      <td className="py-2 px-3 text-right text-stone-700">
                         {fmtINR(regime === 'new' ? result.cessNew : result.cessOld)}
                       </td>
                     </tr>
                     {(result.stcgAmt > 0 || result.ltcgAmt > 0) && (
-                      <tr className="bg-gray-800/30">
-                        <td className="py-2 px-3 text-gray-400">+ Capital Gains Tax (incl. cess)</td>
+                      <tr className="bg-stone-50/30">
+                        <td className="py-2 px-3 text-stone-500">+ Capital Gains Tax (incl. cess)</td>
                         <td />
                         <td className="py-2 px-3 text-right text-orange-400">
                           {fmtINR(regime === 'new' ? result.capitalGainsTaxNew : result.capitalGainsTaxOld)}
@@ -1047,18 +1069,18 @@ export default function IncomeTaxCalculatorPage() {
                       </tr>
                     )}
                     <tr className="bg-violet-600/10">
-                      <td className="py-3 px-3 text-violet-300 font-bold">Total Tax Payable</td>
+                      <td className="py-3 px-3 text-violet-700 font-bold">Total Tax Payable</td>
                       <td />
-                      <td className="py-3 px-3 text-right text-violet-300 font-bold text-base">
+                      <td className="py-3 px-3 text-right text-violet-700 font-bold text-base">
                         {fmtINR(regime === 'new' ? result.totalTaxNew : result.totalTaxOld)}
                       </td>
                     </tr>
                     {result.tds > 0 && (
                       <tr className="bg-emerald-900/10">
-                        <td className="py-2 px-3 text-emerald-400 font-medium">Tax Still Payable (after TDS)</td>
+                        <td className="py-2 px-3 text-emerald-700 font-medium">Tax Still Payable (after TDS)</td>
                         <td />
                         <td className="py-2 px-3 text-right font-semibold">
-                          <span className={(regime === 'new' ? result.netTaxNew : result.netTaxOld) <= 0 ? 'text-emerald-400' : 'text-red-400'}>
+                          <span className={(regime === 'new' ? result.netTaxNew : result.netTaxOld) <= 0 ? 'text-emerald-700' : 'text-red-600'}>
                             {(() => {
                               const net = regime === 'new' ? result.netTaxNew : result.netTaxOld;
                               return net <= 0 ? 'Refund: ' + fmtINR(-net) : fmtINR(net);
@@ -1076,12 +1098,12 @@ export default function IncomeTaxCalculatorPage() {
             {result.advanceTax && (
               <div className="card space-y-3">
                 <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-semibold text-white">Advance Tax Schedule</h3>
+                  <h3 className="text-sm font-semibold text-stone-900">Advance Tax Schedule</h3>
                   <span className="text-xs text-sky-400 bg-sky-500/10 border border-sky-500/20 px-2 py-0.5 rounded-full">
                     Tax &gt; ₹10,000
                   </span>
                 </div>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-stone-500">
                   Advance tax is required if total tax liability exceeds ₹10,000. Amounts below are cumulative instalments based on {fmtINR(result.selectedTax)} payable.
                 </p>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -1092,13 +1114,13 @@ export default function IncomeTaxCalculatorPage() {
                     { date: 'By 15 Mar', pct: '100%', amt: result.advanceTax.mar15, color: 'emerald' },
                   ].map(({ date, pct, amt, color }) => (
                     <div key={date} className={`rounded-xl p-3 bg-${color}-500/5 border border-${color}-500/20 text-center`}>
-                      <p className="text-xs text-gray-500 mb-0.5">{date}</p>
+                      <p className="text-xs text-stone-500 mb-0.5">{date}</p>
                       <p className={`text-base font-bold text-${color}-400`}>{fmtINR(amt)}</p>
-                      <p className="text-xs text-gray-500 mt-0.5">({pct} cumulative)</p>
+                      <p className="text-xs text-stone-500 mt-0.5">({pct} cumulative)</p>
                     </div>
                   ))}
                 </div>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-stone-500">
                   Each instalment is cumulative (not incremental). E.g., by Sep 15 you should have paid 45% of total tax in all.
                 </p>
               </div>
@@ -1106,10 +1128,10 @@ export default function IncomeTaxCalculatorPage() {
 
             {/* Tax Slabs Reference */}
             <div className="card">
-              <h3 className="text-sm font-semibold text-white mb-4">FY 2025-26 Tax Slabs Reference</h3>
+              <h3 className="text-sm font-semibold text-stone-900 mb-4">FY 2025-26 Tax Slabs Reference</h3>
               <div className="grid sm:grid-cols-2 gap-6">
                 <div>
-                  <p className="text-xs text-gray-400 font-medium mb-2 uppercase tracking-wider">New Regime (Budget 2025)</p>
+                  <p className="text-xs text-stone-500 font-medium mb-2 uppercase tracking-wider">New Regime (Budget 2025)</p>
                   <table className="w-full text-xs">
                     <tbody className="divide-y divide-gray-800">
                       {[
@@ -1122,16 +1144,16 @@ export default function IncomeTaxCalculatorPage() {
                         ['Above ₹24,00,000', '30%'],
                       ].map(([slab, rate]) => (
                         <tr key={slab}>
-                          <td className="py-1.5 text-gray-400">{slab}</td>
-                          <td className="py-1.5 text-right text-violet-400 font-medium">{rate}</td>
+                          <td className="py-1.5 text-stone-500">{slab}</td>
+                          <td className="py-1.5 text-right text-violet-600 font-medium">{rate}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
-                  <p className="text-xs text-gray-500 mt-2">87A rebate: zero tax if taxable income ≤ ₹12L</p>
+                  <p className="text-xs text-stone-500 mt-2">87A rebate: zero tax if taxable income ≤ ₹12L</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400 font-medium mb-2 uppercase tracking-wider">Old Regime</p>
+                  <p className="text-xs text-stone-500 font-medium mb-2 uppercase tracking-wider">Old Regime</p>
                   <table className="w-full text-xs">
                     <tbody className="divide-y divide-gray-800">
                       {[
@@ -1141,27 +1163,27 @@ export default function IncomeTaxCalculatorPage() {
                         ['Above ₹10,00,000', '30%'],
                       ].map(([slab, rate]) => (
                         <tr key={slab}>
-                          <td className="py-1.5 text-gray-400">{slab}</td>
-                          <td className="py-1.5 text-right text-amber-400 font-medium">{rate}</td>
+                          <td className="py-1.5 text-stone-500">{slab}</td>
+                          <td className="py-1.5 text-right text-amber-700 font-medium">{rate}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
-                  <p className="text-xs text-gray-500 mt-2">
+                  <p className="text-xs text-stone-500 mt-2">
                     Senior (60+): ₹3L exempt • Super senior (80+): ₹5L exempt<br />
                     87A rebate: zero tax if taxable income ≤ ₹5L (below 60 only)
                   </p>
                   <div className="mt-4 space-y-1">
-                    <p className="text-xs text-gray-400 font-medium uppercase tracking-wider mb-1">Capital Gains (all regimes)</p>
+                    <p className="text-xs text-stone-500 font-medium uppercase tracking-wider mb-1">Capital Gains (all regimes)</p>
                     <div className="flex justify-between text-xs">
-                      <span className="text-gray-400">STCG equity/MF (held &lt; 1yr)</span>
+                      <span className="text-stone-500">STCG equity/MF (held &lt; 1yr)</span>
                       <span className="text-orange-400 font-medium">20%</span>
                     </div>
                     <div className="flex justify-between text-xs">
-                      <span className="text-gray-400">LTCG equity/MF (held &gt; 1yr)</span>
+                      <span className="text-stone-500">LTCG equity/MF (held &gt; 1yr)</span>
                       <span className="text-orange-400 font-medium">12.5% (above ₹1.25L)</span>
                     </div>
-                    <p className="text-xs text-gray-600 mt-1">Budget 2024 rates effective 23 Jul 2024</p>
+                    <p className="text-xs text-stone-600 mt-1">Budget 2024 rates effective 23 Jul 2024</p>
                   </div>
                 </div>
               </div>

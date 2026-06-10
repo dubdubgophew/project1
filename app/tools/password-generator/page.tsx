@@ -93,6 +93,13 @@ export default function PasswordGeneratorPage() {
         { name: 'JSON Formatter', href: '/tools/json-formatter', icon: '{}' },
         { name: 'Text Case Converter', href: '/tools/text-case', icon: '🔤' },
       ]}
+      faqs={[
+        { q: 'Is this password generator free?', a: 'Yes, 100% free with no account or sign-up required. Generate as many passwords as you need.' },
+        { q: 'How is the randomness generated?', a: 'Passwords are built using the Web Crypto API (crypto.getRandomValues), the same cryptographically secure random source used by security software. It is far stronger than Math.random().' },
+        { q: 'How strong should my password be?', a: 'For most accounts, aim for at least 70 entropy bits (shown on screen). A 16-character password using uppercase, lowercase, numbers, and symbols typically exceeds 100 bits, which would take billions of years to crack with current hardware.' },
+        { q: 'What are common use cases?', a: 'Creating strong passwords for new accounts, generating random API keys or secret tokens, producing passphrases for password managers, and bulk-generating temporary credentials for testing environments.' },
+        { q: 'Are generated passwords stored anywhere?', a: 'No. Passwords are generated entirely in your browser and are never transmitted to any server. Close the tab and they are gone.' },
+      ]}
     >
       <div className="space-y-6">
         {/* Settings */}
@@ -101,7 +108,7 @@ export default function PasswordGeneratorPage() {
           <div>
             <div className="flex justify-between mb-2">
               <label className="label mb-0">Length</label>
-              <span className="text-violet-400 font-bold">{length}</span>
+              <span className="text-violet-600 font-bold">{length}</span>
             </div>
             <input
               type="range"
@@ -111,7 +118,7 @@ export default function PasswordGeneratorPage() {
               onChange={(e) => setLength(Number(e.target.value))}
               className="w-full accent-violet-500"
             />
-            <div className="flex justify-between text-xs text-gray-600 mt-1">
+            <div className="flex justify-between text-xs text-stone-600 mt-1">
               <span>8</span><span>128</span>
             </div>
           </div>
@@ -126,14 +133,14 @@ export default function PasswordGeneratorPage() {
             ].map(({ label, val, set }) => (
               <label key={label} className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" checked={val} onChange={(e) => set(e.target.checked)} className="w-4 h-4 accent-violet-500" />
-                <span className="text-sm text-gray-300">{label}</span>
+                <span className="text-sm text-stone-700">{label}</span>
               </label>
             ))}
           </div>
 
           <label className="flex items-center gap-2 cursor-pointer">
             <input type="checkbox" checked={excludeAmbiguous} onChange={(e) => setExcludeAmbiguous(e.target.checked)} className="w-4 h-4 accent-violet-500" />
-            <span className="text-sm text-gray-300">Exclude ambiguous characters (I, l, 1, O, 0)</span>
+            <span className="text-sm text-stone-700">Exclude ambiguous characters (I, l, 1, O, 0)</span>
           </label>
 
           {/* Count */}
@@ -147,7 +154,7 @@ export default function PasswordGeneratorPage() {
               onChange={(e) => setCount(Math.min(20, Math.max(1, Number(e.target.value))))}
               className="input w-20 text-center"
             />
-            <span className="text-sm text-gray-400">passwords at once</span>
+            <span className="text-sm text-stone-500">passwords at once</span>
           </div>
         </div>
 
@@ -155,12 +162,12 @@ export default function PasswordGeneratorPage() {
         <div className="card space-y-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Shield className="w-4 h-4 text-gray-400" />
-              <span className="text-sm text-gray-300 font-medium">Strength: <span className="text-white">{strength.label}</span></span>
+              <Shield className="w-4 h-4 text-stone-500" />
+              <span className="text-sm text-stone-700 font-medium">Strength: <span className="text-stone-900">{strength.label}</span></span>
             </div>
-            <span className="text-xs text-gray-500">{bits} entropy bits · crack time: {crackTime(bits)}</span>
+            <span className="text-xs text-stone-500">{bits} entropy bits · crack time: {crackTime(bits)}</span>
           </div>
-          <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
+          <div className="h-2 bg-stone-50 rounded-full overflow-hidden">
             <div className={`h-full rounded-full transition-all ${strength.color} ${strength.width}`} />
           </div>
         </div>
@@ -176,7 +183,7 @@ export default function PasswordGeneratorPage() {
           <div className="space-y-2">
             <label className="label">Generated Passwords</label>
             {passwords.map((pw, i) => (
-              <div key={i} className="flex items-center gap-2 bg-gray-900 border border-gray-700 rounded-xl px-4 py-3">
+              <div key={i} className="flex items-center gap-2 bg-stone-100 border border-stone-200 rounded-xl px-4 py-3">
                 <code className="flex-1 text-sm font-mono text-emerald-300 break-all">{pw}</code>
                 <button
                   onClick={() => handleCopy(i, pw)}

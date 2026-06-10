@@ -213,6 +213,28 @@ export default function ImageToPdfPage() {
       icon="🖼️"
       description="Convert JPG, PNG, and WebP images to a PDF document. Add multiple images, reorder them, and download instantly. Free, no upload."
       relatedTools={RELATED}
+      faqs={[
+        {
+          q: 'Is this image-to-PDF converter free?',
+          a: 'Yes, 100% free. No sign-up, no watermarks, and no file-count limits.',
+        },
+        {
+          q: 'What image formats can I convert to PDF?',
+          a: 'JPG, PNG, and WebP images are supported. Each image becomes one page in the PDF. WebP files are automatically converted to PNG before embedding.',
+        },
+        {
+          q: 'Are my images uploaded to a server?',
+          a: 'No. The conversion runs entirely in your browser using pdf-lib. Your images never leave your device.',
+        },
+        {
+          q: 'Can I control page size, orientation, and margins?',
+          a: 'Yes. You can choose A4, US Letter, or "Fit to Image" page size; Portrait or Landscape orientation; and None, Small, or Medium margins. Images are scaled proportionally to fit the page.',
+        },
+        {
+          q: 'Is there a file size limit?',
+          a: 'There is no enforced limit — the only constraint is your browser\'s available memory. Very large images (e.g. 50+ MB RAW files) may be slow or cause the browser tab to run out of memory.',
+        },
+      ]}
     >
       <div className="space-y-5">
 

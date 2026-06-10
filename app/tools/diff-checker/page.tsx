@@ -72,6 +72,13 @@ export default function DiffCheckerPage() {
         { name: 'Regex Tester', href: '/tools/regex-tester', icon: '🔍' },
         { name: 'Text Case Converter', href: '/tools/text-case', icon: '🔤' },
       ]}
+      faqs={[
+        { q: 'Is this diff checker free?', a: 'Yes, completely free with no account, no ads, and no usage limits.' },
+        { q: 'What algorithm does it use?', a: 'It uses the Longest Common Subsequence (LCS) algorithm — the same approach used by Unix diff and Git. This produces the minimal set of changes between two texts rather than a naive line-by-line comparison.' },
+        { q: 'How accurate is the comparison?', a: 'The LCS diff is exact: every line marked as added or removed is genuinely different. The comparison is case-sensitive and whitespace-sensitive by default, matching what a developer would expect from a code diff.' },
+        { q: 'What are common use cases?', a: 'Comparing two versions of a document, spotting changes in contract text, reviewing code snippets, debugging config file differences, and checking whether two JSON or CSV files are identical.' },
+        { q: 'Is my text data private?', a: 'Yes. Comparison runs entirely in your browser — neither the original nor modified text is ever sent to a server.' },
+      ]}
     >
       <div className="space-y-5">
         {/* Two text areas */}
@@ -100,16 +107,16 @@ export default function DiffCheckerPage() {
         {hasDiff && (
           <div className="grid grid-cols-3 gap-3">
             <div className="card text-center py-3 border-emerald-500/20">
-              <p className="text-2xl font-bold text-emerald-400">+{added}</p>
-              <p className="text-xs text-gray-500 mt-1">Lines Added</p>
+              <p className="text-2xl font-bold text-emerald-700">+{added}</p>
+              <p className="text-xs text-stone-500 mt-1">Lines Added</p>
             </div>
             <div className="card text-center py-3 border-red-500/20">
-              <p className="text-2xl font-bold text-red-400">-{removed}</p>
-              <p className="text-xs text-gray-500 mt-1">Lines Removed</p>
+              <p className="text-2xl font-bold text-red-600">-{removed}</p>
+              <p className="text-xs text-stone-500 mt-1">Lines Removed</p>
             </div>
             <div className="card text-center py-3">
-              <p className="text-2xl font-bold text-gray-400">{unchanged}</p>
-              <p className="text-xs text-gray-500 mt-1">Unchanged</p>
+              <p className="text-2xl font-bold text-stone-500">{unchanged}</p>
+              <p className="text-xs text-stone-500 mt-1">Unchanged</p>
             </div>
           </div>
         )}
@@ -118,21 +125,21 @@ export default function DiffCheckerPage() {
         {hasDiff && (
           <div className="card">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-semibold text-white">Diff Result</h3>
+              <h3 className="text-sm font-semibold text-stone-900">Diff Result</h3>
               <button
                 onClick={() => handleCopy('diff', diffText)}
-                className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-lg bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
+                className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-lg bg-stone-50 text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-colors"
               >
-                {copiedKey === 'diff' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                {copiedKey === 'diff' ? <Check className="w-3 h-3 text-emerald-700" /> : <Copy className="w-3 h-3" />}
                 {copiedKey === 'diff' ? 'Copied!' : 'Copy Diff'}
               </button>
             </div>
 
-            <div className="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 max-h-[600px] overflow-y-auto">
+            <div className="bg-stone-100 rounded-xl overflow-hidden border border-stone-200 max-h-[600px] overflow-y-auto">
               {diff.length === 0 ? (
-                <p className="p-4 text-gray-500 text-sm font-mono">Both inputs are empty.</p>
+                <p className="p-4 text-stone-500 text-sm font-mono">Both inputs are empty.</p>
               ) : diff.every(l => l.type === 'unchanged') ? (
-                <p className="p-4 text-emerald-400 text-sm font-mono">No differences found — texts are identical.</p>
+                <p className="p-4 text-emerald-700 text-sm font-mono">No differences found — texts are identical.</p>
               ) : (
                 <table className="w-full text-sm font-mono border-collapse">
                   <tbody>
@@ -147,13 +154,13 @@ export default function DiffCheckerPage() {
                             : 'border-l-2 border-transparent'
                         }
                       >
-                        <td className="px-2 py-0.5 text-gray-600 select-none text-right w-10 text-xs border-r border-gray-800">
+                        <td className="px-2 py-0.5 text-stone-600 select-none text-right w-10 text-xs border-r border-stone-200">
                           {i + 1}
                         </td>
                         <td className="px-2 py-0.5 w-5 text-center select-none">
                           <span className={
-                            line.type === 'added' ? 'text-emerald-400' :
-                            line.type === 'removed' ? 'text-red-400' :
+                            line.type === 'added' ? 'text-emerald-700' :
+                            line.type === 'removed' ? 'text-red-600' :
                             'text-gray-700'
                           }>
                             {line.type === 'added' ? '+' : line.type === 'removed' ? '-' : ' '}
@@ -162,7 +169,7 @@ export default function DiffCheckerPage() {
                         <td className={`px-3 py-0.5 whitespace-pre-wrap break-all ${
                           line.type === 'added' ? 'text-emerald-300' :
                           line.type === 'removed' ? 'text-red-300' :
-                          'text-gray-400'
+                          'text-stone-500'
                         }`}>
                           {line.text || ' '}
                         </td>
@@ -174,7 +181,7 @@ export default function DiffCheckerPage() {
             </div>
 
             {/* Legend */}
-            <div className="flex gap-4 mt-3 text-xs text-gray-500">
+            <div className="flex gap-4 mt-3 text-xs text-stone-500">
               <span className="flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-sm bg-emerald-500/40 border border-emerald-500/60" />
                 Added lines

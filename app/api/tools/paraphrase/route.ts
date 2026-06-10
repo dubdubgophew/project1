@@ -5,15 +5,15 @@ import { z } from 'zod';
 
 const schema = z.object({
   text: z.string().min(10, 'Text too short').max(10000, 'Text too long'),
-  mode: z.enum(['standard', 'formal', 'creative', 'academic', 'simple']),
+  mode: z.enum(['fluent', 'formal', 'creative', 'academic', 'simple']),
 });
 
 const modePrompts = {
-  standard: 'Rewrite the following text in a natural, balanced way that preserves the meaning but uses different words and sentence structures.',
-  formal: 'Rewrite the following text in a formal, professional, polished tone suitable for business or official contexts.',
-  creative: 'Rewrite the following text in a creative, engaging, and unique way that makes it more interesting and memorable.',
-  academic: 'Rewrite the following text in an academic, scholarly style with precise language, passive voice where appropriate, and formal vocabulary.',
-  simple: 'Rewrite the following text in simple, clear language that anyone can understand. Use short sentences and common words.',
+  fluent: 'Rewrite the following text to flow more naturally and smoothly, improving sentence rhythm and word choice while preserving the exact meaning. Fix any awkward phrasing, repetition, or choppy sentences.',
+  formal: 'Rewrite the following text in a formal, professional, polished tone suitable for business reports, official correspondence, or executive communications.',
+  creative: 'Rewrite the following text in a creative, vivid, and engaging way that makes it more memorable — vary sentence structure, use stronger verbs, and add expressive vocabulary.',
+  academic: 'Rewrite the following text in a scholarly academic style: precise terminology, appropriate use of passive voice, formal vocabulary, and objective tone suitable for research papers.',
+  simple: 'Rewrite the following text in plain, simple language that a 6th-grader can understand. Use short sentences, common words, and avoid jargon.',
 };
 
 export async function POST(req: NextRequest) {
@@ -32,16 +32,20 @@ Rules:
 - Preserve the original meaning completely
 - Do NOT add new information or opinions
 - Do NOT include any meta-commentary (don't say "Here is the rewritten text:")
-- Just output the rewritten text directly
-- Match the approximate length of the original`,
+- Output the rewritten text directly with no preamble
+- Match the approximate length of the original (±20%)
+- Every sentence must be noticeably different from the original`,
       },
       {
         role: 'user',
         content: text,
       },
-    ], { temperature: 0.7, maxTokens: 2000 });
+    ], { temperature: 0.75, maxTokens: 2000 });
 
-    return NextResponse.json({ result });
+    const wordsBefore = text.trim().split(/\s+/).length;
+    const wordsAfter = result.trim().split(/\s+/).length;
+
+    return NextResponse.json({ result, wordsBefore, wordsAfter });
   } catch (err) {
     if (err instanceof z.ZodError) {
       return NextResponse.json({ error: err.errors[0].message }, { status: 400 });

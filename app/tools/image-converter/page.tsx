@@ -208,6 +208,28 @@ export default function ImageConverterPage() {
         { name: 'PDF to Markdown', href: '/tools/pdf-to-markdown', icon: '📄' },
         { name: 'QR Code Generator', href: '/tools/qr-code', icon: '⬛' },
       ]}
+      faqs={[
+        {
+          q: 'Is this image converter free?',
+          a: 'Yes, completely free. No account needed, no watermarks, and no limits on how many files you convert.',
+        },
+        {
+          q: 'Which image formats are supported?',
+          a: 'You can upload JPG, PNG, WebP, GIF, and BMP images. You can convert to JPEG, PNG, or WebP. Animated GIFs are not supported — only the first frame is used.',
+        },
+        {
+          q: 'Are my images uploaded to a server?',
+          a: 'No. All conversion happens directly in your browser using the Canvas API. Your images never leave your device.',
+        },
+        {
+          q: 'Which output format should I choose?',
+          a: 'Use WebP for the best compression with transparency support — ideal for web use. Use JPEG for photos you need to share universally (no transparency support). Use PNG for logos, screenshots, or images that need a transparent background with lossless quality.',
+        },
+        {
+          q: 'How does this compare to paid converters like Adobe Express?',
+          a: 'Paid tools often provide advanced features like batch resizing or cloud storage. This tool focuses on fast, private, browser-based format conversion at no cost — perfect for everyday conversions without handing your files to a third party.',
+        },
+      ]}
     >
       <div className="space-y-6">
 
@@ -326,7 +348,7 @@ export default function ImageConverterPage() {
               {files.length > 0 && (
                 <button
                   onClick={() => setFiles([])}
-                  className="text-xs text-stone-400 hover:text-red-400 transition-colors"
+                  className="text-xs text-stone-400 hover:text-red-600 transition-colors"
                 >
                   Clear all
                 </button>
@@ -428,7 +450,7 @@ export default function ImageConverterPage() {
                     {/* Remove */}
                     <button
                       onClick={() => removeFile(entry.id)}
-                      className="text-stone-300 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100 ml-1"
+                      className="text-stone-300 hover:text-red-600 transition-colors opacity-0 group-hover:opacity-100 ml-1"
                       title="Remove"
                     >
                       ✕

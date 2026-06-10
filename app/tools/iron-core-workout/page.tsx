@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
 import { ToolSEOContent } from '@/components/tools/ToolSEOContent';
+import { ToolFAQ } from '@/components/tools/ToolFAQ';
 
 // ─────────────────────────────────────────────
 // DATA
@@ -1598,6 +1599,28 @@ export default function IronCoreWorkoutPage() {
         )}
 
         <div className="max-w-4xl mx-auto px-4 pb-16">
+          <ToolFAQ faqs={[
+            {
+              q: 'Is the Iron Core Workout tracker free?',
+              a: 'Yes, 100% free. No account, no subscription, and no ads — just the 30-day calisthenics program.',
+            },
+            {
+              q: 'What is the Iron Core Workout program?',
+              a: 'Iron Core is a 30-day progressive calisthenics program focused on core strength. It progresses through two phases, starting with foundational moves like plank holds, hollow body, and leg raises, then advancing to side planks, flutter kicks, L-sit progressions, and harder core challenges. Rest days are built in to aid recovery.',
+            },
+            {
+              q: 'Is my workout progress saved?',
+              a: 'Yes. Progress is saved automatically in your browser\'s localStorage, so your completed days, streak, and personal records persist between visits on the same device. No data is sent to any server.',
+            },
+            {
+              q: 'Do I need any equipment?',
+              a: 'No equipment is needed. All exercises are bodyweight-only and can be done on any flat surface. A yoga mat is helpful for comfort.',
+            },
+            {
+              q: 'How does this compare to paid fitness apps?',
+              a: 'Apps like Nike Training Club or Freeletics charge subscriptions and track your data in the cloud. This tool is completely free, private, and browser-based — ideal for anyone who wants a structured core program without signing up for anything.',
+            },
+          ]} />
           <ToolSEOContent toolSlug="iron-core-workout" />
         </div>
       </main>

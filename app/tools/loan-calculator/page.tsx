@@ -63,11 +63,33 @@ export default function LoanCalculatorPage() {
         { name: 'Pay Stub Generator', href: '/tools/paystub-generator', icon: '🧾' },
         { name: 'Unit Converter', href: '/tools/unit-converter', icon: '📐' },
       ]}
+      faqs={[
+        {
+          q: 'Is this loan / EMI calculator free?',
+          a: 'Yes, it is completely free. No sign-up or payment needed. You can calculate EMI for any loan amount, interest rate, and tenure instantly.',
+        },
+        {
+          q: 'What types of loans can I calculate EMI for?',
+          a: 'This is a generic loan EMI calculator suitable for personal loans, car loans, education loans, business loans, or any fixed-interest instalment loan. Enter the loan amount, annual interest rate, and tenure in months to get the monthly EMI.',
+        },
+        {
+          q: 'How do I use the loan EMI calculator?',
+          a: 'Enter three values: (1) Loan Amount — the principal you are borrowing, (2) Annual Interest Rate — the interest rate offered by your bank or lender, and (3) Tenure in months — the repayment period. The calculator instantly shows monthly EMI, total interest payable, total repayment amount, a principal vs interest breakdown chart, and a full amortization schedule for the first 12 months.',
+        },
+        {
+          q: 'What does this calculator compute?',
+          a: 'It calculates your monthly EMI using the standard reducing balance formula, total interest paid over the loan tenure, total amount repaid (principal + interest), the percentage split between principal and interest, and a month-by-month amortization schedule showing how much of each EMI goes towards principal vs interest.',
+        },
+        {
+          q: 'How accurate is the EMI calculation?',
+          a: 'The calculator uses the standard reducing balance (compound interest) formula used by banks: EMI = P × r × (1+r)^n / ((1+r)^n − 1). Results are accurate for fixed-rate loans. Floating rate loans, processing fees, prepayment penalties, or irregular payment schedules may cause actual EMI to differ. Always confirm final figures with your lender.',
+        },
+      ]}
     >
       <div className="space-y-6">
         {/* Inputs */}
         <div className="card space-y-4">
-          <h2 className="text-sm font-semibold text-white">Loan Details</h2>
+          <h2 className="text-sm font-semibold text-stone-900">Loan Details</h2>
           <div className="grid sm:grid-cols-3 gap-4">
             <div>
               <label className="label">Loan Amount ($)</label>
@@ -89,22 +111,22 @@ export default function LoanCalculatorPage() {
             {/* Summary */}
             <div className="grid sm:grid-cols-3 gap-4">
               <div className="card text-center py-5">
-                <p className="text-3xl font-bold text-violet-400">${fmt(result.emi)}</p>
-                <p className="text-sm text-gray-400 mt-1">Monthly EMI</p>
+                <p className="text-3xl font-bold text-violet-600">${fmt(result.emi)}</p>
+                <p className="text-sm text-stone-500 mt-1">Monthly EMI</p>
               </div>
               <div className="card text-center py-5">
-                <p className="text-3xl font-bold text-amber-400">${fmt(result.totalInterest)}</p>
-                <p className="text-sm text-gray-400 mt-1">Total Interest</p>
+                <p className="text-3xl font-bold text-amber-700">${fmt(result.totalInterest)}</p>
+                <p className="text-sm text-stone-500 mt-1">Total Interest</p>
               </div>
               <div className="card text-center py-5">
-                <p className="text-3xl font-bold text-emerald-400">${fmt(result.total)}</p>
-                <p className="text-sm text-gray-400 mt-1">Total Payment</p>
+                <p className="text-3xl font-bold text-emerald-700">${fmt(result.total)}</p>
+                <p className="text-sm text-stone-500 mt-1">Total Payment</p>
               </div>
             </div>
 
             {/* CSS Pie Chart */}
             <div className="card">
-              <h3 className="text-sm font-semibold text-white mb-4">Principal vs Interest Breakdown</h3>
+              <h3 className="text-sm font-semibold text-stone-900 mb-4">Principal vs Interest Breakdown</h3>
               <div className="flex items-center gap-8">
                 <div
                   className="w-32 h-32 rounded-full shrink-0"
@@ -117,20 +139,20 @@ export default function LoanCalculatorPage() {
                     <span className="w-3 h-3 rounded-sm bg-violet-500 shrink-0" />
                     <div className="flex-1">
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-300">Principal</span>
+                        <span className="text-stone-700">Principal</span>
                         <span className="text-white font-semibold">{result.principalPct}%</span>
                       </div>
-                      <p className="text-xs text-gray-500">${fmt(parseFloat(loanAmount))}</p>
+                      <p className="text-xs text-stone-500">${fmt(parseFloat(loanAmount))}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="w-3 h-3 rounded-sm bg-amber-500 shrink-0" />
                     <div className="flex-1">
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-300">Interest</span>
+                        <span className="text-stone-700">Interest</span>
                         <span className="text-white font-semibold">{result.interestPct}%</span>
                       </div>
-                      <p className="text-xs text-gray-500">${fmt(result.totalInterest)}</p>
+                      <p className="text-xs text-stone-500">${fmt(result.totalInterest)}</p>
                     </div>
                   </div>
                 </div>
@@ -139,33 +161,33 @@ export default function LoanCalculatorPage() {
 
             {/* Amortization Table */}
             <div className="card">
-              <h3 className="text-sm font-semibold text-white mb-3">
+              <h3 className="text-sm font-semibold text-stone-900 mb-3">
                 Amortization Schedule (first 12 months)
               </h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-gray-700">
-                      <th className="text-left py-2 px-3 text-gray-400 font-medium">Month</th>
-                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Principal</th>
-                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Interest</th>
-                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Balance</th>
+                    <tr className="border-b border-stone-200">
+                      <th className="text-left py-2 px-3 text-stone-500 font-medium">Month</th>
+                      <th className="text-right py-2 px-3 text-stone-500 font-medium">Principal</th>
+                      <th className="text-right py-2 px-3 text-stone-500 font-medium">Interest</th>
+                      <th className="text-right py-2 px-3 text-stone-500 font-medium">Balance</th>
                     </tr>
                   </thead>
                   <tbody>
                     {result.rows.slice(0, 12).map(row => (
-                      <tr key={row.month} className="border-b border-gray-800 hover:bg-gray-800/30">
-                        <td className="py-2 px-3 text-gray-400">{row.month}</td>
-                        <td className="py-2 px-3 text-right text-violet-400">${fmt(row.principal)}</td>
-                        <td className="py-2 px-3 text-right text-amber-400">${fmt(row.interest)}</td>
-                        <td className="py-2 px-3 text-right text-gray-300">${fmt(row.balance)}</td>
+                      <tr key={row.month} className="border-b border-stone-200 hover:bg-stone-50/30">
+                        <td className="py-2 px-3 text-stone-500">{row.month}</td>
+                        <td className="py-2 px-3 text-right text-violet-600">${fmt(row.principal)}</td>
+                        <td className="py-2 px-3 text-right text-amber-700">${fmt(row.interest)}</td>
+                        <td className="py-2 px-3 text-right text-stone-700">${fmt(row.balance)}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
               {result.rows.length > 12 && (
-                <p className="text-xs text-gray-600 mt-3 text-center">Showing first 12 of {result.rows.length} months</p>
+                <p className="text-xs text-stone-600 mt-3 text-center">Showing first 12 of {result.rows.length} months</p>
               )}
             </div>
           </>

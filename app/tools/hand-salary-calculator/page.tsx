@@ -98,9 +98,9 @@ function PieChart({ segments }: { segments: PieSegment[] }) {
         {slices.map((s, i) => (
           <div key={i} className="flex items-center gap-2 text-xs">
             <span className="w-2.5 h-2.5 rounded-sm flex-shrink-0" style={{ background: s.color }} />
-            <span className="text-gray-300 truncate flex-1">{s.label}</span>
-            <span className="text-gray-400 flex-shrink-0">{fmtPct(s.pct)}</span>
-            <span className="text-gray-500 flex-shrink-0 hidden sm:block">{fmtINR(s.value)}</span>
+            <span className="text-stone-700 truncate flex-1">{s.label}</span>
+            <span className="text-stone-500 flex-shrink-0">{fmtPct(s.pct)}</span>
+            <span className="text-stone-500 flex-shrink-0 hidden sm:block">{fmtINR(s.value)}</span>
           </div>
         ))}
       </div>
@@ -123,7 +123,7 @@ function PctInput({ value, onChange, min = 0, max = 100, step = 1 }: {
         value={value}
         onChange={e => onChange(Number(e.target.value))}
       />
-      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">%</span>
+      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-500 text-sm pointer-events-none">%</span>
     </div>
   );
 }
@@ -273,13 +273,35 @@ export default function HandSalaryCalculatorPage() {
         { name: 'HRA Calculator', href: '/tools/hra-calculator', icon: '🏠' },
         { name: 'Home Loan EMI', href: '/tools/home-loan-emi-calculator', icon: '🏡' },
       ]}
+      faqs={[
+        {
+          q: 'Is this in-hand salary calculator free to use?',
+          a: 'Yes, completely free. No sign-up, no login, and no hidden charges. You can calculate your in-hand salary from CTC as many times as you need.',
+        },
+        {
+          q: 'Which country\'s salary structure does this calculator follow?',
+          a: 'This calculator is built for India (FY 2026-27 / AY 2027-28). It uses Indian payroll components — Basic, HRA, LTA, EPF, NPS, Professional Tax — and applies the latest New Regime (87A rebate up to ₹12L, standard deduction ₹75,000) and Old Regime tax slabs.',
+        },
+        {
+          q: 'How do I use the in-hand salary calculator?',
+          a: 'Enter your Annual CTC and set the salary structure percentages (Basic %, HRA % of Basic, Other Allowances % of CTC). Select your tax regime (New or Old). For the Old Regime, enter monthly rent paid to claim HRA exemption. Set your state for Professional Tax, configure EPF rate, and optionally add NPS employer contribution. The calculator instantly shows your monthly take-home pay, full payslip, tax breakdown, and which regime saves more.',
+        },
+        {
+          q: 'What does this calculator compute?',
+          a: 'It calculates your monthly and annual take-home salary (amount credited to your bank), full CTC breakup (Basic, HRA, LTA, Special Allowance, Bonus), all deductions (EPF, Professional Tax, TDS/income tax), HRA exemption under the Old Regime, new vs old regime tax comparison, effective tax rate, and a detailed month-by-month payslip with gross pay and net pay.',
+        },
+        {
+          q: 'Why does my take-home differ from CTC?',
+          a: 'CTC (Cost to Company) includes components that never reach your bank: Employer EPF contribution, Employee EPF deduction (goes to your EPF account), NPS employer contribution, Gratuity provisioning, Professional Tax, and TDS (income tax). This calculator shows exactly where each rupee of your CTC goes, so you know the real amount that hits your salary account each month.',
+        },
+      ]}
     >
       <div className="space-y-6">
 
         {/* Country */}
         <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-500 uppercase tracking-wider">Country</span>
-          <select className="text-sm bg-gray-800 border border-gray-700 rounded-lg px-3 py-1.5 text-white">
+          <span className="text-xs text-stone-500 uppercase tracking-wider">Country</span>
+          <select className="text-sm bg-white border border-stone-200 rounded-lg px-3 py-1.5 text-stone-900">
             <option value="IN">🇮🇳 India</option>
             <option disabled>🇺🇸 USA (coming soon)</option>
             <option disabled>🇬🇧 UK (coming soon)</option>
@@ -288,73 +310,73 @@ export default function HandSalaryCalculatorPage() {
 
         {/* ── REGIME ── */}
         <div className="card space-y-3">
-          <h2 className="text-sm font-semibold text-white">
-            Tax Regime <span className="text-gray-500 font-normal">— FY 2026-27 (AY 2027-28)</span>
+          <h2 className="text-sm font-semibold text-stone-900">
+            Tax Regime <span className="text-stone-500 font-normal">— FY 2026-27 (AY 2027-28)</span>
           </h2>
-          <div className="flex rounded-xl overflow-hidden border border-gray-700">
+          <div className="flex rounded-xl overflow-hidden border border-stone-200">
             <button
               onClick={() => setRegime('new')}
-              className={`flex-1 py-2.5 text-sm font-medium transition-colors ${regime === 'new' ? 'bg-violet-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-gray-200'}`}
+              className={`flex-1 py-2.5 text-sm font-medium transition-colors ${regime === 'new' ? 'bg-violet-600 text-white' : 'bg-stone-50 text-stone-500 hover:text-stone-800'}`}
             >
               New Regime <span className="text-xs opacity-70">(default)</span>
             </button>
             <button
               onClick={() => setRegime('old')}
-              className={`flex-1 py-2.5 text-sm font-medium transition-colors ${regime === 'old' ? 'bg-violet-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-gray-200'}`}
+              className={`flex-1 py-2.5 text-sm font-medium transition-colors ${regime === 'old' ? 'bg-violet-600 text-white' : 'bg-stone-50 text-stone-500 hover:text-stone-800'}`}
             >
               Old Regime
             </button>
           </div>
           {regime === 'new' ? (
-            <div className="text-xs text-gray-500 space-y-0.5">
-              <p>• Std deduction ₹75,000 &nbsp;• 87A rebate ₹60,000 → <span className="text-gray-300">zero tax up to ₹12L income</span></p>
-              <p>• Salaried with ≤ ₹12.75L gross pay <span className="text-gray-300">zero tax</span> after std deduction</p>
-              <p>• HRA &amp; LTA <span className="text-amber-400/80">not exempt</span> &nbsp;• No 80C &nbsp;• NPS employer 80CCD(2) <span className="text-emerald-400/80">allowed</span></p>
+            <div className="text-xs text-stone-500 space-y-0.5">
+              <p>• Std deduction ₹75,000 &nbsp;• 87A rebate ₹60,000 → <span className="text-stone-700">zero tax up to ₹12L income</span></p>
+              <p>• Salaried with ≤ ₹12.75L gross pay <span className="text-stone-700">zero tax</span> after std deduction</p>
+              <p>• HRA &amp; LTA <span className="text-amber-700/80">not exempt</span> &nbsp;• No 80C &nbsp;• NPS employer 80CCD(2) <span className="text-emerald-700/80">allowed</span></p>
             </div>
           ) : (
-            <div className="text-xs text-gray-500 space-y-0.5">
+            <div className="text-xs text-stone-500 space-y-0.5">
               <p>• Std deduction ₹50,000 &nbsp;• 87A rebate ₹12,500 → zero tax up to ₹5L income</p>
               <p>• HRA exempt (rent-based) &nbsp;• LTA exempt (2 journeys/4yr) &nbsp;• 80C up to ₹1.5L</p>
-              <p>• NPS employer 80CCD(2) <span className="text-emerald-400/80">allowed</span> in old regime too</p>
+              <p>• NPS employer 80CCD(2) <span className="text-emerald-700/80">allowed</span> in old regime too</p>
             </div>
           )}
         </div>
 
         {/* ── SALARY STRUCTURE ── */}
         <div className="card space-y-5">
-          <h2 className="text-sm font-semibold text-white">Salary Structure</h2>
+          <h2 className="text-sm font-semibold text-stone-900">Salary Structure</h2>
 
           <div>
             <label className="label">Annual CTC (₹)</label>
             <input className="input" type="number" min="0" step="10000" placeholder="12,00,000"
               value={ctc} onChange={e => setCtc(e.target.value)} />
-            {annualCTCNum > 0 && <p className="text-xs text-gray-500 mt-1">≈ {fmtINR(annualCTCNum / 12)}/month CTC</p>}
+            {annualCTCNum > 0 && <p className="text-xs text-stone-500 mt-1">≈ {fmtINR(annualCTCNum / 12)}/month CTC</p>}
           </div>
 
           <div className="grid sm:grid-cols-3 gap-4">
             <div>
               <label className="label">
                 Basic Salary % of CTC
-                {result && <span className="text-gray-500 ml-1 font-normal text-xs">({fmtINR(result.basic)}/yr)</span>}
+                {result && <span className="text-stone-500 ml-1 font-normal text-xs">({fmtINR(result.basic)}/yr)</span>}
               </label>
               <PctInput value={basicPct} onChange={setBasicPct} min={0} max={100} />
-              <p className="text-xs text-gray-500 mt-1">Typical: 40–50%</p>
+              <p className="text-xs text-stone-500 mt-1">Typical: 40–50%</p>
             </div>
             <div>
               <label className="label">
                 HRA % of Basic
-                {result && <span className="text-gray-500 ml-1 font-normal text-xs">({fmtINR(result.hra)}/yr)</span>}
+                {result && <span className="text-stone-500 ml-1 font-normal text-xs">({fmtINR(result.hra)}/yr)</span>}
               </label>
               <PctInput value={hraPct} onChange={setHraPct} min={0} max={100} />
-              <p className="text-xs text-gray-500 mt-1">Metro 50% · Non-metro 40%</p>
+              <p className="text-xs text-stone-500 mt-1">Metro 50% · Non-metro 40%</p>
             </div>
             <div>
               <label className="label">
                 Other Allowances % of CTC
-                {result && <span className="text-gray-500 ml-1 font-normal text-xs">({fmtINR(result.otherAllowances)}/yr)</span>}
+                {result && <span className="text-stone-500 ml-1 font-normal text-xs">({fmtINR(result.otherAllowances)}/yr)</span>}
               </label>
               <PctInput value={otherAllowPct} onChange={setOtherAllowPct} min={0} max={100} />
-              <p className="text-xs text-gray-500 mt-1">Conveyance, phone, etc.</p>
+              <p className="text-xs text-stone-500 mt-1">Conveyance, phone, etc.</p>
             </div>
           </div>
         </div>
@@ -362,33 +384,33 @@ export default function HandSalaryCalculatorPage() {
         {/* ── HRA EXEMPTION — old regime only ── */}
         {regime === 'old' && (
           <div className="card space-y-4">
-            <h2 className="text-sm font-semibold text-white">
-              HRA Exemption <span className="text-gray-500 font-normal">(Old Regime)</span>
+            <h2 className="text-sm font-semibold text-stone-900">
+              HRA Exemption <span className="text-stone-500 font-normal">(Old Regime)</span>
             </h2>
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label className="label">Monthly Rent Paid (₹)</label>
                 <input className="input" type="number" min="0" step="500" placeholder="0"
                   value={rentPaid} onChange={e => setRentPaid(e.target.value)} />
-                <p className="text-xs text-gray-500 mt-1">Enter 0 if not claiming HRA exemption</p>
+                <p className="text-xs text-stone-500 mt-1">Enter 0 if not claiming HRA exemption</p>
               </div>
               <div>
                 <label className="label">City Type</label>
-                <div className="flex rounded-xl overflow-hidden border border-gray-700">
+                <div className="flex rounded-xl overflow-hidden border border-stone-200">
                   <button onClick={() => setIsMetro(true)}
-                    className={`flex-1 py-2.5 text-sm font-medium transition-colors ${isMetro ? 'bg-violet-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-gray-200'}`}>
+                    className={`flex-1 py-2.5 text-sm font-medium transition-colors ${isMetro ? 'bg-violet-600 text-white' : 'bg-stone-50 text-stone-500 hover:text-stone-800'}`}>
                     Metro (50%)
                   </button>
                   <button onClick={() => setIsMetro(false)}
-                    className={`flex-1 py-2.5 text-sm font-medium transition-colors ${!isMetro ? 'bg-violet-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-gray-200'}`}>
+                    className={`flex-1 py-2.5 text-sm font-medium transition-colors ${!isMetro ? 'bg-violet-600 text-white' : 'bg-stone-50 text-stone-500 hover:text-stone-800'}`}>
                     Non-Metro (40%)
                   </button>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">Metro: Delhi, Mumbai, Chennai, Kolkata</p>
+                <p className="text-xs text-stone-500 mt-1">Metro: Delhi, Mumbai, Chennai, Kolkata</p>
               </div>
             </div>
             {result && result.hraExemption > 0 && (
-              <p className="text-xs text-emerald-400/80 bg-emerald-400/5 border border-emerald-400/20 rounded-lg px-3 py-2">
+              <p className="text-xs text-emerald-700/80 bg-emerald-400/5 border border-emerald-400/20 rounded-lg px-3 py-2">
                 HRA exempt: {fmtINR(result.hraExemption)}/yr &nbsp;·&nbsp; Taxable HRA: {fmtINR(result.hraTaxable)}/yr
               </p>
             )}
@@ -403,22 +425,22 @@ export default function HandSalaryCalculatorPage() {
 
         {/* ── BONUS & ALLOWANCES ── */}
         <div className="card space-y-4">
-          <h2 className="text-sm font-semibold text-white">Bonus &amp; Additional Allowances</h2>
-          <p className="text-xs text-gray-500 -mt-1">Annual amounts. Leave 0 if not part of your CTC.</p>
+          <h2 className="text-sm font-semibold text-stone-900">Bonus &amp; Additional Allowances</h2>
+          <p className="text-xs text-stone-500 -mt-1">Annual amounts. Leave 0 if not part of your CTC.</p>
 
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
               <label className="label">Bonus / Variable Pay (₹/year)</label>
               <input className="input" type="number" min="0" step="1000" placeholder="0"
                 value={bonusPay} onChange={e => setBonusPay(e.target.value)} />
-              <p className="text-xs text-gray-500 mt-1">Fully taxable in both regimes</p>
+              <p className="text-xs text-stone-500 mt-1">Fully taxable in both regimes</p>
             </div>
 
             <div>
               <label className="label flex items-center gap-1.5">
                 LTA — Leave Travel Allowance (₹/year)
                 <span title="Old regime: actual travel costs exempt, up to 2 journeys in 4-year block. New regime: fully taxable."
-                  className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-gray-700 text-gray-400 text-xs cursor-help">?</span>
+                  className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-stone-200 text-stone-500 text-xs cursor-help">?</span>
               </label>
               <input className="input" type="number" min="0" step="1000" placeholder="0"
                 value={ltaAnnual} onChange={e => setLtaAnnual(e.target.value)} />
@@ -426,11 +448,11 @@ export default function HandSalaryCalculatorPage() {
                 <label className="flex items-center gap-2 mt-2 cursor-pointer">
                   <input type="checkbox" className="accent-violet-500 w-4 h-4"
                     checked={ltaExemptClaimed} onChange={e => setLtaExemptClaimed(e.target.checked)} />
-                  <span className="text-xs text-gray-400">Claim LTA exemption this year (old regime)</span>
+                  <span className="text-xs text-stone-500">Claim LTA exemption this year (old regime)</span>
                 </label>
               )}
               {regime === 'new' && (parseFloat(ltaAnnual) || 0) > 0 && (
-                <p className="text-xs text-amber-400/80 mt-1">Taxable under new regime</p>
+                <p className="text-xs text-amber-700/80 mt-1">Taxable under new regime</p>
               )}
             </div>
 
@@ -438,12 +460,12 @@ export default function HandSalaryCalculatorPage() {
               <label className="label flex items-center gap-1.5">
                 Food Coupons / Meal Allowance (₹/year)
                 <span title="Old regime: exempt up to ₹50/meal × 2 × 22 days × 12 = ₹26,400/year. New regime: fully taxable."
-                  className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-gray-700 text-gray-400 text-xs cursor-help">?</span>
+                  className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-stone-200 text-stone-500 text-xs cursor-help">?</span>
               </label>
               <input className="input" type="number" min="0" step="1000" placeholder="0"
                 value={foodCoupons} onChange={e => setFoodCoupons(e.target.value)} />
               {(parseFloat(foodCoupons) || 0) > 0 && (
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-stone-500 mt-1">
                   {regime === 'old'
                     ? `Exempt: ${fmtINR(Math.min(parseFloat(foodCoupons) || 0, 26400))}/yr (cap ₹26,400)`
                     : 'Fully taxable under new regime'}
@@ -455,13 +477,13 @@ export default function HandSalaryCalculatorPage() {
 
         {/* ── PF & NPS ── */}
         <div className="card space-y-5">
-          <h2 className="text-sm font-semibold text-white">Provident Fund &amp; NPS</h2>
+          <h2 className="text-sm font-semibold text-stone-900">Provident Fund &amp; NPS</h2>
 
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <label className="label mb-0">EPF (Employee Provident Fund)</label>
-                <p className="text-xs text-gray-500 mt-0.5">Employee &amp; employer contribute same rate</p>
+                <p className="text-xs text-stone-500 mt-0.5">Employee &amp; employer contribute same rate</p>
               </div>
               <button
                 onClick={() => setPfEnabled(!pfEnabled)}
@@ -476,23 +498,23 @@ export default function HandSalaryCalculatorPage() {
                 <div>
                   <label className="label">
                     PF Rate (% of Basic)
-                    {result && <span className="text-gray-500 ml-1 font-normal text-xs">({fmtINR(result.pfEmployee)}/yr each)</span>}
+                    {result && <span className="text-stone-500 ml-1 font-normal text-xs">({fmtINR(result.pfEmployee)}/yr each)</span>}
                   </label>
                   <PctInput value={pfPct} onChange={setPfPct} min={1} max={12} />
-                  <p className="text-xs text-gray-500 mt-1">Statutory: 12% · max 12%</p>
+                  <p className="text-xs text-stone-500 mt-1">Statutory: 12% · max 12%</p>
                 </div>
-                <div className="text-xs text-gray-500 space-y-1 self-center">
-                  <p>Employee PF → Your EPF account <span className="text-blue-400/70">(not in hand)</span></p>
+                <div className="text-xs text-stone-500 space-y-1 self-center">
+                  <p>Employee PF → Your EPF account <span className="text-blue-700/70">(not in hand)</span></p>
                   <p>Employer PF → 3.67% EPF + 8.33% EPS (pension)</p>
                   {regime === 'old'
-                    ? <p className="text-emerald-400/70">Old regime: Employee PF deductible under 80C (up to ₹1.5L)</p>
-                    : <p className="text-amber-400/70">New regime: No 80C — Employee PF not deductible</p>}
+                    ? <p className="text-emerald-700/70">Old regime: Employee PF deductible under 80C (up to ₹1.5L)</p>
+                    : <p className="text-amber-700/70">New regime: No 80C — Employee PF not deductible</p>}
                 </div>
               </div>
             )}
 
             {!pfEnabled && (
-              <p className="text-xs text-amber-400/80 bg-amber-400/5 border border-amber-400/20 rounded-lg px-3 py-2">
+              <p className="text-xs text-amber-700/80 bg-amber-400/5 border border-amber-400/20 rounded-lg px-3 py-2">
                 PF disabled — applicable for &lt;20-employee establishments or NPS-opted organisations
               </p>
             )}
@@ -502,13 +524,13 @@ export default function HandSalaryCalculatorPage() {
             <label className="label flex items-center gap-1.5">
               NPS Employer Contribution (% of Basic)
               <span title="Section 80CCD(2): deductible in BOTH regimes. Max 10% of basic for private sector, 14% for government."
-                className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-gray-700 text-gray-400 text-xs cursor-help">?</span>
-              {result && result.npsEmp > 0 && <span className="text-gray-500 font-normal text-xs">({fmtINR(result.npsEmp)}/yr)</span>}
+                className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-stone-200 text-stone-500 text-xs cursor-help">?</span>
+              {result && result.npsEmp > 0 && <span className="text-stone-500 font-normal text-xs">({fmtINR(result.npsEmp)}/yr)</span>}
             </label>
             <PctInput value={npsEmpPct} onChange={setNpsEmpPct} min={0} max={10} step={0.5} />
-            <p className="text-xs text-gray-500 mt-1">0 = not applicable · max 10% (private) · deductible in both regimes</p>
+            <p className="text-xs text-stone-500 mt-1">0 = not applicable · max 10% (private) · deductible in both regimes</p>
             {result && result.npsEmp > 0 && (
-              <p className="text-xs text-emerald-400/80 mt-1">
+              <p className="text-xs text-emerald-700/80 mt-1">
                 {fmtINR(result.npsEmp)}/yr → Your NPS account (not in hand) · tax deduction under 80CCD(2)
               </p>
             )}
@@ -517,7 +539,7 @@ export default function HandSalaryCalculatorPage() {
 
         {/* ── PROFESSIONAL TAX ── */}
         <div className="card space-y-4">
-          <h2 className="text-sm font-semibold text-white">Professional Tax</h2>
+          <h2 className="text-sm font-semibold text-stone-900">Professional Tax</h2>
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
               <label className="label">State</label>
@@ -532,13 +554,13 @@ export default function HandSalaryCalculatorPage() {
                 <label className="label">Monthly PT (₹)</label>
                 <input className="input" type="number" min="0" max="250" step="10" placeholder="200"
                   value={manualPtMonthly} onChange={e => setManualPtMonthly(e.target.value)} />
-                <p className="text-xs text-gray-500 mt-1">Capped at ₹2,500/year by law</p>
+                <p className="text-xs text-stone-500 mt-1">Capped at ₹2,500/year by law</p>
               </div>
             )}
           </div>
           {result && (
-            <p className="text-xs text-gray-500">
-              Annual PT: <span className="text-gray-300">{fmtINR(result.profTaxAnnual)}</span>
+            <p className="text-xs text-stone-500">
+              Annual PT: <span className="text-stone-700">{fmtINR(result.profTaxAnnual)}</span>
               {ptState === 'MH' && ' (Maharashtra slab-based — ₹0 if basic ≤ ₹7,500/month)'}
             </p>
           )}
@@ -550,46 +572,46 @@ export default function HandSalaryCalculatorPage() {
             {/* ── Hero ── */}
             <div className="grid sm:grid-cols-3 gap-4">
               <div className="card text-center py-5 bg-gradient-to-br from-violet-600/10 to-purple-600/5 border-violet-500/20">
-                <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Monthly Take-Home</p>
-                <p className="text-3xl font-bold text-violet-400">{fmtINR(result.monthlyTakeHome)}</p>
-                <p className="text-xs text-gray-500 mt-1">{regime === 'new' ? 'New' : 'Old'} Regime</p>
+                <p className="text-xs text-stone-500 uppercase tracking-wider mb-1">Monthly Take-Home</p>
+                <p className="text-3xl font-bold text-violet-600">{fmtINR(result.monthlyTakeHome)}</p>
+                <p className="text-xs text-stone-500 mt-1">{regime === 'new' ? 'New' : 'Old'} Regime</p>
               </div>
               <div className="card text-center py-5">
-                <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Annual Take-Home</p>
-                <p className="text-3xl font-bold text-emerald-400">{fmtINR(result.annualTakeHome)}</p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-stone-500 uppercase tracking-wider mb-1">Annual Take-Home</p>
+                <p className="text-3xl font-bold text-emerald-700">{fmtINR(result.annualTakeHome)}</p>
+                <p className="text-xs text-stone-500 mt-1">
                   {annualCTCNum > 0 ? (result.annualTakeHome / annualCTCNum * 100).toFixed(1) : 0}% of CTC
                 </p>
               </div>
               <div className="card text-center py-5">
-                <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Effective Tax Rate</p>
-                <p className="text-3xl font-bold text-amber-400">
+                <p className="text-xs text-stone-500 uppercase tracking-wider mb-1">Effective Tax Rate</p>
+                <p className="text-3xl font-bold text-amber-700">
                   {annualCTCNum > 0 ? (result.activeTax / annualCTCNum * 100).toFixed(1) : 0}%
                 </p>
-                <p className="text-xs text-gray-500 mt-1">Tax / CTC</p>
+                <p className="text-xs text-stone-500 mt-1">Tax / CTC</p>
               </div>
             </div>
 
             {/* ── Regime comparison ── */}
-            <div className={`card border ${result.betterRegime === 'new' ? 'border-emerald-500/30 bg-emerald-500/5' : 'border-amber-500/30 bg-amber-500/5'}`}>
+            <div className={`card border ${result.betterRegime === 'new' ? 'border-emerald-500/30 bg-emerald-50/80' : 'border-amber-500/30 bg-amber-500/5'}`}>
               <div className="flex items-center justify-between flex-wrap gap-2">
                 <div>
-                  <p className="text-sm font-semibold text-white">
+                  <p className="text-sm font-semibold text-stone-900">
                     {result.betterRegime === 'new' ? '✓ New Regime saves more' : '✓ Old Regime saves more'}
                   </p>
-                  <p className="text-xs text-gray-400 mt-0.5">
-                    Save <span className="font-semibold text-emerald-400">{fmtINR(result.savings)}/year</span>{' '}
+                  <p className="text-xs text-stone-500 mt-0.5">
+                    Save <span className="font-semibold text-emerald-700">{fmtINR(result.savings)}/year</span>{' '}
                     by choosing {result.betterRegime === 'new' ? 'New' : 'Old'} Regime
                   </p>
                 </div>
                 <div className="flex gap-6 text-sm">
                   <div className="text-center">
-                    <p className="text-xs text-gray-500">New Regime Tax</p>
-                    <p className={`font-semibold ${result.betterRegime === 'new' ? 'text-emerald-400' : 'text-gray-300'}`}>{fmtINR(result.totalTaxNew)}</p>
+                    <p className="text-xs text-stone-500">New Regime Tax</p>
+                    <p className={`font-semibold ${result.betterRegime === 'new' ? 'text-emerald-700' : 'text-stone-700'}`}>{fmtINR(result.totalTaxNew)}</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-xs text-gray-500">Old Regime Tax</p>
-                    <p className={`font-semibold ${result.betterRegime === 'old' ? 'text-emerald-400' : 'text-gray-300'}`}>{fmtINR(result.totalTaxOld)}</p>
+                    <p className="text-xs text-stone-500">Old Regime Tax</p>
+                    <p className={`font-semibold ${result.betterRegime === 'old' ? 'text-emerald-700' : 'text-stone-700'}`}>{fmtINR(result.totalTaxOld)}</p>
                   </div>
                 </div>
               </div>
@@ -597,20 +619,20 @@ export default function HandSalaryCalculatorPage() {
 
             {/* ── Where money goes ── */}
             <div className="card space-y-3">
-              <h3 className="text-sm font-semibold text-white">Where Your Compensation Goes</h3>
-              <p className="text-xs text-gray-500 -mt-1">PF and NPS are credited to your own accounts — not your bank account.</p>
+              <h3 className="text-sm font-semibold text-stone-900">Where Your Compensation Goes</h3>
+              <p className="text-xs text-stone-500 -mt-1">PF and NPS are credited to your own accounts — not your bank account.</p>
 
-              <div className="flex items-center justify-between p-3 rounded-xl bg-violet-500/10 border border-violet-500/20">
+              <div className="flex items-center justify-between p-3 rounded-xl bg-violet-50 border border-violet-500/20">
                 <div className="flex items-center gap-3">
                   <span className="text-xl">🏦</span>
                   <div>
-                    <p className="text-sm font-semibold text-white">Bank Account (Take-Home)</p>
-                    <p className="text-xs text-gray-500">After TDS, PF deduction &amp; Professional Tax</p>
+                    <p className="text-sm font-semibold text-stone-900">Bank Account (Take-Home)</p>
+                    <p className="text-xs text-stone-500">After TDS, PF deduction &amp; Professional Tax</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-base font-bold text-violet-400">{fmtINR(result.monthlyTakeHome)}/mo</p>
-                  <p className="text-xs text-gray-500">{fmtINR(result.annualTakeHome)}/yr</p>
+                  <p className="text-base font-bold text-violet-600">{fmtINR(result.monthlyTakeHome)}/mo</p>
+                  <p className="text-xs text-stone-500">{fmtINR(result.annualTakeHome)}/yr</p>
                 </div>
               </div>
 
@@ -619,15 +641,15 @@ export default function HandSalaryCalculatorPage() {
                   <div className="flex items-center gap-3">
                     <span className="text-xl">🏛️</span>
                     <div>
-                      <p className="text-sm font-semibold text-white">EPF Account (Not in Hand)</p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-sm font-semibold text-stone-900">EPF Account (Not in Hand)</p>
+                      <p className="text-xs text-stone-500">
                         Your share: {fmtINR(result.pfEmployee)}/yr &nbsp;+&nbsp; Employer: {fmtINR(result.pfEmployer)}/yr
                       </p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-base font-bold text-blue-400">{fmtINR((result.pfEmployee + result.pfEmployer) / 12)}/mo</p>
-                    <p className="text-xs text-gray-500">{fmtINR(result.pfEmployee + result.pfEmployer)}/yr total</p>
+                    <p className="text-base font-bold text-blue-700">{fmtINR((result.pfEmployee + result.pfEmployer) / 12)}/mo</p>
+                    <p className="text-xs text-stone-500">{fmtINR(result.pfEmployee + result.pfEmployer)}/yr total</p>
                   </div>
                 </div>
               )}
@@ -637,13 +659,13 @@ export default function HandSalaryCalculatorPage() {
                   <div className="flex items-center gap-3">
                     <span className="text-xl">📈</span>
                     <div>
-                      <p className="text-sm font-semibold text-white">NPS Account (Not in Hand)</p>
-                      <p className="text-xs text-gray-500">Employer NPS — 80CCD(2) deductible in both regimes</p>
+                      <p className="text-sm font-semibold text-stone-900">NPS Account (Not in Hand)</p>
+                      <p className="text-xs text-stone-500">Employer NPS — 80CCD(2) deductible in both regimes</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-base font-bold text-emerald-400">{fmtINR(result.npsEmp / 12)}/mo</p>
-                    <p className="text-xs text-gray-500">{fmtINR(result.npsEmp)}/yr</p>
+                    <p className="text-base font-bold text-emerald-700">{fmtINR(result.npsEmp / 12)}/mo</p>
+                    <p className="text-xs text-stone-500">{fmtINR(result.npsEmp)}/yr</p>
                   </div>
                 </div>
               )}
@@ -652,13 +674,13 @@ export default function HandSalaryCalculatorPage() {
                 <div className="flex items-center gap-3">
                   <span className="text-xl">📋</span>
                   <div>
-                    <p className="text-sm font-semibold text-white">Income Tax (TDS)</p>
-                    <p className="text-xs text-gray-500">Deducted at source, paid to central government</p>
+                    <p className="text-sm font-semibold text-stone-900">Income Tax (TDS)</p>
+                    <p className="text-xs text-stone-500">Deducted at source, paid to central government</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-base font-bold text-red-400">{fmtINR(result.activeMonthlyTax)}/mo</p>
-                  <p className="text-xs text-gray-500">{fmtINR(result.activeTax)}/yr (incl. 4% cess)</p>
+                  <p className="text-base font-bold text-red-600">{fmtINR(result.activeMonthlyTax)}/mo</p>
+                  <p className="text-xs text-stone-500">{fmtINR(result.activeTax)}/yr (incl. 4% cess)</p>
                 </div>
               </div>
 
@@ -666,13 +688,13 @@ export default function HandSalaryCalculatorPage() {
                 <div className="flex items-center gap-3">
                   <span className="text-xl">🎁</span>
                   <div>
-                    <p className="text-sm font-semibold text-white">Gratuity Provision</p>
-                    <p className="text-xs text-gray-500">Employer accrual at 4.81% of basic — paid on exit after 5 yrs service</p>
+                    <p className="text-sm font-semibold text-stone-900">Gratuity Provision</p>
+                    <p className="text-xs text-stone-500">Employer accrual at 4.81% of basic — paid on exit after 5 yrs service</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-base font-bold text-amber-400">{fmtINR(result.gratuity / 12)}/mo</p>
-                  <p className="text-xs text-gray-500">{fmtINR(result.gratuity)}/yr</p>
+                  <p className="text-base font-bold text-amber-700">{fmtINR(result.gratuity / 12)}/mo</p>
+                  <p className="text-xs text-stone-500">{fmtINR(result.gratuity)}/yr</p>
                 </div>
               </div>
             </div>
@@ -680,7 +702,7 @@ export default function HandSalaryCalculatorPage() {
             {/* ── Pie Charts ── */}
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="card">
-                <h3 className="text-sm font-semibold text-white mb-4">CTC Distribution</h3>
+                <h3 className="text-sm font-semibold text-stone-900 mb-4">CTC Distribution</h3>
                 <PieChart segments={[
                   { label: 'Bank Account (Take-Home)', value: result.annualTakeHome, color: '#8b5cf6' },
                   { label: 'EPF — Your Share', value: result.pfEmployee, color: '#3b82f6' },
@@ -692,7 +714,7 @@ export default function HandSalaryCalculatorPage() {
                 ]} />
               </div>
               <div className="card">
-                <h3 className="text-sm font-semibold text-white mb-4">Salary Component Split</h3>
+                <h3 className="text-sm font-semibold text-stone-900 mb-4">Salary Component Split</h3>
                 <PieChart segments={[
                   { label: 'Basic', value: result.basic, color: '#8b5cf6' },
                   { label: 'HRA', value: result.hra, color: '#0ea5e9' },
@@ -707,19 +729,19 @@ export default function HandSalaryCalculatorPage() {
 
             {/* ── CTC Breakup ── */}
             <div className="card">
-              <h3 className="text-sm font-semibold text-white mb-4">CTC Breakup</h3>
+              <h3 className="text-sm font-semibold text-stone-900 mb-4">CTC Breakup</h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-gray-700">
-                      <th className="text-left py-2 px-3 text-gray-400 font-medium">Component</th>
-                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Annual</th>
-                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Monthly</th>
+                    <tr className="border-b border-stone-200">
+                      <th className="text-left py-2 px-3 text-stone-500 font-medium">Component</th>
+                      <th className="text-right py-2 px-3 text-stone-500 font-medium">Annual</th>
+                      <th className="text-right py-2 px-3 text-stone-500 font-medium">Monthly</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="bg-gray-800/40">
-                      <td colSpan={3} className="py-1.5 px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Earnings (In Payslip)</td>
+                    <tr className="bg-stone-50/40">
+                      <td colSpan={3} className="py-1.5 px-3 text-xs font-semibold text-stone-500 uppercase tracking-wider">Earnings (In Payslip)</td>
                     </tr>
                     {[
                       ['Basic Salary', result.basic],
@@ -730,74 +752,74 @@ export default function HandSalaryCalculatorPage() {
                       ...(result.otherAllowances > 0 ? [['Other Allowances', result.otherAllowances]] : []),
                       ['Special Allowance', result.specialAllowance],
                     ].map(([label, val]) => (
-                      <tr key={String(label)} className="border-b border-gray-800/50">
-                        <td className="py-2 px-3 text-gray-300 pl-5">
+                      <tr key={String(label)} className="border-b border-stone-200/50">
+                        <td className="py-2 px-3 text-stone-700 pl-5">
                           {String(label)}
-                          {label === 'Special Allowance' && <span className="text-xs text-gray-600 ml-1">(balancing figure)</span>}
+                          {label === 'Special Allowance' && <span className="text-xs text-stone-600 ml-1">(balancing figure)</span>}
                         </td>
-                        <td className="py-2 px-3 text-right text-gray-300">{fmtINR(Number(val))}</td>
-                        <td className="py-2 px-3 text-right text-gray-300">{fmtINR(Number(val) / 12)}</td>
+                        <td className="py-2 px-3 text-right text-stone-700">{fmtINR(Number(val))}</td>
+                        <td className="py-2 px-3 text-right text-stone-700">{fmtINR(Number(val) / 12)}</td>
                       </tr>
                     ))}
 
-                    <tr className="bg-gray-800/40">
-                      <td colSpan={3} className="py-1.5 px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Employer Contributions (CTC only, not in payslip)</td>
+                    <tr className="bg-stone-50/40">
+                      <td colSpan={3} className="py-1.5 px-3 text-xs font-semibold text-stone-500 uppercase tracking-wider">Employer Contributions (CTC only, not in payslip)</td>
                     </tr>
-                    <tr className="border-b border-gray-800/50">
-                      <td className="py-2 px-3 text-gray-400 pl-5">Employer PF ({pfEnabled ? `${pfPct}% of basic` : 'disabled'})</td>
-                      <td className="py-2 px-3 text-right text-gray-400">{fmtINR(result.pfEmployer)}</td>
-                      <td className="py-2 px-3 text-right text-gray-400">{fmtINR(result.pfEmployer / 12)}</td>
+                    <tr className="border-b border-stone-200/50">
+                      <td className="py-2 px-3 text-stone-500 pl-5">Employer PF ({pfEnabled ? `${pfPct}% of basic` : 'disabled'})</td>
+                      <td className="py-2 px-3 text-right text-stone-500">{fmtINR(result.pfEmployer)}</td>
+                      <td className="py-2 px-3 text-right text-stone-500">{fmtINR(result.pfEmployer / 12)}</td>
                     </tr>
                     {result.npsEmp > 0 && (
-                      <tr className="border-b border-gray-800/50">
-                        <td className="py-2 px-3 text-gray-400 pl-5">Employer NPS 80CCD(2) ({npsEmpPct}% of basic)</td>
-                        <td className="py-2 px-3 text-right text-gray-400">{fmtINR(result.npsEmp)}</td>
-                        <td className="py-2 px-3 text-right text-gray-400">{fmtINR(result.npsEmp / 12)}</td>
+                      <tr className="border-b border-stone-200/50">
+                        <td className="py-2 px-3 text-stone-500 pl-5">Employer NPS 80CCD(2) ({npsEmpPct}% of basic)</td>
+                        <td className="py-2 px-3 text-right text-stone-500">{fmtINR(result.npsEmp)}</td>
+                        <td className="py-2 px-3 text-right text-stone-500">{fmtINR(result.npsEmp / 12)}</td>
                       </tr>
                     )}
-                    <tr className="border-b border-gray-800">
-                      <td className="py-2 px-3 text-gray-400 pl-5">Gratuity Provisioning (4.81% of basic)</td>
-                      <td className="py-2 px-3 text-right text-gray-400">{fmtINR(result.gratuity)}</td>
-                      <td className="py-2 px-3 text-right text-gray-400">{fmtINR(result.gratuity / 12)}</td>
+                    <tr className="border-b border-stone-200">
+                      <td className="py-2 px-3 text-stone-500 pl-5">Gratuity Provisioning (4.81% of basic)</td>
+                      <td className="py-2 px-3 text-right text-stone-500">{fmtINR(result.gratuity)}</td>
+                      <td className="py-2 px-3 text-right text-stone-500">{fmtINR(result.gratuity / 12)}</td>
                     </tr>
 
-                    <tr className="bg-gray-800/30">
-                      <td className="py-2.5 px-3 font-semibold text-white">Total CTC</td>
-                      <td className="py-2.5 px-3 text-right font-semibold text-white">{fmtINR(annualCTCNum)}</td>
-                      <td className="py-2.5 px-3 text-right font-semibold text-white">{fmtINR(annualCTCNum / 12)}</td>
+                    <tr className="bg-stone-50/30">
+                      <td className="py-2.5 px-3 font-semibold text-stone-900">Total CTC</td>
+                      <td className="py-2.5 px-3 text-right font-semibold text-stone-900">{fmtINR(annualCTCNum)}</td>
+                      <td className="py-2.5 px-3 text-right font-semibold text-stone-900">{fmtINR(annualCTCNum / 12)}</td>
                     </tr>
 
-                    <tr className="bg-gray-800/40">
-                      <td colSpan={3} className="py-1.5 px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Deductions from Payslip</td>
+                    <tr className="bg-stone-50/40">
+                      <td colSpan={3} className="py-1.5 px-3 text-xs font-semibold text-stone-500 uppercase tracking-wider">Deductions from Payslip</td>
                     </tr>
-                    <tr className="border-b border-gray-800/50">
+                    <tr className="border-b border-stone-200/50">
                       <td className="py-2 px-3 pl-5">
-                        <span className="text-blue-400/90">Employee PF ({pfEnabled ? `${pfPct}% of basic` : 'disabled'})</span>
-                        <p className="text-xs text-blue-400/50">→ Your EPF account (not in hand, but yours)</p>
+                        <span className="text-blue-700/90">Employee PF ({pfEnabled ? `${pfPct}% of basic` : 'disabled'})</span>
+                        <p className="text-xs text-blue-700/50">→ Your EPF account (not in hand, but yours)</p>
                       </td>
-                      <td className="py-2 px-3 text-right text-blue-400/80">-{fmtINR(result.pfEmployee)}</td>
-                      <td className="py-2 px-3 text-right text-blue-400/80">-{fmtINR(result.monthlyPF)}</td>
+                      <td className="py-2 px-3 text-right text-blue-700/80">-{fmtINR(result.pfEmployee)}</td>
+                      <td className="py-2 px-3 text-right text-blue-700/80">-{fmtINR(result.monthlyPF)}</td>
                     </tr>
-                    <tr className="border-b border-gray-800/50">
+                    <tr className="border-b border-stone-200/50">
                       <td className="py-2 px-3 pl-5">
-                        <span className="text-red-400/90">Professional Tax</span>
-                        <p className="text-xs text-gray-600">→ State government</p>
+                        <span className="text-red-600/90">Professional Tax</span>
+                        <p className="text-xs text-stone-600">→ State government</p>
                       </td>
-                      <td className="py-2 px-3 text-right text-red-400/80">-{fmtINR(result.profTaxAnnual)}</td>
-                      <td className="py-2 px-3 text-right text-red-400/80">-{fmtINR(result.monthlyProfTax)}</td>
+                      <td className="py-2 px-3 text-right text-red-600/80">-{fmtINR(result.profTaxAnnual)}</td>
+                      <td className="py-2 px-3 text-right text-red-600/80">-{fmtINR(result.monthlyProfTax)}</td>
                     </tr>
-                    <tr className="border-b border-gray-800">
+                    <tr className="border-b border-stone-200">
                       <td className="py-2 px-3 pl-5">
-                        <span className="text-red-400/90">Income Tax + Cess (TDS)</span>
-                        <p className="text-xs text-gray-600">→ Central government</p>
+                        <span className="text-red-600/90">Income Tax + Cess (TDS)</span>
+                        <p className="text-xs text-stone-600">→ Central government</p>
                       </td>
-                      <td className="py-2 px-3 text-right text-red-400/80">-{fmtINR(result.activeTax)}</td>
-                      <td className="py-2 px-3 text-right text-red-400/80">-{fmtINR(result.activeMonthlyTax)}</td>
+                      <td className="py-2 px-3 text-right text-red-600/80">-{fmtINR(result.activeTax)}</td>
+                      <td className="py-2 px-3 text-right text-red-600/80">-{fmtINR(result.activeMonthlyTax)}</td>
                     </tr>
                     <tr className="bg-violet-600/10">
-                      <td className="py-3 px-3 text-violet-300 font-bold">= Net Take-Home (Bank)</td>
-                      <td className="py-3 px-3 text-right text-violet-300 font-bold">{fmtINR(result.annualTakeHome)}</td>
-                      <td className="py-3 px-3 text-right text-violet-300 font-bold">{fmtINR(result.monthlyTakeHome)}</td>
+                      <td className="py-3 px-3 text-violet-700 font-bold">= Net Take-Home (Bank)</td>
+                      <td className="py-3 px-3 text-right text-violet-700 font-bold">{fmtINR(result.annualTakeHome)}</td>
+                      <td className="py-3 px-3 text-right text-violet-700 font-bold">{fmtINR(result.monthlyTakeHome)}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -806,10 +828,10 @@ export default function HandSalaryCalculatorPage() {
 
             {/* ── Monthly Payslip ── */}
             <div className="card">
-              <h3 className="text-sm font-semibold text-white mb-4">Monthly Payslip</h3>
-              <div className="grid sm:grid-cols-2 gap-0 border border-gray-700 rounded-xl overflow-hidden text-sm">
-                <div className="border-b sm:border-b-0 sm:border-r border-gray-700">
-                  <div className="bg-gray-800/60 px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">Earnings</div>
+              <h3 className="text-sm font-semibold text-stone-900 mb-4">Monthly Payslip</h3>
+              <div className="grid sm:grid-cols-2 gap-0 border border-stone-200 rounded-xl overflow-hidden text-sm">
+                <div className="border-b sm:border-b-0 sm:border-r border-stone-200">
+                  <div className="bg-stone-50/60 px-4 py-2 text-xs font-semibold text-stone-500 uppercase tracking-wider">Earnings</div>
                   <div className="divide-y divide-gray-800/50">
                     {[
                       ['Basic', result.basic / 12],
@@ -821,60 +843,60 @@ export default function HandSalaryCalculatorPage() {
                       ['Special Allow.', result.specialAllowance / 12],
                     ].map(([label, val]) => (
                       <div key={String(label)} className="flex justify-between px-4 py-2">
-                        <span className="text-gray-400">{String(label)}</span>
-                        <span className="text-gray-200">{fmtINR(Number(val))}</span>
+                        <span className="text-stone-500">{String(label)}</span>
+                        <span className="text-stone-800">{fmtINR(Number(val))}</span>
                       </div>
                     ))}
                   </div>
-                  <div className="flex justify-between px-4 py-2.5 bg-gray-800/40 border-t border-gray-700">
-                    <span className="font-semibold text-gray-200">Gross Pay</span>
+                  <div className="flex justify-between px-4 py-2.5 bg-stone-50/40 border-t border-stone-200">
+                    <span className="font-semibold text-stone-800">Gross Pay</span>
                     <span className="font-semibold text-gray-100">{fmtINR(result.monthlyGross)}</span>
                   </div>
                 </div>
                 <div>
-                  <div className="bg-gray-800/60 px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">Deductions</div>
+                  <div className="bg-stone-50/60 px-4 py-2 text-xs font-semibold text-stone-500 uppercase tracking-wider">Deductions</div>
                   <div className="divide-y divide-gray-800/50">
                     {pfEnabled && (
                       <div className="flex justify-between px-4 py-2">
                         <div>
-                          <span className="text-gray-400">Employee PF ({pfPct}%)</span>
-                          <p className="text-xs text-blue-400/70">→ Your EPF account</p>
+                          <span className="text-stone-500">Employee PF ({pfPct}%)</span>
+                          <p className="text-xs text-blue-700/70">→ Your EPF account</p>
                         </div>
-                        <span className="text-blue-400/80">{fmtINR(result.monthlyPF)}</span>
+                        <span className="text-blue-700/80">{fmtINR(result.monthlyPF)}</span>
                       </div>
                     )}
                     <div className="flex justify-between px-4 py-2">
                       <div>
-                        <span className="text-gray-400">Professional Tax</span>
-                        <p className="text-xs text-gray-600">→ State government</p>
+                        <span className="text-stone-500">Professional Tax</span>
+                        <p className="text-xs text-stone-600">→ State government</p>
                       </div>
-                      <span className="text-red-400/80">{fmtINR(result.monthlyProfTax)}</span>
+                      <span className="text-red-600/80">{fmtINR(result.monthlyProfTax)}</span>
                     </div>
                     <div className="flex justify-between px-4 py-2">
                       <div>
-                        <span className="text-gray-400">TDS / Income Tax</span>
-                        <p className="text-xs text-gray-600">→ Central government</p>
+                        <span className="text-stone-500">TDS / Income Tax</span>
+                        <p className="text-xs text-stone-600">→ Central government</p>
                       </div>
-                      <span className="text-red-400/80">{fmtINR(result.activeMonthlyTax)}</span>
+                      <span className="text-red-600/80">{fmtINR(result.activeMonthlyTax)}</span>
                     </div>
                   </div>
-                  <div className="flex justify-between px-4 py-2.5 bg-gray-800/40 border-t border-gray-700">
-                    <span className="font-semibold text-gray-200">Total Deductions</span>
-                    <span className="font-semibold text-red-400/80">
+                  <div className="flex justify-between px-4 py-2.5 bg-stone-50/40 border-t border-stone-200">
+                    <span className="font-semibold text-stone-800">Total Deductions</span>
+                    <span className="font-semibold text-red-600/80">
                       {fmtINR(result.monthlyPF + result.monthlyProfTax + result.activeMonthlyTax)}
                     </span>
                   </div>
                 </div>
               </div>
-              <div className="mt-0 border border-t-0 border-gray-700 rounded-b-xl bg-violet-600/10 flex justify-between items-center px-4 py-3">
-                <span className="font-bold text-violet-300">Net Pay (Take-Home)</span>
-                <span className="text-xl font-bold text-violet-300">{fmtINR(result.monthlyTakeHome)}</span>
+              <div className="mt-0 border border-t-0 border-stone-200 rounded-b-xl bg-violet-600/10 flex justify-between items-center px-4 py-3">
+                <span className="font-bold text-violet-700">Net Pay (Take-Home)</span>
+                <span className="text-xl font-bold text-violet-700">{fmtINR(result.monthlyTakeHome)}</span>
               </div>
             </div>
 
             {/* ── Exemptions & Tax Benefits ── */}
             <div className="card">
-              <h3 className="text-sm font-semibold text-white mb-3">Exemptions &amp; Tax Benefits</h3>
+              <h3 className="text-sm font-semibold text-stone-900 mb-3">Exemptions &amp; Tax Benefits</h3>
               <div className="space-y-3 text-sm">
                 {[
                   {
@@ -924,10 +946,10 @@ export default function HandSalaryCalculatorPage() {
                 ].map(item => (
                   <div key={item.label} className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
-                      <p className="text-gray-300 font-medium">{item.label}</p>
-                      <p className="text-xs text-gray-500 mt-0.5">{item.note}</p>
+                      <p className="text-stone-700 font-medium">{item.label}</p>
+                      <p className="text-xs text-stone-500 mt-0.5">{item.note}</p>
                     </div>
-                    <span className={`flex-shrink-0 text-xs px-2 py-0.5 rounded-full ${item.green ? 'bg-emerald-500/10 text-emerald-400' : 'bg-gray-700 text-gray-400'}`}>
+                    <span className={`flex-shrink-0 text-xs px-2 py-0.5 rounded-full ${item.green ? 'bg-emerald-50 text-emerald-700' : 'bg-stone-200 text-stone-500'}`}>
                       {item.badge}
                     </span>
                   </div>
@@ -937,28 +959,28 @@ export default function HandSalaryCalculatorPage() {
 
             {/* ── Tax Computation Detail ── */}
             <div className="card">
-              <h3 className="text-sm font-semibold text-white mb-3">Tax Computation — {regime === 'new' ? 'New' : 'Old'} Regime</h3>
+              <h3 className="text-sm font-semibold text-stone-900 mb-3">Tax Computation — {regime === 'new' ? 'New' : 'Old'} Regime</h3>
               <div className="space-y-2 text-sm">
-                <div className="flex justify-between text-gray-400">
+                <div className="flex justify-between text-stone-500">
                   <span>Gross Salary</span><span>{fmtINR(result.grossSalary)}</span>
                 </div>
                 {regime === 'new' ? (
                   <>
-                    <div className="flex justify-between text-gray-500 text-xs pl-3">
+                    <div className="flex justify-between text-stone-500 text-xs pl-3">
                       <span>− Standard Deduction</span><span>-{fmtINR(75000)}</span>
                     </div>
-                    <div className="flex justify-between text-gray-500 text-xs pl-3">
+                    <div className="flex justify-between text-stone-500 text-xs pl-3">
                       <span>− Professional Tax</span><span>-{fmtINR(result.profTaxAnnual)}</span>
                     </div>
                     {result.npsEmp > 0 && (
-                      <div className="flex justify-between text-gray-500 text-xs pl-3">
+                      <div className="flex justify-between text-stone-500 text-xs pl-3">
                         <span>− NPS Employer 80CCD(2)</span><span>-{fmtINR(result.npsEmp)}</span>
                       </div>
                     )}
-                    <div className="flex justify-between text-gray-300 font-medium border-t border-gray-700 pt-2">
+                    <div className="flex justify-between text-stone-700 font-medium border-t border-stone-200 pt-2">
                       <span>Taxable Income</span><span>{fmtINR(result.taxableNew)}</span>
                     </div>
-                    <div className="flex justify-between text-gray-500 text-xs pl-3">
+                    <div className="flex justify-between text-stone-500 text-xs pl-3">
                       <span>87A Rebate</span>
                       <span>{result.taxableNew <= 1200000 ? `−${fmtINR(Math.min(calcNewRegimeTax(result.taxableNew), 60000))} (full rebate)` : 'Not applicable (income > ₹12L)'}</span>
                     </div>
@@ -966,56 +988,56 @@ export default function HandSalaryCalculatorPage() {
                 ) : (
                   <>
                     {result.hraExemption > 0 && (
-                      <div className="flex justify-between text-gray-500 text-xs pl-3">
+                      <div className="flex justify-between text-stone-500 text-xs pl-3">
                         <span>− HRA Exemption</span><span>-{fmtINR(result.hraExemption)}</span>
                       </div>
                     )}
                     {result.ltaExempt > 0 && (
-                      <div className="flex justify-between text-gray-500 text-xs pl-3">
+                      <div className="flex justify-between text-stone-500 text-xs pl-3">
                         <span>− LTA Exemption</span><span>-{fmtINR(result.ltaExempt)}</span>
                       </div>
                     )}
                     {result.foodExempt > 0 && (
-                      <div className="flex justify-between text-gray-500 text-xs pl-3">
+                      <div className="flex justify-between text-stone-500 text-xs pl-3">
                         <span>− Food Coupon Exemption</span><span>-{fmtINR(result.foodExempt)}</span>
                       </div>
                     )}
-                    <div className="flex justify-between text-gray-500 text-xs pl-3">
+                    <div className="flex justify-between text-stone-500 text-xs pl-3">
                       <span>− Standard Deduction</span><span>-{fmtINR(50000)}</span>
                     </div>
-                    <div className="flex justify-between text-gray-500 text-xs pl-3">
+                    <div className="flex justify-between text-stone-500 text-xs pl-3">
                       <span>− Professional Tax</span><span>-{fmtINR(result.profTaxAnnual)}</span>
                     </div>
                     {result.deductions80C > 0 && (
-                      <div className="flex justify-between text-gray-500 text-xs pl-3">
+                      <div className="flex justify-between text-stone-500 text-xs pl-3">
                         <span>− 80C (Employee PF)</span><span>-{fmtINR(result.deductions80C)}</span>
                       </div>
                     )}
                     {result.npsEmp > 0 && (
-                      <div className="flex justify-between text-gray-500 text-xs pl-3">
+                      <div className="flex justify-between text-stone-500 text-xs pl-3">
                         <span>− NPS Employer 80CCD(2)</span><span>-{fmtINR(result.npsEmp)}</span>
                       </div>
                     )}
-                    <div className="flex justify-between text-gray-300 font-medium border-t border-gray-700 pt-2">
+                    <div className="flex justify-between text-stone-700 font-medium border-t border-stone-200 pt-2">
                       <span>Taxable Income</span><span>{fmtINR(result.taxableOld)}</span>
                     </div>
-                    <div className="flex justify-between text-gray-500 text-xs pl-3">
+                    <div className="flex justify-between text-stone-500 text-xs pl-3">
                       <span>87A Rebate</span>
                       <span>{result.taxableOld <= 500000 ? '−₹12,500 (full rebate)' : 'Not applicable (income > ₹5L)'}</span>
                     </div>
                   </>
                 )}
-                <div className="flex justify-between text-white font-semibold border-t border-gray-700 pt-2">
+                <div className="flex justify-between text-white font-semibold border-t border-stone-200 pt-2">
                   <span>Tax + 4% Cess</span>
-                  <span className="text-red-400">{fmtINR(regime === 'new' ? result.totalTaxNew : result.totalTaxOld)}</span>
+                  <span className="text-red-600">{fmtINR(regime === 'new' ? result.totalTaxNew : result.totalTaxOld)}</span>
                 </div>
               </div>
             </div>
 
             {/* ── Footer ── */}
-            <div className="rounded-xl border border-gray-700/50 bg-gray-800/30 p-4 text-xs text-gray-500 space-y-1.5">
-              <p><span className="text-gray-400 font-medium">FY 2026-27 (AY 2027-28):</span> Slabs unchanged per Union Budget 2026. New regime default. 87A rebate ₹60,000 for taxable ≤ ₹12L (effective zero tax ≤ ₹12.75L for salaried with std deduction).</p>
-              <p><span className="text-gray-400 font-medium">EPF:</span> Employee + Employer PF both go to your EPF account — not your bank. Withdrawal allowed on resignation (with conditions) or retirement.</p>
+            <div className="rounded-xl border border-stone-200/50 bg-stone-50/30 p-4 text-xs text-stone-500 space-y-1.5">
+              <p><span className="text-stone-500 font-medium">FY 2026-27 (AY 2027-28):</span> Slabs unchanged per Union Budget 2026. New regime default. 87A rebate ₹60,000 for taxable ≤ ₹12L (effective zero tax ≤ ₹12.75L for salaried with std deduction).</p>
+              <p><span className="text-stone-500 font-medium">EPF:</span> Employee + Employer PF both go to your EPF account — not your bank. Withdrawal allowed on resignation (with conditions) or retirement.</p>
               <p>PT capped at ₹2,500/year · Food coupon exemption ₹26,400/year (old regime) · Gratuity: 4.81% of basic, paid after 5 years of continuous service · Surcharge not included (applies for income &gt; ₹50L).</p>
             </div>
           </>

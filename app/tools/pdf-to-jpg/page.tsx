@@ -214,6 +214,28 @@ export default function PdfToJpgPage() {
       icon="📄"
       description="Convert every page of a PDF into high-quality JPG images. Extract all pages or specific pages. Free, no upload, works in your browser."
       relatedTools={RELATED}
+      faqs={[
+        {
+          q: 'Is this PDF-to-JPG converter free?',
+          a: 'Yes, 100% free. No watermarks, no sign-up, and no page limits.',
+        },
+        {
+          q: 'What does this tool do?',
+          a: 'Upload a PDF and the tool renders each page as a high-quality image. You can convert all pages or specify a range (e.g. "1-3, 5"), choose 72, 150, or 300 DPI resolution, and output as JPG or PNG. Images download individually or as a ZIP.',
+        },
+        {
+          q: 'Is my PDF uploaded to a server?',
+          a: 'No. The conversion uses PDF.js, which runs entirely in your browser. Your PDF never leaves your device.',
+        },
+        {
+          q: 'What is the maximum file size or page count?',
+          a: 'There is no enforced limit. Very large PDFs or high DPI settings (300 DPI with many pages) may be slow due to browser memory constraints.',
+        },
+        {
+          q: 'When should I use PNG vs JPG output?',
+          a: 'Choose PNG for documents with sharp text, diagrams, or transparency — it is lossless. Choose JPG for scanned photos or presentations where a smaller file size is more important than pixel-perfect quality.',
+        },
+      ]}
     >
       <div className="space-y-6">
 

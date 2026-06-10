@@ -216,6 +216,28 @@ export default function CompressImagePage() {
         { name: 'PDF to Markdown', href: '/tools/pdf-to-markdown', icon: '📄' },
         { name: 'QR Code Generator', href: '/tools/qr-code', icon: '⬛' },
       ]}
+      faqs={[
+        {
+          q: 'Is this image compressor free?',
+          a: 'Yes, 100% free with no file limits, no watermarks, and no account required.',
+        },
+        {
+          q: 'How does the image compressor work?',
+          a: 'Images are compressed entirely in your browser using the HTML5 Canvas API. You choose a quality level (10–100%) and an output format (original, JPEG, PNG, or WebP). JPEG and WebP support lossy compression for significant size reduction; PNG is lossless so quality affects speed but not visual output.',
+        },
+        {
+          q: 'Are my images uploaded to a server?',
+          a: 'No. All compression happens locally in your browser. Your images never leave your device and are not stored anywhere.',
+        },
+        {
+          q: 'What file formats are supported?',
+          a: 'You can upload JPG, PNG, and WebP images. You can output to any of those formats as well. GIF and other formats are not currently supported.',
+        },
+        {
+          q: 'How does this compare to paid tools like TinyPNG or Squoosh?',
+          a: 'Paid or freemium tools like TinyPNG upload your files to their servers and may apply more advanced compression algorithms. This tool is entirely client-side and free with no limits, making it ideal for everyday compression tasks where privacy matters.',
+        },
+      ]}
     >
       <div className="space-y-6">
 
@@ -376,7 +398,7 @@ export default function CompressImagePage() {
                       {/* Remove */}
                       <button
                         onClick={e => { e.stopPropagation(); removeFile(entry.id); }}
-                        className="ml-1 text-stone-300 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100"
+                        className="ml-1 text-stone-300 hover:text-red-600 transition-colors opacity-0 group-hover:opacity-100"
                         title="Remove"
                       >
                         ✕

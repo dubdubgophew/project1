@@ -360,7 +360,7 @@ td.g{color:#6b7280}
 function TemplatePicker({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   return (
     <div className="card">
-      <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-3">Template</h2>
+      <h2 className="text-sm font-semibold text-violet-600 uppercase tracking-wider mb-3">Template</h2>
       <div className="grid grid-cols-5 gap-2">
         {TEMPLATES.map(t => (
           <button
@@ -369,8 +369,8 @@ function TemplatePicker({ value, onChange }: { value: string; onChange: (v: stri
             onClick={() => onChange(t.id)}
             className={`flex flex-col items-center gap-2 p-2.5 rounded-xl border transition-all ${
               value === t.id
-                ? 'border-violet-500 bg-violet-500/10'
-                : 'border-gray-700 hover:border-gray-600'
+                ? 'border-violet-500 bg-violet-50'
+                : 'border-stone-200 hover:border-stone-300'
             }`}
           >
             <div className="w-full rounded overflow-hidden" style={{ background: '#fff', border: '1px solid #e5e7eb' }}>
@@ -382,7 +382,7 @@ function TemplatePicker({ value, onChange }: { value: string; onChange: (v: stri
                 <div className="h-0.5 rounded bg-gray-200 w-3/5" />
               </div>
             </div>
-            <span className="text-[10px] font-medium text-gray-300">{t.name}</span>
+            <span className="text-[10px] font-medium text-stone-700">{t.name}</span>
           </button>
         ))}
       </div>
@@ -544,7 +544,7 @@ function NumInput({ label, value, onChange, prefix, min = 0, step = 1 }: {
     <div>
       <label className="label text-xs">{label}</label>
       <div className="relative">
-        {prefix && <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">{prefix}</span>}
+        {prefix && <span className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500 text-sm">{prefix}</span>}
         <input
           type="number" min={min} step={step} value={value || ''}
           onChange={e => onChange(parseFloat(e.target.value) || 0)}
@@ -659,9 +659,9 @@ export default function PaystubGeneratorPage() {
         rateLimited={true}
       >
         <div className="animate-pulse space-y-4">
-          <div className="h-10 bg-gray-800 rounded-xl w-3/4" />
-          <div className="h-32 bg-gray-800 rounded-xl" />
-          <div className="h-32 bg-gray-800 rounded-xl" />
+          <div className="h-10 bg-stone-50 rounded-xl w-3/4" />
+          <div className="h-32 bg-stone-50 rounded-xl" />
+          <div className="h-32 bg-stone-50 rounded-xl" />
         </div>
       </ToolLayout>
     );
@@ -680,8 +680,8 @@ export default function PaystubGeneratorPage() {
         <div className="space-y-6">
           <div className="card text-center py-12 px-6">
             <div className="text-5xl mb-4">🔐</div>
-            <h2 className="text-2xl font-bold text-white mb-2">Sign in to generate pay stubs</h2>
-            <p className="text-gray-400 mb-6">Pay Stub Generator requires a free account. Takes 30 seconds.</p>
+            <h2 className="text-2xl font-bold text-stone-900 mb-2">Sign in to generate pay stubs</h2>
+            <p className="text-stone-500 mb-6">Pay Stub Generator requires a free account. Takes 30 seconds.</p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/login" className="btn-secondary px-8 py-3">Sign In</Link>
               <Link href="/signup" className="btn-primary px-8 py-3">Create Free Account</Link>
@@ -696,40 +696,40 @@ export default function PaystubGeneratorPage() {
                   <div className="flex justify-between items-start">
                     <div>
                       <div className="font-bold text-base">Acme Corporation</div>
-                      <div className="text-gray-400 text-xs mt-0.5">123 Business Ave, New York, NY</div>
-                      <div className="text-gray-500 text-xs">EIN: 12-3456789</div>
+                      <div className="text-stone-500 text-xs mt-0.5">123 Business Ave, New York, NY</div>
+                      <div className="text-stone-500 text-xs">EIN: 12-3456789</div>
                     </div>
                     <div className="text-right">
                       <div className="text-[#7fb3d3] font-bold text-sm">PAY STATEMENT</div>
-                      <div className="text-gray-400 text-xs mt-0.5">Pay Date: 2025-01-15</div>
-                      <div className="text-gray-400 text-xs">Bi-Weekly</div>
+                      <div className="text-stone-500 text-xs mt-0.5">Pay Date: 2025-01-15</div>
+                      <div className="text-stone-500 text-xs">Bi-Weekly</div>
                     </div>
                   </div>
                 </div>
                 <div className="px-5 py-3 bg-gray-50 border-b border-gray-200 flex justify-between">
                   <div>
                     <div className="font-semibold text-sm">Jane Smith</div>
-                    <div className="text-gray-500">Software Engineer</div>
+                    <div className="text-stone-500">Software Engineer</div>
                   </div>
-                  <div className="text-gray-500">ID: EMP-0042</div>
+                  <div className="text-stone-500">ID: EMP-0042</div>
                 </div>
                 <div className="px-5 py-3">
                   <div className="flex justify-between font-semibold text-gray-700 border-b border-gray-200 pb-1 mb-2 text-xs tracking-wider uppercase">
                     <span>Earnings</span><span>Amount</span>
                   </div>
-                  <div className="flex justify-between py-1"><span className="text-gray-600">Regular Pay (Bi-Weekly)</span><span>$3,846.15</span></div>
+                  <div className="flex justify-between py-1"><span className="text-stone-600">Regular Pay (Bi-Weekly)</span><span>$3,846.15</span></div>
                   <div className="flex justify-between py-1 border-t border-gray-100 font-semibold"><span>Gross Pay</span><span>$3,846.15</span></div>
                 </div>
                 <div className="px-5 py-3 border-t border-gray-100">
                   <div className="flex justify-between font-semibold text-gray-700 border-b border-gray-200 pb-1 mb-2 text-xs tracking-wider uppercase">
                     <span>Taxes &amp; Withholding</span><span>Amount</span>
                   </div>
-                  <div className="flex justify-between py-1 text-gray-600"><span>Federal Income Tax</span><span className="text-red-600">-$476.00</span></div>
-                  <div className="flex justify-between py-1 text-gray-600"><span>California Tax</span><span className="text-red-600">-$213.00</span></div>
-                  <div className="flex justify-between py-1 text-gray-600"><span>Social Security (6.2%)</span><span className="text-red-600">-$238.46</span></div>
-                  <div className="flex justify-between py-1 text-gray-600"><span>Medicare (1.45%)</span><span className="text-red-600">-$55.77</span></div>
+                  <div className="flex justify-between py-1 text-stone-600"><span>Federal Income Tax</span><span className="text-red-600">-$476.00</span></div>
+                  <div className="flex justify-between py-1 text-stone-600"><span>California Tax</span><span className="text-red-600">-$213.00</span></div>
+                  <div className="flex justify-between py-1 text-stone-600"><span>Social Security (6.2%)</span><span className="text-red-600">-$238.46</span></div>
+                  <div className="flex justify-between py-1 text-stone-600"><span>Medicare (1.45%)</span><span className="text-red-600">-$55.77</span></div>
                 </div>
-                <div className="px-5 py-4 bg-[#1a5276] text-white">
+                <div className="px-5 py-4 bg-[#1a5276] text-stone-900">
                   <div className="flex justify-between items-center">
                     <div>
                       <div className="font-bold text-sm">NET PAY</div>
@@ -780,14 +780,14 @@ export default function PaystubGeneratorPage() {
           <TemplatePicker value={template} onChange={setTemplate} />
 
           <div className="card">
-            <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-4">Country / Region</h2>
+            <h2 className="text-sm font-semibold text-violet-600 uppercase tracking-wider mb-4">Country / Region</h2>
             <div className="grid grid-cols-4 gap-2">
               {COUNTRIES.map(c => (
                 <button key={c.code} type="button" onClick={() => setCountry(c.code)}
                   className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border text-center transition-all ${
                     country === c.code
-                      ? 'bg-violet-500/20 border-violet-500/40 text-violet-300'
-                      : 'bg-gray-800/40 border-gray-700 text-gray-400 hover:border-gray-600 hover:text-gray-300'
+                      ? 'bg-violet-500/20 border-violet-500/40 text-violet-700'
+                      : 'bg-stone-50/40 border-stone-200 text-stone-500 hover:border-stone-300 hover:text-stone-700'
                   }`}>
                   <span className="text-xl">{c.flag}</span>
                   <span className="text-xs font-medium leading-tight">{c.name.split(' ')[0]}</span>
@@ -797,7 +797,7 @@ export default function PaystubGeneratorPage() {
           </div>
 
           <div className="card">
-            <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-4">Pay Details</h2>
+            <h2 className="text-sm font-semibold text-violet-600 uppercase tracking-wider mb-4">Pay Details</h2>
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label className="label text-xs">Gross Pay This Period ({sym})</label>
@@ -826,7 +826,7 @@ export default function PaystubGeneratorPage() {
 
           {country === 'US' && (
             <div className="card">
-              <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-4">Tax Settings (USA)</h2>
+              <h2 className="text-sm font-semibold text-violet-600 uppercase tracking-wider mb-4">Tax Settings (USA)</h2>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="label text-xs">Filing Status</label>
@@ -850,7 +850,7 @@ export default function PaystubGeneratorPage() {
 
           {country === 'CA' && (
             <div className="card">
-              <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-4">Tax Settings (Canada)</h2>
+              <h2 className="text-sm font-semibold text-violet-600 uppercase tracking-wider mb-4">Tax Settings (Canada)</h2>
               <div>
                 <label className="label text-xs">Province / Territory</label>
                 <select value={caProv} onChange={e => setCaProv(e.target.value)} className="input text-sm">
@@ -862,7 +862,7 @@ export default function PaystubGeneratorPage() {
 
           {country === 'US' && (
             <div className="card">
-              <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-4">Pre-Tax Deductions</h2>
+              <h2 className="text-sm font-semibold text-violet-600 uppercase tracking-wider mb-4">Pre-Tax Deductions</h2>
               <div className="grid sm:grid-cols-2 gap-4">
                 <NumInput label="401(k) %" value={k401} onChange={setK401} min={0} step={0.5} />
                 <NumInput label="Health Insurance (per period)" value={health} onChange={setHealth} prefix={sym} />
@@ -873,12 +873,12 @@ export default function PaystubGeneratorPage() {
           )}
 
           <div className="card">
-            <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-4">Post-Tax Deductions (optional)</h2>
+            <h2 className="text-sm font-semibold text-violet-600 uppercase tracking-wider mb-4">Post-Tax Deductions (optional)</h2>
             <NumInput label="Other Deductions (per period)" value={otherPost} onChange={setOtherPost} prefix={sym} />
           </div>
 
           <div className="card">
-            <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-4">Employer Information</h2>
+            <h2 className="text-sm font-semibold text-violet-600 uppercase tracking-wider mb-4">Employer Information</h2>
             <div className="space-y-3">
               <input value={coName} onChange={e => setCoName(e.target.value)} placeholder="Company Name" className="input text-sm" />
               <input value={coAddr} onChange={e => setCoAddr(e.target.value)} placeholder="Company Address" className="input text-sm" />
@@ -887,7 +887,7 @@ export default function PaystubGeneratorPage() {
           </div>
 
           <div className="card">
-            <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-4">Employee Information</h2>
+            <h2 className="text-sm font-semibold text-violet-600 uppercase tracking-wider mb-4">Employee Information</h2>
             <div className="grid sm:grid-cols-2 gap-3">
               <input value={empName}  onChange={e => setEmpName(e.target.value)}  placeholder="Employee Full Name" className="input text-sm" />
               <input value={empTitle} onChange={e => setEmpTitle(e.target.value)} placeholder="Job Title" className="input text-sm" />
@@ -914,7 +914,7 @@ export default function PaystubGeneratorPage() {
               </button>
 
               {dlError && (
-                <div className="flex items-start gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs">
+                <div className="flex items-start gap-2 p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-xs">
                   <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />{dlError}
                 </div>
               )}
@@ -943,17 +943,17 @@ export default function PaystubGeneratorPage() {
                 <div className="px-5 py-3 bg-gray-50 border-b border-gray-200 flex justify-between">
                   <div>
                     <div className="font-semibold text-sm">{empName || 'Employee Name'}</div>
-                    {empTitle && <div className="text-gray-500">{empTitle}</div>}
-                    {empAddr && <div className="text-gray-500">{empAddr}</div>}
+                    {empTitle && <div className="text-stone-500">{empTitle}</div>}
+                    {empAddr && <div className="text-stone-500">{empAddr}</div>}
                   </div>
-                  {empId && <div className="text-gray-500">ID: {empId}</div>}
+                  {empId && <div className="text-stone-500">ID: {empId}</div>}
                 </div>
 
                 <div className="px-5 py-3">
                   <div className="flex justify-between font-semibold text-gray-700 border-b border-gray-200 pb-1 mb-2 text-xs tracking-wider uppercase">
                     <span>Earnings</span><span>Amount</span>
                   </div>
-                  <div className="flex justify-between py-1"><span className="text-gray-600">Regular Pay ({periodLabel})</span><span>{money(calc.gross, sym)}</span></div>
+                  <div className="flex justify-between py-1"><span className="text-stone-600">Regular Pay ({periodLabel})</span><span>{money(calc.gross, sym)}</span></div>
                   <div className="flex justify-between py-1 border-t border-gray-100 font-semibold"><span>Gross Pay</span><span>{money(calc.gross, sym)}</span></div>
                 </div>
 
@@ -963,11 +963,11 @@ export default function PaystubGeneratorPage() {
                       <span>Pre-Tax Deductions</span><span>Amount</span>
                     </div>
                     {calc.preTaxLines.map((l, i) => (
-                      <div key={i} className="flex justify-between py-1 text-gray-600">
+                      <div key={i} className="flex justify-between py-1 text-stone-600">
                         <span>{l.label}</span><span className="text-red-600">-{money(l.amount, sym)}</span>
                       </div>
                     ))}
-                    <div className="flex justify-between py-1 border-t border-gray-100 text-gray-600">
+                    <div className="flex justify-between py-1 border-t border-gray-100 text-stone-600">
                       <span>Taxable Gross</span><span className="font-medium">{money(calc.taxableGross, sym)}</span>
                     </div>
                   </div>
@@ -978,8 +978,8 @@ export default function PaystubGeneratorPage() {
                     <span>Taxes &amp; Withholding</span><span>Amount</span>
                   </div>
                   {calc.taxLines.map((l, i) => (
-                    <div key={i} className="flex justify-between py-1 text-gray-600">
-                      <span>{l.label}{l.note && <span className="text-gray-400 ml-1 text-xs">({l.note})</span>}</span>
+                    <div key={i} className="flex justify-between py-1 text-stone-600">
+                      <span>{l.label}{l.note && <span className="text-stone-500 ml-1 text-xs">({l.note})</span>}</span>
                       <span className="text-red-600">-{money(l.amount, sym)}</span>
                     </div>
                   ))}
@@ -991,7 +991,7 @@ export default function PaystubGeneratorPage() {
                       <span>Post-Tax Deductions</span><span>Amount</span>
                     </div>
                     {calc.postTaxLines.map((l, i) => (
-                      <div key={i} className="flex justify-between py-1 text-gray-600">
+                      <div key={i} className="flex justify-between py-1 text-stone-600">
                         <span>{l.label}</span><span className="text-red-600">-{money(l.amount, sym)}</span>
                       </div>
                     ))}
@@ -1010,9 +1010,9 @@ export default function PaystubGeneratorPage() {
 
                 {calc.employerLines.length > 0 && (
                   <div className="px-5 py-3 bg-gray-50 border-t border-gray-200">
-                    <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Employer Contributions (not deducted from your pay)</div>
+                    <div className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Employer Contributions (not deducted from your pay)</div>
                     {calc.employerLines.map((l, i) => (
-                      <div key={i} className="flex justify-between py-0.5 text-gray-500 text-xs">
+                      <div key={i} className="flex justify-between py-0.5 text-stone-500 text-xs">
                         <span>{l.label}{l.note ? ` (${l.note})` : ''}</span><span>{money(l.amount, sym)}</span>
                       </div>
                     ))}
@@ -1020,12 +1020,12 @@ export default function PaystubGeneratorPage() {
                 )}
 
                 <div className="px-5 py-3 border-t border-gray-200 bg-gray-50 grid grid-cols-3 gap-2 text-center">
-                  <div><div className="text-gray-500 text-xs">Gross Pay</div><div className="font-semibold text-sm">{money(calc.gross, sym)}</div></div>
-                  <div><div className="text-gray-500 text-xs">Total Deducted</div><div className="font-semibold text-sm text-red-600">-{money(calc.totalWithheld, sym)}</div></div>
-                  <div><div className="text-gray-500 text-xs">Net Pay</div><div className="font-semibold text-sm text-green-700">{money(calc.net, sym)}</div></div>
+                  <div><div className="text-stone-500 text-xs">Gross Pay</div><div className="font-semibold text-sm">{money(calc.gross, sym)}</div></div>
+                  <div><div className="text-stone-500 text-xs">Total Deducted</div><div className="font-semibold text-sm text-red-600">-{money(calc.totalWithheld, sym)}</div></div>
+                  <div><div className="text-stone-500 text-xs">Net Pay</div><div className="font-semibold text-sm text-green-700">{money(calc.net, sym)}</div></div>
                 </div>
 
-                <div className="px-5 py-2 text-center text-gray-400 text-xs border-t border-gray-100">
+                <div className="px-5 py-2 text-center text-stone-500 text-xs border-t border-gray-100">
                   Free pay stub generated on Formly Tools · formly.tools · Tax tables 2026
                 </div>
               </div>
@@ -1033,9 +1033,9 @@ export default function PaystubGeneratorPage() {
               })()}
             </>
           ) : (
-            <div className="card border-dashed border-gray-700 text-center py-16">
+            <div className="card border-dashed border-stone-200 text-center py-16">
               <div className="text-4xl mb-3">🧾</div>
-              <p className="text-gray-500 text-sm">Enter gross pay above to see your live pay stub preview</p>
+              <p className="text-stone-500 text-sm">Enter gross pay above to see your live pay stub preview</p>
             </div>
           )}
         </div>

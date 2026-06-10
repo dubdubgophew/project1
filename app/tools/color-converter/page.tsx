@@ -168,11 +168,11 @@ function ColorSwatch({ hex, label, small }: { hex: string; label: string; small?
         style={{ background: hex }}
       />
       {!small && (
-        <span className="text-xs text-gray-500 font-mono group-hover:text-gray-300 transition-colors">
+        <span className="text-xs text-stone-500 font-mono group-hover:text-stone-700 transition-colors">
           {copied ? 'Copied!' : label}
         </span>
       )}
-      {small && copied && <span className="text-xs text-emerald-400">✓</span>}
+      {small && copied && <span className="text-xs text-emerald-700">✓</span>}
     </button>
   );
 }
@@ -217,6 +217,13 @@ export default function ColorConverterPage() {
         { name: 'Regex Tester', href: '/tools/regex-tester', icon: '🔍' },
         { name: 'Password Generator', href: '/tools/password-generator', icon: '🔑' },
       ]}
+      faqs={[
+        { q: 'Is this color converter free?', a: 'Yes, completely free with no account or sign-up required. All color format conversions and palette tools are available immediately.' },
+        { q: 'What color formats are supported?', a: 'HEX (3- and 6-digit), RGB, HSL, HSV, and CMYK. You can type in any of these formats and the tool instantly converts to all others. The native color picker input also accepts any browser-supported color.' },
+        { q: 'How accurate are the conversions?', a: 'Conversions follow standard mathematical formulas for each color model. RGB-to-CMYK uses the standard (no ICC profile) formula, which is accurate for screen colors. For print work, always verify with a color-managed tool.' },
+        { q: 'What are common use cases?', a: 'Finding the HEX code from a design tool that outputs RGB, converting brand colors between web (HEX/RGB) and print (CMYK) formats, generating tints and shades for a design system, and picking harmonious colors using the complementary and triadic palette.' },
+        { q: 'Is my color data private?', a: 'Yes. All conversions and palette calculations happen entirely in your browser — no color data is ever sent to any server.' },
+      ]}
     >
       <div className="space-y-5">
         {/* Input + Preview */}
@@ -232,13 +239,13 @@ export default function ColorConverterPage() {
             />
             <input
               type="color"
-              className="w-12 h-12 rounded-xl border border-gray-700 bg-gray-800 cursor-pointer p-1"
+              className="w-12 h-12 rounded-xl border border-stone-200 bg-stone-50 cursor-pointer p-1"
               value={hex ?? '#000000'}
               onChange={e => setInput(e.target.value)}
             />
           </div>
           {!rgb && input && (
-            <p className="text-red-400 text-xs mt-2">Could not parse color. Try #RRGGBB, rgb(r,g,b), or hsl(h,s%,l%)</p>
+            <p className="text-red-600 text-xs mt-2">Could not parse color. Try #RRGGBB, rgb(r,g,b), or hsl(h,s%,l%)</p>
           )}
         </div>
 
@@ -252,16 +259,16 @@ export default function ColorConverterPage() {
 
             {/* Format list */}
             <div className="card space-y-2">
-              <h3 className="text-sm font-semibold text-white mb-3">Color Formats</h3>
+              <h3 className="text-sm font-semibold text-stone-900 mb-3">Color Formats</h3>
               {formats.map(({ key, label, value }) => (
-                <div key={key} className="flex items-center justify-between gap-3 py-2 border-b border-gray-800 last:border-0">
-                  <span className="text-xs font-semibold text-violet-400 w-10 shrink-0">{label}</span>
-                  <span className="flex-1 font-mono text-sm text-gray-200">{value}</span>
+                <div key={key} className="flex items-center justify-between gap-3 py-2 border-b border-stone-200 last:border-0">
+                  <span className="text-xs font-semibold text-violet-600 w-10 shrink-0">{label}</span>
+                  <span className="flex-1 font-mono text-sm text-stone-800">{value}</span>
                   <button
                     onClick={() => handleCopy(key, value)}
-                    className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-lg bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700 transition-colors shrink-0"
+                    className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-lg bg-stone-50 text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-colors shrink-0"
                   >
-                    {copiedKey === key ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                    {copiedKey === key ? <Check className="w-3 h-3 text-emerald-700" /> : <Copy className="w-3 h-3" />}
                     {copiedKey === key ? 'Copied!' : 'Copy'}
                   </button>
                 </div>
@@ -270,7 +277,7 @@ export default function ColorConverterPage() {
 
             {/* Tints */}
             <div className="card">
-              <h3 className="text-sm font-semibold text-white mb-3">Tints (lighter)</h3>
+              <h3 className="text-sm font-semibold text-stone-900 mb-3">Tints (lighter)</h3>
               <div className="flex gap-2">
                 {[rgb, ...tints].map((c, i) => (
                   <ColorSwatch key={i} hex={rgbToHex(c)} label={rgbToHex(c)} />
@@ -280,7 +287,7 @@ export default function ColorConverterPage() {
 
             {/* Shades */}
             <div className="card">
-              <h3 className="text-sm font-semibold text-white mb-3">Shades (darker)</h3>
+              <h3 className="text-sm font-semibold text-stone-900 mb-3">Shades (darker)</h3>
               <div className="flex gap-2">
                 {[rgb, ...shades].map((c, i) => (
                   <ColorSwatch key={i} hex={rgbToHex(c)} label={rgbToHex(c)} />
@@ -291,28 +298,28 @@ export default function ColorConverterPage() {
             {/* Harmonies */}
             {comp && tri1 && tri2 && (
               <div className="card">
-                <h3 className="text-sm font-semibold text-white mb-3">Color Harmonies</h3>
+                <h3 className="text-sm font-semibold text-stone-900 mb-3">Color Harmonies</h3>
                 <div className="space-y-3">
                   <div>
-                    <p className="text-xs text-gray-500 mb-2">Complementary</p>
+                    <p className="text-xs text-stone-500 mb-2">Complementary</p>
                     <div className="flex gap-3">
                       <div className="flex flex-col items-center gap-1">
                         <div className="w-12 h-12 rounded-lg border border-white/10" style={{ background: hex }} />
-                        <span className="text-xs text-gray-500 font-mono">{hex}</span>
+                        <span className="text-xs text-stone-500 font-mono">{hex}</span>
                       </div>
                       <div className="flex flex-col items-center gap-1">
                         <div className="w-12 h-12 rounded-lg border border-white/10" style={{ background: rgbToHex(comp) }} />
-                        <span className="text-xs text-gray-500 font-mono">{rgbToHex(comp)}</span>
+                        <span className="text-xs text-stone-500 font-mono">{rgbToHex(comp)}</span>
                       </div>
                     </div>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 mb-2">Triadic</p>
+                    <p className="text-xs text-stone-500 mb-2">Triadic</p>
                     <div className="flex gap-3">
                       {[rgb, tri1, tri2].map((c, i) => (
                         <div key={i} className="flex flex-col items-center gap-1">
                           <div className="w-12 h-12 rounded-lg border border-white/10" style={{ background: rgbToHex(c) }} />
-                          <span className="text-xs text-gray-500 font-mono">{rgbToHex(c)}</span>
+                          <span className="text-xs text-stone-500 font-mono">{rgbToHex(c)}</span>
                         </div>
                       ))}
                     </div>

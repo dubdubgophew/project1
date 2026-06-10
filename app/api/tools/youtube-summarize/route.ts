@@ -15,6 +15,8 @@ function extractVideoId(url: string): string | null {
     /(?:youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{11})/,
     /(?:youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
     /(?:youtube\.com\/v\/)([a-zA-Z0-9_-]{11})/,
+    /(?:youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/,
+    /(?:youtube\.com\/live\/)([a-zA-Z0-9_-]{11})/,
   ];
   for (const pattern of patterns) {
     const match = url.match(pattern);
@@ -74,20 +76,24 @@ export async function POST(req: NextRequest) {
       [
         {
           role: 'system',
-          content: `You are an expert content analyst. Summarize the YouTube video transcript.
+          content: `You are an expert content analyst. Summarize the YouTube video transcript precisely.
 
 Return ONLY valid JSON in this exact format:
 {
   "title": "Inferred video title or topic (max 80 chars)",
-  "summary": "2-3 paragraph summary of the entire video content",
-  "keyPoints": ["Point 1", "Point 2", "Point 3", "Point 4", "Point 5", "Point 6", "Point 7"],
+  "summary": "2-3 paragraph comprehensive summary covering the main argument, key findings, and conclusion",
+  "keyPoints": ["Specific actionable point 1", "Point 2", "Point 3", "Point 4", "Point 5", "Point 6", "Point 7", "Point 8"],
   "timestamps": [
-    {"time": "0:00", "topic": "Introduction topic"},
-    {"time": "2:30", "topic": "Second major topic"}
+    {"time": "0:00", "topic": "Introduction — what is covered"},
+    {"time": "2:30", "topic": "Second major topic or section"}
   ]
 }
 
-Make the summary comprehensive, the key points actionable, and timestamps approximate based on content flow.`,
+Rules:
+- Summary must cover the ENTIRE video, not just the beginning
+- Key points must be specific and actionable — not vague
+- Include at least 5 timestamps for videos with multiple sections
+- If the video is very short (<5 min), fewer timestamps are OK`,
         },
         {
           role: 'user',

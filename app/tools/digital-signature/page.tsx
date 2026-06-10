@@ -447,13 +447,35 @@ export default function DigitalSignaturePage() {
         { name: 'Resume Builder',     href: '/tools/resume-builder',     icon: '📋' },
       ]}
       rateLimited={false}
+      faqs={[
+        {
+          q: 'Is the digital signature creator free?',
+          a: 'Yes, completely free. No account, subscription, or watermark — create, save, and download as many signatures as you need.',
+        },
+        {
+          q: 'What can I do with this tool?',
+          a: 'You can draw a freehand signature with your mouse or touch screen, type your name and choose from several calligraphy fonts, or upload an existing signature image. You can then download the signature as a PNG, place it on a document image, generate initials, and download a timestamped signature certificate.',
+        },
+        {
+          q: 'Is my signature data private?',
+          a: 'Yes. Everything runs client-side in your browser. Your signature is never sent to any server. The "Save Signature" feature stores signatures locally in your browser\'s localStorage — they stay on your device only.',
+        },
+        {
+          q: 'Is a digital signature created here legally binding?',
+          a: 'This tool creates an image of your signature for informal use (PDFs, forms, emails). It does not produce a cryptographically signed document with a certificate authority. For legally binding e-signatures with audit trails (e.g. DocuSign-level), you would need a qualified electronic signature service.',
+        },
+        {
+          q: 'What file formats can I download?',
+          a: 'Signatures download as PNG files with a transparent background. Signed documents are downloaded as PNG images. A plain-text certificate of signing can also be downloaded or copied to your clipboard.',
+        },
+      ]}
     >
       <div className="space-y-6">
 
         {/* ── 1. Signer Name ── */}
         <div className="card">
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Signer Name <span className="text-gray-500 font-normal">(optional)</span>
+          <label className="block text-sm font-medium text-stone-700 mb-2">
+            Signer Name <span className="text-stone-500 font-normal">(optional)</span>
           </label>
           <input
             type="text"
@@ -462,7 +484,7 @@ export default function DigitalSignaturePage() {
             placeholder="e.g. Jane Smith"
             className="input w-full"
           />
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-stone-500 mt-1">
             Used for certificate, saved signature labels, and initials generator.
           </p>
         </div>
@@ -470,7 +492,7 @@ export default function DigitalSignaturePage() {
         {/* ── 2. Main Signature Creation Card ── */}
         <div className="card">
           {/* Tab bar */}
-          <div className="flex gap-1 mb-6 bg-gray-800/60 rounded-xl p-1">
+          <div className="flex gap-1 mb-6 bg-stone-50/60 rounded-xl p-1">
             {([
               { id: 'draw',   label: 'Draw',   icon: <PenLine  className="w-4 h-4" /> },
               { id: 'type',   label: 'Type',   icon: <Type     className="w-4 h-4" /> },
@@ -482,7 +504,7 @@ export default function DigitalSignaturePage() {
                 className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-all ${
                   mode === tab.id
                     ? 'bg-violet-600 text-white shadow'
-                    : 'text-gray-400 hover:text-gray-200'
+                    : 'text-stone-500 hover:text-stone-800'
                 }`}
               >
                 {tab.icon}
@@ -514,19 +536,19 @@ export default function DigitalSignaturePage() {
                 {/* Sign-here prompt, fades away once drawing starts */}
                 {!hasDrawing && (
                   <div className="absolute inset-0 flex flex-col items-end justify-end pb-10 pr-8 pointer-events-none">
-                    <span className="text-gray-300 text-xs tracking-wide">✒ Sign here</span>
+                    <span className="text-stone-700 text-xs tracking-wide">✒ Sign here</span>
                   </div>
                 )}
                 {isDrawing && (
                   <div className="absolute top-2 right-3 pointer-events-none">
-                    <span className="text-violet-400 text-[10px] font-semibold tracking-wider uppercase opacity-80">● Recording</span>
+                    <span className="text-violet-600 text-[10px] font-semibold tracking-wider uppercase opacity-80">● Recording</span>
                   </div>
                 )}
               </div>
 
               {/* Color picker */}
               <div>
-                <p className="text-xs text-gray-400 mb-2 font-medium">Ink Color</p>
+                <p className="text-xs text-stone-500 mb-2 font-medium">Ink Color</p>
                 <div className="flex gap-2 flex-wrap">
                   {COLORS.map(c => (
                     <button
@@ -547,7 +569,7 @@ export default function DigitalSignaturePage() {
 
               {/* Stroke width */}
               <div>
-                <p className="text-xs text-gray-400 mb-2 font-medium">
+                <p className="text-xs text-stone-500 mb-2 font-medium">
                   Stroke Width: {strokeWidth}px
                 </p>
                 <input
@@ -587,7 +609,7 @@ export default function DigitalSignaturePage() {
             <div className="space-y-4">
               {/* Name input */}
               <div>
-                <label className="text-xs text-gray-400 font-medium mb-1 block">
+                <label className="text-xs text-stone-500 font-medium mb-1 block">
                   Type your signature
                 </label>
                 <input
@@ -601,7 +623,7 @@ export default function DigitalSignaturePage() {
 
               {/* Font previews */}
               <div>
-                <p className="text-xs text-gray-400 font-medium mb-2">Choose a font</p>
+                <p className="text-xs text-stone-500 font-medium mb-2">Choose a font</p>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {FONTS.map((font, i) => (
                     <button
@@ -609,11 +631,11 @@ export default function DigitalSignaturePage() {
                       onClick={() => setSelectedFont(i)}
                       className={`p-3 rounded-xl border-2 transition-all text-left ${
                         selectedFont === i
-                          ? 'border-violet-500 bg-violet-500/10'
-                          : 'border-gray-700 hover:border-gray-500 bg-gray-800/40'
+                          ? 'border-violet-500 bg-violet-50'
+                          : 'border-stone-200 hover:border-gray-500 bg-stone-50/40'
                       }`}
                     >
-                      <p className="text-xs text-gray-500 mb-1">{font.name}</p>
+                      <p className="text-xs text-stone-500 mb-1">{font.name}</p>
                       <div
                         className="bg-white rounded-lg px-2 py-1 text-center overflow-hidden"
                         style={{ minHeight: 40 }}
@@ -636,7 +658,7 @@ export default function DigitalSignaturePage() {
 
               {/* Color picker */}
               <div>
-                <p className="text-xs text-gray-400 mb-2 font-medium">Ink Color</p>
+                <p className="text-xs text-stone-500 mb-2 font-medium">Ink Color</p>
                 <div className="flex gap-2 flex-wrap">
                   {COLORS.map(c => (
                     <button
@@ -663,7 +685,7 @@ export default function DigitalSignaturePage() {
                 >
                   <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-all ${includeDate ? 'left-5' : 'left-0.5'}`} />
                 </div>
-                <span className="text-sm text-gray-300 flex items-center gap-1.5">
+                <span className="text-sm text-stone-700 flex items-center gap-1.5">
                   <Calendar className="w-3.5 h-3.5" />
                   Include date
                 </span>
@@ -681,7 +703,7 @@ export default function DigitalSignaturePage() {
                 <div className="absolute inset-x-6 pointer-events-none" style={{ bottom: '22%', height: 1, background: '#d1d5db' }} />
                 {!typeText && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <p className="text-gray-300 text-sm">Type your name above to preview</p>
+                    <p className="text-stone-700 text-sm">Type your name above to preview</p>
                   </div>
                 )}
               </div>
@@ -718,13 +740,13 @@ export default function DigitalSignaturePage() {
               ) : (
                 <button
                   onClick={() => uploadRef.current?.click()}
-                  className="w-full border-2 border-dashed border-gray-600 hover:border-violet-500 rounded-xl p-10 text-center transition-colors group"
+                  className="w-full border-2 border-dashed border-stone-300 hover:border-violet-500 rounded-xl p-10 text-center transition-colors group"
                 >
-                  <Upload className="w-8 h-8 text-gray-500 group-hover:text-violet-400 mx-auto mb-3 transition-colors" />
-                  <p className="text-gray-400 group-hover:text-gray-300 font-medium transition-colors">
+                  <Upload className="w-8 h-8 text-stone-500 group-hover:text-violet-600 mx-auto mb-3 transition-colors" />
+                  <p className="text-stone-500 group-hover:text-stone-700 font-medium transition-colors">
                     Click to upload signature
                   </p>
-                  <p className="text-xs text-gray-600 mt-1">PNG or JPG</p>
+                  <p className="text-xs text-stone-600 mt-1">PNG or JPG</p>
                 </button>
               )}
             </div>
@@ -732,7 +754,7 @@ export default function DigitalSignaturePage() {
 
           {/* ── Action Buttons ── */}
           {sigExists && (
-            <div className="flex gap-3 mt-6 pt-5 border-t border-gray-800">
+            <div className="flex gap-3 mt-6 pt-5 border-t border-stone-200">
               <button
                 onClick={downloadSig}
                 className="btn-primary flex items-center gap-2 py-2.5 px-5 text-sm"
@@ -754,7 +776,7 @@ export default function DigitalSignaturePage() {
         {/* ── 3. Saved Signatures ── */}
         {savedSigs.length > 0 && (
           <div className="card">
-            <h2 className="text-base font-semibold text-white mb-4">Saved Signatures</h2>
+            <h2 className="text-base font-semibold text-stone-900 mb-4">Saved Signatures</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {savedSigs.map(sig => (
                 <div
@@ -764,13 +786,13 @@ export default function DigitalSignaturePage() {
                   onMouseLeave={() => setHoveredSig(null)}
                   onClick={() => loadSavedSig(sig)}
                 >
-                  <div className="bg-white rounded-xl p-3 border-2 border-gray-700 hover:border-violet-500 transition-colors">
+                  <div className="bg-white rounded-xl p-3 border-2 border-stone-200 hover:border-violet-500 transition-colors">
                     <img
                       src={sig.dataUrl}
                       alt={sig.label}
                       className="w-full max-h-16 object-contain"
                     />
-                    <p className="text-xs text-gray-500 text-center mt-2 truncate">{sig.label}</p>
+                    <p className="text-xs text-stone-500 text-center mt-2 truncate">{sig.label}</p>
                   </div>
                   {hoveredSig === sig.id && (
                     <button
@@ -783,7 +805,7 @@ export default function DigitalSignaturePage() {
                 </div>
               ))}
             </div>
-            <p className="text-xs text-gray-600 mt-3">
+            <p className="text-xs text-stone-600 mt-3">
               Click a saved signature to load it. Stored locally in your browser.
             </p>
           </div>
@@ -791,11 +813,11 @@ export default function DigitalSignaturePage() {
 
         {/* ── 4. Place on Document ── */}
         <div className="card">
-          <h2 className="text-base font-semibold text-white mb-1 flex items-center gap-2">
-            <FileText className="w-5 h-5 text-violet-400" />
+          <h2 className="text-base font-semibold text-stone-900 mb-1 flex items-center gap-2">
+            <FileText className="w-5 h-5 text-violet-600" />
             Place on Document
           </h2>
-          <p className="text-sm text-gray-500 mb-4">
+          <p className="text-sm text-stone-500 mb-4">
             Upload a document image, then click where you want to place your signature.
           </p>
 
@@ -810,13 +832,13 @@ export default function DigitalSignaturePage() {
           {!docImage ? (
             <button
               onClick={() => docUploadRef.current?.click()}
-              className="w-full border-2 border-dashed border-gray-600 hover:border-violet-500 rounded-xl p-10 text-center transition-colors group"
+              className="w-full border-2 border-dashed border-stone-300 hover:border-violet-500 rounded-xl p-10 text-center transition-colors group"
             >
-              <Upload className="w-8 h-8 text-gray-500 group-hover:text-violet-400 mx-auto mb-3 transition-colors" />
-              <p className="text-gray-400 group-hover:text-gray-300 font-medium transition-colors">
+              <Upload className="w-8 h-8 text-stone-500 group-hover:text-violet-600 mx-auto mb-3 transition-colors" />
+              <p className="text-stone-500 group-hover:text-stone-700 font-medium transition-colors">
                 Upload a document image
               </p>
-              <p className="text-xs text-gray-600 mt-1">PNG, JPG, or WEBP</p>
+              <p className="text-xs text-stone-600 mt-1">PNG, JPG, or WEBP</p>
             </button>
           ) : (
             <div className="space-y-4">
@@ -824,7 +846,7 @@ export default function DigitalSignaturePage() {
               <div
                 ref={docContainerRef}
                 onClick={handleDocClick}
-                className="relative cursor-crosshair rounded-xl overflow-hidden border border-gray-700 select-none"
+                className="relative cursor-crosshair rounded-xl overflow-hidden border border-stone-200 select-none"
                 style={{ userSelect: 'none' }}
               >
                 <img
@@ -861,14 +883,14 @@ export default function DigitalSignaturePage() {
               </div>
 
               {sigPos && (
-                <p className="text-xs text-gray-500 text-center">
+                <p className="text-xs text-stone-500 text-center">
                   Re-click anywhere on the document to move the signature.
                 </p>
               )}
 
               {/* Sig size slider */}
               <div>
-                <label className="text-xs text-gray-400 font-medium block mb-1">
+                <label className="text-xs text-stone-500 font-medium block mb-1">
                   Signature size: {sigScale}% of document width
                 </label>
                 <input
@@ -909,7 +931,7 @@ export default function DigitalSignaturePage() {
               </div>
 
               {docName && (
-                <p className="text-xs text-gray-600">Document: {docName}</p>
+                <p className="text-xs text-stone-600">Document: {docName}</p>
               )}
             </div>
           )}
@@ -917,18 +939,18 @@ export default function DigitalSignaturePage() {
 
         {/* ── 5. Initials Generator ── */}
         <div className="card">
-          <h2 className="text-base font-semibold text-white mb-1 flex items-center gap-2">
-            <Type className="w-5 h-5 text-violet-400" />
+          <h2 className="text-base font-semibold text-stone-900 mb-1 flex items-center gap-2">
+            <Type className="w-5 h-5 text-violet-600" />
             Initials Generator
           </h2>
-          <p className="text-sm text-gray-500 mb-4">
+          <p className="text-sm text-stone-500 mb-4">
             Auto-generated from your signer name.
             {!signerName && ' Enter a name above to generate initials.'}
           </p>
 
           {signerName ? (
             <div className="space-y-4">
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-stone-500">
                 Initials: <span className="text-white font-semibold">{getInitials(signerName)}</span>
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -937,12 +959,12 @@ export default function DigitalSignaturePage() {
                     key={i}
                     className={`rounded-xl border-2 p-3 cursor-pointer transition-all ${
                       selectedFont === i
-                        ? 'border-violet-500 bg-violet-500/10'
-                        : 'border-gray-700 hover:border-gray-500'
+                        ? 'border-violet-500 bg-violet-50'
+                        : 'border-stone-200 hover:border-gray-500'
                     }`}
                     onClick={() => setSelectedFont(i)}
                   >
-                    <p className="text-xs text-gray-500 mb-1">{font.name}</p>
+                    <p className="text-xs text-stone-500 mb-1">{font.name}</p>
                     <div className="bg-white rounded-lg px-2 py-1 text-center">
                       <span
                         style={{
@@ -971,23 +993,23 @@ export default function DigitalSignaturePage() {
               </button>
             </div>
           ) : (
-            <div className="rounded-xl border-2 border-dashed border-gray-700 p-8 text-center">
-              <p className="text-gray-500 text-sm">Enter a signer name above to preview initials</p>
+            <div className="rounded-xl border-2 border-dashed border-stone-200 p-8 text-center">
+              <p className="text-stone-500 text-sm">Enter a signer name above to preview initials</p>
             </div>
           )}
         </div>
 
         {/* ── 6. Signature Certificate ── */}
         <div className="card">
-          <h2 className="text-base font-semibold text-white mb-1 flex items-center gap-2">
-            <Shield className="w-5 h-5 text-violet-400" />
+          <h2 className="text-base font-semibold text-stone-900 mb-1 flex items-center gap-2">
+            <Shield className="w-5 h-5 text-violet-600" />
             Signature Certificate
           </h2>
-          <p className="text-sm text-gray-500 mb-4">
+          <p className="text-sm text-stone-500 mb-4">
             A timestamped record you can attach to your signed document.
           </p>
 
-          <pre className="bg-gray-800/60 rounded-xl p-4 text-xs text-gray-300 font-mono overflow-x-auto whitespace-pre-wrap border border-gray-700">
+          <pre className="bg-stone-50/60 rounded-xl p-4 text-xs text-stone-700 font-mono overflow-x-auto whitespace-pre-wrap border border-stone-200">
             {certText}
           </pre>
 

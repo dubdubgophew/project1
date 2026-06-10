@@ -36,12 +36,12 @@ function PieChart({ segments }: { segments: PieSegment[] }) {
       <div className="flex-1 space-y-2 w-full">
         {paths.map((p, i) => (
           <div key={i} className="flex items-center justify-between gap-2 text-xs">
-            <span className="flex items-center gap-1.5 text-gray-400 min-w-0">
+            <span className="flex items-center gap-1.5 text-stone-500 min-w-0">
               <span className="w-2.5 h-2.5 rounded-sm flex-shrink-0" style={{ background: p.color }} />
               <span className="truncate">{p.label}</span>
             </span>
-            <span className="text-gray-300 font-medium whitespace-nowrap">
-              {fmtINR(p.value)} <span className="text-gray-500">({(p.pct * 100).toFixed(1)}%)</span>
+            <span className="text-stone-700 font-medium whitespace-nowrap">
+              {fmtINR(p.value)} <span className="text-stone-500">({(p.pct * 100).toFixed(1)}%)</span>
             </span>
           </div>
         ))}
@@ -159,7 +159,7 @@ export default function GratuityCalculatorPage() {
 
   const toggleBtn = (active: boolean) =>
     `px-4 py-2 rounded-xl text-sm font-medium border transition-all ${
-      active ? 'bg-violet-600 border-violet-500 text-white' : 'bg-gray-800 border-gray-700 text-gray-400 hover:border-gray-600'
+      active ? 'bg-violet-600 border-violet-500 text-white' : 'bg-white border-stone-200 text-stone-600 hover:border-stone-400'
     }`;
 
   return (
@@ -172,12 +172,34 @@ export default function GratuityCalculatorPage() {
         { name: 'Income Tax Calculator', href: '/tools/income-tax-calculator', icon: '🧾' },
         { name: 'In-Hand Salary Calculator', href: '/tools/hand-salary-calculator', icon: '💵' },
       ]}
+      faqs={[
+        {
+          q: 'Is this gratuity calculator free?',
+          a: 'Yes, completely free. No sign-up or payment required. Calculate your gratuity eligibility and amount instantly.',
+        },
+        {
+          q: 'Which country\'s gratuity rules does this calculator follow?',
+          a: 'This calculator is built for India. It applies the Payment of Gratuity Act, 1972 (for private sector covered and non-covered employees), the New Labour Code 2023 rules for fixed-term contracts (eligible after 1 year instead of 5), and Indian Income Tax rules for gratuity exemption (up to ₹20,00,000 exempt for private employees; fully exempt for government employees).',
+        },
+        {
+          q: 'How do I use the gratuity calculator?',
+          a: 'Enter your last drawn monthly Basic Salary plus DA (Dearness Allowance), then enter your service period in years and months. Select your employment type (Regular or Fixed-Term), employee category (Private Covered, Private Not Covered, or Government), and reason for leaving (resignation, retirement, VRS, death, or disability). The calculator shows eligibility, effective years of service (applying the months ≥ 6 rounding rule), gratuity amount, tax-exempt vs taxable split, and inflation-adjusted present value.',
+        },
+        {
+          q: 'What does this gratuity calculator compute?',
+          a: 'It calculates gratuity using both formulas — Basic+DA × 15 × Years ÷ 26 for covered employees and ÷ 30 for non-covered — applies the ₹20,00,000 statutory maximum cap, determines eligibility based on service period and exit reason (death/disability have no minimum, VRS needs 10 years, regular resignation needs 5 years, fixed-term needs 1 year), splits the gratuity into tax-exempt and taxable components, and shows an inflation-adjusted present value of your future gratuity at 6% inflation.',
+        },
+        {
+          q: 'Is gratuity taxable in India?',
+          a: 'For government employees, gratuity is fully tax-exempt with no upper limit. For private sector employees covered under the Payment of Gratuity Act, gratuity up to ₹20,00,000 is tax-exempt; any amount above that is taxable. For private sector employees not covered under the Act, the exemption is the least of: actual gratuity received, ₹20,00,000, or half-month salary per year of service. This calculator automatically applies the correct exemption rule based on your employee category.',
+        },
+      ]}
     >
       <div className="space-y-6">
         {/* Country selector */}
         <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-500 uppercase tracking-wider">Country</span>
-          <select className="text-sm bg-gray-800 border border-gray-700 rounded-lg px-3 py-1.5 text-white">
+          <span className="text-xs text-stone-500 uppercase tracking-wider">Country</span>
+          <select className="text-sm bg-white border border-stone-200 rounded-lg px-3 py-1.5 text-stone-900">
             <option value="IN">🇮🇳 India</option>
             <option disabled value="US">🇺🇸 USA (coming soon)</option>
           </select>
@@ -185,7 +207,7 @@ export default function GratuityCalculatorPage() {
 
         {/* Inputs */}
         <div className="card space-y-5">
-          <h2 className="text-sm font-semibold text-white">Employment Details</h2>
+          <h2 className="text-sm font-semibold text-stone-900">Employment Details</h2>
 
           {/* Salary */}
           <div>
@@ -198,7 +220,7 @@ export default function GratuityCalculatorPage() {
               value={basicDA}
               onChange={e => setBasicDA(e.target.value)}
             />
-            <p className="text-xs text-gray-500 mt-1">Basic salary + Dearness Allowance per month</p>
+            <p className="text-xs text-stone-500 mt-1">Basic salary + Dearness Allowance per month</p>
           </div>
 
           {/* Service Period — Years + Months */}
@@ -215,7 +237,7 @@ export default function GratuityCalculatorPage() {
                   value={yearsInput}
                   onChange={e => setYearsInput(e.target.value)}
                 />
-                <p className="text-xs text-gray-500 mt-1">Years</p>
+                <p className="text-xs text-stone-500 mt-1">Years</p>
               </div>
               <div className="flex-1">
                 <select
@@ -227,16 +249,16 @@ export default function GratuityCalculatorPage() {
                     <option key={i} value={i}>{i} month{i !== 1 ? 's' : ''}</option>
                   ))}
                 </select>
-                <p className="text-xs text-gray-500 mt-1">Months (0–11)</p>
+                <p className="text-xs text-stone-500 mt-1">Months (0–11)</p>
               </div>
             </div>
             {result && (
               <div className="mt-2 flex gap-3 text-xs">
-                <span className="text-gray-400">
+                <span className="text-stone-500">
                   Entered: {result.enteredYears} yr{result.enteredYears !== 1 ? 's' : ''} {result.enteredMonths > 0 ? `${result.enteredMonths} mo` : ''}
                 </span>
-                <span className="text-gray-600">→</span>
-                <span className={`font-medium ${result.enteredMonths >= 6 ? 'text-amber-400' : 'text-emerald-400'}`}>
+                <span className="text-stone-600">→</span>
+                <span className={`font-medium ${result.enteredMonths >= 6 ? 'text-amber-700' : 'text-emerald-700'}`}>
                   Effective: {result.effectiveYears} yr{result.effectiveYears !== 1 ? 's' : ''}
                   {result.enteredMonths >= 6 && ' (rounded up — months ≥ 6)'}
                 </span>
@@ -255,7 +277,7 @@ export default function GratuityCalculatorPage() {
                 Fixed-Term Contract
               </button>
             </div>
-            <p className="text-xs text-gray-500 mt-1.5">
+            <p className="text-xs text-stone-500 mt-1.5">
               {employmentType === 'fixed-term'
                 ? 'Under New Labour Code 2023: Fixed-term employees are eligible for gratuity after just 1 year of service.'
                 : 'Regular employees require a minimum of 5 continuous years of service.'}
@@ -282,7 +304,7 @@ export default function GratuityCalculatorPage() {
                 Government Employee
               </button>
             </div>
-            <p className="text-xs text-gray-500 mt-1.5">
+            <p className="text-xs text-stone-500 mt-1.5">
               {isGovt
                 ? 'Government employees receive full tax exemption on gratuity — no upper limit.'
                 : isCovered
@@ -306,7 +328,7 @@ export default function GratuityCalculatorPage() {
               <option value="death">Death</option>
               <option value="disability">Total Disability</option>
             </select>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-stone-500 mt-1">
               {reason === 'death' || reason === 'disability'
                 ? 'Death/Disability: eligible from Day 1 — no minimum service period required.'
                 : reason === 'vrs'
@@ -320,7 +342,7 @@ export default function GratuityCalculatorPage() {
 
         {/* Inflation adjustment input */}
         <div className="card space-y-3">
-          <h3 className="text-sm font-semibold text-white">Inflation Adjustment (Optional)</h3>
+          <h3 className="text-sm font-semibold text-stone-900">Inflation Adjustment (Optional)</h3>
           <div>
             <label className="label">Years to Retirement</label>
             <input
@@ -332,7 +354,7 @@ export default function GratuityCalculatorPage() {
               value={yearsToRetirement}
               onChange={e => setYearsToRetirement(e.target.value)}
             />
-            <p className="text-xs text-gray-500 mt-1">Shows present value of future gratuity at 6% inflation</p>
+            <p className="text-xs text-stone-500 mt-1">Shows present value of future gratuity at 6% inflation</p>
           </div>
         </div>
 
@@ -341,10 +363,10 @@ export default function GratuityCalculatorPage() {
             {/* Not Eligible banner */}
             {!result.eligible && (
               <div className="flex items-start gap-3 p-4 rounded-xl bg-red-500/10 border border-red-500/30">
-                <span className="text-red-400 text-xl shrink-0 mt-0.5">✗</span>
+                <span className="text-red-600 text-xl shrink-0 mt-0.5">✗</span>
                 <div className="text-sm">
                   <p className="text-red-300 font-semibold text-base">Not Eligible for Gratuity</p>
-                  <p className="text-gray-400 mt-1">{result.notEligibleReason}</p>
+                  <p className="text-stone-500 mt-1">{result.notEligibleReason}</p>
                 </div>
               </div>
             )}
@@ -353,10 +375,10 @@ export default function GratuityCalculatorPage() {
               <>
                 {/* Gratuity amount */}
                 <div className="card text-center py-8">
-                  <p className="text-4xl font-bold text-emerald-400">{fmtINR(result.gratuity)}</p>
-                  <p className="text-sm text-gray-400 mt-2">Gratuity Amount</p>
+                  <p className="text-4xl font-bold text-emerald-700">{fmtINR(result.gratuity)}</p>
+                  <p className="text-sm text-stone-500 mt-2">Gratuity Amount</p>
                   {result.cappedAt20L && (
-                    <p className="text-xs text-amber-400 mt-2">
+                    <p className="text-xs text-amber-700 mt-2">
                       Calculated amount was {fmtINR(result.rawGratuity)} — capped at statutory maximum ₹20,00,000
                     </p>
                   )}
@@ -364,61 +386,61 @@ export default function GratuityCalculatorPage() {
 
                 {/* Breakdown */}
                 <div className="card">
-                  <h3 className="text-sm font-semibold text-white mb-4">Gratuity Breakdown</h3>
+                  <h3 className="text-sm font-semibold text-stone-900 mb-4">Gratuity Breakdown</h3>
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between py-2 border-b border-gray-800">
-                      <p className="text-sm text-gray-300">Monthly Basic + DA</p>
-                      <span className="text-sm font-medium text-gray-200">{fmtINR(parseFloat(basicDA))}</span>
+                    <div className="flex items-center justify-between py-2 border-b border-stone-200">
+                      <p className="text-sm text-stone-700">Monthly Basic + DA</p>
+                      <span className="text-sm font-medium text-stone-800">{fmtINR(parseFloat(basicDA))}</span>
                     </div>
-                    <div className="flex items-center justify-between py-2 border-b border-gray-800">
+                    <div className="flex items-center justify-between py-2 border-b border-stone-200">
                       <div>
-                        <p className="text-sm text-gray-300">Service Period (entered)</p>
+                        <p className="text-sm text-stone-700">Service Period (entered)</p>
                       </div>
-                      <span className="text-sm font-medium text-gray-200">
+                      <span className="text-sm font-medium text-stone-800">
                         {result.enteredYears} yr{result.enteredYears !== 1 ? 's' : ''}
                         {result.enteredMonths > 0 ? ` ${result.enteredMonths} mo` : ''}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between py-2 border-b border-gray-800">
+                    <div className="flex items-center justify-between py-2 border-b border-stone-200">
                       <div>
-                        <p className="text-sm text-gray-300">Effective Years Used</p>
-                        <p className="text-xs text-gray-500">After rounding rule (months ≥ 6 → round up)</p>
+                        <p className="text-sm text-stone-700">Effective Years Used</p>
+                        <p className="text-xs text-stone-500">After rounding rule (months ≥ 6 → round up)</p>
                       </div>
-                      <span className="text-sm font-semibold text-amber-400">
+                      <span className="text-sm font-semibold text-amber-700">
                         {result.effectiveYears} yr{result.effectiveYears !== 1 ? 's' : ''}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between py-2 border-b border-gray-800">
-                      <p className="text-sm text-gray-300">Formula</p>
-                      <span className="text-sm font-medium text-gray-200">
+                    <div className="flex items-center justify-between py-2 border-b border-stone-200">
+                      <p className="text-sm text-stone-700">Formula</p>
+                      <span className="text-sm font-medium text-stone-800">
                         Basic+DA × 15 × {result.effectiveYears} ÷ {isCovered ? '26' : '30'}
                       </span>
                     </div>
 
                     {/* Tax section */}
-                    <div className="flex items-center justify-between py-2 border-b border-gray-800">
+                    <div className="flex items-center justify-between py-2 border-b border-stone-200">
                       <div>
-                        <p className="text-sm text-gray-300">Tax Exempt Amount</p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-sm text-stone-700">Tax Exempt Amount</p>
+                        <p className="text-xs text-stone-500">
                           {isGovt ? 'Govt employees: fully exempt' : `Up to ₹20,00,000 (private — ${isCovered ? 'covered' : 'not covered'})`}
                         </p>
                       </div>
-                      <span className="text-sm font-semibold text-emerald-400">{fmtINR(result.taxExempt)}</span>
+                      <span className="text-sm font-semibold text-emerald-700">{fmtINR(result.taxExempt)}</span>
                     </div>
-                    <div className="flex items-center justify-between py-2 border-b border-gray-800">
+                    <div className="flex items-center justify-between py-2 border-b border-stone-200">
                       <div>
-                        <p className="text-sm text-gray-300">Taxable Gratuity</p>
-                        <p className="text-xs text-gray-500">max(0, Gratuity − ₹20L)</p>
+                        <p className="text-sm text-stone-700">Taxable Gratuity</p>
+                        <p className="text-xs text-stone-500">max(0, Gratuity − ₹20L)</p>
                       </div>
-                      <span className="text-sm font-semibold text-red-400">{fmtINR(result.taxableGratuity)}</span>
+                      <span className="text-sm font-semibold text-red-600">{fmtINR(result.taxableGratuity)}</span>
                     </div>
                     {result.taxableGratuity > 0 && (
                       <div className="flex items-center justify-between py-2">
                         <div>
-                          <p className="text-sm text-gray-300">Income Tax on Taxable Gratuity</p>
-                          <p className="text-xs text-gray-500">At 30% slab + 4% cess = 31.2%</p>
+                          <p className="text-sm text-stone-700">Income Tax on Taxable Gratuity</p>
+                          <p className="text-xs text-stone-500">At 30% slab + 4% cess = 31.2%</p>
                         </div>
-                        <span className="text-sm font-semibold text-red-400">{fmtINR(result.taxOn30)}</span>
+                        <span className="text-sm font-semibold text-red-600">{fmtINR(result.taxOn30)}</span>
                       </div>
                     )}
                   </div>
@@ -426,13 +448,13 @@ export default function GratuityCalculatorPage() {
 
                 {/* Gratuity composition donut */}
                 <div className="card">
-                  <h3 className="text-sm font-semibold text-white mb-4">Gratuity Composition</h3>
+                  <h3 className="text-sm font-semibold text-stone-900 mb-4">Gratuity Composition</h3>
                   <PieChart segments={[
                     { label: 'Tax-Exempt Gratuity', value: result.taxExempt, color: '#10b981' },
                     { label: 'Taxable Gratuity', value: result.taxableGratuity, color: '#ef4444' },
                   ]} />
                   {result.taxableGratuity === 0 && (
-                    <p className="text-xs text-emerald-400 mt-3 text-center">
+                    <p className="text-xs text-emerald-700 mt-3 text-center">
                       Your entire gratuity of {fmtINR(result.gratuity)} is tax-exempt.
                     </p>
                   )}
@@ -441,20 +463,20 @@ export default function GratuityCalculatorPage() {
                 {/* Inflation adjustment */}
                 {result.pvGratuity !== null && result.retYears > 0 && (
                   <div className="card">
-                    <h3 className="text-sm font-semibold text-white mb-3">Inflation-Adjusted Value</h3>
+                    <h3 className="text-sm font-semibold text-stone-900 mb-3">Inflation-Adjusted Value</h3>
                     <div className="grid sm:grid-cols-2 gap-4">
-                      <div className="p-4 rounded-xl bg-gray-800/50 border border-gray-700 text-center">
-                        <p className="text-2xl font-bold text-emerald-400">{fmtINR(result.gratuity)}</p>
-                        <p className="text-xs text-gray-400 mt-1">Gratuity at Retirement</p>
-                        <p className="text-xs text-gray-600 mt-0.5">Nominal value (future rupees)</p>
+                      <div className="p-4 rounded-xl bg-stone-50 border border-stone-200 text-center">
+                        <p className="text-2xl font-bold text-emerald-700">{fmtINR(result.gratuity)}</p>
+                        <p className="text-xs text-stone-500 mt-1">Gratuity at Retirement</p>
+                        <p className="text-xs text-stone-600 mt-0.5">Nominal value (future rupees)</p>
                       </div>
                       <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/20 text-center">
-                        <p className="text-2xl font-bold text-amber-400">{fmtINR(result.pvGratuity)}</p>
-                        <p className="text-xs text-gray-400 mt-1">Present Value Today</p>
-                        <p className="text-xs text-gray-600 mt-0.5">At 6% inflation, {result.retYears} yrs away</p>
+                        <p className="text-2xl font-bold text-amber-700">{fmtINR(result.pvGratuity)}</p>
+                        <p className="text-xs text-stone-500 mt-1">Present Value Today</p>
+                        <p className="text-xs text-stone-600 mt-0.5">At 6% inflation, {result.retYears} yrs away</p>
                       </div>
                     </div>
-                    <p className="text-xs text-gray-500 mt-3">
+                    <p className="text-xs text-stone-500 mt-3">
                       In today&apos;s purchasing power, your {fmtINR(result.gratuity)} gratuity at retirement is worth approximately {fmtINR(result.pvGratuity)}.
                     </p>
                   </div>
@@ -463,10 +485,10 @@ export default function GratuityCalculatorPage() {
                 {/* ₹20L cap notice */}
                 {result.cappedAt20L && (
                   <div className="flex items-start gap-3 p-4 rounded-xl bg-amber-500/5 border border-amber-500/20">
-                    <span className="text-amber-400 text-lg shrink-0">ℹ️</span>
+                    <span className="text-amber-700 text-lg shrink-0">ℹ️</span>
                     <div className="text-sm">
                       <p className="text-amber-300 font-medium">Statutory Maximum Limit Applied</p>
-                      <p className="text-gray-400 mt-1">
+                      <p className="text-stone-500 mt-1">
                         The maximum gratuity payable under the Payment of Gratuity Act is ₹20,00,000.
                         Any amount above this is ex-gratia at employer&apos;s discretion and may be fully taxable.
                       </p>
@@ -477,15 +499,15 @@ export default function GratuityCalculatorPage() {
             )}
 
             {/* How it works */}
-            <div className="flex items-start gap-3 p-4 rounded-xl bg-gray-800/50 border border-gray-700">
-              <span className="text-gray-400 text-lg shrink-0">ℹ️</span>
-              <div className="text-sm text-gray-400">
-                <p className="text-gray-300 font-medium mb-1">How gratuity is calculated</p>
+            <div className="flex items-start gap-3 p-4 rounded-xl bg-stone-50 border border-stone-200">
+              <span className="text-stone-500 text-lg shrink-0">ℹ️</span>
+              <div className="text-sm text-stone-500">
+                <p className="text-stone-700 font-medium mb-1">How gratuity is calculated</p>
                 <ul className="space-y-1 list-disc list-inside">
-                  <li><strong className="text-gray-300">Covered employees</strong> (Gratuity Act): Basic+DA × 15 × Years ÷ 26</li>
-                  <li><strong className="text-gray-300">Not covered</strong>: Basic+DA × 15 × Years ÷ 30</li>
+                  <li><strong className="text-stone-700">Covered employees</strong> (Gratuity Act): Basic+DA × 15 × Years ÷ 26</li>
+                  <li><strong className="text-stone-700">Not covered</strong>: Basic+DA × 15 × Years ÷ 30</li>
                   <li>Months ≥ 6 in the last year round up to the next full year</li>
-                  <li><strong className="text-gray-300">Fixed-term</strong> (Labour Code 2023): eligible after 1 year, not 5</li>
+                  <li><strong className="text-stone-700">Fixed-term</strong> (Labour Code 2023): eligible after 1 year, not 5</li>
                   <li>Death/Disability: eligible from Day 1, no minimum service</li>
                   <li>VRS: eligible after 10 years; Govt employees: fully tax-exempt</li>
                 </ul>

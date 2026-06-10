@@ -37,12 +37,12 @@ function PieChart({ segments }: { segments: PieSegment[] }) {
       <div className="flex-1 space-y-2 w-full">
         {paths.map((p, i) => (
           <div key={i} className="flex items-center justify-between gap-2 text-xs">
-            <span className="flex items-center gap-1.5 text-gray-400 min-w-0">
+            <span className="flex items-center gap-1.5 text-stone-500 min-w-0">
               <span className="w-2.5 h-2.5 rounded-sm flex-shrink-0" style={{ background: p.color }} />
               <span className="truncate">{p.label}</span>
             </span>
-            <span className="text-gray-300 font-medium whitespace-nowrap">
-              {fmtINR(p.value)} <span className="text-gray-500">({(p.pct * 100).toFixed(1)}%)</span>
+            <span className="text-stone-700 font-medium whitespace-nowrap">
+              {fmtINR(p.value)} <span className="text-stone-500">({(p.pct * 100).toFixed(1)}%)</span>
             </span>
           </div>
         ))}
@@ -363,12 +363,34 @@ export default function HomeLoanEMIPage() {
         { name: 'In-Hand Salary Calculator', href: '/tools/hand-salary-calculator', icon: '💼' },
         { name: 'Income Tax Calculator', href: '/tools/income-tax-calculator', icon: '🧾' },
       ]}
+      faqs={[
+        {
+          q: 'Is this home loan EMI calculator free?',
+          a: 'Yes, completely free. No sign-up or payment required. You can calculate home loan EMI, amortization schedule, and prepayment savings as many times as you need.',
+        },
+        {
+          q: 'Which country\'s home loan rules does this calculator follow?',
+          a: 'This calculator is tailored for India. It uses Indian home loan conventions — EMI calculation using the reducing balance method, LTV ratio guidelines per RBI norms (75–90%), Section 24b and 80C tax benefits under the Old Tax Regime, and typical bank rates (e.g., SBI ~8.75%). The currency and output are in Indian Rupees (₹).',
+        },
+        {
+          q: 'How do I use the home loan EMI calculator?',
+          a: 'Enter the property value and down payment percentage (or amount), which auto-calculates the loan amount. Then set your annual interest rate and loan tenure (5–30 years). The calculator instantly shows monthly EMI, total interest payable, LTV ratio, and a year-wise amortization table. Use Advanced Options to model monthly prepayments, one-time lump sum prepayments, floating rate changes, and Section 24b tax benefits.',
+        },
+        {
+          q: 'What does this calculator compute?',
+          a: 'It calculates monthly EMI using the standard reducing balance formula, total interest paid over the full tenure, Loan-to-Value (LTV) ratio, year-wise amortization with opening and closing balances, outstanding balance after any number of EMIs, interest saved through prepayments (both monthly and one-time lump sums), floating rate scenario analysis, and estimated Section 24b + 80C tax savings for the first year under the Old Regime.',
+        },
+        {
+          q: 'How accurate is the EMI calculation? Is this a disclaimer?',
+          a: 'The calculator uses the standard reducing balance formula: EMI = P × r × (1+r)^n / ((1+r)^n − 1), which is the same formula used by Indian banks. Results are accurate for fixed-rate home loans. Actual EMI may vary due to floating rate resets, processing fees, insurance, GST on fees, or prepayment clauses. Always confirm the final EMI and total cost with your bank or lender before signing the loan agreement.',
+        },
+      ]}
     >
       <div className="space-y-6">
         {/* Country selector */}
         <div className="flex items-center gap-2 mb-6">
-          <span className="text-xs text-gray-500 uppercase tracking-wider">Country</span>
-          <select className="text-sm bg-gray-800 border border-gray-700 rounded-lg px-3 py-1.5 text-white">
+          <span className="text-xs text-stone-500 uppercase tracking-wider">Country</span>
+          <select className="text-sm bg-white border border-stone-200 rounded-lg px-3 py-1.5 text-stone-900">
             <option value="IN">🇮🇳 India</option>
             <option disabled value="US">🇺🇸 USA (coming soon)</option>
           </select>
@@ -376,7 +398,7 @@ export default function HomeLoanEMIPage() {
 
         {/* ── Inputs ─────────────────────────────────────────────────────── */}
         <div className="card space-y-5">
-          <h2 className="text-sm font-semibold text-white">Property & Loan Details</h2>
+          <h2 className="text-sm font-semibold text-stone-900">Property & Loan Details</h2>
 
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
@@ -395,13 +417,13 @@ export default function HomeLoanEMIPage() {
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label className="label mb-0">Down Payment</label>
-                <div className="flex gap-1 bg-gray-800 rounded-lg p-0.5">
+                <div className="flex gap-1 bg-stone-50 rounded-lg p-0.5">
                   {(['pct', 'amt'] as const).map((m) => (
                     <button
                       key={m}
                       onClick={() => { setDownPaymentMode(m); setLoanAmountOverride(''); }}
                       className={`px-2.5 py-0.5 rounded text-xs font-medium transition-all ${
-                        downPaymentMode === m ? 'bg-violet-600 text-white' : 'text-gray-400 hover:text-white'
+                        downPaymentMode === m ? 'bg-violet-600 text-white' : 'text-stone-500 hover:text-stone-900'
                       }`}
                     >
                       {m === 'pct' ? '%' : '₹'}
@@ -445,7 +467,7 @@ export default function HomeLoanEMIPage() {
                 onChange={(e) => setLoanAmountOverride(e.target.value)}
               />
               {loanAmountOverride === '' && (
-                <p className="text-xs text-gray-600 mt-1">Auto: {fmtINR(derivedLoanAmount)}</p>
+                <p className="text-xs text-stone-600 mt-1">Auto: {fmtINR(derivedLoanAmount)}</p>
               )}
             </div>
 
@@ -461,14 +483,14 @@ export default function HomeLoanEMIPage() {
                 value={interestRate}
                 onChange={(e) => setInterestRate(e.target.value)}
               />
-              <p className="text-xs text-gray-600 mt-1">SBI home loan rate: ~8.75%</p>
+              <p className="text-xs text-stone-600 mt-1">SBI home loan rate: ~8.75%</p>
             </div>
           </div>
 
           <div>
             <div className="flex justify-between mb-1">
               <label className="label mb-0">Loan Tenure</label>
-              <span className="text-sm text-violet-400 font-semibold">{tenureYears} years</span>
+              <span className="text-sm text-violet-600 font-semibold">{tenureYears} years</span>
             </div>
             <input
               type="range"
@@ -479,7 +501,7 @@ export default function HomeLoanEMIPage() {
               onChange={(e) => setTenureYears(Number(e.target.value))}
               className="w-full accent-violet-500"
             />
-            <div className="flex justify-between text-xs text-gray-600 mt-1">
+            <div className="flex justify-between text-xs text-stone-600 mt-1">
               <span>5 yrs</span><span>30 yrs</span>
             </div>
           </div>
@@ -499,16 +521,16 @@ export default function HomeLoanEMIPage() {
           </div>
 
           {/* Advanced Options */}
-          <div className="border border-gray-700 rounded-xl">
+          <div className="border border-stone-200 rounded-xl">
             <button
               onClick={() => setShowAdvanced((v) => !v)}
               className="flex items-center justify-between w-full px-4 py-3 text-left"
             >
-              <span className="text-sm font-medium text-gray-300">Advanced Options</span>
-              <span className="text-gray-500">{showAdvanced ? '−' : '+'}</span>
+              <span className="text-sm font-medium text-stone-700">Advanced Options</span>
+              <span className="text-stone-500">{showAdvanced ? '−' : '+'}</span>
             </button>
             {showAdvanced && (
-              <div className="px-4 pb-4 space-y-5 border-t border-gray-700 pt-4">
+              <div className="px-4 pb-4 space-y-5 border-t border-stone-200 pt-4">
 
                 {/* Monthly Prepayment + Mode */}
                 <div>
@@ -528,7 +550,7 @@ export default function HomeLoanEMIPage() {
                     </div>
                     <div>
                       <label className="label">Prepayment Mode</label>
-                      <div className="flex gap-1 bg-gray-800/60 rounded-xl p-1 w-fit mt-1">
+                      <div className="flex gap-1 bg-stone-50/60 rounded-xl p-1 w-fit mt-1">
                         {(['reduce-tenure', 'reduce-emi'] as const).map((m) => (
                           <button
                             key={m}
@@ -536,14 +558,14 @@ export default function HomeLoanEMIPage() {
                             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                               prepayMode === m
                                 ? 'bg-violet-600 text-white shadow'
-                                : 'text-gray-400 hover:text-white'
+                                : 'text-stone-500 hover:text-stone-900'
                             }`}
                           >
                             {m === 'reduce-tenure' ? 'Reduce Tenure' : 'Reduce EMI'}
                           </button>
                         ))}
                       </div>
-                      <p className="text-xs text-gray-600 mt-1">
+                      <p className="text-xs text-stone-600 mt-1">
                         {prepayMode === 'reduce-tenure'
                           ? 'Keep EMI same, finish loan earlier'
                           : 'Keep tenure, recalculate lower EMI'}
@@ -555,11 +577,11 @@ export default function HomeLoanEMIPage() {
                 {/* Lump Sum Prepayments */}
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <p className="text-sm font-medium text-white">One-Time Lump Sum Prepayments</p>
+                    <p className="text-sm font-medium text-stone-900">One-Time Lump Sum Prepayments</p>
                     {lumpSums.length < 5 && (
                       <button
                         onClick={addLumpSum}
-                        className="text-xs text-violet-400 hover:text-violet-300 transition-colors"
+                        className="text-xs text-violet-600 hover:text-violet-700 transition-colors"
                       >
                         + Add
                       </button>
@@ -595,7 +617,7 @@ export default function HomeLoanEMIPage() {
                         {lumpSums.length > 1 && (
                           <button
                             onClick={() => removeLumpSum(idx)}
-                            className="text-red-400 hover:text-red-300 text-xs pb-2"
+                            className="text-red-600 hover:text-red-300 text-xs pb-2"
                           >
                             ✕
                           </button>
@@ -651,7 +673,7 @@ export default function HomeLoanEMIPage() {
                       }`}
                     />
                   </button>
-                  <span className="text-sm text-gray-300">Show Section 24b Tax Benefits (Old Regime)</span>
+                  <span className="text-sm text-stone-700">Show Section 24b Tax Benefits (Old Regime)</span>
                 </div>
               </div>
             )}
@@ -664,41 +686,41 @@ export default function HomeLoanEMIPage() {
             {/* Stat boxes */}
             <div className="grid sm:grid-cols-3 gap-4">
               <div className="card text-center py-5">
-                <p className="text-2xl font-bold text-violet-400">{fmtINR(result.emi)}</p>
-                <p className="text-xs text-gray-500 mt-1 uppercase tracking-wider">Monthly EMI</p>
+                <p className="text-2xl font-bold text-violet-600">{fmtINR(result.emi)}</p>
+                <p className="text-xs text-stone-500 mt-1 uppercase tracking-wider">Monthly EMI</p>
                 {prepayMode === 'reduce-emi' && result.extra > 0 && result.amort.revisedEMI !== result.emi && (
-                  <p className="text-xs text-emerald-400 mt-1">
+                  <p className="text-xs text-emerald-700 mt-1">
                     Revised: {fmtINR(result.amort.revisedEMI)}
                   </p>
                 )}
               </div>
               <div className="card text-center py-5">
-                <p className="text-2xl font-bold text-amber-400">{fmtINR(result.amort.totalInterest)}</p>
-                <p className="text-xs text-gray-500 mt-1 uppercase tracking-wider">Total Interest</p>
+                <p className="text-2xl font-bold text-amber-700">{fmtINR(result.amort.totalInterest)}</p>
+                <p className="text-xs text-stone-500 mt-1 uppercase tracking-wider">Total Interest</p>
               </div>
               <div className="card text-center py-5">
-                <p className="text-2xl font-bold text-emerald-400">{fmtINR(result.amort.totalPaid)}</p>
-                <p className="text-xs text-gray-500 mt-1 uppercase tracking-wider">Total Payment</p>
+                <p className="text-2xl font-bold text-emerald-700">{fmtINR(result.amort.totalPaid)}</p>
+                <p className="text-xs text-stone-500 mt-1 uppercase tracking-wider">Total Payment</p>
               </div>
             </div>
 
             {/* Prepayment Effect — show when any prepay set */}
             {hasPrepayEffect && (
-              <div className="card bg-emerald-500/5 border-emerald-500/20">
-                <h3 className="text-sm font-semibold text-white mb-3">Prepayment Analysis</h3>
+              <div className="card bg-emerald-50/80 border-emerald-500/20">
+                <h3 className="text-sm font-semibold text-stone-900 mb-3">Prepayment Analysis</h3>
                 <div className="grid sm:grid-cols-3 gap-4 mb-4">
                   <div className="text-center">
-                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Effective Tenure</p>
-                    <p className="text-xl font-bold text-emerald-400">
+                    <p className="text-xs text-stone-500 uppercase tracking-wider mb-1">Effective Tenure</p>
+                    <p className="text-xl font-bold text-emerald-700">
                       {Math.floor(result.amort.prepayTenureMonths / 12)} yrs{' '}
                       {result.amort.prepayTenureMonths % 12} mo
                     </p>
                   </div>
                   <div className="text-center">
-                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">
+                    <p className="text-xs text-stone-500 uppercase tracking-wider mb-1">
                       {prepayMode === 'reduce-tenure' ? 'Months Saved' : 'EMI Reduction'}
                     </p>
-                    <p className="text-xl font-bold text-emerald-400">
+                    <p className="text-xl font-bold text-emerald-700">
                       {prepayMode === 'reduce-tenure'
                         ? `${result.n - result.amort.prepayTenureMonths} months`
                         : result.amort.revisedEMI < result.emi
@@ -707,33 +729,33 @@ export default function HomeLoanEMIPage() {
                     </p>
                   </div>
                   <div className="text-center">
-                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Interest Saved</p>
-                    <p className="text-xl font-bold text-emerald-400">
+                    <p className="text-xs text-stone-500 uppercase tracking-wider mb-1">Interest Saved</p>
+                    <p className="text-xl font-bold text-emerald-700">
                       {fmtINR(Math.max(0, result.amort.prepayInterestSaved))}
                     </p>
                   </div>
                 </div>
                 {prepayMode === 'reduce-emi' && result.amort.revisedEMI !== result.emi && (
-                  <div className="bg-gray-800/40 rounded-xl p-3 flex gap-6 text-sm">
+                  <div className="bg-stone-50/40 rounded-xl p-3 flex gap-6 text-sm">
                     <div>
-                      <p className="text-xs text-gray-500">Original EMI</p>
-                      <p className="font-semibold text-gray-300">{fmtINR(result.emi)}</p>
+                      <p className="text-xs text-stone-500">Original EMI</p>
+                      <p className="font-semibold text-stone-700">{fmtINR(result.emi)}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500">Revised EMI (after prepay)</p>
-                      <p className="font-semibold text-emerald-400">{fmtINR(result.amort.revisedEMI)}</p>
+                      <p className="text-xs text-stone-500">Revised EMI (after prepay)</p>
+                      <p className="font-semibold text-emerald-700">{fmtINR(result.amort.revisedEMI)}</p>
                     </div>
                   </div>
                 )}
                 {prepayMode === 'reduce-tenure' && (
-                  <div className="bg-gray-800/40 rounded-xl p-3 flex gap-6 text-sm">
+                  <div className="bg-stone-50/40 rounded-xl p-3 flex gap-6 text-sm">
                     <div>
-                      <p className="text-xs text-gray-500">Original Tenure</p>
-                      <p className="font-semibold text-gray-300">{tenureYears} years</p>
+                      <p className="text-xs text-stone-500">Original Tenure</p>
+                      <p className="font-semibold text-stone-700">{tenureYears} years</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500">New Effective Tenure</p>
-                      <p className="font-semibold text-emerald-400">
+                      <p className="text-xs text-stone-500">New Effective Tenure</p>
+                      <p className="font-semibold text-emerald-700">
                         {Math.floor(result.amort.prepayTenureMonths / 12)} yrs{' '}
                         {result.amort.prepayTenureMonths % 12} mo
                       </p>
@@ -746,17 +768,17 @@ export default function HomeLoanEMIPage() {
             {/* Floating rate effect */}
             {parseFloat(floatRateYear) > 0 && parseFloat(floatNewRate) > 0 && (
               <div className="card bg-blue-500/5 border-blue-500/20">
-                <h3 className="text-sm font-semibold text-white mb-2">Floating Rate Scenario</h3>
-                <p className="text-xs text-gray-500">
+                <h3 className="text-sm font-semibold text-stone-900 mb-2">Floating Rate Scenario</h3>
+                <p className="text-xs text-stone-500">
                   Rate changes from {interestRate}% to {floatNewRate}% after Year {floatRateYear}.
                   The amortization table below reflects this change.
                 </p>
                 {parseFloat(floatNewRate) > parseFloat(interestRate) ? (
-                  <p className="text-xs text-amber-400 mt-1">
+                  <p className="text-xs text-amber-700 mt-1">
                     Rate increased — expect higher effective interest cost.
                   </p>
                 ) : (
-                  <p className="text-xs text-emerald-400 mt-1">
+                  <p className="text-xs text-emerald-700 mt-1">
                     Rate decreased — you save on interest from Year {floatRateYear} onwards.
                   </p>
                 )}
@@ -768,25 +790,25 @@ export default function HomeLoanEMIPage() {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <div>
-                    <p className="text-sm font-semibold text-white">Loan-to-Value (LTV) Ratio</p>
-                    <p className="text-xs text-gray-500 mt-0.5">RBI limit: 75–90% depending on loan amount</p>
+                    <p className="text-sm font-semibold text-stone-900">Loan-to-Value (LTV) Ratio</p>
+                    <p className="text-xs text-stone-500 mt-0.5">RBI limit: 75–90% depending on loan amount</p>
                   </div>
                   <div className="text-right">
-                    <p className={`text-xl font-bold ${result.ltv > 80 ? 'text-amber-400' : 'text-emerald-400'}`}>
+                    <p className={`text-xl font-bold ${result.ltv > 80 ? 'text-amber-700' : 'text-emerald-700'}`}>
                       {result.ltv.toFixed(1)}%
                     </p>
                     <span
                       className={`text-xs font-medium px-2 py-0.5 rounded-full ${
                         result.ltv > 80
-                          ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
-                          : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                          ? 'bg-amber-50 text-amber-700 border border-amber-500/20'
+                          : 'bg-emerald-50 text-emerald-700 border border-emerald-500/20'
                       }`}
                     >
                       {result.ltv > 80 ? 'High LTV' : 'Good LTV'}
                     </span>
                   </div>
                 </div>
-                <div className="h-3 rounded-full overflow-hidden bg-gray-800">
+                <div className="h-3 rounded-full overflow-hidden bg-stone-50">
                   <div
                     className={`h-full rounded-full transition-all ${result.ltv > 80 ? 'bg-amber-500' : 'bg-emerald-500'}`}
                     style={{ width: `${Math.min(result.ltv, 100)}%` }}
@@ -795,7 +817,7 @@ export default function HomeLoanEMIPage() {
               </div>
 
               <div>
-                <p className="text-sm font-semibold text-white mb-4">Principal vs Interest Breakdown</p>
+                <p className="text-sm font-semibold text-stone-900 mb-4">Principal vs Interest Breakdown</p>
                 <PieChart segments={[
                   { label: 'Principal (Loan Amount)', value: result.P, color: '#7c3aed' },
                   { label: 'Total Interest Cost', value: result.amort.totalInterest, color: '#f59e0b' },
@@ -806,11 +828,11 @@ export default function HomeLoanEMIPage() {
 
             {/* Outstanding Balance Lookup */}
             <div className="card">
-              <h3 className="text-sm font-semibold text-white mb-3">Outstanding Balance Lookup</h3>
+              <h3 className="text-sm font-semibold text-stone-900 mb-3">Outstanding Balance Lookup</h3>
               <div>
                 <div className="flex justify-between mb-1">
                   <label className="label mb-0">After how many EMIs paid?</label>
-                  <span className="text-sm text-violet-400 font-semibold">{outstandingN} EMIs</span>
+                  <span className="text-sm text-violet-600 font-semibold">{outstandingN} EMIs</span>
                 </div>
                 <input
                   type="range"
@@ -820,23 +842,23 @@ export default function HomeLoanEMIPage() {
                   onChange={(e) => setOutstandingN(Number(e.target.value))}
                   className="w-full accent-violet-500"
                 />
-                <div className="flex justify-between text-xs text-gray-600 mt-1">
+                <div className="flex justify-between text-xs text-stone-600 mt-1">
                   <span>1 EMI</span><span>{maxTenureMonths} EMIs ({tenureYears} yrs)</span>
                 </div>
               </div>
               {outstandingResult && (
                 <div className="mt-4 grid sm:grid-cols-3 gap-3">
-                  <div className="bg-gray-800/50 rounded-xl p-3 text-center">
-                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Outstanding Principal</p>
-                    <p className="text-lg font-bold text-amber-400">{fmtINR(outstandingResult.outstanding)}</p>
+                  <div className="bg-stone-50 rounded-xl p-3 text-center">
+                    <p className="text-xs text-stone-500 uppercase tracking-wider mb-1">Outstanding Principal</p>
+                    <p className="text-lg font-bold text-amber-700">{fmtINR(outstandingResult.outstanding)}</p>
                   </div>
-                  <div className="bg-gray-800/50 rounded-xl p-3 text-center">
-                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Principal Paid</p>
-                    <p className="text-lg font-bold text-violet-400">{fmtINR(outstandingResult.principalPaid)}</p>
+                  <div className="bg-stone-50 rounded-xl p-3 text-center">
+                    <p className="text-xs text-stone-500 uppercase tracking-wider mb-1">Principal Paid</p>
+                    <p className="text-lg font-bold text-violet-600">{fmtINR(outstandingResult.principalPaid)}</p>
                   </div>
-                  <div className="bg-gray-800/50 rounded-xl p-3 text-center">
-                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Interest Paid</p>
-                    <p className="text-lg font-bold text-red-400">{fmtINR(outstandingResult.interestPaid)}</p>
+                  <div className="bg-stone-50 rounded-xl p-3 text-center">
+                    <p className="text-xs text-stone-500 uppercase tracking-wider mb-1">Interest Paid</p>
+                    <p className="text-lg font-bold text-red-600">{fmtINR(outstandingResult.interestPaid)}</p>
                   </div>
                 </div>
               )}
@@ -844,7 +866,7 @@ export default function HomeLoanEMIPage() {
 
             {/* Amortization chart — CSS stacked bars per year */}
             <div className="card">
-              <h3 className="text-sm font-semibold text-white mb-4">Amortization Chart (Year-wise)</h3>
+              <h3 className="text-sm font-semibold text-stone-900 mb-4">Amortization Chart (Year-wise)</h3>
               <div className="space-y-1.5 overflow-y-auto max-h-72">
                 {result.amort.yearSummaries.map((row) => {
                   const total = row.principalPaid + row.interestPaid;
@@ -853,8 +875,8 @@ export default function HomeLoanEMIPage() {
                   const barWidth = maxTotal > 0 ? (total / maxTotal) * 100 : 0;
                   return (
                     <div key={row.year} className="flex items-center gap-3">
-                      <span className="text-xs text-gray-500 w-10 shrink-0">Yr {row.year}</span>
-                      <div className="flex-1 h-5 rounded overflow-hidden bg-gray-800/50">
+                      <span className="text-xs text-stone-500 w-10 shrink-0">Yr {row.year}</span>
+                      <div className="flex-1 h-5 rounded overflow-hidden bg-stone-50">
                         <div
                           className="h-full rounded overflow-hidden flex"
                           style={{ width: `${barWidth}%` }}
@@ -863,7 +885,7 @@ export default function HomeLoanEMIPage() {
                           <div className="bg-amber-500" style={{ width: `${100 - pPct}%` }} />
                         </div>
                       </div>
-                      <span className="text-xs text-gray-500 w-24 text-right shrink-0">
+                      <span className="text-xs text-stone-500 w-24 text-right shrink-0">
                         {fmtINR(row.balance)}
                       </span>
                     </div>
@@ -871,61 +893,61 @@ export default function HomeLoanEMIPage() {
                 })}
               </div>
               <div className="flex gap-4 mt-3 text-xs">
-                <span className="flex items-center gap-1.5 text-gray-400">
+                <span className="flex items-center gap-1.5 text-stone-500">
                   <span className="w-2.5 h-2.5 rounded-sm bg-violet-600 inline-block" />Principal
                 </span>
-                <span className="flex items-center gap-1.5 text-gray-400">
+                <span className="flex items-center gap-1.5 text-stone-500">
                   <span className="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block" />Interest
                 </span>
-                <span className="text-gray-600 ml-auto">Remaining balance →</span>
+                <span className="text-stone-600 ml-auto">Remaining balance →</span>
               </div>
             </div>
 
             {/* Year-wise summary table */}
             <div className="card">
-              <h3 className="text-sm font-semibold text-white mb-3">Year-wise Amortization</h3>
+              <h3 className="text-sm font-semibold text-stone-900 mb-3">Year-wise Amortization</h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-gray-700">
-                      <th className="text-left py-2 px-3 text-gray-400 font-medium">Year</th>
-                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Opening Bal</th>
-                      <th className="text-right py-2 px-3 text-gray-400 font-medium">EMI Paid</th>
-                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Principal</th>
-                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Interest</th>
-                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Closing Bal</th>
+                    <tr className="border-b border-stone-200">
+                      <th className="text-left py-2 px-3 text-stone-500 font-medium">Year</th>
+                      <th className="text-right py-2 px-3 text-stone-500 font-medium">Opening Bal</th>
+                      <th className="text-right py-2 px-3 text-stone-500 font-medium">EMI Paid</th>
+                      <th className="text-right py-2 px-3 text-stone-500 font-medium">Principal</th>
+                      <th className="text-right py-2 px-3 text-stone-500 font-medium">Interest</th>
+                      <th className="text-right py-2 px-3 text-stone-500 font-medium">Closing Bal</th>
                     </tr>
                   </thead>
                   <tbody>
                     {pageRows.map((row) => (
-                      <tr key={row.year} className="border-b border-gray-800 hover:bg-gray-800/30">
-                        <td className="py-2 px-3 text-gray-400">Year {row.year}</td>
-                        <td className="py-2 px-3 text-right text-gray-500 text-xs">{fmtINR(row.openingBalance)}</td>
-                        <td className="py-2 px-3 text-right text-gray-300">{fmtINR(row.emiPaid)}</td>
-                        <td className="py-2 px-3 text-right text-violet-400">{fmtINR(row.principalPaid)}</td>
-                        <td className="py-2 px-3 text-right text-amber-400">{fmtINR(row.interestPaid)}</td>
-                        <td className="py-2 px-3 text-right text-gray-300">{fmtINR(row.balance)}</td>
+                      <tr key={row.year} className="border-b border-stone-200 hover:bg-stone-50/30">
+                        <td className="py-2 px-3 text-stone-500">Year {row.year}</td>
+                        <td className="py-2 px-3 text-right text-stone-500 text-xs">{fmtINR(row.openingBalance)}</td>
+                        <td className="py-2 px-3 text-right text-stone-700">{fmtINR(row.emiPaid)}</td>
+                        <td className="py-2 px-3 text-right text-violet-600">{fmtINR(row.principalPaid)}</td>
+                        <td className="py-2 px-3 text-right text-amber-700">{fmtINR(row.interestPaid)}</td>
+                        <td className="py-2 px-3 text-right text-stone-700">{fmtINR(row.balance)}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
               {totalPages > 1 && (
-                <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-800">
+                <div className="flex items-center justify-between mt-3 pt-3 border-t border-stone-200">
                   <button
                     disabled={yearPage === 0}
                     onClick={() => setYearPage((p) => p - 1)}
-                    className="text-xs text-gray-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                    className="text-xs text-stone-500 hover:text-stone-900 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                   >
                     ← Previous
                   </button>
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-stone-500">
                     Years {yearPage * 5 + 1}–{Math.min(yearPage * 5 + 5, result.amort.yearSummaries.length)} of {result.amort.yearSummaries.length}
                   </span>
                   <button
                     disabled={yearPage >= totalPages - 1}
                     onClick={() => setYearPage((p) => p + 1)}
-                    className="text-xs text-gray-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                    className="text-xs text-stone-500 hover:text-stone-900 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                   >
                     Next →
                   </button>
@@ -936,31 +958,31 @@ export default function HomeLoanEMIPage() {
             {/* Tax benefit */}
             {showTaxBenefit && (
               <div className="card bg-blue-500/5 border-blue-500/20">
-                <h3 className="text-sm font-semibold text-white mb-1">Section 24b Tax Benefits (Old Regime)</h3>
-                <p className="text-xs text-gray-500 mb-4">Estimated for Year 1 at 30% tax slab + 4% cess</p>
+                <h3 className="text-sm font-semibold text-stone-900 mb-1">Section 24b Tax Benefits (Old Regime)</h3>
+                <p className="text-xs text-stone-500 mb-4">Estimated for Year 1 at 30% tax slab + 4% cess</p>
                 <div className="grid sm:grid-cols-2 gap-4 mb-4">
-                  <div className="bg-gray-800/50 rounded-xl p-4">
-                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Principal Repaid (Year 1)</p>
-                    <p className="text-lg font-bold text-white">{fmtINR(result.tax.annualPrincipal)}</p>
-                    <p className="text-xs text-gray-500 mt-1">80C deductible: {fmtINR(Math.min(result.tax.annualPrincipal, 150000))}</p>
+                  <div className="bg-stone-50 rounded-xl p-4">
+                    <p className="text-xs text-stone-500 uppercase tracking-wider mb-1">Principal Repaid (Year 1)</p>
+                    <p className="text-lg font-bold text-stone-900">{fmtINR(result.tax.annualPrincipal)}</p>
+                    <p className="text-xs text-stone-500 mt-1">80C deductible: {fmtINR(Math.min(result.tax.annualPrincipal, 150000))}</p>
                   </div>
-                  <div className="bg-gray-800/50 rounded-xl p-4">
-                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Interest Paid (Year 1)</p>
-                    <p className="text-lg font-bold text-white">{fmtINR(result.tax.annualInterest)}</p>
-                    <p className="text-xs text-gray-500 mt-1">Sec 24b deductible: {fmtINR(Math.min(result.tax.annualInterest, 200000))}</p>
+                  <div className="bg-stone-50 rounded-xl p-4">
+                    <p className="text-xs text-stone-500 uppercase tracking-wider mb-1">Interest Paid (Year 1)</p>
+                    <p className="text-lg font-bold text-stone-900">{fmtINR(result.tax.annualInterest)}</p>
+                    <p className="text-xs text-stone-500 mt-1">Sec 24b deductible: {fmtINR(Math.min(result.tax.annualInterest, 200000))}</p>
                   </div>
                 </div>
                 <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 flex items-center gap-4">
                   <span className="text-3xl">💰</span>
                   <div>
-                    <p className="text-xs text-gray-400 uppercase tracking-wider">Estimated Annual Tax Saving</p>
-                    <p className="text-2xl font-bold text-blue-400 mt-1">{fmtINR(result.tax.annualTaxSaving)}</p>
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-stone-500 uppercase tracking-wider">Estimated Annual Tax Saving</p>
+                    <p className="text-2xl font-bold text-blue-700 mt-1">{fmtINR(result.tax.annualTaxSaving)}</p>
+                    <p className="text-xs text-stone-500 mt-1">
                       (₹1.5L/yr under 80C + ₹2L/yr under Sec 24b) × 31.2%
                     </p>
                   </div>
                 </div>
-                <p className="text-xs text-gray-600 mt-3">
+                <p className="text-xs text-stone-600 mt-3">
                   * Only applicable for self-occupied property under old tax regime. Consult a CA for exact figures.
                 </p>
               </div>
@@ -968,18 +990,18 @@ export default function HomeLoanEMIPage() {
 
             {/* Compare Rates */}
             <div className="card">
-              <h3 className="text-sm font-semibold text-white mb-3">Rate Comparison</h3>
-              <p className="text-xs text-gray-500 mb-3">
+              <h3 className="text-sm font-semibold text-stone-900 mb-3">Rate Comparison</h3>
+              <p className="text-xs text-stone-500 mb-3">
                 Monthly EMI for {fmtINR(result.P)} over {tenureYears} years at different rates
               </p>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-gray-700">
-                      <th className="text-left py-2 px-3 text-gray-400 font-medium">Rate</th>
-                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Monthly EMI</th>
-                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Total Interest</th>
-                      <th className="text-right py-2 px-3 text-gray-400 font-medium">vs Current</th>
+                    <tr className="border-b border-stone-200">
+                      <th className="text-left py-2 px-3 text-stone-500 font-medium">Rate</th>
+                      <th className="text-right py-2 px-3 text-stone-500 font-medium">Monthly EMI</th>
+                      <th className="text-right py-2 px-3 text-stone-500 font-medium">Total Interest</th>
+                      <th className="text-right py-2 px-3 text-stone-500 font-medium">vs Current</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -989,16 +1011,16 @@ export default function HomeLoanEMIPage() {
                       return (
                         <tr
                           key={cr.rate}
-                          className={`border-b border-gray-800 ${isActive ? 'bg-violet-500/10' : 'hover:bg-gray-800/30'}`}
+                          className={`border-b border-stone-200 ${isActive ? 'bg-violet-50' : 'hover:bg-stone-50/30'}`}
                         >
-                          <td className="py-2 px-3 text-gray-300 font-medium">
+                          <td className="py-2 px-3 text-stone-700 font-medium">
                             {cr.rate}%
-                            {isActive && <span className="ml-2 text-xs text-violet-400">(current)</span>}
+                            {isActive && <span className="ml-2 text-xs text-violet-600">(current)</span>}
                           </td>
-                          <td className="py-2 px-3 text-right text-white">{fmtINR(cr.emi)}</td>
-                          <td className="py-2 px-3 text-right text-gray-400">{fmtINR(cr.totalInterest)}</td>
+                          <td className="py-2 px-3 text-right text-stone-900">{fmtINR(cr.emi)}</td>
+                          <td className="py-2 px-3 text-right text-stone-500">{fmtINR(cr.totalInterest)}</td>
                           <td className={`py-2 px-3 text-right text-xs font-medium ${
-                            diff > 0 ? 'text-red-400' : diff < 0 ? 'text-emerald-400' : 'text-gray-500'
+                            diff > 0 ? 'text-red-600' : diff < 0 ? 'text-emerald-700' : 'text-stone-500'
                           }`}>
                             {isActive ? '—' : diff > 0 ? `+${fmtINR(diff)}/mo` : `${fmtINR(diff)}/mo`}
                           </td>
@@ -1011,7 +1033,7 @@ export default function HomeLoanEMIPage() {
             </div>
           </>
         ) : (
-          <div className="card text-center py-8 text-gray-500 text-sm">
+          <div className="card text-center py-8 text-stone-500 text-sm">
             Enter valid loan details above to see results.
           </div>
         )}

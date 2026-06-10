@@ -59,6 +59,32 @@ export default function BioWriterPage() {
       description="Create compelling professional bios for LinkedIn, Twitter, Instagram, and personal websites. Make a powerful first impression."
       icon="🪪"
       relatedTools={RELATED}
+      faqs={[
+        {
+          q: 'Is the AI Bio Writer free?',
+          a: 'Yes, 100% free with no account or subscription needed. Generate professional bios for any platform without spending a cent.',
+        },
+        {
+          q: 'Which platforms does the Bio Writer support?',
+          a: 'It generates optimized bios for LinkedIn, Twitter/X, Instagram, personal websites, GitHub, dating profiles, and speaker bios. Each platform has different character limits and norms that the AI accounts for.',
+        },
+        {
+          q: 'How does this compare to hiring a professional bio writer?',
+          a: 'Professional bio writers charge $100–$500+ per bio and take days to deliver. Our tool generates a polished, tailored bio in under 30 seconds at no cost — and you can regenerate as many times as you like.',
+        },
+        {
+          q: 'Can I generate multiple bios for different platforms?',
+          a: 'Yes. Simply select a different platform, adjust the tone and length, and regenerate. Many users create a LinkedIn bio, a Twitter bio, and a speaker bio in one session.',
+        },
+        {
+          q: 'What information should I include to get the best bio?',
+          a: 'Include your years of experience, notable achievements, companies or clients you have worked with, key skills, and anything that makes you unique. The more context you provide, the more personalized the output.',
+        },
+        {
+          q: 'Is my personal information stored after I submit?',
+          a: 'No. The details you enter are used only to generate your bio and are not stored or shared after the request completes.',
+        },
+      ]}
     >
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="grid sm:grid-cols-2 gap-4">
@@ -94,7 +120,7 @@ export default function BioWriterPage() {
                 className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all ${
                   platform === p
                     ? 'bg-violet-600 border-violet-600 text-white'
-                    : 'bg-gray-800 border-gray-700 text-gray-400 hover:border-gray-600'
+                    : 'bg-white border-stone-200 text-stone-600 hover:border-stone-400'
                 }`}
               >
                 {p}
@@ -114,8 +140,8 @@ export default function BioWriterPage() {
                   onClick={() => setTone(t)}
                   className={`px-3 py-2 rounded-xl text-sm border transition-all ${
                     tone === t
-                      ? 'bg-violet-600/20 border-violet-500/50 text-white'
-                      : 'bg-gray-800 border-gray-700 text-gray-400 hover:border-gray-600'
+                      ? 'bg-violet-100 border-violet-400 text-violet-700'
+                      : 'bg-white border-stone-200 text-stone-600 hover:border-stone-400'
                   }`}
                 >
                   {t}
@@ -133,12 +159,12 @@ export default function BioWriterPage() {
                   onClick={() => setLength(l.id as typeof length)}
                   className={`flex-1 p-3 rounded-xl border text-center transition-all ${
                     length === l.id
-                      ? 'bg-violet-600/20 border-violet-500/50 text-white'
-                      : 'bg-gray-800 border-gray-700 text-gray-400 hover:border-gray-600'
+                      ? 'bg-violet-100 border-violet-400 text-violet-700'
+                      : 'bg-white border-stone-200 text-stone-600 hover:border-stone-400'
                   }`}
                 >
                   <div className="text-sm font-medium">{l.label}</div>
-                  <div className="text-xs text-gray-500">{l.chars}</div>
+                  <div className="text-xs text-stone-500">{l.chars}</div>
                 </button>
               ))}
             </div>
@@ -146,7 +172,7 @@ export default function BioWriterPage() {
         </div>
 
         {error && (
-          <div className="flex items-start gap-2.5 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+          <div className="flex items-start gap-2.5 p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm">
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
             {error}
           </div>
@@ -165,26 +191,26 @@ export default function BioWriterPage() {
         <div className="card">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="font-semibold text-white">Your {platform} Bio</h2>
-              <p className="text-xs text-gray-500 mt-0.5">{output.length} characters</p>
+              <h2 className="font-semibold text-stone-900">Your {platform} Bio</h2>
+              <p className="text-xs text-stone-500 mt-0.5">{output.length} characters</p>
             </div>
             <button
               onClick={() => { navigator.clipboard.writeText(output); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800 transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-all"
             >
-              {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+              {copied ? <Check className="w-4 h-4 text-emerald-700" /> : <Copy className="w-4 h-4" />}
               {copied ? 'Copied!' : 'Copy'}
             </button>
           </div>
-          <div className="text-gray-300 text-sm leading-relaxed whitespace-pre-wrap bg-gray-800/50 rounded-xl p-4">
+          <div className="text-stone-700 text-sm leading-relaxed whitespace-pre-wrap bg-stone-50 rounded-xl p-4">
             {output}
           </div>
         </div>
       )}
 
-      <div className="card bg-gray-900/50">
-        <h2 className="text-lg font-semibold text-white mb-3">Free Professional Bio Writer</h2>
-        <p className="text-sm text-gray-400 leading-relaxed">
+      <div className="card bg-stone-50">
+        <h2 className="text-lg font-semibold text-stone-900 mb-3">Free Professional Bio Writer</h2>
+        <p className="text-sm text-stone-500 leading-relaxed">
           Your bio is your first impression. A great bio opens doors to opportunities, clients, and connections.
           Our AI crafts bios optimized for each platform — short and punchy for Twitter, detailed and keyword-rich
           for LinkedIn, creative and engaging for Instagram. Takes 30 seconds, not 30 minutes.

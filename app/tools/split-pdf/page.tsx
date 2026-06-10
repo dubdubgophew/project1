@@ -221,6 +221,28 @@ export default function SplitPdfPage() {
       icon="✂️"
       description="Split a PDF into separate files by page range. Extract individual pages or save every page as a separate PDF. Free, no upload."
       relatedTools={RELATED}
+      faqs={[
+        {
+          q: 'Is this PDF splitter free?',
+          a: 'Yes, completely free. No watermarks, no account required, and no limit on the number of pages or files.',
+        },
+        {
+          q: 'What splitting modes are available?',
+          a: 'You can extract specific pages or ranges (e.g. "1, 3-5, 8"), split into files by custom ranges, or split every single page into its own PDF file.',
+        },
+        {
+          q: 'Are my PDFs sent to a server?',
+          a: 'No. All splitting is done client-side in your browser using pdf-lib. Your files never leave your device and are not stored anywhere.',
+        },
+        {
+          q: 'Are there file size or page count limits?',
+          a: 'No enforced limits. Very large PDFs may be slow to process depending on your browser\'s available memory.',
+        },
+        {
+          q: 'How does this compare to paid tools like Smallpdf or ilovepdf?',
+          a: 'Those services upload your PDF to their cloud for processing and may impose file-size or daily limits on free tiers. This tool processes everything locally in your browser — faster for large files and more private.',
+        },
+      ]}
     >
       <div className="space-y-6">
 

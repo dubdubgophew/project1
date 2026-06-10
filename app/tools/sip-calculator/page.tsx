@@ -38,12 +38,12 @@ function PieChart({ segments }: { segments: PieSegment[] }) {
       <div className="flex-1 space-y-2 w-full">
         {paths.map((p, i) => (
           <div key={i} className="flex items-center justify-between gap-2 text-xs">
-            <span className="flex items-center gap-1.5 text-gray-400 min-w-0">
+            <span className="flex items-center gap-1.5 text-stone-500 min-w-0">
               <span className="w-2.5 h-2.5 rounded-sm flex-shrink-0" style={{ background: p.color }} />
               <span className="truncate">{p.label}</span>
             </span>
-            <span className="text-gray-300 font-medium whitespace-nowrap">
-              {fmtINR(p.value)} <span className="text-gray-500">({(p.pct * 100).toFixed(1)}%)</span>
+            <span className="text-stone-700 font-medium whitespace-nowrap">
+              {fmtINR(p.value)} <span className="text-stone-500">({(p.pct * 100).toFixed(1)}%)</span>
             </span>
           </div>
         ))}
@@ -285,12 +285,34 @@ export default function SIPCalculatorPage() {
         { name: 'In-Hand Salary Calculator', href: '/tools/hand-salary-calculator', icon: '💼' },
         { name: 'Income Tax Calculator', href: '/tools/income-tax-calculator', icon: '🧾' },
       ]}
+      faqs={[
+        {
+          q: 'Is this SIP calculator free?',
+          a: 'Yes, completely free. No login or payment required. You can calculate SIP returns, lumpsum growth, and goal planning as many times as you like.',
+        },
+        {
+          q: 'What does this SIP calculator compute?',
+          a: 'It calculates the future value of your SIP or lumpsum investment, total amount invested, total returns, CAGR, and absolute return percentage. It also shows inflation-adjusted real value, post-tax corpus (LTCG for equity funds or slab rate for debt funds), a year-by-year growth table, SIP vs lumpsum comparison, and a reverse SIP goal planner that tells you how much to invest monthly to reach a target corpus.',
+        },
+        {
+          q: 'How do I use the SIP calculator?',
+          a: 'Select SIP or Lumpsum tab. For SIP: enter monthly investment amount, expected annual return rate (use presets — 8% conservative, 12% moderate, 15% aggressive), and investment period in years. Optionally enable Step-up SIP to increase your investment annually. Set inflation rate and fund type for post-tax and real-value calculations. Results update instantly.',
+        },
+        {
+          q: 'What return rate should I use for SIP calculations?',
+          a: 'This depends on the fund type. Large-cap equity mutual funds have historically delivered around 10–12% CAGR over long periods. Mid/small-cap funds may deliver higher returns (12–15%) but with higher risk. Debt funds typically return 6–8%. These are estimates — actual returns vary and past performance does not guarantee future results.',
+        },
+        {
+          q: 'Are the SIP return calculations accurate? Is this a disclaimer?',
+          a: 'The calculator uses standard compound interest formulas (future value of annuity) and is mathematically accurate. However, mutual fund returns are market-linked and not guaranteed. The results shown are projections based on a fixed assumed rate. Actual returns will vary based on market conditions, fund selection, and timing. This tool is for educational and planning purposes only — consult a SEBI-registered financial advisor before investing.',
+        },
+      ]}
     >
       <div className="space-y-6">
         {/* Country selector */}
         <div className="flex items-center gap-2 mb-6">
-          <span className="text-xs text-gray-500 uppercase tracking-wider">Country</span>
-          <select className="text-sm bg-gray-800 border border-gray-700 rounded-lg px-3 py-1.5 text-white">
+          <span className="text-xs text-stone-500 uppercase tracking-wider">Country</span>
+          <select className="text-sm bg-white border border-stone-200 rounded-lg px-3 py-1.5 text-stone-900">
             <option value="IN">🇮🇳 India</option>
             <option disabled value="US">🇺🇸 USA (coming soon)</option>
           </select>
@@ -298,7 +320,7 @@ export default function SIPCalculatorPage() {
 
         {/* Tabs */}
         <div className="card space-y-5">
-          <div className="flex gap-1 bg-gray-800/60 rounded-xl p-1 w-fit">
+          <div className="flex gap-1 bg-stone-50/60 rounded-xl p-1 w-fit">
             {(['sip', 'lumpsum'] as const).map((t) => (
               <button
                 key={t}
@@ -306,7 +328,7 @@ export default function SIPCalculatorPage() {
                 className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
                   tab === t
                     ? 'bg-violet-600 text-white shadow'
-                    : 'text-gray-400 hover:text-white'
+                    : 'text-stone-500 hover:text-stone-900'
                 }`}
               >
                 {t === 'sip' ? 'SIP' : 'Lumpsum'}
@@ -316,11 +338,11 @@ export default function SIPCalculatorPage() {
 
           {/* Return Rate Presets */}
           <div>
-            <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">Quick Presets</p>
+            <p className="text-xs text-stone-500 uppercase tracking-wider mb-2">Quick Presets</p>
             <div className="flex flex-wrap gap-2">
               {[
                 { label: 'Conservative', rate: 8, color: 'bg-blue-600/20 border-blue-500/30 text-blue-300 hover:bg-blue-600/30' },
-                { label: 'Moderate', rate: 12, color: 'bg-violet-600/20 border-violet-500/30 text-violet-300 hover:bg-violet-600/30' },
+                { label: 'Moderate', rate: 12, color: 'bg-violet-600/20 border-violet-500/30 text-violet-700 hover:bg-violet-600/30' },
                 { label: 'Aggressive', rate: 15, color: 'bg-emerald-600/20 border-emerald-500/30 text-emerald-300 hover:bg-emerald-600/30' },
               ].map(({ label, rate, color }) => (
                 <button
@@ -369,7 +391,7 @@ export default function SIPCalculatorPage() {
               <div>
                 <div className="flex justify-between mb-1">
                   <label className="label mb-0">Investment Period</label>
-                  <span className="text-sm text-violet-400 font-semibold">{sipYears} years</span>
+                  <span className="text-sm text-violet-600 font-semibold">{sipYears} years</span>
                 </div>
                 <input
                   type="range"
@@ -379,17 +401,17 @@ export default function SIPCalculatorPage() {
                   onChange={(e) => setSipYears(Number(e.target.value))}
                   className="w-full accent-violet-500"
                 />
-                <div className="flex justify-between text-xs text-gray-600 mt-1">
+                <div className="flex justify-between text-xs text-stone-600 mt-1">
                   <span>1 yr</span><span>30 yrs</span>
                 </div>
               </div>
 
               {/* Step-up SIP */}
-              <div className="border border-gray-700 rounded-xl p-4 space-y-3">
+              <div className="border border-stone-200 rounded-xl p-4 space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-white">Step-up SIP</p>
-                    <p className="text-xs text-gray-500">Increase SIP annually to grow wealth faster</p>
+                    <p className="text-sm font-medium text-stone-900">Step-up SIP</p>
+                    <p className="text-xs text-stone-500">Increase SIP annually to grow wealth faster</p>
                   </div>
                   <button
                     onClick={() => setStepUpEnabled((v) => !v)}
@@ -408,7 +430,7 @@ export default function SIPCalculatorPage() {
                   <div>
                     <div className="flex justify-between mb-1">
                       <label className="label mb-0">Annual SIP Increase</label>
-                      <span className="text-sm text-violet-400 font-semibold">{stepUpPct}%</span>
+                      <span className="text-sm text-violet-600 font-semibold">{stepUpPct}%</span>
                     </div>
                     <input
                       type="range"
@@ -419,7 +441,7 @@ export default function SIPCalculatorPage() {
                       onChange={(e) => setStepUpPct(e.target.value)}
                       className="w-full accent-violet-500"
                     />
-                    <div className="flex justify-between text-xs text-gray-600 mt-1">
+                    <div className="flex justify-between text-xs text-stone-600 mt-1">
                       <span>0%</span><span>25%</span>
                     </div>
                   </div>
@@ -459,7 +481,7 @@ export default function SIPCalculatorPage() {
               <div>
                 <div className="flex justify-between mb-1">
                   <label className="label mb-0">Investment Period</label>
-                  <span className="text-sm text-violet-400 font-semibold">{lsYears} years</span>
+                  <span className="text-sm text-violet-600 font-semibold">{lsYears} years</span>
                 </div>
                 <input
                   type="range"
@@ -469,7 +491,7 @@ export default function SIPCalculatorPage() {
                   onChange={(e) => setLsYears(Number(e.target.value))}
                   className="w-full accent-violet-500"
                 />
-                <div className="flex justify-between text-xs text-gray-600 mt-1">
+                <div className="flex justify-between text-xs text-stone-600 mt-1">
                   <span>1 yr</span><span>30 yrs</span>
                 </div>
               </div>
@@ -477,7 +499,7 @@ export default function SIPCalculatorPage() {
           )}
 
           {/* Inflation & Tax settings */}
-          <div className="border-t border-gray-700 pt-4 grid sm:grid-cols-2 gap-4">
+          <div className="border-t border-stone-200 pt-4 grid sm:grid-cols-2 gap-4">
             <div>
               <label className="label">Inflation Rate (%)</label>
               <input
@@ -493,7 +515,7 @@ export default function SIPCalculatorPage() {
             </div>
             <div>
               <label className="label">Fund / Tax Type</label>
-              <div className="flex gap-1 bg-gray-800/60 rounded-xl p-1 w-fit mt-1">
+              <div className="flex gap-1 bg-stone-50/60 rounded-xl p-1 w-fit mt-1">
                 {(['equity', 'debt'] as const).map((t) => (
                   <button
                     key={t}
@@ -501,7 +523,7 @@ export default function SIPCalculatorPage() {
                     className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all ${
                       fundType === t
                         ? 'bg-violet-600 text-white shadow'
-                        : 'text-gray-400 hover:text-white'
+                        : 'text-stone-500 hover:text-stone-900'
                     }`}
                   >
                     {t === 'equity' ? 'Equity / MF (LTCG)' : 'Debt (Slab Rate)'}
@@ -533,18 +555,18 @@ export default function SIPCalculatorPage() {
             {/* Stat boxes */}
             <div className="grid sm:grid-cols-3 gap-4">
               <div className="card text-center py-5">
-                <p className="text-2xl font-bold text-gray-300">{fmtINR(result.invested)}</p>
-                <p className="text-xs text-gray-500 mt-1 uppercase tracking-wider">Invested Amount</p>
+                <p className="text-2xl font-bold text-stone-700">{fmtINR(result.invested)}</p>
+                <p className="text-xs text-stone-500 mt-1 uppercase tracking-wider">Invested Amount</p>
               </div>
               <div className="card text-center py-5">
-                <p className="text-2xl font-bold text-emerald-400">{fmtINR(result.returns)}</p>
-                <p className="text-xs text-gray-500 mt-1 uppercase tracking-wider">Total Returns</p>
+                <p className="text-2xl font-bold text-emerald-700">{fmtINR(result.returns)}</p>
+                <p className="text-xs text-stone-500 mt-1 uppercase tracking-wider">Total Returns</p>
               </div>
               <div className="card text-center py-5">
-                <p className="text-2xl font-bold text-violet-400">{fmtINR(result.fv)}</p>
-                <p className="text-xs text-gray-500 mt-1 uppercase tracking-wider">Total Value (Nominal)</p>
+                <p className="text-2xl font-bold text-violet-600">{fmtINR(result.fv)}</p>
+                <p className="text-xs text-stone-500 mt-1 uppercase tracking-wider">Total Value (Nominal)</p>
                 {inflationResult && (
-                  <p className="text-xs text-amber-400 mt-1">
+                  <p className="text-xs text-amber-700 mt-1">
                     Real: {fmtINR(inflationResult.realValue)}
                   </p>
                 )}
@@ -556,19 +578,19 @@ export default function SIPCalculatorPage() {
               {/* Inflation card */}
               {inflationResult && (
                 <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-4">
-                  <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">Inflation-Adjusted Value ({inflationRate}% p.a.)</p>
+                  <p className="text-xs text-stone-500 uppercase tracking-wider mb-2">Inflation-Adjusted Value ({inflationRate}% p.a.)</p>
                   <div className="flex flex-wrap gap-6">
                     <div>
-                      <p className="text-xs text-gray-500">Nominal (Future ₹)</p>
-                      <p className="text-lg font-bold text-white">{fmtINR(result.fv)}</p>
+                      <p className="text-xs text-stone-500">Nominal (Future ₹)</p>
+                      <p className="text-lg font-bold text-stone-900">{fmtINR(result.fv)}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500">Real Value (Today&apos;s ₹)</p>
-                      <p className="text-lg font-bold text-amber-400">{fmtINR(inflationResult.realValue)}</p>
+                      <p className="text-xs text-stone-500">Real Value (Today&apos;s ₹)</p>
+                      <p className="text-lg font-bold text-amber-700">{fmtINR(inflationResult.realValue)}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500">Purchasing Power Lost</p>
-                      <p className="text-lg font-bold text-red-400">{fmtINR(result.fv - inflationResult.realValue)}</p>
+                      <p className="text-xs text-stone-500">Purchasing Power Lost</p>
+                      <p className="text-lg font-bold text-red-600">{fmtINR(result.fv - inflationResult.realValue)}</p>
                     </div>
                   </div>
                 </div>
@@ -577,25 +599,25 @@ export default function SIPCalculatorPage() {
               {/* Tax card */}
               {taxResult && (
                 <div className="bg-blue-500/5 border border-blue-500/20 rounded-xl p-4">
-                  <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">Post-Tax Corpus — {taxResult.label}</p>
+                  <p className="text-xs text-stone-500 uppercase tracking-wider mb-2">Post-Tax Corpus — {taxResult.label}</p>
                   <div className="flex flex-wrap gap-6">
                     <div>
-                      <p className="text-xs text-gray-500">Gross Corpus</p>
-                      <p className="text-lg font-bold text-white">{fmtINR(result.fv)}</p>
+                      <p className="text-xs text-stone-500">Gross Corpus</p>
+                      <p className="text-lg font-bold text-stone-900">{fmtINR(result.fv)}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-stone-500">
                         {fundType === 'equity' ? 'LTCG Tax' : 'Tax on Gains'}
                       </p>
-                      <p className="text-lg font-bold text-red-400">− {fmtINR(taxResult.tax)}</p>
+                      <p className="text-lg font-bold text-red-600">− {fmtINR(taxResult.tax)}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500">Net Post-Tax Corpus</p>
-                      <p className="text-lg font-bold text-emerald-400">{fmtINR(taxResult.postTax)}</p>
+                      <p className="text-xs text-stone-500">Net Post-Tax Corpus</p>
+                      <p className="text-lg font-bold text-emerald-700">{fmtINR(taxResult.postTax)}</p>
                     </div>
                   </div>
                   {fundType === 'equity' && (
-                    <p className="text-xs text-gray-600 mt-2">* LTCG: ₹1.25L of gains exempt, remainder taxed at 12.5% (as per Finance Act 2024)</p>
+                    <p className="text-xs text-stone-600 mt-2">* LTCG: ₹1.25L of gains exempt, remainder taxed at 12.5% (as per Finance Act 2024)</p>
                   )}
                 </div>
               )}
@@ -605,18 +627,18 @@ export default function SIPCalculatorPage() {
             <div className="card">
               <div className="flex flex-wrap gap-6 mb-5">
                 <div>
-                  <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Wealth Gained</p>
-                  <p className="text-lg font-bold text-white">
-                    Your money grew <span className="text-violet-400">{growthMultiple}x</span>
+                  <p className="text-xs text-stone-500 uppercase tracking-wider mb-1">Wealth Gained</p>
+                  <p className="text-lg font-bold text-stone-900">
+                    Your money grew <span className="text-violet-600">{growthMultiple}x</span>
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">CAGR on Invested</p>
-                  <p className="text-lg font-bold text-amber-400">{fmtPct(result.cagr)}</p>
+                  <p className="text-xs text-stone-500 uppercase tracking-wider mb-1">CAGR on Invested</p>
+                  <p className="text-lg font-bold text-amber-700">{fmtPct(result.cagr)}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Absolute Returns %</p>
-                  <p className="text-lg font-bold text-emerald-400">{result.absReturns.toFixed(1)}%</p>
+                  <p className="text-xs text-stone-500 uppercase tracking-wider mb-1">Absolute Returns %</p>
+                  <p className="text-lg font-bold text-emerald-700">{result.absReturns.toFixed(1)}%</p>
                 </div>
               </div>
 
@@ -630,33 +652,33 @@ export default function SIPCalculatorPage() {
             {/* SIP vs Lumpsum Comparison */}
             {comparisonResult && (
               <div className="card">
-                <h3 className="text-sm font-semibold text-white mb-3">SIP vs Lumpsum Comparison</h3>
-                <p className="text-xs text-gray-500 mb-4">
+                <h3 className="text-sm font-semibold text-stone-900 mb-3">SIP vs Lumpsum Comparison</h3>
+                <p className="text-xs text-stone-500 mb-4">
                   Same total invested ({fmtINR(comparisonResult.totalInvested)}): SIP monthly vs all at start
                 </p>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-gray-700">
-                        <th className="text-left py-2 px-3 text-gray-400 font-medium">Mode</th>
-                        <th className="text-right py-2 px-3 text-gray-400 font-medium">Total Invested</th>
-                        <th className="text-right py-2 px-3 text-gray-400 font-medium">Final Value</th>
-                        <th className="text-right py-2 px-3 text-gray-400 font-medium">Difference</th>
+                      <tr className="border-b border-stone-200">
+                        <th className="text-left py-2 px-3 text-stone-500 font-medium">Mode</th>
+                        <th className="text-right py-2 px-3 text-stone-500 font-medium">Total Invested</th>
+                        <th className="text-right py-2 px-3 text-stone-500 font-medium">Final Value</th>
+                        <th className="text-right py-2 px-3 text-stone-500 font-medium">Difference</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr className="border-b border-gray-800 bg-violet-500/5">
-                        <td className="py-2 px-3 text-violet-300 font-medium">SIP (Monthly)</td>
-                        <td className="py-2 px-3 text-right text-gray-300">{fmtINR(comparisonResult.totalInvested)}</td>
-                        <td className="py-2 px-3 text-right text-violet-400 font-semibold">{fmtINR(comparisonResult.sipFV)}</td>
-                        <td className="py-2 px-3 text-right text-gray-500">—</td>
+                      <tr className="border-b border-stone-200 bg-violet-500/5">
+                        <td className="py-2 px-3 text-violet-700 font-medium">SIP (Monthly)</td>
+                        <td className="py-2 px-3 text-right text-stone-700">{fmtINR(comparisonResult.totalInvested)}</td>
+                        <td className="py-2 px-3 text-right text-violet-600 font-semibold">{fmtINR(comparisonResult.sipFV)}</td>
+                        <td className="py-2 px-3 text-right text-stone-500">—</td>
                       </tr>
-                      <tr className="border-b border-gray-800">
+                      <tr className="border-b border-stone-200">
                         <td className="py-2 px-3 text-amber-300 font-medium">Lumpsum (At Start)</td>
-                        <td className="py-2 px-3 text-right text-gray-300">{fmtINR(comparisonResult.totalInvested)}</td>
-                        <td className="py-2 px-3 text-right text-amber-400 font-semibold">{fmtINR(comparisonResult.lsFV)}</td>
+                        <td className="py-2 px-3 text-right text-stone-700">{fmtINR(comparisonResult.totalInvested)}</td>
+                        <td className="py-2 px-3 text-right text-amber-700 font-semibold">{fmtINR(comparisonResult.lsFV)}</td>
                         <td className="py-2 px-3 text-right">
-                          <span className={comparisonResult.diff >= 0 ? 'text-emerald-400' : 'text-red-400'}>
+                          <span className={comparisonResult.diff >= 0 ? 'text-emerald-700' : 'text-red-600'}>
                             {comparisonResult.diff >= 0 ? '+' : ''}{fmtINR(comparisonResult.diff)}
                           </span>
                         </td>
@@ -664,7 +686,7 @@ export default function SIPCalculatorPage() {
                     </tbody>
                   </table>
                 </div>
-                <p className="text-xs text-gray-600 mt-2">
+                <p className="text-xs text-stone-600 mt-2">
                   {comparisonResult.diff >= 0
                     ? 'SIP benefits from rupee cost averaging — lumpsum wins when market only rises.'
                     : 'Lumpsum wins here because compounding starts earlier on full corpus.'}
@@ -674,24 +696,24 @@ export default function SIPCalculatorPage() {
 
             {/* Year-by-year table */}
             <div className="card">
-              <h3 className="text-sm font-semibold text-white mb-3">Year-by-Year Growth</h3>
+              <h3 className="text-sm font-semibold text-stone-900 mb-3">Year-by-Year Growth</h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-gray-700">
-                      <th className="text-left py-2 px-3 text-gray-400 font-medium">Year</th>
-                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Invested</th>
-                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Returns</th>
-                      <th className="text-right py-2 px-3 text-gray-400 font-medium">Total Value</th>
+                    <tr className="border-b border-stone-200">
+                      <th className="text-left py-2 px-3 text-stone-500 font-medium">Year</th>
+                      <th className="text-right py-2 px-3 text-stone-500 font-medium">Invested</th>
+                      <th className="text-right py-2 px-3 text-stone-500 font-medium">Returns</th>
+                      <th className="text-right py-2 px-3 text-stone-500 font-medium">Total Value</th>
                     </tr>
                   </thead>
                   <tbody>
                     {displayedRows.map((row) => (
-                      <tr key={row.year} className="border-b border-gray-800 hover:bg-gray-800/30">
-                        <td className="py-2 px-3 text-gray-400">Year {row.year}</td>
-                        <td className="py-2 px-3 text-right text-gray-300">{fmtINR(row.invested)}</td>
-                        <td className="py-2 px-3 text-right text-emerald-400">{fmtINR(row.returns)}</td>
-                        <td className="py-2 px-3 text-right text-violet-400 font-semibold">{fmtINR(row.value)}</td>
+                      <tr key={row.year} className="border-b border-stone-200 hover:bg-stone-50/30">
+                        <td className="py-2 px-3 text-stone-500">Year {row.year}</td>
+                        <td className="py-2 px-3 text-right text-stone-700">{fmtINR(row.invested)}</td>
+                        <td className="py-2 px-3 text-right text-emerald-700">{fmtINR(row.returns)}</td>
+                        <td className="py-2 px-3 text-right text-violet-600 font-semibold">{fmtINR(row.value)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -700,7 +722,7 @@ export default function SIPCalculatorPage() {
               {yearRows.length > 5 && (
                 <button
                   onClick={() => setShowAllYears((v) => !v)}
-                  className="mt-3 text-xs text-violet-400 hover:text-violet-300 transition-colors w-full text-center"
+                  className="mt-3 text-xs text-violet-600 hover:text-violet-700 transition-colors w-full text-center"
                 >
                   {showAllYears ? 'Show less' : `Show all ${currentYears} years`}
                 </button>
@@ -708,7 +730,7 @@ export default function SIPCalculatorPage() {
             </div>
           </>
         ) : (
-          <div className="card text-center py-8 text-gray-500 text-sm">
+          <div className="card text-center py-8 text-stone-500 text-sm">
             Enter valid investment details above to see results.
           </div>
         )}
@@ -720,14 +742,14 @@ export default function SIPCalculatorPage() {
             className="flex items-center justify-between w-full text-left"
           >
             <div>
-              <p className="text-sm font-semibold text-white">Goal Planning Calculator</p>
-              <p className="text-xs text-gray-500 mt-0.5">How much should I invest monthly to reach my goal?</p>
+              <p className="text-sm font-semibold text-stone-900">Goal Planning Calculator</p>
+              <p className="text-xs text-stone-500 mt-0.5">How much should I invest monthly to reach my goal?</p>
             </div>
-            <span className="text-gray-400 text-lg">{showGoal ? '−' : '+'}</span>
+            <span className="text-stone-500 text-lg">{showGoal ? '−' : '+'}</span>
           </button>
 
           {showGoal && (
-            <div className="mt-5 space-y-4 pt-4 border-t border-gray-700">
+            <div className="mt-5 space-y-4 pt-4 border-t border-stone-200">
               <div className="grid sm:grid-cols-3 gap-4">
                 <div>
                   <label className="label">Target Amount (₹)</label>
@@ -769,19 +791,19 @@ export default function SIPCalculatorPage() {
               </div>
 
               {goalResult ? (
-                <div className="bg-violet-500/10 border border-violet-500/20 rounded-xl p-4 flex items-center gap-4">
+                <div className="bg-violet-50 border border-violet-500/20 rounded-xl p-4 flex items-center gap-4">
                   <span className="text-3xl">🎯</span>
                   <div>
-                    <p className="text-xs text-gray-400 uppercase tracking-wider">Required Monthly SIP</p>
-                    <p className="text-2xl font-bold text-violet-400 mt-1">{fmtINR(goalResult)}</p>
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-stone-500 uppercase tracking-wider">Required Monthly SIP</p>
+                    <p className="text-2xl font-bold text-violet-600 mt-1">{fmtINR(goalResult)}</p>
+                    <p className="text-xs text-stone-500 mt-1">
                       Invest {fmtINR(goalResult)}/month at {goalRate}% p.a. for {goalYears} years to accumulate{' '}
                       {fmtINR(parseFloat(goalAmount))}.
                     </p>
                   </div>
                 </div>
               ) : (
-                <p className="text-sm text-gray-500">Enter all values above to calculate.</p>
+                <p className="text-sm text-stone-500">Enter all values above to calculate.</p>
               )}
             </div>
           )}

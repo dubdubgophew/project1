@@ -250,7 +250,7 @@ export default function ATSResumeScannerPage() {
           {/* ── Results ── */}
           {result && (
             <div ref={resultRef} className="space-y-6">
-              <div className="bg-gradient-to-br from-stone-900 to-stone-800 rounded-3xl p-8 text-white">
+              <div className="bg-gradient-to-br from-stone-900 to-stone-800 rounded-3xl p-8 text-stone-900">
                 <div className="flex flex-col sm:flex-row items-center gap-8">
                   <ScoreCircle score={result.overall_score}/>
                   <div className="flex-1 text-center sm:text-left space-y-3">

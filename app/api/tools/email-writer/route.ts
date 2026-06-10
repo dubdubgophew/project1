@@ -9,6 +9,7 @@ const schema = z.object({
   tone: z.string().min(2).max(30),
   keyPoints: z.string().min(10).max(2000),
   senderName: z.string().max(100).optional(),
+  length: z.enum(['concise', 'standard', 'detailed']).default('standard'),
 });
 
 export async function POST(req: NextRequest) {
@@ -16,39 +17,47 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { purpose, recipient, tone, keyPoints, senderName } = schema.parse(body);
+    const { purpose, recipient, tone, keyPoints, senderName, length } = schema.parse(body);
+
+    const lengthGuide = {
+      concise: '3-4 sentences total body. Ultra-short, get to the point immediately.',
+      standard: '2-3 short paragraphs. Clear and complete but no fluff.',
+      detailed: '4-5 paragraphs. Thorough with context, details, and clear next steps.',
+    };
 
     const email = await callAI([
       {
         role: 'system',
-        content: `You are an expert business writer who crafts perfect professional emails.
+        content: `You are an expert business writer who crafts perfect professional emails that actually get responses.
 
 Write a complete email (subject line + body) with these requirements:
 - Purpose: ${purpose}
 - Recipient: ${recipient}
 - Tone: ${tone}
 - Must include: ${keyPoints}
+- Length: ${lengthGuide[length]}
 ${senderName ? `- Signed by: ${senderName}` : ''}
 
 Format:
-Subject: [Subject line here]
+Subject: [Compelling subject line — max 50 chars, no clickbait]
 
 [Email body here]
 
-Best regards,
+${tone.toLowerCase().includes('formal') ? 'Yours sincerely,' : 'Best regards,'}
 ${senderName || '[Your Name]'}
 
 Rules:
-- Write a real, ready-to-send email — not a template with placeholders
-- Be ${tone.toLowerCase()} in tone
-- Keep it concise and impactful
-- NO meta-commentary — output only the email itself`,
+- Write a real, ready-to-send email — NO placeholders like [Company] or [Achievement]
+- Be ${tone.toLowerCase()} throughout
+- Subject line must be specific and relevant — not generic like "Regarding your request"
+- NO meta-commentary — output only the email itself
+- NO clichés: avoid "I hope this email finds you well", "per our conversation", "going forward"`,
       },
       {
         role: 'user',
         content: `Write the email now.`,
       },
-    ], { temperature: 0.7, maxTokens: 800 });
+    ], { temperature: 0.7, maxTokens: 1000 });
 
     return NextResponse.json({ email });
   } catch (err) {

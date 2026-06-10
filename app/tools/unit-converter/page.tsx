@@ -159,6 +159,13 @@ export default function UnitConverterPage() {
         { name: 'Loan Calculator', href: '/tools/loan-calculator', icon: '🏦' },
         { name: 'Expense Splitter', href: '/tools/expense-splitter', icon: '💰' },
       ]}
+      faqs={[
+        { q: 'Is this unit converter free?', a: 'Yes, entirely free with no account required. All 8 categories and 70+ units are available immediately.' },
+        { q: 'What unit categories are supported?', a: 'Length, Weight, Temperature, Area, Volume, Speed, Data (bytes/bits), and Time — covering metric, imperial, and scientific units. The full list is shown in the "All Units" table for each category.' },
+        { q: 'How accurate are the conversions?', a: 'Conversions use exact or high-precision factors sourced from NIST and SI standards. Results are shown to up to 10 significant figures, and very large or very small numbers are displayed in scientific notation to avoid rounding errors.' },
+        { q: 'What are common use cases?', a: 'Converting recipe measurements (cups to ml), calculating distances for travel (miles to km), checking file sizes (MB to GB), converting body weight (kg to lbs), and engineering unit conversions for work or study.' },
+        { q: 'Does the temperature conversion handle absolute zero correctly?', a: 'Yes. Celsius, Fahrenheit, Kelvin, and Rankine are all converted via their correct offset formulas, not simple multipliers, so 0 K correctly maps to -273.15°C and -459.67°F.' },
+      ]}
     >
       <div className="space-y-5">
         {/* Category tabs */}
@@ -170,7 +177,7 @@ export default function UnitConverterPage() {
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                 category === cat
                   ? 'bg-violet-600 text-white'
-                  : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'
+                  : 'bg-stone-50 text-stone-500 hover:text-stone-900 hover:bg-stone-100'
               }`}
             >
               {cat}
@@ -226,7 +233,7 @@ export default function UnitConverterPage() {
                   <option key={u.label} value={i}>{u.label}</option>
                 ))}
               </select>
-              <div className="input w-36 bg-gray-900 text-emerald-400 font-mono font-bold select-all cursor-text">
+              <div className="input w-36 bg-stone-100 text-emerald-700 font-mono font-bold select-all cursor-text">
                 {result || '—'}
               </div>
             </div>
@@ -236,17 +243,17 @@ export default function UnitConverterPage() {
         {/* Conversion summary */}
         {result && (
           <div className="p-4 rounded-xl bg-violet-500/5 border border-violet-500/20 text-sm text-center">
-            <span className="text-gray-300">
+            <span className="text-stone-700">
               <span className="text-white font-semibold">{inputVal} {units[fromIdx].label}</span>
               {' = '}
-              <span className="text-violet-400 font-bold text-lg">{result} {units[toIdx].label}</span>
+              <span className="text-violet-600 font-bold text-lg">{result} {units[toIdx].label}</span>
             </span>
           </div>
         )}
 
         {/* Quick all-units table */}
         <div className="card">
-          <h3 className="text-sm font-semibold text-white mb-3">All {category} Units</h3>
+          <h3 className="text-sm font-semibold text-stone-900 mb-3">All {category} Units</h3>
           <div className="space-y-1.5 max-h-72 overflow-y-auto">
             {units.map((u, i) => {
               const num = parseFloat(inputVal);
@@ -254,9 +261,9 @@ export default function UnitConverterPage() {
               const inBase = units[fromIdx].toBase(num);
               const val = u.fromBase(inBase);
               return (
-                <div key={u.label} className={`flex justify-between items-center py-1.5 px-3 rounded-lg text-sm ${i === toIdx ? 'bg-violet-500/10 border border-violet-500/20' : 'hover:bg-gray-800/50'}`}>
-                  <span className={`${i === fromIdx ? 'text-white font-medium' : 'text-gray-400'}`}>{u.label}</span>
-                  <span className={`font-mono ${i === toIdx ? 'text-violet-400 font-bold' : 'text-gray-300'}`}>{formatResult(val)}</span>
+                <div key={u.label} className={`flex justify-between items-center py-1.5 px-3 rounded-lg text-sm ${i === toIdx ? 'bg-violet-50 border border-violet-500/20' : 'hover:bg-stone-50'}`}>
+                  <span className={`${i === fromIdx ? 'text-white font-medium' : 'text-stone-500'}`}>{u.label}</span>
+                  <span className={`font-mono ${i === toIdx ? 'text-violet-600 font-bold' : 'text-stone-700'}`}>{formatResult(val)}</span>
                 </div>
               );
             })}

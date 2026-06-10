@@ -159,7 +159,7 @@ body{font-family:'Calibri',Arial,sans-serif;font-size:11.5pt;line-height:1.7;col
 function TemplatePicker({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   return (
     <div className="card">
-      <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-3">Template</h2>
+      <h2 className="text-sm font-semibold text-violet-600 uppercase tracking-wider mb-3">Template</h2>
       <div className="grid grid-cols-5 gap-2">
         {TEMPLATES.map(t => (
           <button
@@ -168,8 +168,8 @@ function TemplatePicker({ value, onChange }: { value: string; onChange: (v: stri
             onClick={() => onChange(t.id)}
             className={`flex flex-col items-center gap-2 p-2.5 rounded-xl border transition-all ${
               value === t.id
-                ? 'border-violet-500 bg-violet-500/10'
-                : 'border-gray-700 hover:border-gray-600'
+                ? 'border-violet-500 bg-violet-50'
+                : 'border-stone-200 hover:border-stone-300'
             }`}
           >
             <div className="w-full rounded overflow-hidden" style={{ background: '#fff', border: '1px solid #e5e7eb' }}>
@@ -181,7 +181,7 @@ function TemplatePicker({ value, onChange }: { value: string; onChange: (v: stri
                 <div className="h-0.5 rounded bg-gray-200 w-3/5" />
               </div>
             </div>
-            <span className="text-[10px] font-medium text-gray-300">{t.name}</span>
+            <span className="text-[10px] font-medium text-stone-700">{t.name}</span>
           </button>
         ))}
       </div>
@@ -463,7 +463,7 @@ export default function ContractGeneratorPage() {
         </div>
 
         {error && (
-          <div className="flex items-start gap-2.5 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+          <div className="flex items-start gap-2.5 p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm">
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />{error}
           </div>
         )}
@@ -478,15 +478,15 @@ export default function ContractGeneratorPage() {
       {output && (
         <div className="card">
           <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-            <h2 className="font-semibold text-white">Your Contract</h2>
+            <h2 className="font-semibold text-stone-900">Your Contract</h2>
             <div className="flex gap-2 flex-wrap">
-              <div className="flex rounded-lg border border-gray-700 overflow-hidden text-sm">
+              <div className="flex rounded-lg border border-stone-200 overflow-hidden text-sm">
                 <button onClick={() => setViewMode('edit')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 transition-colors ${viewMode==='edit' ? 'bg-violet-600 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}>
+                  className={`flex items-center gap-1.5 px-3 py-1.5 transition-colors ${viewMode==='edit' ? 'bg-violet-600 text-white' : 'text-stone-500 hover:text-stone-900 hover:bg-stone-100'}`}>
                   <Pencil className="w-3.5 h-3.5" /> Edit
                 </button>
                 <button onClick={() => setViewMode('preview')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 transition-colors ${viewMode==='preview' ? 'bg-violet-600 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}>
+                  className={`flex items-center gap-1.5 px-3 py-1.5 transition-colors ${viewMode==='preview' ? 'bg-violet-600 text-white' : 'text-stone-500 hover:text-stone-900 hover:bg-stone-100'}`}>
                   <Eye className="w-3.5 h-3.5" /> Preview
                 </button>
               </div>
@@ -494,8 +494,8 @@ export default function ContractGeneratorPage() {
                 <Download className="w-4 h-4" /> Download PDF
               </button>
               <button onClick={() => { navigator.clipboard.writeText(currentText); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800 transition-all">
-                {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-all">
+                {copied ? <Check className="w-4 h-4 text-emerald-700" /> : <Copy className="w-4 h-4" />}
                 {copied ? 'Copied!' : 'Copy'}
               </button>
             </div>
@@ -503,19 +503,19 @@ export default function ContractGeneratorPage() {
 
           {viewMode === 'edit' ? (
             <>
-              <p className="text-xs text-gray-500 mb-3">Edit the contract text below, then switch to Preview to see the formatted legal document with signature blocks.</p>
+              <p className="text-xs text-stone-500 mb-3">Edit the contract text below, then switch to Preview to see the formatted legal document with signature blocks.</p>
               <textarea
                 value={currentText}
                 onChange={e => setEditableOutput(e.target.value)}
-                className="w-full bg-gray-800/50 border border-gray-700 rounded-xl p-4 text-gray-300 text-xs leading-relaxed font-mono resize-y min-h-[500px] focus:outline-none focus:border-violet-500"
+                className="w-full bg-stone-50 border border-stone-200 rounded-xl p-4 text-stone-700 text-xs leading-relaxed font-mono resize-y min-h-[500px] focus:outline-none focus:border-violet-500"
               />
             </>
           ) : (
             <>
-              <p className="text-xs text-gray-500 mb-3">Formatted legal document with signature blocks — click Download PDF to export.</p>
+              <p className="text-xs text-stone-500 mb-3">Formatted legal document with signature blocks — click Download PDF to export.</p>
               <iframe
                 srcDoc={buildContractHTML(currentText, contractType, party1, party2, template)}
-                className="w-full rounded-xl border border-gray-700 bg-white"
+                className="w-full rounded-xl border border-stone-200 bg-white"
                 style={{ height: '960px' }}
                 title="Contract Preview"
                 sandbox="allow-same-origin"

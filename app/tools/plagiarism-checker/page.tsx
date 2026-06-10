@@ -271,9 +271,9 @@ export default function PlagiarismCheckerPage() {
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 p-2.5 rounded-lg bg-white border border-red-200 text-sm text-stone-700 hover:border-red-400 hover:text-red-600 transition-colors group"
                   >
-                    <Search className="w-3.5 h-3.5 text-red-400 shrink-0" aria-hidden="true" />
+                    <Search className="w-3.5 h-3.5 text-red-600 shrink-0" aria-hidden="true" />
                     <span className="font-mono text-xs">&ldquo;{q}&rdquo;</span>
-                    <span className="ml-auto text-[10px] text-stone-400 group-hover:text-red-400">Search →</span>
+                    <span className="ml-auto text-[10px] text-stone-400 group-hover:text-red-600">Search →</span>
                   </a>
                 ))}
               </div>

@@ -88,13 +88,20 @@ export default function TextCasePage() {
         { name: 'AI Paraphraser', href: '/tools/paraphraser', icon: '✍️' },
         { name: 'Diff Checker', href: '/tools/diff-checker', icon: '↔️' },
       ]}
+      faqs={[
+        { q: 'Is this text case converter free?', a: 'Yes, entirely free with no account required. All 10 case transformations are available immediately.' },
+        { q: 'What case formats are supported?', a: 'UPPERCASE, lowercase, Title Case (respects minor words like "a", "the", "and"), Sentence case, camelCase, PascalCase, snake_case, kebab-case, Trim Spaces, and Remove Line Breaks.' },
+        { q: 'How does Title Case handle minor words?', a: 'The Title Case converter follows Chicago Manual of Style conventions — articles (a, an, the), coordinating conjunctions (and, but, or), and short prepositions are kept lowercase unless they are the first word.' },
+        { q: 'What are common use cases?', a: 'Converting variable names between coding conventions (camelCase to snake_case), formatting headings for articles, cleaning up pasted text with inconsistent capitalisation, and preparing slugs or CSS class names in kebab-case.' },
+        { q: 'Is my text private?', a: 'Yes. All transformations happen instantly in your browser — your text is never uploaded to any server.' },
+      ]}
     >
       <div className="space-y-5">
         {/* Input */}
         <div>
           <div className="flex items-center justify-between mb-2">
             <label className="label mb-0">Input Text</label>
-            <span className="text-xs text-gray-500">{wordCount} words · {charCount} chars</span>
+            <span className="text-xs text-stone-500">{wordCount} words · {charCount} chars</span>
           </div>
           <textarea
             className="textarea min-h-[140px] text-sm"
@@ -112,16 +119,16 @@ export default function TextCasePage() {
               return (
                 <div key={label} className="card">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-semibold text-violet-400 uppercase tracking-wide">{label}</span>
+                    <span className="text-xs font-semibold text-violet-600 uppercase tracking-wide">{label}</span>
                     <button
                       onClick={() => handleCopy(idx, output)}
-                      className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-lg bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
+                      className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-lg bg-stone-50 text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-colors"
                     >
-                      {copiedIdx === idx ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                      {copiedIdx === idx ? <Check className="w-3 h-3 text-emerald-700" /> : <Copy className="w-3 h-3" />}
                       {copiedIdx === idx ? 'Copied!' : 'Copy'}
                     </button>
                   </div>
-                  <p className="text-gray-200 text-sm break-all leading-relaxed font-mono whitespace-pre-wrap">
+                  <p className="text-stone-800 text-sm break-all leading-relaxed font-mono whitespace-pre-wrap">
                     {output}
                   </p>
                 </div>
@@ -132,8 +139,8 @@ export default function TextCasePage() {
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {TRANSFORMS.map(({ label, example }) => (
               <div key={label} className="card py-3 text-center">
-                <p className="text-xs font-semibold text-violet-400 mb-1">{label}</p>
-                <p className="text-xs text-gray-500 font-mono">{example}</p>
+                <p className="text-xs font-semibold text-violet-600 mb-1">{label}</p>
+                <p className="text-xs text-stone-500 font-mono">{example}</p>
               </div>
             ))}
           </div>

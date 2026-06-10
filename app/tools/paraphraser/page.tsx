@@ -5,7 +5,7 @@ import { ToolLayout } from '@/components/tools/ToolLayout';
 import { Copy, Check, Loader2, AlertCircle, RefreshCw } from 'lucide-react';
 
 const MODES = [
-  { id: 'standard', label: 'Standard', desc: 'Natural, balanced rewrite' },
+  { id: 'fluent', label: 'Fluent', desc: 'Improve flow & readability' },
   { id: 'formal', label: 'Formal', desc: 'Professional & polished' },
   { id: 'creative', label: 'Creative', desc: 'Unique & engaging' },
   { id: 'academic', label: 'Academic', desc: 'Scholarly & precise' },
@@ -21,15 +21,17 @@ const RELATED = [
 export default function ParaphraserPage() {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
-  const [mode, setMode] = useState<'standard' | 'formal' | 'creative' | 'academic' | 'simple'>('standard');
+  const [wordsBefore, setWordsBefore] = useState(0);
+  const [wordsAfter, setWordsAfter] = useState(0);
+  const [mode, setMode] = useState<'fluent' | 'formal' | 'creative' | 'academic' | 'simple'>('fluent');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
 
   const charLimit = 2000;
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  async function handleSubmit(e?: React.FormEvent) {
+    e?.preventDefault();
     if (!input.trim()) return;
     if (input.length > charLimit) {
       setError(`Text too long. Maximum ${charLimit} characters for free plan.`);
@@ -48,7 +50,11 @@ export default function ParaphraserPage() {
       });
       const data = await res.json();
       if (!res.ok) setError(data.error ?? 'Something went wrong.');
-      else setOutput(data.result);
+      else {
+        setOutput(data.result);
+        setWordsBefore(data.wordsBefore ?? 0);
+        setWordsAfter(data.wordsAfter ?? 0);
+      }
     } catch {
       setError('Network error. Please try again.');
     } finally {
@@ -66,16 +72,16 @@ export default function ParaphraserPage() {
     <ToolLayout
         toolSlug="paraphraser"
       title="AI Paraphraser"
-      description="Instantly rewrite text in 5 different styles. Eliminate plagiarism, improve clarity, and tailor your writing for any audience."
+      description="Instantly rewrite text in 5 different styles. Improve flow, eliminate plagiarism, and tailor your writing for any audience — free, no limits."
       icon="✍️"
       badge="Top Rated"
       relatedTools={RELATED}
       faqs={[
         { q: 'Is this paraphraser completely free?', a: 'Yes. The AI paraphraser is free with no character limits and no premium paywall. No account or credit card required.' },
-        { q: 'What paraphrasing styles are available?', a: 'The tool offers 5 styles: Standard (neutral rewrite), Fluent (improved flow), Formal (professional/academic tone), Simple (plain language for broad audiences), and Creative (varied vocabulary and structure).' },
+        { q: 'What paraphrasing styles are available?', a: 'The tool offers 5 styles: Fluent (improves flow and readability), Formal (professional/business tone), Academic (scholarly and precise), Simple (plain language), and Creative (varied and engaging).' },
         { q: 'Does paraphrasing eliminate plagiarism?', a: 'Paraphrasing significantly reduces plagiarism by replacing original wording with new phrasing. However, for academic work, always cite the original source even after paraphrasing — the idea remains borrowed even if the words change.' },
         { q: 'How does this compare to QuillBot?', a: 'Formly\'s paraphraser is completely free with no word limit — QuillBot\'s free plan limits you to 125 words per request and locks most modes behind a $9.95/month subscription. Formly supports up to 2,000 characters free.' },
-        { q: 'Can I use it for academic essays?', a: 'Yes — use the Formal mode for academic writing. It maintains technical terminology while rephrasing sentence structure. Always verify the output preserves the original meaning accurately before submission.' },
+        { q: 'Can I use it for academic essays?', a: 'Yes — use the Academic mode for scholarly writing. It uses precise terminology, appropriate passive voice, and formal vocabulary. Always verify the output preserves the original meaning before submission.' },
         { q: 'Is my text data private?', a: 'Your text is sent only for AI processing and is never stored or logged. The connection is HTTPS-encrypted and no account is needed.' },
       ]}
     >
@@ -91,12 +97,12 @@ export default function ParaphraserPage() {
                 onClick={() => setMode(m.id)}
                 className={`p-3 rounded-xl border text-left transition-all ${
                   mode === m.id
-                    ? 'bg-violet-600/20 border-violet-500/50 text-white'
-                    : 'bg-gray-800 border-gray-700 text-gray-400 hover:border-gray-600'
+                    ? 'bg-violet-100 border-violet-400 text-violet-700'
+                    : 'bg-white border-stone-200 text-stone-600 hover:border-stone-400'
                 }`}
               >
                 <div className="text-sm font-medium">{m.label}</div>
-                <div className="text-xs text-gray-500 mt-0.5">{m.desc}</div>
+                <div className="text-xs text-stone-500 mt-0.5">{m.desc}</div>
               </button>
             ))}
           </div>
@@ -106,7 +112,7 @@ export default function ParaphraserPage() {
         <div>
           <div className="flex items-center justify-between mb-2">
             <label className="label mb-0">Your Text</label>
-            <span className={`text-xs ${input.length > charLimit ? 'text-red-400' : 'text-gray-500'}`}>
+            <span className={`text-xs ${input.length > charLimit ? 'text-red-600' : 'text-stone-500'}`}>
               {input.length}/{charLimit}
             </span>
           </div>
@@ -120,7 +126,7 @@ export default function ParaphraserPage() {
         </div>
 
         {error && (
-          <div className="flex items-start gap-2.5 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+          <div className="flex items-start gap-2.5 p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm">
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
             {error}
           </div>
@@ -139,27 +145,45 @@ export default function ParaphraserPage() {
       {output && (
         <div className="card">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-white">Paraphrased Text</h2>
-            <button onClick={handleCopy} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800 transition-all">
-              {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-              {copied ? 'Copied!' : 'Copy'}
-            </button>
+            <div>
+              <h2 className="font-semibold text-stone-900">Paraphrased Text</h2>
+              {wordsBefore > 0 && (
+                <p className="text-xs text-stone-500 mt-0.5">
+                  {wordsBefore} → {wordsAfter} words
+                </p>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => handleSubmit()}
+                disabled={loading}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-all"
+                title="Try a different rewrite"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                Retry
+              </button>
+              <button onClick={handleCopy} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-all">
+                {copied ? <Check className="w-4 h-4 text-emerald-700" /> : <Copy className="w-4 h-4" />}
+                {copied ? 'Copied!' : 'Copy'}
+              </button>
+            </div>
           </div>
-          <div className="text-gray-300 text-sm leading-relaxed whitespace-pre-wrap">{output}</div>
-          <div className="mt-4 pt-4 border-t border-gray-800 flex items-center justify-between text-xs text-gray-600">
-            <span>Mode: <span className="text-gray-400 capitalize">{mode}</span></span>
-            <span>{output.split(' ').length} words</span>
+          <div className="text-stone-700 text-sm leading-relaxed whitespace-pre-wrap">{output}</div>
+          <div className="mt-4 pt-4 border-t border-stone-200 text-xs text-stone-500">
+            Mode: <span className="capitalize font-medium">{mode}</span>
           </div>
         </div>
       )}
 
-      <div className="card bg-gray-900/50">
-        <h2 className="text-lg font-semibold text-white mb-3">About the AI Paraphraser</h2>
-        <p className="text-sm text-gray-400 leading-relaxed">
-          Our AI paraphraser uses Groq AI to rewrite your text while preserving the original meaning.
+      <div className="card bg-stone-50">
+        <h2 className="text-lg font-semibold text-stone-900 mb-3">About the AI Paraphraser</h2>
+        <p className="text-sm text-stone-500 leading-relaxed">
+          Our AI paraphraser rewrites your text while preserving the original meaning.
           Perfect for avoiding plagiarism, improving readability, adapting content for different audiences,
-          or simply getting a fresh perspective on your writing. Supports text up to 2,000 characters free
-          (10,000 for Pro users).
+          or getting a fresh perspective on your writing. Supports text up to 2,000 characters free.
+          Use the Retry button to get a fresh rewrite with different wording.
         </p>
       </div>
     </ToolLayout>

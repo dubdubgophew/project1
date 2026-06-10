@@ -69,11 +69,11 @@ const RISK_BORDER: Record<string, string> = {
 };
 
 const RISK_ACCENT: Record<string, string> = {
-  VERY_LOW:  'text-emerald-400',
+  VERY_LOW:  'text-emerald-700',
   LOW:       'text-teal-400',
-  MEDIUM:    'text-amber-400',
+  MEDIUM:    'text-amber-700',
   HIGH:      'text-orange-400',
-  VERY_HIGH: 'text-red-400',
+  VERY_HIGH: 'text-red-600',
 };
 
 const FAQS = [
@@ -261,7 +261,7 @@ export default function WillAIReplaceMePage() {
                   <ul className="space-y-2">
                     {result.at_risk_tasks.map((t, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-red-900">
-                        <span className="text-red-400 shrink-0 mt-0.5">✕</span>{t}
+                        <span className="text-red-600 shrink-0 mt-0.5">✕</span>{t}
                       </li>
                     ))}
                   </ul>
@@ -307,7 +307,7 @@ export default function WillAIReplaceMePage() {
               </div>
 
               {/* Action plan */}
-              <div className="bg-stone-900 rounded-2xl p-6 text-white">
+              <div className="bg-stone-900 rounded-2xl p-6 text-stone-900">
                 <h3 className="font-bold mb-4 flex items-center gap-2">
                   <TrendingUp className="w-4 h-4 text-orange-400" /> Your 6-Month Action Plan
                 </h3>
@@ -327,7 +327,7 @@ export default function WillAIReplaceMePage() {
                 <div className="space-y-3">
                   {result.ai_collaboration_tips.map((tip, i) => (
                     <div key={i} className="flex items-start gap-2 text-sm text-violet-900">
-                      <span className="text-violet-400 font-bold shrink-0">→</span>{tip}
+                      <span className="text-violet-600 font-bold shrink-0">→</span>{tip}
                     </div>
                   ))}
                 </div>

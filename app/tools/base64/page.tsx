@@ -91,19 +91,26 @@ export default function Base64Page() {
         { name: 'Password Generator', href: '/tools/password-generator', icon: '🔑' },
         { name: 'Regex Tester', href: '/tools/regex-tester', icon: '🔍' },
       ]}
+      faqs={[
+        { q: 'Is this Base64 encoder free?', a: 'Yes, completely free with no account or sign-up required. Encode and decode as much as you like.' },
+        { q: 'What does Base64 encoding do?', a: 'Base64 converts binary or text data into a string of 64 printable ASCII characters. It is the standard (RFC 4648) used to embed images in HTML/CSS, transmit data in JSON APIs, and encode email attachments in MIME format.' },
+        { q: 'Can it handle files as well as text?', a: 'Yes. You can upload any file and get its Base64 data URI output, useful for embedding images directly into HTML or CSS. When decoding, the tool can download the result as a binary file.' },
+        { q: 'What are common use cases?', a: 'Encoding images to embed in HTML emails, passing binary data through text-only channels like JSON or XML, storing small assets inline in CSS, and decoding Base64 payloads from API responses or JWT tokens.' },
+        { q: 'Is my data private?', a: 'Yes. Encoding and decoding both happen entirely in your browser using the built-in btoa/atob functions — your data is never sent to any server.' },
+      ]}
     >
       <div className="space-y-4">
         {/* Mode toggle */}
         <div className="flex gap-2">
           <button
             onClick={() => handleModeSwitch('encode')}
-            className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-colors ${mode === 'encode' ? 'bg-violet-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white'}`}
+            className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-colors ${mode === 'encode' ? 'bg-violet-600 text-white' : 'bg-stone-50 text-stone-500 hover:text-stone-900'}`}
           >
             Encode → Base64
           </button>
           <button
             onClick={() => handleModeSwitch('decode')}
-            className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-colors ${mode === 'decode' ? 'bg-violet-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white'}`}
+            className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-colors ${mode === 'decode' ? 'bg-violet-600 text-white' : 'bg-stone-50 text-stone-500 hover:text-stone-900'}`}
           >
             Decode ← Base64
           </button>
@@ -142,8 +149,8 @@ export default function Base64Page() {
               </button>
             </div>
             <div className="relative">
-              <pre className="bg-gray-900 border border-gray-700 rounded-xl p-4 h-48 overflow-auto text-sm font-mono text-emerald-300 whitespace-pre-wrap break-all">
-                {output || <span className="text-gray-600">Output will appear here...</span>}
+              <pre className="bg-stone-100 border border-stone-200 rounded-xl p-4 h-48 overflow-auto text-sm font-mono text-emerald-300 whitespace-pre-wrap break-all">
+                {output || <span className="text-stone-600">Output will appear here...</span>}
               </pre>
             </div>
             {isLikelyFile && (
@@ -165,12 +172,12 @@ export default function Base64Page() {
         {(input || output) && (
           <div className="grid grid-cols-2 gap-3">
             <div className="card text-center py-3">
-              <p className="text-xl font-bold text-violet-400">{input.length.toLocaleString()}</p>
-              <p className="text-xs text-gray-500 mt-1">Input chars</p>
+              <p className="text-xl font-bold text-violet-600">{input.length.toLocaleString()}</p>
+              <p className="text-xs text-stone-500 mt-1">Input chars</p>
             </div>
             <div className="card text-center py-3">
-              <p className="text-xl font-bold text-blue-400">{output.length.toLocaleString()}</p>
-              <p className="text-xs text-gray-500 mt-1">Output chars</p>
+              <p className="text-xl font-bold text-blue-700">{output.length.toLocaleString()}</p>
+              <p className="text-xs text-stone-500 mt-1">Output chars</p>
             </div>
           </div>
         )}

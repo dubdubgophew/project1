@@ -115,11 +115,33 @@ export default function ExpenseSplitterPage() {
         { name: 'Pay Stub Generator', href: '/tools/paystub-generator', icon: '🧾' },
         { name: 'Unit Converter', href: '/tools/unit-converter', icon: '📐' },
       ]}
+      faqs={[
+        {
+          q: 'Is the expense splitter free?',
+          a: 'Yes, entirely free with no account required. Add as many people and expenses as you need.',
+        },
+        {
+          q: 'How does the expense splitter work?',
+          a: 'Add all participants, then log each expense with who paid and which people share the cost. The tool calculates each person\'s net balance and produces a minimal set of money transfers to settle all debts — often fewer transactions than splitting every bill individually.',
+        },
+        {
+          q: 'Is my financial data stored or sent anywhere?',
+          a: 'No. All calculations happen entirely in your browser. No data is sent to any server and nothing is saved when you close the tab.',
+        },
+        {
+          q: 'What happens if expenses are not split equally?',
+          a: 'Currently, each expense is divided equally among the selected participants. If you need custom splits (e.g. percentage-based), you can add separate expense entries to approximate unequal shares.',
+        },
+        {
+          q: 'How does this compare to apps like Splitwise?',
+          a: 'Splitwise and similar apps store your data in the cloud and offer persistent group histories. This tool is instant and private — ideal for one-off trips or dinners where you just need the math without creating an account.',
+        },
+      ]}
     >
       <div className="space-y-6">
         {/* Add People */}
         <div className="card">
-          <h2 className="text-sm font-semibold text-white mb-3">1. Add People</h2>
+          <h2 className="text-sm font-semibold text-stone-900 mb-3">1. Add People</h2>
           <div className="flex gap-2">
             <input
               className="input flex-1"
@@ -135,9 +157,9 @@ export default function ExpenseSplitterPage() {
           {people.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-3">
               {people.map(p => (
-                <span key={p.id} className="flex items-center gap-1.5 px-3 py-1 bg-gray-800 rounded-full text-sm text-gray-300">
+                <span key={p.id} className="flex items-center gap-1.5 px-3 py-1 bg-stone-50 rounded-full text-sm text-stone-700">
                   {p.name}
-                  <button onClick={() => removePerson(p.id)} className="text-gray-600 hover:text-red-400 transition-colors">
+                  <button onClick={() => removePerson(p.id)} className="text-stone-600 hover:text-red-600 transition-colors">
                     <Trash2 className="w-3 h-3" />
                   </button>
                 </span>
@@ -149,7 +171,7 @@ export default function ExpenseSplitterPage() {
         {/* Add Expense */}
         {people.length >= 2 && (
           <div className="card">
-            <h2 className="text-sm font-semibold text-white mb-3">2. Add Expenses</h2>
+            <h2 className="text-sm font-semibold text-stone-900 mb-3">2. Add Expenses</h2>
             <div className="space-y-3">
               <div className="grid sm:grid-cols-2 gap-3">
                 <div>
@@ -179,7 +201,7 @@ export default function ExpenseSplitterPage() {
                         onChange={e => setNewSplit(prev => e.target.checked ? [...prev, p.name] : prev.filter(n => n !== p.name))}
                         className="w-4 h-4 accent-violet-500"
                       />
-                      <span className="text-sm text-gray-300">{p.name}</span>
+                      <span className="text-sm text-stone-700">{p.name}</span>
                     </label>
                   ))}
                 </div>
@@ -195,20 +217,20 @@ export default function ExpenseSplitterPage() {
         {expenses.length > 0 && (
           <div className="card">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-semibold text-white">Expenses ({expenses.length})</h2>
-              <span className="text-sm text-violet-400 font-bold">Total: ${totalExpenses.toFixed(2)}</span>
+              <h2 className="text-sm font-semibold text-stone-900">Expenses ({expenses.length})</h2>
+              <span className="text-sm text-violet-600 font-bold">Total: ${totalExpenses.toFixed(2)}</span>
             </div>
             <div className="space-y-2">
               {expenses.map(e => (
-                <div key={e.id} className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-xl text-sm">
+                <div key={e.id} className="flex items-center gap-3 p-3 bg-stone-50 rounded-xl text-sm">
                   <div className="flex-1 min-w-0">
                     <p className="text-white font-medium truncate">{e.desc}</p>
-                    <p className="text-gray-500 text-xs mt-0.5">
-                      Paid by <span className="text-gray-300">{e.paidBy}</span> · split {e.splitBetween.length} ways
+                    <p className="text-stone-500 text-xs mt-0.5">
+                      Paid by <span className="text-stone-700">{e.paidBy}</span> · split {e.splitBetween.length} ways
                     </p>
                   </div>
-                  <span className="text-emerald-400 font-bold shrink-0">${e.amount.toFixed(2)}</span>
-                  <button onClick={() => removeExpense(e.id)} className="text-gray-600 hover:text-red-400 transition-colors shrink-0">
+                  <span className="text-emerald-700 font-bold shrink-0">${e.amount.toFixed(2)}</span>
+                  <button onClick={() => removeExpense(e.id)} className="text-stone-600 hover:text-red-600 transition-colors shrink-0">
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -226,13 +248,13 @@ export default function ExpenseSplitterPage() {
             {/* Per-person totals */}
             {totals && (
               <div className="card">
-                <h3 className="text-sm font-semibold text-white mb-3">Per-Person Share</h3>
+                <h3 className="text-sm font-semibold text-stone-900 mb-3">Per-Person Share</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {Object.entries(totals).map(([name, amt]) => (
-                    <div key={name} className="bg-gray-800/50 rounded-xl p-3 text-center">
+                    <div key={name} className="bg-stone-50 rounded-xl p-3 text-center">
                       <p className="text-white font-medium text-sm">{name}</p>
-                      <p className="text-violet-400 font-bold text-lg">${amt.toFixed(2)}</p>
-                      <p className="text-gray-600 text-xs">owes in total</p>
+                      <p className="text-violet-600 font-bold text-lg">${amt.toFixed(2)}</p>
+                      <p className="text-stone-600 text-xs">owes in total</p>
                     </div>
                   ))}
                 </div>
@@ -241,19 +263,19 @@ export default function ExpenseSplitterPage() {
 
             {/* Settlements */}
             <div className="card">
-              <h3 className="text-sm font-semibold text-white mb-3">
+              <h3 className="text-sm font-semibold text-stone-900 mb-3">
                 {settlements.length === 0 ? 'All settled up! 🎉' : `Settlement Plan (${settlements.length} transactions)`}
               </h3>
               {settlements.length === 0 ? (
-                <p className="text-gray-400 text-sm">Everyone owes the same amount — no transfers needed.</p>
+                <p className="text-stone-500 text-sm">Everyone owes the same amount — no transfers needed.</p>
               ) : (
                 <div className="space-y-2">
                   {settlements.map((s, i) => (
-                    <div key={i} className="flex items-center gap-3 p-3 bg-emerald-500/5 border border-emerald-500/20 rounded-xl text-sm">
-                      <span className="text-gray-300 font-medium">{s.from}</span>
-                      <span className="text-gray-500">→ pays</span>
-                      <span className="text-gray-300 font-medium">{s.to}</span>
-                      <span className="ml-auto text-emerald-400 font-bold">${s.amount.toFixed(2)}</span>
+                    <div key={i} className="flex items-center gap-3 p-3 bg-emerald-50/80 border border-emerald-500/20 rounded-xl text-sm">
+                      <span className="text-stone-700 font-medium">{s.from}</span>
+                      <span className="text-stone-500">→ pays</span>
+                      <span className="text-stone-700 font-medium">{s.to}</span>
+                      <span className="ml-auto text-emerald-700 font-bold">${s.amount.toFixed(2)}</span>
                     </div>
                   ))}
                 </div>

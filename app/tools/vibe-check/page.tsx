@@ -399,11 +399,11 @@ export default function VibeCheck() {
             <>
               <div className="bg-white rounded-2xl shadow-sm border border-stone-200 p-5 space-y-4">
                 <div>
-                  <p className="text-[10px] font-bold text-violet-400 uppercase tracking-widest mb-2">✨ What Vibe sees</p>
+                  <p className="text-[10px] font-bold text-violet-600 uppercase tracking-widest mb-2">✨ What Vibe sees</p>
                   <p className="text-stone-700 leading-relaxed">{result.insight}</p>
                 </div>
                 <div className="pt-4 border-t border-stone-100">
-                  <p className="text-[10px] font-bold text-amber-400 uppercase tracking-widest mb-2">🔮 A new lens</p>
+                  <p className="text-[10px] font-bold text-amber-700 uppercase tracking-widest mb-2">🔮 A new lens</p>
                   <p className="text-stone-700 leading-relaxed">{result.reframe}</p>
                 </div>
                 <div className="pt-4 border-t border-stone-100">

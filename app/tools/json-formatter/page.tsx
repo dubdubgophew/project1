@@ -105,6 +105,13 @@ export default function JsonFormatterPage() {
         { name: 'Regex Tester', href: '/tools/regex-tester', icon: '🔍' },
         { name: 'Diff Checker', href: '/tools/diff-checker', icon: '↔️' },
       ]}
+      faqs={[
+        { q: 'Is this JSON formatter free to use?', a: 'Yes, completely free. No account, sign-up, or payment required — just paste your JSON and go.' },
+        { q: 'What JSON standards does it support?', a: 'It supports standard JSON (RFC 8259), including nested objects, arrays, strings, numbers, booleans, and null values. It does not support JSON5 or JSONC (comments) since those are not valid JSON.' },
+        { q: 'How accurate is the validation?', a: 'The validator uses the built-in browser JSON.parse engine, which is byte-perfect. If it reports an error, the input genuinely violates the JSON spec, and the error message includes the exact position of the problem.' },
+        { q: 'What are common use cases?', a: 'Developers use it to pretty-print API responses, minify JSON before committing to a repo, spot typos in config files, and quickly inspect deeply nested data structures using the depth and key stats.' },
+        { q: 'Is my JSON data private?', a: 'Yes. All processing happens entirely in your browser — your JSON is never uploaded to any server.' },
+      ]}
     >
       <div className="space-y-4">
         {/* Input */}
@@ -146,16 +153,16 @@ export default function JsonFormatterPage() {
         {stats && (
           <div className="grid grid-cols-3 gap-3">
             <div className="card text-center py-3">
-              <p className="text-2xl font-bold text-violet-400">{stats.keys}</p>
-              <p className="text-xs text-gray-500 mt-1">Total Keys</p>
+              <p className="text-2xl font-bold text-violet-600">{stats.keys}</p>
+              <p className="text-xs text-stone-500 mt-1">Total Keys</p>
             </div>
             <div className="card text-center py-3">
-              <p className="text-2xl font-bold text-blue-400">{stats.depth}</p>
-              <p className="text-xs text-gray-500 mt-1">Max Depth</p>
+              <p className="text-2xl font-bold text-blue-700">{stats.depth}</p>
+              <p className="text-xs text-stone-500 mt-1">Max Depth</p>
             </div>
             <div className="card text-center py-3">
-              <p className="text-2xl font-bold text-amber-400">{stats.arrays}</p>
-              <p className="text-xs text-gray-500 mt-1">Array Items</p>
+              <p className="text-2xl font-bold text-amber-700">{stats.arrays}</p>
+              <p className="text-xs text-stone-500 mt-1">Array Items</p>
             </div>
           </div>
         )}
@@ -170,7 +177,7 @@ export default function JsonFormatterPage() {
                 {copied ? 'Copied!' : 'Copy'}
               </button>
             </div>
-            <pre className="bg-gray-900 border border-gray-700 rounded-xl p-4 overflow-x-auto text-sm font-mono text-emerald-300 max-h-96 overflow-y-auto whitespace-pre-wrap break-all">
+            <pre className="bg-stone-100 border border-stone-200 rounded-xl p-4 overflow-x-auto text-sm font-mono text-emerald-300 max-h-96 overflow-y-auto whitespace-pre-wrap break-all">
               {output}
             </pre>
           </div>

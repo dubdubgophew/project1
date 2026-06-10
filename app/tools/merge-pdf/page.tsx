@@ -179,6 +179,28 @@ export default function MergePdfPage() {
       icon="📎"
       description="Combine multiple PDF files into one. Reorder files, then download the merged PDF instantly. Free, no upload, works in your browser."
       relatedTools={RELATED}
+      faqs={[
+        {
+          q: 'Is this PDF merger free?',
+          a: 'Yes, completely free. No account required, no watermarks added, and no limit on the number of files you can merge.',
+        },
+        {
+          q: 'How does the merge PDF tool work?',
+          a: 'Upload two or more PDF files, drag them into your preferred order, and click Merge. The tool combines all pages from every file into a single PDF that you download instantly.',
+        },
+        {
+          q: 'Are my PDF files uploaded to a server?',
+          a: 'No. Merging happens entirely in your browser using pdf-lib. Your files never leave your device and are not stored anywhere.',
+        },
+        {
+          q: 'Are there any file size limits?',
+          a: 'There is no enforced limit — performance depends on your browser\'s available memory. Very large PDFs (hundreds of MB) may be slow to process.',
+        },
+        {
+          q: 'How does this compare to paid PDF tools like Adobe Acrobat?',
+          a: 'Adobe Acrobat and similar tools offer advanced editing, OCR, and cloud storage. This tool focuses on fast, private, browser-based merging at no cost — ideal when you just need to combine files without uploading them to a third-party service.',
+        },
+      ]}
     >
       <div className="space-y-5">
 

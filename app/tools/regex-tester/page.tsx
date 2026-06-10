@@ -106,6 +106,13 @@ export default function RegexTesterPage() {
         { name: 'Diff Checker', href: '/tools/diff-checker', icon: '↔️' },
         { name: 'Text Case Converter', href: '/tools/text-case', icon: '🔤' },
       ]}
+      faqs={[
+        { q: 'Is this regex tester free?', a: 'Yes, entirely free with no account needed. You can test as many patterns as you like without any limits.' },
+        { q: 'Which regex flavour does it support?', a: 'It uses the JavaScript (ECMAScript) regex engine built into your browser. This supports most common features — character classes, quantifiers, lookaheads, named groups — but not PCRE-only syntax like \\K or atomic groups.' },
+        { q: 'How reliable are the match results?', a: 'Results are produced by the same JavaScript RegExp engine your production code runs on, so what you see here is exactly what you will get in a JS/TS application. The highlight and group inspector update in real time as you type.' },
+        { q: 'What are common use cases?', a: 'Validating email or phone formats, extracting URLs from text, writing search-and-replace scripts, testing log-parsing patterns, and learning regex syntax interactively with the built-in quick-pattern library.' },
+        { q: 'Is my text data private?', a: 'Yes. Everything runs in your browser. Your pattern and test strings are never sent to any server.' },
+      ]}
     >
       <div className="space-y-5">
         {/* Pattern + flags */}
@@ -113,7 +120,7 @@ export default function RegexTesterPage() {
           <div>
             <label className="label">Pattern</label>
             <div className="flex items-center gap-0">
-              <span className="px-3 py-2.5 bg-gray-800 border border-r-0 border-gray-700 rounded-l-xl text-gray-400 font-mono text-sm">/</span>
+              <span className="px-3 py-2.5 bg-stone-50 border border-r-0 border-stone-200 rounded-l-xl text-stone-500 font-mono text-sm">/</span>
               <input
                 className="input rounded-none flex-1 font-mono"
                 placeholder="[a-z]+"
@@ -121,11 +128,11 @@ export default function RegexTesterPage() {
                 onChange={e => setPattern(e.target.value)}
                 spellCheck={false}
               />
-              <span className="px-3 py-2.5 bg-gray-800 border border-l-0 border-gray-700 rounded-r-xl text-gray-400 font-mono text-sm">
+              <span className="px-3 py-2.5 bg-stone-50 border border-l-0 border-stone-200 rounded-r-xl text-stone-500 font-mono text-sm">
                 /{(Object.keys(flags) as FlagKey[]).filter(f => flags[f]).join('')}
               </span>
             </div>
-            {error && <p className="text-red-400 text-xs mt-1.5 font-mono">{error}</p>}
+            {error && <p className="text-red-600 text-xs mt-1.5 font-mono">{error}</p>}
           </div>
 
           {/* Flags */}
@@ -138,7 +145,7 @@ export default function RegexTesterPage() {
                   onChange={() => toggleFlag(f)}
                   className="w-4 h-4 accent-violet-500"
                 />
-                <span className="text-sm text-gray-300 font-mono">
+                <span className="text-sm text-stone-700 font-mono">
                   {f} — {f === 'g' ? 'global' : f === 'i' ? 'case insensitive' : f === 'm' ? 'multiline' : 'dot all'}
                 </span>
               </label>
@@ -148,7 +155,7 @@ export default function RegexTesterPage() {
 
         {/* Quick patterns */}
         <div className="card">
-          <h3 className="text-sm font-semibold text-white mb-3">Quick Patterns</h3>
+          <h3 className="text-sm font-semibold text-stone-900 mb-3">Quick Patterns</h3>
           <div className="flex flex-wrap gap-2">
             {QUICK_PATTERNS.map(qp => (
               <button
@@ -159,7 +166,7 @@ export default function RegexTesterPage() {
                   qp.flags.split('').forEach(fl => { if (fl in f) (f as Record<string, boolean>)[fl] = true; });
                   setFlags(f);
                 }}
-                className="px-3 py-1.5 rounded-lg bg-gray-800 text-sm text-gray-300 hover:text-white hover:bg-gray-700 transition-colors"
+                className="px-3 py-1.5 rounded-lg bg-stone-50 text-sm text-stone-700 hover:text-stone-900 hover:bg-stone-100 transition-colors"
               >
                 {qp.label}
               </button>
@@ -168,12 +175,12 @@ export default function RegexTesterPage() {
         </div>
 
         {/* Mode tabs */}
-        <div className="flex rounded-lg border border-gray-700 overflow-hidden text-sm w-fit">
+        <div className="flex rounded-lg border border-stone-200 overflow-hidden text-sm w-fit">
           {(['match', 'replace'] as const).map(m => (
             <button
               key={m}
               onClick={() => setMode(m)}
-              className={`px-4 py-2 transition-colors ${mode === m ? 'bg-violet-600 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}
+              className={`px-4 py-2 transition-colors ${mode === m ? 'bg-violet-600 text-white' : 'text-stone-500 hover:text-stone-900 hover:bg-stone-100'}`}
             >
               {m === 'match' ? 'Match Mode' : 'Replace Mode'}
             </button>
@@ -211,22 +218,22 @@ export default function RegexTesterPage() {
             {mode === 'match' && (
               <div className="card">
                 <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-sm font-semibold text-white">
-                    Matches: <span className={matches.length > 0 ? 'text-emerald-400' : 'text-red-400'}>{matches.length}</span>
+                  <h3 className="text-sm font-semibold text-stone-900">
+                    Matches: <span className={matches.length > 0 ? 'text-emerald-700' : 'text-red-600'}>{matches.length}</span>
                   </h3>
                 </div>
-                <div className="bg-gray-900 rounded-xl p-4 font-mono text-sm whitespace-pre-wrap break-all leading-relaxed">
+                <div className="bg-stone-100 rounded-xl p-4 font-mono text-sm whitespace-pre-wrap break-all leading-relaxed">
                   {highlighted ? (
                     highlighted.map((part, i) => (
                       <span
                         key={i}
-                        className={part.match ? 'bg-yellow-400/30 text-yellow-200 rounded px-0.5 outline outline-1 outline-yellow-400/50' : 'text-gray-300'}
+                        className={part.match ? 'bg-yellow-400/30 text-yellow-200 rounded px-0.5 outline outline-1 outline-yellow-400/50' : 'text-stone-700'}
                       >
                         {part.text}
                       </span>
                     ))
                   ) : (
-                    <span className="text-gray-500">No matches found</span>
+                    <span className="text-stone-500">No matches found</span>
                   )}
                 </div>
               </div>
@@ -235,16 +242,16 @@ export default function RegexTesterPage() {
             {/* Match list */}
             {mode === 'match' && matches.length > 0 && (
               <div className="card">
-                <h3 className="text-sm font-semibold text-white mb-3">Match Details</h3>
+                <h3 className="text-sm font-semibold text-stone-900 mb-3">Match Details</h3>
                 <div className="space-y-2 max-h-64 overflow-y-auto">
                   {matches.map((m, i) => (
-                    <div key={i} className="flex items-start gap-3 p-2.5 bg-gray-800/50 rounded-lg text-sm">
-                      <span className="text-gray-600 w-6 text-right shrink-0">#{i + 1}</span>
+                    <div key={i} className="flex items-start gap-3 p-2.5 bg-stone-50 rounded-lg text-sm">
+                      <span className="text-stone-600 w-6 text-right shrink-0">#{i + 1}</span>
                       <div className="flex-1 min-w-0">
                         <code className="text-yellow-300 font-mono break-all">{m.match}</code>
-                        <p className="text-gray-500 text-xs mt-0.5">Index: {m.index}</p>
+                        <p className="text-stone-500 text-xs mt-0.5">Index: {m.index}</p>
                         {m.groups.length > 0 && (
-                          <p className="text-gray-500 text-xs">Groups: {m.groups.map((g, gi) => `$${gi + 1}="${g}"`).join(', ')}</p>
+                          <p className="text-stone-500 text-xs">Groups: {m.groups.map((g, gi) => `$${gi + 1}="${g}"`).join(', ')}</p>
                         )}
                       </div>
                     </div>
@@ -257,16 +264,16 @@ export default function RegexTesterPage() {
             {mode === 'replace' && replaceResult !== undefined && (
               <div className="card">
                 <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-sm font-semibold text-white">Replace Result</h3>
+                  <h3 className="text-sm font-semibold text-stone-900">Replace Result</h3>
                   <button
                     onClick={() => handleCopy('replace', replaceResult)}
-                    className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-lg bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
+                    className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-lg bg-stone-50 text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-colors"
                   >
-                    {copiedKey === 'replace' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                    {copiedKey === 'replace' ? <Check className="w-3 h-3 text-emerald-700" /> : <Copy className="w-3 h-3" />}
                     Copy
                   </button>
                 </div>
-                <pre className="bg-gray-900 rounded-xl p-4 font-mono text-sm text-emerald-300 whitespace-pre-wrap break-all max-h-64 overflow-y-auto">
+                <pre className="bg-stone-100 rounded-xl p-4 font-mono text-sm text-emerald-300 whitespace-pre-wrap break-all max-h-64 overflow-y-auto">
                   {replaceResult}
                 </pre>
               </div>

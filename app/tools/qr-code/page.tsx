@@ -262,6 +262,13 @@ export default function QRCodePage() {
         { name: 'Password Generator', href: '/tools/password-generator', icon: '🔑' },
         { name: 'Color Converter', href: '/tools/color-converter', icon: '🎨' },
       ]}
+      faqs={[
+        { q: 'Is this QR code generator free?', a: 'Yes, completely free with no watermark, no account, and no usage limits. Download as many QR codes as you need.' },
+        { q: 'What can I encode in a QR code?', a: 'Any text up to a few thousand characters — URLs, plain text, email addresses, phone numbers, Wi-Fi credentials, vCard contacts, or any other string. URLs are the most common use case.' },
+        { q: 'What do the error correction levels mean?', a: 'Error correction lets a QR code be read even if part of it is obscured. L=7%, M=15%, Q=25%, H=30% of the code can be damaged and it will still scan. Use H when adding a logo overlay or printing on uneven surfaces.' },
+        { q: 'What are common use cases?', a: 'Linking print materials to websites, sharing Wi-Fi passwords, adding contact details to business cards, directing customers to app store listings, and creating branded QR codes for marketing campaigns.' },
+        { q: 'Can I use the generated QR codes commercially?', a: 'Yes. The QR codes are generated locally in your browser using the open-source qrcode library. There are no licensing restrictions on the output images.' },
+      ]}
     >
       <div className="grid lg:grid-cols-[1fr_400px] gap-8">
         {/* Controls */}
@@ -276,7 +283,7 @@ export default function QRCodePage() {
               className="input resize-none font-mono text-sm"
               placeholder="https://your-website.com or any text…"
             />
-            {error && <p className="text-red-400 text-xs mt-1">{error}</p>}
+            {error && <p className="text-red-600 text-xs mt-1">{error}</p>}
           </div>
 
           {/* Style tabs */}
@@ -289,8 +296,8 @@ export default function QRCodePage() {
                   onClick={() => setStyle(s)}
                   className={`py-2 px-3 rounded-xl text-sm font-medium border transition-all capitalize ${
                     style === s
-                      ? 'bg-violet-600/20 border-violet-500/50 text-violet-300'
-                      : 'border-gray-800 text-gray-400 hover:border-gray-600'
+                      ? 'bg-violet-600/20 border-violet-500/50 text-violet-700'
+                      : 'border-stone-200 text-stone-500 hover:border-stone-300'
                   }`}
                 >
                   {s === 'artistic' ? '🎨 Art' : s === 'dots' ? '⚫ Dots' : s === 'rounded' ? '🔲 Round' : '⬛ Classic'}
@@ -301,14 +308,14 @@ export default function QRCodePage() {
 
           {/* Photo upload for artistic */}
           <div className={`rounded-2xl border-2 border-dashed transition-all ${
-            style === 'artistic' ? 'border-violet-500/40 bg-violet-500/5' : 'border-gray-800 bg-gray-900/30'
+            style === 'artistic' ? 'border-violet-500/40 bg-violet-500/5' : 'border-stone-200 bg-stone-100/30'
           }`}>
             <div className="p-5">
               <div className="flex items-center gap-3 mb-3">
-                <ImageIcon className="w-5 h-5 text-violet-400" />
+                <ImageIcon className="w-5 h-5 text-violet-600" />
                 <div>
-                  <p className="text-sm font-semibold text-white">Artistic Photo QR</p>
-                  <p className="text-xs text-gray-500">Upload a photo — your QR code will look like your image</p>
+                  <p className="text-sm font-semibold text-stone-900">Artistic Photo QR</p>
+                  <p className="text-xs text-stone-500">Upload a photo — your QR code will look like your image</p>
                 </div>
               </div>
               <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handlePhoto} />
@@ -322,7 +329,7 @@ export default function QRCodePage() {
                 </button>
                 {photoUrl && (
                   <button onClick={() => { setPhotoUrl(null); setStyle('rounded'); }}
-                    className="p-2 rounded-lg hover:bg-red-500/10 text-gray-500 hover:text-red-400 transition-colors">
+                    className="p-2 rounded-lg hover:bg-red-500/10 text-stone-500 hover:text-red-600 transition-colors">
                     <X className="w-4 h-4" />
                   </button>
                 )}
@@ -332,7 +339,7 @@ export default function QRCodePage() {
               </div>
               {style === 'artistic' && photoUrl && (
                 <div className="mt-3">
-                  <label className="text-xs text-gray-500 block mb-1">
+                  <label className="text-xs text-stone-500 block mb-1">
                     Dot size: {Math.round((0.36 + (photoBlend - 0.4) * 0.24) * 100)}% of cell
                   </label>
                   <input
@@ -341,7 +348,7 @@ export default function QRCodePage() {
                     onChange={e => setPhotoBlend(parseFloat(e.target.value))}
                     className="w-full accent-violet-500"
                   />
-                  <div className="flex justify-between text-xs text-gray-600 mt-0.5">
+                  <div className="flex justify-between text-xs text-stone-600 mt-0.5">
                     <span>Smaller dots</span><span>Larger dots</span>
                   </div>
                 </div>
@@ -359,7 +366,7 @@ export default function QRCodePage() {
                     <button
                       key={p.name}
                       onClick={() => applyPreset(p)}
-                      className="px-3 py-1.5 rounded-lg text-xs font-medium border border-gray-700 hover:border-violet-500/40 transition-colors"
+                      className="px-3 py-1.5 rounded-lg text-xs font-medium border border-stone-200 hover:border-violet-500/40 transition-colors"
                       style={{ background: p.bg, color: p.fg }}
                     >
                       {p.name}
@@ -373,7 +380,7 @@ export default function QRCodePage() {
                   <label className="label text-xs">Foreground</label>
                   <div className="flex items-center gap-2">
                     <input type="color" value={fgColor} onChange={e => setFgColor(e.target.value)}
-                      className="w-10 h-10 rounded-lg cursor-pointer border border-gray-700 bg-transparent" />
+                      className="w-10 h-10 rounded-lg cursor-pointer border border-stone-200 bg-transparent" />
                     <input type="text" value={fgColor} onChange={e => setFgColor(e.target.value)}
                       className="input py-2 text-sm font-mono flex-1" />
                   </div>
@@ -382,7 +389,7 @@ export default function QRCodePage() {
                   <label className="label text-xs">Background</label>
                   <div className="flex items-center gap-2">
                     <input type="color" value={bgColor} onChange={e => setBgColor(e.target.value)}
-                      className="w-10 h-10 rounded-lg cursor-pointer border border-gray-700 bg-transparent" />
+                      className="w-10 h-10 rounded-lg cursor-pointer border border-stone-200 bg-transparent" />
                     <input type="text" value={bgColor} onChange={e => setBgColor(e.target.value)}
                       className="input py-2 text-sm font-mono flex-1" />
                   </div>
@@ -397,13 +404,13 @@ export default function QRCodePage() {
                   >
                     <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-all ${useGradient ? 'left-5' : 'left-0.5'}`} />
                   </div>
-                  <span className="text-sm text-gray-300">Gradient</span>
+                  <span className="text-sm text-stone-700">Gradient</span>
                 </label>
                 {useGradient && (
                   <div className="flex items-center gap-2 flex-1">
                     <input type="color" value={gradientEnd} onChange={e => setGradientEnd(e.target.value)}
-                      className="w-8 h-8 rounded-lg cursor-pointer border border-gray-700 bg-transparent" />
-                    <span className="text-xs text-gray-500">End colour</span>
+                      className="w-8 h-8 rounded-lg cursor-pointer border border-stone-200 bg-transparent" />
+                    <span className="text-xs text-stone-500">End colour</span>
                   </div>
                 )}
               </div>
@@ -423,7 +430,7 @@ export default function QRCodePage() {
               {logoUrl && (
                 <>
                   <img src={logoUrl} className="w-8 h-8 rounded object-cover" alt="logo" />
-                  <button onClick={() => setLogoUrl(null)} className="p-1 text-gray-500 hover:text-red-400">
+                  <button onClick={() => setLogoUrl(null)} className="p-1 text-stone-500 hover:text-red-600">
                     <X className="w-3.5 h-3.5" />
                   </button>
                 </>
@@ -439,8 +446,8 @@ export default function QRCodePage() {
                 <button key={l} onClick={() => setErrorLevel(l)}
                   className={`flex-1 py-1.5 rounded-lg text-xs font-mono font-bold border transition-all ${
                     errorLevel === l
-                      ? 'bg-violet-600/20 border-violet-500/50 text-violet-300'
-                      : 'border-gray-800 text-gray-500 hover:border-gray-600'
+                      ? 'bg-violet-600/20 border-violet-500/50 text-violet-700'
+                      : 'border-stone-200 text-stone-500 hover:border-stone-300'
                   }`}>
                   {l} {l === 'L' ? '7%' : l === 'M' ? '15%' : l === 'Q' ? '25%' : '30%'}
                 </button>
@@ -455,7 +462,7 @@ export default function QRCodePage() {
 
         {/* Preview + download */}
         <div className="flex flex-col items-center gap-4 lg:sticky lg:top-24">
-          <div className="rounded-2xl overflow-hidden border border-gray-800 shadow-2xl shadow-violet-500/10 bg-gray-900 p-3">
+          <div className="rounded-2xl overflow-hidden border border-stone-200 shadow-2xl shadow-violet-500/10 bg-stone-100 p-3">
             <canvas
               ref={canvasRef}
               width={size}
@@ -473,7 +480,7 @@ export default function QRCodePage() {
             {downloaded ? 'Downloaded!' : 'Download PNG'}
           </button>
 
-          <div className="text-xs text-gray-600 text-center max-w-xs">
+          <div className="text-xs text-stone-600 text-center max-w-xs">
             {style === 'artistic'
               ? 'Use error correction H for best results with artistic QR codes. Always test scan before printing.'
               : 'Free to use commercially. No watermark.'}

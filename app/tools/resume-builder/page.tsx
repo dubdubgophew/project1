@@ -111,7 +111,7 @@ body{font-family:'Calibri',Arial,sans-serif;font-size:11pt;line-height:1.55;colo
 function TemplatePicker({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   return (
     <div className="card">
-      <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-3">Template</h2>
+      <h2 className="text-sm font-semibold text-violet-600 uppercase tracking-wider mb-3">Template</h2>
       <div className="grid grid-cols-5 gap-2">
         {TEMPLATES.map(t => (
           <button
@@ -120,8 +120,8 @@ function TemplatePicker({ value, onChange }: { value: string; onChange: (v: stri
             onClick={() => onChange(t.id)}
             className={`flex flex-col items-center gap-2 p-2.5 rounded-xl border transition-all ${
               value === t.id
-                ? 'border-violet-500 bg-violet-500/10'
-                : 'border-gray-700 hover:border-gray-600'
+                ? 'border-violet-500 bg-violet-50'
+                : 'border-stone-200 hover:border-stone-300'
             }`}
           >
             <div className="w-full rounded overflow-hidden" style={{ background: '#fff', border: '1px solid #e5e7eb' }}>
@@ -133,7 +133,7 @@ function TemplatePicker({ value, onChange }: { value: string; onChange: (v: stri
                 <div className="h-0.5 rounded bg-gray-200 w-3/5" />
               </div>
             </div>
-            <span className="text-[10px] font-medium text-gray-300">{t.name}</span>
+            <span className="text-[10px] font-medium text-stone-700">{t.name}</span>
           </button>
         ))}
       </div>
@@ -349,7 +349,7 @@ export default function ResumeBuilderPage() {
         <TemplatePicker value={template} onChange={setTemplate} />
 
         <div className="card">
-          <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-4">Personal Information</h2>
+          <h2 className="text-sm font-semibold text-violet-600 uppercase tracking-wider mb-4">Personal Information</h2>
           <div className="grid sm:grid-cols-2 gap-4">
             <div><label className="label">Full Name</label>
               <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="John Smith" className="input" required /></div>
@@ -365,14 +365,14 @@ export default function ResumeBuilderPage() {
         </div>
 
         <div className="card">
-          <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-4">Professional Summary</h2>
+          <h2 className="text-sm font-semibold text-violet-600 uppercase tracking-wider mb-4">Professional Summary</h2>
           <textarea value={summary} onChange={e => setSummary(e.target.value)}
             placeholder="Briefly describe your background and career goals. AI will enhance this into a compelling summary…"
             className="textarea min-h-[100px]" />
         </div>
 
         <div className="card">
-          <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-4">Skills</h2>
+          <h2 className="text-sm font-semibold text-violet-600 uppercase tracking-wider mb-4">Skills</h2>
           <textarea value={skills} onChange={e => setSkills(e.target.value)}
             placeholder="React, TypeScript, Node.js, Python, SQL, AWS, Leadership, Agile…"
             className="textarea min-h-[80px]" required />
@@ -380,16 +380,16 @@ export default function ResumeBuilderPage() {
 
         <div className="card">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider">Work Experience</h2>
-            <button type="button" onClick={addExperience} className="flex items-center gap-1 text-xs text-violet-400 hover:text-violet-300 transition-colors">
+            <h2 className="text-sm font-semibold text-violet-600 uppercase tracking-wider">Work Experience</h2>
+            <button type="button" onClick={addExperience} className="flex items-center gap-1 text-xs text-violet-600 hover:text-violet-700 transition-colors">
               <Plus className="w-3.5 h-3.5" /> Add
             </button>
           </div>
           <div className="space-y-4">
             {experience.map((exp, i) => (
-              <div key={i} className="p-4 rounded-xl bg-gray-800/50 border border-gray-700 relative">
+              <div key={i} className="p-4 rounded-xl bg-stone-50 border border-stone-200 relative">
                 {i > 0 && (
-                  <button type="button" onClick={() => removeExperience(i)} className="absolute top-3 right-3 p-1 rounded text-gray-600 hover:text-red-400 transition-colors">
+                  <button type="button" onClick={() => removeExperience(i)} className="absolute top-3 right-3 p-1 rounded text-stone-600 hover:text-red-600 transition-colors">
                     <X className="w-4 h-4" />
                   </button>
                 )}
@@ -411,7 +411,7 @@ export default function ResumeBuilderPage() {
         </div>
 
         <div className="card">
-          <h2 className="text-sm font-semibold text-violet-400 uppercase tracking-wider mb-4">Education</h2>
+          <h2 className="text-sm font-semibold text-violet-600 uppercase tracking-wider mb-4">Education</h2>
           <div className="space-y-3">
             {education.map((edu, i) => (
               <div key={i} className="grid sm:grid-cols-3 gap-3">
@@ -420,14 +420,14 @@ export default function ResumeBuilderPage() {
                 <input type="text" value={edu.year} onChange={e => setEducation(education.map((x,idx) => idx===i ? {...x,year:e.target.value} : x))} placeholder="2020" className="input text-sm" />
               </div>
             ))}
-            <button type="button" onClick={() => setEducation([...education, { institution:'', degree:'', year:'' }])} className="text-xs text-violet-400 hover:text-violet-300 transition-colors flex items-center gap-1">
+            <button type="button" onClick={() => setEducation([...education, { institution:'', degree:'', year:'' }])} className="text-xs text-violet-600 hover:text-violet-700 transition-colors flex items-center gap-1">
               <Plus className="w-3.5 h-3.5" /> Add education
             </button>
           </div>
         </div>
 
         {error && (
-          <div className="flex items-start gap-2.5 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+          <div className="flex items-start gap-2.5 p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm">
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />{error}
           </div>
         )}
@@ -439,38 +439,38 @@ export default function ResumeBuilderPage() {
 
       {output && (() => {
         const ats = calcAtsScore(currentText, jobTitle);
-        const scoreColor = ats.score >= 80 ? 'text-emerald-400' : ats.score >= 60 ? 'text-amber-400' : 'text-red-400';
+        const scoreColor = ats.score >= 80 ? 'text-emerald-700' : ats.score >= 60 ? 'text-amber-700' : 'text-red-600';
         const barColor   = ats.score >= 80 ? 'bg-emerald-500' : ats.score >= 60 ? 'bg-amber-500' : 'bg-red-500';
         return (
           <>
             <div className="card">
               <div className="flex items-center gap-3 mb-3">
-                <BarChart2 className="w-5 h-5 text-violet-400" />
-                <h2 className="font-semibold text-white">ATS Score</h2>
+                <BarChart2 className="w-5 h-5 text-violet-600" />
+                <h2 className="font-semibold text-stone-900">ATS Score</h2>
                 <span className={`text-2xl font-bold ${scoreColor}`}>{ats.score}/100</span>
               </div>
-              <div className="h-2 bg-gray-800 rounded-full mb-3">
+              <div className="h-2 bg-stone-50 rounded-full mb-3">
                 <div className={`h-full rounded-full ${barColor} transition-all`} style={{ width: `${ats.score}%` }} />
               </div>
               {ats.feedback.length > 0 && (
-                <ul className="text-xs text-gray-400 space-y-1">
-                  {ats.feedback.map((f, i) => <li key={i} className="flex items-start gap-2"><span className="text-amber-400 shrink-0">→</span>{f}</li>)}
+                <ul className="text-xs text-stone-500 space-y-1">
+                  {ats.feedback.map((f, i) => <li key={i} className="flex items-start gap-2"><span className="text-amber-700 shrink-0">→</span>{f}</li>)}
                 </ul>
               )}
-              {ats.score >= 80 && <p className="text-xs text-emerald-400 mt-2">Excellent! This resume is well-optimised for ATS systems.</p>}
+              {ats.score >= 80 && <p className="text-xs text-emerald-700 mt-2">Excellent! This resume is well-optimised for ATS systems.</p>}
             </div>
 
             <div className="card">
               <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-                <h2 className="font-semibold text-white">Your Resume</h2>
+                <h2 className="font-semibold text-stone-900">Your Resume</h2>
                 <div className="flex gap-2 flex-wrap">
-                  <div className="flex rounded-lg border border-gray-700 overflow-hidden text-sm">
+                  <div className="flex rounded-lg border border-stone-200 overflow-hidden text-sm">
                     <button onClick={() => setViewMode('edit')}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 transition-colors ${viewMode==='edit' ? 'bg-violet-600 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}>
+                      className={`flex items-center gap-1.5 px-3 py-1.5 transition-colors ${viewMode==='edit' ? 'bg-violet-600 text-white' : 'text-stone-500 hover:text-stone-900 hover:bg-stone-100'}`}>
                       <Pencil className="w-3.5 h-3.5" /> Edit
                     </button>
                     <button onClick={() => setViewMode('preview')}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 transition-colors ${viewMode==='preview' ? 'bg-violet-600 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}>
+                      className={`flex items-center gap-1.5 px-3 py-1.5 transition-colors ${viewMode==='preview' ? 'bg-violet-600 text-white' : 'text-stone-500 hover:text-stone-900 hover:bg-stone-100'}`}>
                       <Eye className="w-3.5 h-3.5" /> Preview
                     </button>
                   </div>
@@ -478,8 +478,8 @@ export default function ResumeBuilderPage() {
                     <Download className="w-4 h-4" /> Download PDF
                   </button>
                   <button onClick={() => { navigator.clipboard.writeText(currentText); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800 transition-all">
-                    {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-all">
+                    {copied ? <Check className="w-4 h-4 text-emerald-700" /> : <Copy className="w-4 h-4" />}
                     {copied ? 'Copied!' : 'Copy'}
                   </button>
                 </div>
@@ -487,19 +487,19 @@ export default function ResumeBuilderPage() {
 
               {viewMode === 'edit' ? (
                 <>
-                  <p className="text-xs text-gray-500 mb-3">Edit the content below, then switch to Preview to see the formatted resume before downloading.</p>
+                  <p className="text-xs text-stone-500 mb-3">Edit the content below, then switch to Preview to see the formatted resume before downloading.</p>
                   <textarea
                     value={currentText}
                     onChange={e => setEditableOutput(e.target.value)}
-                    className="w-full bg-gray-800/50 border border-gray-700 rounded-xl p-4 text-gray-300 text-xs leading-relaxed font-mono resize-y min-h-[500px] focus:outline-none focus:border-violet-500"
+                    className="w-full bg-stone-50 border border-stone-200 rounded-xl p-4 text-stone-700 text-xs leading-relaxed font-mono resize-y min-h-[500px] focus:outline-none focus:border-violet-500"
                   />
                 </>
               ) : (
                 <>
-                  <p className="text-xs text-gray-500 mb-3">Formatted preview — click Download PDF to export this professional layout.</p>
+                  <p className="text-xs text-stone-500 mb-3">Formatted preview — click Download PDF to export this professional layout.</p>
                   <iframe
                     srcDoc={buildResumeHTML(currentText, template)}
-                    className="w-full rounded-xl border border-gray-700 bg-white"
+                    className="w-full rounded-xl border border-stone-200 bg-white"
                     style={{ height: '800px' }}
                     title="Resume Preview"
                     sandbox="allow-same-origin"
