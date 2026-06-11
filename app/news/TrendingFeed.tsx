@@ -585,12 +585,12 @@ export function TrendingFeed({
           />
         </div>
 
-        <div className="flex items-center gap-2">
-          <div className="relative">
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="relative flex-1 min-w-[120px]">
             <select
               value={category}
               onChange={e => handleCategoryChange(e.target.value)}
-              className="input appearance-none pr-8 text-sm py-2 cursor-pointer"
+              className="input appearance-none pr-8 text-sm py-2 cursor-pointer w-full"
             >
               {CATEGORIES.map(c => (
                 <option key={c.value} value={c.value}>{c.label}</option>
@@ -599,7 +599,7 @@ export function TrendingFeed({
             <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 pointer-events-none" />
           </div>
 
-          <div className="flex items-center gap-0.5 bg-stone-100 p-1 rounded-xl">
+          <div className="shrink-0 flex items-center gap-0.5 bg-stone-100 p-1 rounded-xl">
             <ArrowUpDown className="w-3.5 h-3.5 text-stone-400 ml-1" />
             <button onClick={() => handleSortChange('latest')}
               className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${sort === 'latest' ? 'bg-white text-orange-600 shadow-sm' : 'text-stone-500 hover:text-stone-700'}`}>
