@@ -525,38 +525,42 @@ export function PoliticsFeed({
       </div>
 
       {/* ── Country pills ── */}
-      <div className="flex gap-2 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none' }}>
-        <button onClick={() => handleCountryChange('all')}
-          className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${country === 'all' ? 'bg-red-600 text-white border-red-600' : 'bg-white text-stone-600 border-stone-200 hover:border-red-300'}`}>
-          🌍 All
-        </button>
-        {COUNTRIES.map(c => (
-          <button key={c.code} onClick={() => handleCountryChange(c.code)}
-            className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border flex items-center gap-1.5 ${country === c.code ? 'bg-red-600 text-white border-red-600' : 'bg-white text-stone-600 border-stone-200 hover:border-red-300'}`}>
-            {c.flag}<span className="hidden sm:inline">{c.name}</span><span className="sm:hidden">{c.code}</span>
+      <div className="overflow-x-auto pb-2" style={{ scrollbarWidth: 'none' }}>
+        <div className="flex gap-2">
+          <button onClick={() => handleCountryChange('all')}
+            className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${country === 'all' ? 'bg-red-600 text-white border-red-600' : 'bg-white text-stone-600 border-stone-200 hover:border-red-300'}`}>
+            🌍 All
           </button>
-        ))}
+          {COUNTRIES.map(c => (
+            <button key={c.code} onClick={() => handleCountryChange(c.code)}
+              className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border flex items-center gap-1.5 ${country === c.code ? 'bg-red-600 text-white border-red-600' : 'bg-white text-stone-600 border-stone-200 hover:border-red-300'}`}>
+              {c.flag}<span className="hidden sm:inline">{c.name}</span><span className="sm:hidden">{c.code}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* ── Language pills ── */}
-      <div className="flex gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
-        <span className="shrink-0 text-[11px] text-stone-400 self-center pr-1">Language:</span>
-        <button
-          onClick={() => handleLanguageChange('all')}
-          className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-colors border ${language === 'all' ? 'bg-red-600 text-white border-red-600' : 'bg-white text-stone-500 border-stone-200 hover:text-stone-800 hover:border-red-300'}`}
-        >
-          All
-        </button>
-        {POLITICS_LANGUAGES.map(l => (
+      <div className="overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+        <div className="flex gap-2 items-center">
+          <span className="shrink-0 text-[11px] text-stone-400 pr-1">Language:</span>
           <button
-            key={l.code}
-            onClick={() => handleLanguageChange(l.code)}
-            className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${language === l.code ? 'bg-red-600 text-white border-red-600' : 'bg-white text-stone-500 border-stone-200 hover:text-stone-800 hover:border-red-300'}`}
+            onClick={() => handleLanguageChange('all')}
+            className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-colors border ${language === 'all' ? 'bg-red-600 text-white border-red-600' : 'bg-white text-stone-500 border-stone-200 hover:text-stone-800 hover:border-red-300'}`}
           >
-            <span>{l.flag}</span>
-            <span>{l.name}</span>
+            All
           </button>
-        ))}
+          {POLITICS_LANGUAGES.map(l => (
+            <button
+              key={l.code}
+              onClick={() => handleLanguageChange(l.code)}
+              className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${language === l.code ? 'bg-red-600 text-white border-red-600' : 'bg-white text-stone-500 border-stone-200 hover:text-stone-800 hover:border-red-300'}`}
+            >
+              <span>{l.flag}</span>
+              <span>{l.name}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* ── Loading ── */}

@@ -606,50 +606,54 @@ export function StocksFeed({
       </div>
 
       {/* ── Market / Country pills ── */}
-      <div className="flex gap-2 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none' }}>
-        <button
-          onClick={() => handleCountryChange('all')}
-          className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
-            country === 'all'
-              ? 'bg-emerald-500 text-white border-emerald-500'
-              : 'bg-white text-stone-600 border-stone-200 hover:text-stone-900 hover:border-emerald-300'
-          }`}
-        >
-          🌍 All Markets
-        </button>
-        {STOCK_COUNTRIES.map(c => (
+      <div className="overflow-x-auto pb-2" style={{ scrollbarWidth: 'none' }}>
+        <div className="flex gap-2">
           <button
-            key={c.code}
-            onClick={() => handleCountryChange(c.code)}
-            className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border flex items-center gap-1.5 ${
-              country === c.code
+            onClick={() => handleCountryChange('all')}
+            className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
+              country === 'all'
                 ? 'bg-emerald-500 text-white border-emerald-500'
                 : 'bg-white text-stone-600 border-stone-200 hover:text-stone-900 hover:border-emerald-300'
             }`}
           >
-            {c.flag}
-            <span className="hidden sm:inline">{c.name}</span>
-            <span className="sm:hidden">{c.code}</span>
+            🌍 All Markets
           </button>
-        ))}
+          {STOCK_COUNTRIES.map(c => (
+            <button
+              key={c.code}
+              onClick={() => handleCountryChange(c.code)}
+              className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border flex items-center gap-1.5 ${
+                country === c.code
+                  ? 'bg-emerald-500 text-white border-emerald-500'
+                  : 'bg-white text-stone-600 border-stone-200 hover:text-stone-900 hover:border-emerald-300'
+              }`}
+            >
+              {c.flag}
+              <span className="hidden sm:inline">{c.name}</span>
+              <span className="sm:hidden">{c.code}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* ── Language pills ── */}
-      <div className="flex gap-2 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
-        {STOCK_LANGUAGES.map(l => (
-          <button
-            key={l.code}
-            onClick={() => handleLangChange(l.code)}
-            className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border flex items-center gap-1.5 ${
-              lang === l.code
-                ? 'bg-emerald-500 text-white border-emerald-500'
-                : 'bg-white text-stone-600 border-stone-200 hover:text-stone-900 hover:border-emerald-300'
-            }`}
-          >
-            <span>{l.flag}</span>
-            {l.name}
-          </button>
-        ))}
+      <div className="overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
+        <div className="flex gap-2">
+          {STOCK_LANGUAGES.map(l => (
+            <button
+              key={l.code}
+              onClick={() => handleLangChange(l.code)}
+              className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border flex items-center gap-1.5 ${
+                lang === l.code
+                  ? 'bg-emerald-500 text-white border-emerald-500'
+                  : 'bg-white text-stone-600 border-stone-200 hover:text-stone-900 hover:border-emerald-300'
+              }`}
+            >
+              <span>{l.flag}</span>
+              {l.name}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* ── Loading skeleton ── */}
