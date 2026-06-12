@@ -123,6 +123,10 @@ export function Header() {
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 Stocks
               </Link>
+              <Link href="/research" className="px-3 py-2 rounded-lg text-sm text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition-all flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
+                Research
+              </Link>
             </nav>
 
             {/* Search */}
@@ -212,6 +216,10 @@ export function Header() {
             <Link href="/stocks" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-stone-600 hover:text-stone-900 hover:bg-stone-50 transition-colors flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               Stocks
+            </Link>
+            <Link href="/research" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm text-stone-600 hover:text-stone-900 hover:bg-stone-50 transition-colors flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
+              Research
             </Link>
             <div className="h-px bg-stone-100 my-1" />
             <div className="pt-1 pb-1 flex flex-col gap-2">
