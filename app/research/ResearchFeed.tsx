@@ -329,8 +329,23 @@ export function ResearchFeed({
       {/* ── Filter Bar ── */}
       <div className="mb-6 space-y-3">
 
-        {/* Domain pills — horizontal scroll */}
-        <div className="w-full overflow-x-auto pb-2" style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+        {/* Domain — select on mobile, pills on desktop */}
+        <div className="md:hidden">
+          <div className="relative">
+            <select
+              value={domain}
+              onChange={e => setDomain(e.target.value)}
+              className="input appearance-none pr-8 text-sm py-2 cursor-pointer w-full"
+              aria-label="Filter by domain"
+            >
+              {RESEARCH_DOMAINS.map(d => (
+                <option key={d.value} value={d.value}>{d.label}</option>
+              ))}
+            </select>
+            <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-stone-400 pointer-events-none" />
+          </div>
+        </div>
+        <div className="hidden md:block overflow-x-auto pb-1">
           <div className="flex items-center gap-1.5 w-max pr-2">
             {RESEARCH_DOMAINS.map(d => (
               <button
@@ -349,8 +364,8 @@ export function ResearchFeed({
         </div>
 
         {/* Search + Impact filter + Sort toggle */}
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="relative flex-1 min-w-[160px]">
+        <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+          <div className="relative w-full sm:flex-1 sm:min-w-[160px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-stone-400" />
             <input
               value={q}
