@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Header } from '@/components/shared/Header';
 import { Footer } from '@/components/shared/Footer';
 import { SidebarAd } from '@/components/shared/AdSense';
@@ -5,6 +6,21 @@ import { createAdminClient } from '@/lib/supabase/server';
 import { type TrendingNews } from '@/lib/trending-utils';
 import { PoliticsFeed } from './PoliticsFeed';
 import { Suspense } from 'react';
+
+export const metadata: Metadata = {
+  title: 'Politics News Today — Global Political Headlines | Formly',
+  description:
+    "Today's top political news from 10+ countries, summarized by AI with key takeaways. Elections, policy, governments & world affairs — updated daily.",
+  alternates: { canonical: 'https://formly.tools/politics' },
+  openGraph: {
+    title: 'Politics News Today — Global Political Headlines',
+    description:
+      "Top political stories from 10+ countries, AI-summarized with key takeaways. Updated daily.",
+    url: 'https://formly.tools/politics',
+    type: 'website',
+    siteName: 'Formly',
+  },
+};
 
 interface PageProps {
   searchParams?: { country?: string; language?: string; category?: string; q?: string; sort?: string; id?: string };

@@ -115,6 +115,9 @@ export const metadata: Metadata = {
   verification: {
     google: process.env.GOOGLE_SITE_VERIFICATION ?? '',
   },
+  other: {
+    'google-adsense-account': 'ca-pub-7233937066598688',
+  },
 };
 
 export const viewport: Viewport = {

@@ -120,7 +120,7 @@ function getCountryFlag(code: string): string {
 function ShareDropdown({ item, onClose }: { item: TrendingNews; onClose: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
-  const shareUrl  = `https://www.formly.tools/politics?id=${item.id}`;
+  const shareUrl  = `https://formly.tools/politics?id=${item.id}`;
   const shareText = `${item.topic} — via Formly Politics`;
 
   useEffect(() => {

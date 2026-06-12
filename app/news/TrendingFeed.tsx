@@ -122,7 +122,7 @@ function ShareDropdown({ item, onClose }: { item: TrendingNews; onClose: () => v
   const ref = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
 
-  const shareUrl  = `https://www.formly.tools/news?id=${item.id}`;
+  const shareUrl  = `https://formly.tools/news?id=${item.id}`;
   const shareText = `${item.topic} — via Formly News`;
 
   useEffect(() => {

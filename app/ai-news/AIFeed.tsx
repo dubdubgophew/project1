@@ -119,7 +119,7 @@ function ShareDropdown({ item, onClose }: { item: AINewsItem; onClose: () => voi
   const ref = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
 
-  const shareUrl  = `https://www.formly.tools/ai-news?id=${item.id}`;
+  const shareUrl  = `https://formly.tools/ai-news?id=${item.id}`;
   const shareText = `${item.topic} — via Formly AI News`;
 
   useEffect(() => {
