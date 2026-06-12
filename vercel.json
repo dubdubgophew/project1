@@ -59,6 +59,10 @@
     {
       "path": "/api/cron/tool-qa-agent",
       "schedule": "0 2 * * *"
+    },
+    {
+      "path": "/api/cron/fetch-research-papers",
+      "schedule": "0 12 * * *"
     }
   ],
   "functions": {
@@ -123,6 +127,9 @@
       "maxDuration": 300
     },
     "app/api/admin/tool-qa-agent/route.ts": {
+      "maxDuration": 300
+    },
+    "app/api/cron/fetch-research-papers/route.ts": {
       "maxDuration": 300
     }
   }
