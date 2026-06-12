@@ -119,11 +119,11 @@ export function Header() {
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
                 Politics
               </Link>
-              <Link href="/stocks" className="px-3 py-2 rounded-lg text-sm text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition-all flex items-center gap-1.5">
+              <Link href="/stocks" className="hidden lg:flex px-3 py-2 rounded-lg text-sm text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition-all items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 Stocks
               </Link>
-              <Link href="/research" className="px-3 py-2 rounded-lg text-sm text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition-all flex items-center gap-1.5">
+              <Link href="/research" className="hidden lg:flex px-3 py-2 rounded-lg text-sm text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition-all items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
                 Research
               </Link>
