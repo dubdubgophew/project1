@@ -119,12 +119,31 @@ function PaperCard({ paper }: { paper: ResearchPaper }) {
 
         {/* TLDR box */}
         {paper.tldr && (
-          <div className={`rounded-xl px-4 py-3 mb-4 border ${colors.glow}`}>
+          <div className={`rounded-xl px-4 py-3 mb-3 border ${colors.glow}`}>
             <p className="text-sm font-semibold text-stone-800 leading-relaxed">
               💡 {paper.tldr}
             </p>
           </div>
         )}
+
+        {/* Abstract preview — always visible, gives card substance */}
+        {!expanded && paper.abstract && (
+          <p className="text-sm text-stone-500 leading-relaxed line-clamp-3 mb-4">
+            {paper.abstract}
+          </p>
+        )}
+
+        {/* First key finding preview */}
+        {!expanded && paper.key_findings && paper.key_findings.length > 0 && (() => {
+          const { label, content } = parseKeyFinding(paper.key_findings[0]);
+          return (
+            <div className="flex gap-2 items-start mb-4">
+              {label && <span className="text-xs font-bold text-stone-500 shrink-0 mt-0.5">{label}</span>}
+              {label && <span className="text-stone-300 shrink-0 text-xs mt-0.5">·</span>}
+              <p className="text-xs text-stone-500 line-clamp-2">{content}</p>
+            </div>
+          );
+        })()}
 
         {/* Action row */}
         <div className="flex flex-wrap items-center gap-2">
@@ -302,9 +321,9 @@ export function ResearchFeed({
       {/* ── Filter Bar ── */}
       <div className="mb-6 space-y-3">
 
-        {/* Domain pills — horizontal scroll on mobile */}
-        <div className="overflow-x-auto -mx-4 px-4 sm:-mx-6 sm:px-6 pb-1.5">
-          <div className="flex items-center gap-1.5 w-max">
+        {/* Domain pills — horizontal scroll */}
+        <div className="overflow-x-auto pb-2" style={{ WebkitOverflowScrolling: 'touch' }}>
+          <div className="flex items-center gap-1.5 w-max pr-1">
             {RESEARCH_DOMAINS.map(d => (
               <button
                 key={d.value}
