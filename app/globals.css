@@ -20,12 +20,13 @@
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 
   body {
     @apply bg-[#F9F7F4] text-stone-900 selection:bg-orange-200 selection:text-orange-900;
     font-feature-settings: "ss01" 1;
-    overflow-x: hidden; /* on body (not html) so child scroll containers still work */
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
