@@ -606,7 +606,7 @@ export function StocksFeed({
       </div>
 
       {/* ── Market / Country pills ── */}
-      <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1" style={{ scrollbarWidth: 'none' }}>
+      <div className="flex gap-2 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none' }}>
         <button
           onClick={() => handleCountryChange('all')}
           className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
@@ -635,7 +635,7 @@ export function StocksFeed({
       </div>
 
       {/* ── Language pills ── */}
-      <div className="flex gap-2 overflow-x-auto -mx-1 px-1" style={{ scrollbarWidth: 'none' }}>
+      <div className="flex gap-2 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
         {STOCK_LANGUAGES.map(l => (
           <button
             key={l.code}

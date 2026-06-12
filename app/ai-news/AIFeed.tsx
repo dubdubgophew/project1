@@ -610,7 +610,7 @@ export function AIFeed({
       </div>
 
       {/* ── Country pills ── */}
-      <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1" style={{ scrollbarWidth: 'none' }}>
+      <div className="flex gap-2 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none' }}>
         <button
           onClick={() => handleCountryChange('all')}
           className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
@@ -639,7 +639,7 @@ export function AIFeed({
       </div>
 
       {/* ── Language pills ── */}
-      <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1" style={{ scrollbarWidth: 'none' }}>
+      <div className="flex gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
         <span className="shrink-0 text-[11px] text-stone-400 self-center pr-1">Language:</span>
         <button
           onClick={() => handleLanguageChange('all')}
