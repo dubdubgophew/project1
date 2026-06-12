@@ -160,9 +160,15 @@
 
 /* AdSense */
 .adsense-container {
-  @apply my-6 flex items-center justify-center;
+  @apply my-6 flex items-center justify-center overflow-hidden;
+  width: 100%;
+  max-width: 100%;
   min-height: 90px;
 }
+/* AdSense injects fixed pixel widths on the <ins> for horizontal/leaderboard
+   units; clamp so an ad can never push a column wider than the viewport. */
+.adsense-container > div { width: 100%; min-width: 0; max-width: 100%; }
+.adsense-container .adsbygoogle { max-width: 100%; }
 
 /* Blog article content — replaces @tailwindcss/typography prose */
 .blog-content { color: #57534e; font-size: 0.875rem; line-height: 1.75; }

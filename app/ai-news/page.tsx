@@ -142,7 +142,7 @@ export default async function AINewsPage({ searchParams }: PageProps) {
           </div>
 
           <div className="grid lg:grid-cols-[1fr_260px] gap-8">
-            <div>
+            <div className="min-w-0">
               <AIFeed
                 initialItems={items}
                 initialCategory={initialCategory}

@@ -154,7 +154,7 @@ export default async function NewsPage({ searchParams }: PageProps) {
           </div>
 
           <div className="grid lg:grid-cols-[1fr_260px] gap-8">
-            <div>
+            <div className="min-w-0">
               <TrendingFeed
                 initialItems={items}
                 initialCountry={initialCountry}
