@@ -29,6 +29,14 @@ const IMPACT_FILTERS = [
   { value: 'Emerging',    label: '🟢 Emerging' },
 ];
 
+function cleanAbstract(text: string): string {
+  return text
+    .replace(/^arXiv:\S+\s+Announce\s+Type:\s*\S+\s*/i, '')
+    .replace(/^Abstract:\s*/i, '')
+    .replace(/\\["'\\]/g, '')
+    .trim();
+}
+
 function parseKeyFinding(finding: string): { label: string; content: string } {
   const idx = finding.indexOf(' | ');
   if (idx !== -1) {
@@ -60,13 +68,13 @@ function PaperCard({ paper }: { paper: ResearchPaper }) {
 
   return (
     <article
-      className="bg-white border border-stone-200/80 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200"
+      className="bg-white border border-stone-200/80 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 min-w-0"
       aria-label={paper.title}
     >
       {/* Domain accent bar */}
       <div className={`h-1.5 ${colors.bar}`} />
 
-      <div className="p-5 sm:p-6">
+      <div className="p-5 sm:p-6 min-w-0">
         {/* Metadata row */}
         <div className="flex flex-wrap items-center gap-1.5 mb-3">
           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${colors.badge}`}>
@@ -128,8 +136,8 @@ function PaperCard({ paper }: { paper: ResearchPaper }) {
 
         {/* Abstract preview — always visible, gives card substance */}
         {!expanded && paper.abstract && (
-          <p className="text-sm text-stone-500 leading-relaxed line-clamp-3 mb-4">
-            {paper.abstract}
+          <p className="text-sm text-stone-500 leading-relaxed line-clamp-3 mb-4 break-words overflow-hidden">
+            {cleanAbstract(paper.abstract)}
           </p>
         )}
 
@@ -196,7 +204,7 @@ function PaperCard({ paper }: { paper: ResearchPaper }) {
                 </h3>
                 <div className="space-y-3">
                   {paragraphs.map((para, i) => (
-                    <p key={i} className="text-sm text-stone-600 leading-relaxed">{para}</p>
+                    <p key={i} className="text-sm text-stone-600 leading-relaxed break-words">{para}</p>
                   ))}
                 </div>
               </div>
@@ -322,8 +330,8 @@ export function ResearchFeed({
       <div className="mb-6 space-y-3">
 
         {/* Domain pills — horizontal scroll */}
-        <div className="overflow-x-auto pb-2" style={{ WebkitOverflowScrolling: 'touch' }}>
-          <div className="flex items-center gap-1.5 w-max pr-1">
+        <div className="w-full overflow-x-auto pb-2" style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+          <div className="flex items-center gap-1.5 w-max pr-2">
             {RESEARCH_DOMAINS.map(d => (
               <button
                 key={d.value}

@@ -135,8 +135,10 @@ export function parseArxivRSS(
     // Abstract from <description>
     const rawDesc = block.match(/<description[^>]*>([\s\S]*?)<\/description>/)?.[1] ?? '';
     const abstract = decodeXML(rawDesc)
+      .replace(/^arXiv:\S+\s+Announce\s+Type:\s*\S+\s*/i, '')
       .replace(/^Abstract:\s*/i, '')
       .replace(/<[^>]+>/g, ' ')
+      .replace(/\\["'\\]/g, '')
       .replace(/\s+/g, ' ')
       .trim()
       .slice(0, 900);
