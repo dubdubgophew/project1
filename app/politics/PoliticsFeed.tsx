@@ -182,7 +182,7 @@ function PoliticsCard({ item }: { item: TrendingNews }) {
   return (
     <article
       id={`pol-${item.id}`}
-      className={`bg-white border rounded-2xl overflow-hidden transition-all duration-300 ${
+      className={`bg-white border rounded-2xl overflow-hidden transition-all duration-300 min-w-0 ${
         highlighted
           ? 'border-red-400 ring-2 ring-red-400/20'
           : 'border-stone-200 hover:border-stone-300 hover:shadow-sm'
@@ -228,7 +228,7 @@ function PoliticsCard({ item }: { item: TrendingNews }) {
                 {item.key_points.map((pt, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm text-stone-700">
                     <span className="text-red-400 font-bold mt-0.5 shrink-0">→</span>
-                    <span>{pt}</span>
+                    <span className="min-w-0 break-words">{pt}</span>
                   </li>
                 ))}
               </ul>
