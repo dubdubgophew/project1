@@ -6,6 +6,7 @@ import { ARXIV_SOURCES, parseArxivRSS, type RawResearchPaper } from '@/lib/resea
 export const maxDuration = 300;
 
 // Cron: /api/cron/fetch-research-papers — schedule: 0 12 * * * (daily noon UTC)
+// Picks top 2 papers per domain (AI & ML, Physics, Biology, Economics, Space)
 // Secured by CRON_SECRET in middleware.ts
 
 interface PaperAISummary {
@@ -30,9 +31,9 @@ function extractJsonObject(raw: string): string | null {
   let depth = 0, inStr = false, esc = false;
   for (let i = start; i < raw.length; i++) {
     const c = raw[i];
-    if (esc)               { esc = false; continue; }
+    if (esc)                { esc = false; continue; }
     if (c === '\\' && inStr) { esc = true; continue; }
-    if (c === '"')         { inStr = !inStr; continue; }
+    if (c === '"')          { inStr = !inStr; continue; }
     if (inStr) continue;
     if (c === '{') depth++;
     else if (c === '}') { depth--; if (depth === 0) return sanitizeJsonString(raw.slice(start, i + 1)); }
@@ -52,25 +53,20 @@ async function fetchArxivFeed(url: string): Promise<string> {
   return res.text();
 }
 
-async function selectTopPapers(candidates: RawResearchPaper[]): Promise<number[]> {
-  if (candidates.length <= 3) return candidates.map((_, i) => i);
+// Select top 2 papers from a single domain's candidate pool
+async function selectTopTwoForDomain(candidates: RawResearchPaper[]): Promise<number[]> {
+  if (candidates.length <= 2) return candidates.map((_, i) => i);
 
-  // Send compressed list — title + 100-char abstract per paper
   const list = candidates
     .map((p, i) =>
-      `${i}. [${p.domain}] "${p.title.slice(0, 90)}"\n   ${p.abstract.slice(0, 100).replace(/\n/g, ' ')}…`
+      `${i}. "${p.title.slice(0, 80)}"\n   ${p.abstract.slice(0, 90).replace(/\n/g, ' ')}…`
     )
     .join('\n\n');
 
-  const prompt = `Science editor task: From these ${candidates.length} new arXiv papers, select EXACTLY 3 that are:
-1. Highest real-world scientific significance and novelty
-2. From DIFFERENT domains (mandatory: at least 2 distinct domain groups)
-3. Most accessible + interesting to educated non-specialists
-
-Papers:
-${list}
-
-Respond ONLY with JSON: {"selected":[idx1,idx2,idx3]}`;
+  const prompt =
+    `From these ${candidates.length} arXiv papers, pick the 2 most scientifically significant and novel.\n` +
+    `Papers:\n${list}\n` +
+    `Respond ONLY with JSON: {"selected":[idx1,idx2]}`;
 
   try {
     const raw = await callAI(
@@ -78,17 +74,17 @@ Respond ONLY with JSON: {"selected":[idx1,idx2,idx3]}`;
         { role: 'system', content: 'Science editor. Respond only with valid JSON.' },
         { role: 'user', content: prompt },
       ],
-      { model: 'llama-3.3-70b-versatile', maxTokens: 80, temperature: 0.2, skipCache: true },
+      { model: 'llama-3.3-70b-versatile', maxTokens: 60, temperature: 0.2, skipCache: true },
     );
     const obj = extractJsonObject(raw);
-    if (!obj) return [0, 1, 2];
+    if (!obj) return [0, 1];
     const parsed = JSON.parse(obj);
     const sel: number[] = (parsed.selected ?? []).filter(
-      (n: unknown) => typeof n === 'number' && n >= 0 && n < candidates.length,
+      (x: unknown) => typeof x === 'number' && x >= 0 && x < candidates.length,
     );
-    return sel.length >= 3 ? sel.slice(0, 3) : [0, 1, 2];
+    return sel.length >= 2 ? sel.slice(0, 2) : [0, Math.min(1, candidates.length - 1)];
   } catch {
-    return [0, 1, 2];
+    return [0, Math.min(1, candidates.length - 1)];
   }
 }
 
@@ -131,7 +127,7 @@ Respond ONLY with valid JSON. No markdown, no preamble, no explanation.`;
       { role: 'system', content: 'Research scientist. Always respond with valid JSON only. No markdown.' },
       { role: 'user', content: prompt },
     ],
-    { model: 'llama-3.3-70b-versatile', maxTokens: 3000, temperature: 0.3, skipCache: true },
+    { model: 'llama-3.3-70b-versatile', maxTokens: 1800, temperature: 0.3, skipCache: true },
   );
 
   const obj = extractJsonObject(raw);
@@ -147,7 +143,7 @@ Respond ONLY with valid JSON. No markdown, no preamble, no explanation.`;
 }
 
 export async function POST(_req: NextRequest) {
-  console.log('[Cron] fetch-research-papers started');
+  console.log('[Cron] fetch-research-papers started (top-2-per-domain mode)');
   const supabase = createAdminClient();
 
   // Load already-seen arxiv IDs (last 30 days) to avoid duplicates
@@ -158,44 +154,51 @@ export async function POST(_req: NextRequest) {
     .gte('fetched_at', thirtyDaysAgo);
   const seenIds = new Set((existingRows ?? []).map(r => r.arxiv_id).filter(Boolean));
 
-  // Step 1 — Collect candidates from all arXiv sources
-  const allCandidates: RawResearchPaper[] = [];
+  // Step 1 — Fetch candidates from each source, grouped by domain
+  const domainCandidates = new Map<string, RawResearchPaper[]>();
 
   for (const source of ARXIV_SOURCES) {
     try {
       console.log(`[research] Fetching ${source.name}…`);
       const xml = await fetchArxivFeed(source.url);
       const papers = parseArxivRSS(xml, source).filter(p => !seenIds.has(p.arxivId));
-      allCandidates.push(...papers.slice(0, 5));
+      const existing = domainCandidates.get(source.domain) ?? [];
+      // Keep up to 6 candidates per domain (merged across feeds for the same domain)
+      domainCandidates.set(source.domain, [...existing, ...papers].slice(0, 6));
     } catch (err) {
       console.error(`[research] Feed failed for ${source.key}:`, err);
     }
     await sleep(300);
   }
 
-  console.log(`[research] ${allCandidates.length} new candidates after dedup`);
+  const totalCandidates = [...domainCandidates.values()].reduce((s, a) => s + a.length, 0);
+  console.log(`[research] ${totalCandidates} candidates across ${domainCandidates.size} domains`);
 
-  if (allCandidates.length === 0) {
+  if (totalCandidates === 0) {
     return NextResponse.json({ success: true, inserted: 0, message: 'No new papers today' });
   }
 
-  // Step 2 — AI selects top 3 most impactful + domain-diverse papers
-  let selectedIndices: number[];
-  try {
-    selectedIndices = await selectTopPapers(allCandidates);
-  } catch (err) {
-    console.error('[research] Selection failed, using first 3:', err);
-    selectedIndices = [0, 1, Math.min(2, allCandidates.length - 1)];
+  // Step 2 — Per-domain AI selection: pick top 2 from each domain
+  const selectedPapers: RawResearchPaper[] = [];
+
+  for (const [domain, candidates] of domainCandidates) {
+    if (candidates.length === 0) continue;
+    console.log(`[research] Selecting top 2 from ${domain} (${candidates.length} candidates)…`);
+    try {
+      const indices = await selectTopTwoForDomain(candidates);
+      for (const idx of indices.slice(0, 2)) {
+        if (candidates[idx]) selectedPapers.push(candidates[idx]);
+      }
+    } catch (err) {
+      console.error(`[research] Selection failed for ${domain}:`, err);
+      selectedPapers.push(...candidates.slice(0, 2));
+    }
+    await sleep(500);
   }
 
-  const selectedPapers = selectedIndices
-    .map(i => allCandidates[i])
-    .filter(Boolean)
-    .slice(0, 3);
+  console.log(`[research] Generating summaries for ${selectedPapers.length} papers (${domainCandidates.size} domains)`);
 
-  console.log(`[research] Generating summaries for ${selectedPapers.length} papers`);
-
-  // Step 3 — Generate detailed AI summaries and insert to DB
+  // Step 3 — Generate detailed AI summaries and insert
   const now = new Date();
   const expiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
   let inserted = 0;
@@ -254,17 +257,23 @@ export async function POST(_req: NextRequest) {
     } else {
       seenIds.add(paper.arxivId);
       inserted++;
-      console.log(`[research] Inserted: "${paper.title.slice(0, 60)}…"`);
+      console.log(`[research] [${paper.domain}] Inserted rank ${i + 1}: "${paper.title.slice(0, 60)}…"`);
     }
 
-    if (i < selectedPapers.length - 1) await sleep(1000);
+    // 2s gap between summary calls to stay within Groq token-per-minute limits
+    if (i < selectedPapers.length - 1) await sleep(2000);
   }
 
-  // Prune expired papers
+  // Prune papers older than 30 days
   await supabase.from('research_papers').delete().lt('fetched_at', thirtyDaysAgo);
 
-  console.log(`[research] Done. Inserted ${inserted}/${selectedPapers.length} papers.`);
-  return NextResponse.json({ success: true, inserted, candidates: allCandidates.length });
+  console.log(`[research] Done. Inserted ${inserted}/${selectedPapers.length} papers across ${domainCandidates.size} domains.`);
+  return NextResponse.json({
+    success: true,
+    inserted,
+    domains: domainCandidates.size,
+    candidates: totalCandidates,
+  });
 }
 
 export async function GET(req: NextRequest) { return POST(req); }
