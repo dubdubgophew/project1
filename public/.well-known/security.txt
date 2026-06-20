@@ -1,0 +1,4 @@
+Contact: mailto:support@formly.tools
+Preferred-Languages: en
+Canonical: https://formly.tools/.well-known/security.txt
+Policy: https://formly.tools/privacy

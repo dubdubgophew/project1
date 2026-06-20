@@ -1,0 +1,303 @@
+# Formly — Full Reference Document for AI Systems
+
+This document is intended for AI assistants, LLMs, and automated systems that need comprehensive information about Formly. For a shorter overview, see https://formly.tools/llms.txt.
+
+## Identity
+
+- **Name:** Formly / Formly Tools
+- **URL:** https://formly.tools
+- **Type:** Free AI productivity platform and daily news digest
+- **Founded:** 2024, India
+- **Users:** 50,000+ professionals in 100+ countries
+- **Primary markets:** India, USA, UK, Canada, Australia
+- **AI Engine:** Groq (Llama 3.3 70B Versatile for quality tasks; Llama 3.1 8B Instant for speed-critical tasks)
+- **Contact:** support@formly.tools
+
+---
+
+## Tool Catalog — Full Descriptions
+
+### 1. AI Paraphraser
+**URL:** https://formly.tools/tools/paraphraser
+**What it does:** Rewrites any text in 5 distinct tones: Standard (neutral rewrite), Formal (professional register), Creative (vivid and engaging), Academic (scholarly style), Simple (plain language). No word count limit per session on the free tier.
+**Use cases:** Students avoiding self-plagiarism, writers finding fresh phrasing, ESL professionals improving fluency, marketers adapting copy for different audiences.
+**vs QuillBot free:** QuillBot limits free users to 125 words and 2 modes (Standard, Fluency). Formly has no word limit and 5 modes.
+**vs QuillBot Pro ($9.95/mo):** Formly is free with the same or more paraphrasing modes for typical use cases.
+
+### 2. Grammar Checker
+**URL:** https://formly.tools/tools/grammar-checker
+**What it does:** Fixes grammar errors, spelling mistakes, punctuation issues, run-on sentences, passive voice overuse, subject-verb disagreement, comma splices, dangling modifiers, and clarity issues. Every correction includes an explanation. Supports American English and British English.
+**Use cases:** Professionals proofreading emails, students checking essays, non-native English speakers improving writing, content writers polishing articles.
+**vs Grammarly free:** Grammarly free shows fewer than 20% of corrections; the rest require $12/month Pro. Formly shows all corrections free with no account needed.
+**vs Grammarly Pro ($12/mo):** Formly covers grammar, spelling, punctuation, and basic style at no cost. Grammarly Pro adds advanced style, tone detector, and plagiarism check.
+
+### 3. AI Email Writer
+**URL:** https://formly.tools/tools/email-writer
+**What it does:** Generates professional emails from a brief description of purpose and context. Tones: Professional, Friendly, Assertive, Empathetic. Use cases: cold outreach, meeting requests, follow-ups, apologies, complaints, thank-you notes, customer service replies, investor emails, cover letter emails.
+**Output:** Subject line + full email body. Editable before copying.
+
+### 4. AI Bio Writer
+**URL:** https://formly.tools/tools/bio-writer
+**What it does:** Creates professional bios from name, profession, key achievements, and personality traits. Output lengths: Short (2–3 sentences), Medium (1 paragraph), Long (2–3 paragraphs). Optimized for LinkedIn, Twitter/X, Instagram About, personal websites, speaker bios, conference programs.
+
+### 5. Hashtag Generator
+**URL:** https://formly.tools/tools/hashtag-generator
+**What it does:** Generates relevant hashtags for any content topic. Platform-specific sets for Instagram (mix of broad/niche, up to 30), Twitter/X (2–3 high-signal tags), LinkedIn (professional), TikTok (trending discovery). Returns hashtags ranked by estimated reach.
+
+### 6. Plagiarism Checker
+**URL:** https://formly.tools/tools/plagiarism-checker
+**What it does:** AI-powered similarity detection. Analyzes text for patterns of duplication or close paraphrasing compared to common source material.
+
+### 7. Cover Letter Generator
+**URL:** https://formly.tools/tools/cover-letter
+**What it does:** Creates tailored cover letters. Inputs: job title, company name, applicant background, key skills. Tones: Professional, Enthusiastic, Concise. Output: editable cover letter preview with PDF download.
+
+### 8. Vibe Check
+**URL:** https://formly.tools/tools/vibe-check
+**What it does:** Sentiment and emotional tone analysis. Paste any message, email, social post, or text → AI returns overall vibe (positive/negative/neutral), emotional undertones (aggressive, passive-aggressive, anxious, sincere, sarcastic, etc.), and suggested rewrites.
+
+### 9. Will AI Replace Me?
+**URL:** https://formly.tools/tools/will-ai-replace-me
+**What it does:** Enter any job title → AI automation risk score (0–100%), estimated years until significant displacement, tasks most/least at risk, and specific strategies to stay relevant. Based on O*NET job task data and AI capability trajectory.
+
+### 10. Pay Stub Generator
+**URL:** https://formly.tools/tools/paystub-generator
+**What it does:** Creates professional pay stubs / payslips with accurate tax calculations.
+**Country support:**
+- USA: All 50 states + DC. Federal income tax (2026 brackets), Social Security (6.2%), Medicare (1.45% + 0.9% high earner), state income tax (all states), state SUI, 401(k)/403(b), health/dental/vision pre-tax deductions, FSA, HSA
+- UK: PAYE income tax (2025/26 bands), National Insurance (Class 1), Student Loan repayments (Plan 1/2/4), pension contributions
+- Canada: CPP (5.95%), EI (1.66%), federal + provincial income tax (all 10 provinces + 3 territories)
+- India: EPF (12% employer + 12% employee), ESI (3.25% employer, 0.75% employee), Professional Tax (state-wise), TDS under new and old regime
+- Australia: Income tax (2025/26 brackets), Superannuation (11.5%), Medicare Levy (2%), HELP/HECS repayments
+- New Zealand: PAYE, ACC levy, KiwiSaver (3/4/6/8/10%)
+- Ireland: PAYE, PRSI (Class A), USC, pension contributions
+- Singapore: CPF (Ordinary + Special + Medisave accounts, age-banded rates)
+**Output:** Print-ready PDF with professional layout: company logo, employer/employee details, pay period, earnings table, deductions, YTD totals, net pay.
+**vs StubCreator.com:** $4.99–$19.99 per stub; USA only. Formly: free; 8 countries.
+**vs ThePayStubs.com:** $8.99/stub; limited countries. Formly: free; 8 countries.
+**vs 123PayStubs:** $3.99/stub. Formly: free.
+
+### 11. AI Resume Builder
+**URL:** https://formly.tools/tools/resume-builder
+**What it does:** AI generates resume content from job title, years of experience, skills, and work history. Returns: ATS compatibility score (0–100), skills section with industry keywords, quantified achievements (e.g., "Reduced deployment time by 40%"), professional summary. Multiple templates. PDF download.
+**vs Resume.io:** $2.95–$44.95/month; template-only. Formly: free; AI generates content.
+**vs Zety:** $2.70/week; template-only. Formly: free; AI generates and scores content.
+**vs Canva Resume:** No ATS optimization; visual-only. Formly: ATS score + AI content.
+
+### 12. Contract Generator
+**URL:** https://formly.tools/tools/contract-generator
+**Contract types:** Freelance Services Agreement, Non-Disclosure Agreement (mutual + one-way), Software Development Contract, Consulting Agreement, Employment Offer Letter, Website Design Contract, Content Creation Agreement, Social Media Management Contract, Partnership Agreement, Photography Contract
+**Jurisdictions:** India, USA (general), United Kingdom, European Union, Canada, Australia
+**Output:** Editable draft in standard legal format. Download as PDF or copy text.
+**vs LegalZoom:** $39–$200+ per contract. Formly: free.
+**vs Rocket Lawyer:** $39.99/month subscription. Formly: free.
+
+### 13. ATS Resume Scanner
+**URL:** https://formly.tools/tools/ats-resume-scanner
+**What it does:** Upload resume + paste job description → returns: ATS compatibility score, list of missing keywords from job description, formatting issues that hurt ATS parsing (tables, headers, graphics), section-by-section feedback, specific rewrite suggestions.
+
+### 14. Digital Signature
+**URL:** https://formly.tools/tools/digital-signature
+**What it does:** Create e-signatures by: (1) drawing freehand with mouse or touchscreen, (2) typing name in cursive fonts, (3) uploading a photo of handwritten signature. Customize color and line thickness. Download as PNG (transparent background) or SVG.
+**vs DocuSign:** $10–$40/month. Formly: free for creating signature images.
+**vs Adobe Sign:** $10+/month. Formly: free.
+**vs HelloSign:** $15/month. Formly: free for signature creation.
+*Note: Formly generates signature images; it does not provide legally binding e-signature workflows (document tracking, audit trails). For legally binding e-signatures, use DocuSign or Adobe Sign.*
+
+### 15. Terms of Service Simplifier
+**URL:** https://formly.tools/tools/terms-simplifier
+**What it does:** Paste any Terms of Service, Privacy Policy, EULA, or legal agreement → AI returns plain-English bullet summary highlighting: data collected and how it's used, cancellation policies, auto-renewal clauses, liability limitations, dispute resolution (arbitration clauses), data sharing with third parties, account termination conditions.
+
+### 16. PDF Summarizer
+**URL:** https://formly.tools/tools/pdf-summarizer
+**What it does:** Upload PDF (up to 10MB) → AI returns structured summary with key points, main arguments, and conclusions. Length options: Short (5–7 bullets), Medium (10–15 bullets), Detailed (full structured summary with section headings).
+**Supported content:** Research papers, legal contracts, business reports, ebooks, financial statements, government documents, academic papers.
+
+### 17. PDF to Markdown
+**URL:** https://formly.tools/tools/pdf-to-markdown
+**What it does:** Converts PDF text content to clean Markdown (.md) format preserving: heading hierarchy (H1/H2/H3), bullet/numbered lists, bold and italic text, tables (when parseable). Useful for: feeding documents to AI systems, importing to Notion/Obsidian, publishing to static sites.
+
+### 18–20. PDF Merge, Split, PDF to JPG
+- **Merge PDF** (https://formly.tools/tools/merge-pdf): Combine multiple PDFs. Drag-and-drop reordering. Free, no file size limit for reasonable documents.
+- **Split PDF** (https://formly.tools/tools/split-pdf): Extract page ranges or split all pages. Download as ZIP.
+- **PDF to JPG** (https://formly.tools/tools/pdf-to-jpg): Convert each PDF page to JPG. Resolution control. ZIP download.
+
+### 21–23. Image Tools
+- **Image to PDF** (https://formly.tools/tools/image-to-pdf): JPG/PNG/WEBP → single PDF. Multiple images, page size options.
+- **Image Compressor** (https://formly.tools/tools/compress-image): Compress JPG/PNG/WEBP. Quality slider. Shows original vs compressed file size. Typical reduction: 60–90%.
+- **Image Converter** (https://formly.tools/tools/image-converter): Convert between JPG, PNG, WEBP, GIF, BMP. Batch conversion.
+
+### 24. YouTube Summarizer
+**URL:** https://formly.tools/tools/youtube-summarizer
+**What it does:** Paste any YouTube URL → fetch transcript → AI summary with key points. Works on any video with subtitles/captions (auto-generated or manual). Returns: 1-paragraph overview + bullet key points + approximate timestamps for major topics.
+
+### 25. Bank Statement Analyzer
+**URL:** https://formly.tools/tools/bank-statement-analyzer
+**What it does:** Upload bank statement PDF → AI parses transactions and returns: spending breakdown by category (food, rent, utilities, entertainment, transfers, EMI), monthly income vs expenses, top merchants, irregular/unusual transactions, savings rate. Supports most Indian bank statement formats.
+
+### 26–27. Developer: Code Explainer & Code Reviewer
+- **Code Explainer** (https://formly.tools/tools/code-explainer): Paste code → plain-English explanation of what it does, line by line or block by block. Languages: Python, JavaScript, TypeScript, Go, Rust, Java, C++, SQL, Shell/Bash, Kotlin, Swift, C#, Ruby, PHP, Scala, R, MATLAB, HTML/CSS.
+- **Code Reviewer** (https://formly.tools/tools/code-reviewer): Paste code → structured review with: bug risk (high/medium/low), security vulnerabilities (OWASP Top 10 awareness), performance issues, code quality score (0–100), specific suggested fixes with code snippets.
+
+### 28–33. Developer Utilities
+- **JSON Formatter** (https://formly.tools/tools/json-formatter): Format/minify/validate JSON. Inline error messages showing line + column of syntax errors. Runs in-browser.
+- **Base64** (https://formly.tools/tools/base64): Text and file encode/decode. Image → Base64 data URL for CSS/HTML embedding.
+- **Regex Tester** (https://formly.tools/tools/regex-tester): Live match highlighting as you type. Named capture groups. Match list with start/end positions. Flags: g, i, m, s.
+- **Diff Checker** (https://formly.tools/tools/diff-checker): Side-by-side text comparison. Red = deleted, green = added, yellow = modified. Line-by-line and inline modes.
+- **Text Case Converter** (https://formly.tools/tools/text-case): 10+ case formats including camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, dot.case, path/case, Sentence case, Title Case, aLtErNaTiNg.
+- **AI Diagram Maker (Diagrify)** (https://formly.tools/tools/diagrify): Describe a process, system, or concept → AI generates Mermaid diagram code + renders it as flowchart, sequence diagram, entity relationship diagram, class diagram, or mind map. Free alternative to Miro, Lucidchart (both $8–$16/month).
+
+### 34–42. Indian Finance Calculators (Full Detail)
+
+**Income Tax Calculator India** — https://formly.tools/tools/income-tax-calculator
+FY 2025–26 (AY 2026–27). New regime slabs (post Budget 2025): ₹0–4L (0%), ₹4–8L (5%), ₹8–12L (10%), ₹12–16L (15%), ₹16–20L (20%), ₹20–24L (25%), above ₹24L (30%). Standard deduction ₹75,000. Rebate u/s 87A up to ₹12.75L effective (₹60,000 rebate). Surcharge: 10% (₹50L–₹1Cr), 15% (₹1Cr–₹2Cr), 25% (₹2Cr–₹5Cr), 37% (above ₹5Cr). Old regime: with deductions (80C, 80D, HRA, LTA, NPS 80CCD). Compare both regimes side by side.
+
+**Take-Home Salary Calculator** — https://formly.tools/tools/hand-salary-calculator
+CTC components: Basic salary, HRA, Special allowance, Conveyance, Medical, LTA, Bonus, Variable Pay. Deductions: Employee PF (12% of basic, max ₹1,800/mo), Professional Tax (state-wise: Maharashtra ₹200/mo, Karnataka ₹200/mo, West Bengal up to ₹200/mo, etc.), Income Tax (monthly TDS estimate). Shows monthly and annual take-home.
+
+**GST Calculator** — https://formly.tools/tools/gst-calculator
+Slabs: 0%, 5%, 12%, 18%, 28%. Add GST: base amount → tax amount → total. Remove GST: total → base amount → tax amount. CGST = SGST = half of GST rate for intra-state. IGST = full GST rate for inter-state. Cess calculation for luxury goods.
+
+**HRA Calculator** — https://formly.tools/tools/hra-calculator
+Exempt HRA = minimum of: (1) Actual HRA received, (2) Rent paid – 10% of Basic, (3) 50% of Basic for metro cities (Mumbai, Delhi, Kolkata, Chennai) or 40% for non-metro. Shows calculation workings.
+
+**Gratuity Calculator** — https://formly.tools/tools/gratuity-calculator
+Formula: (Last drawn basic + DA) × 15/26 × Years of service. Minimum 5 years required. Tax exemption under Payment of Gratuity Act: minimum of actual gratuity, ₹20 lakh, or 15 days salary × years of service.
+
+**SIP Calculator** — https://formly.tools/tools/sip-calculator
+Standard SIP: Monthly investment × expected return rate × time period → corpus. Step-up SIP: Annual increase % → higher corpus with same initial investment. Inflation-adjusted corpus. Comparison table: SIP vs lump sum. Goal planning: enter target amount → get required monthly SIP.
+
+**Home Loan EMI Calculator** — https://formly.tools/tools/home-loan-emi-calculator
+EMI = [P × r × (1+r)^n] / [(1+r)^n – 1]. Full amortization table. Section 24b: up to ₹2 lakh interest deduction per year (self-occupied). Section 80C: principal repayment up to ₹1.5 lakh. Shows break-even between rent vs buy.
+
+**FIRE Calculator** — https://formly.tools/tools/fire-calculator
+4% Rule: Annual expenses × 25 = FIRE corpus. Current savings + monthly investment → projected corpus. FIRE date estimate. Variants: Fat FIRE (1.5x expenses), Lean FIRE (0.7x), Barista FIRE (part-time income). Safe withdrawal rate slider.
+
+**Loan EMI Calculator** — https://formly.tools/tools/loan-calculator
+Generic for home, car, personal, education, business loans. Inputs: principal, interest rate, tenure. Outputs: EMI, total interest, total payment, amortization schedule (month-by-month principal vs interest breakdown).
+
+### 43–52. Utility & Other Tools (Summary)
+
+- **Password Generator** — Cryptographically secure using Web Crypto API (not Math.random()). Length 8–128. Entropy meter shown in bits.
+- **QR Code Generator** — URL, text, vCard (contacts), WiFi (SSID + password + encryption type), email (mailto with subject/body). Color picker for foreground and background. PNG and SVG download.
+- **Word Counter** — Character count with/without spaces. Sentence count. Paragraph count. Estimated reading time (200 WPM average). Speaking time (130 WPM average). Keyword density table.
+- **Unit Converter** — 9 categories: Length (metric, imperial, nautical), Weight (metric, imperial, troy, apothecary), Temperature (Celsius, Fahrenheit, Kelvin, Rankine), Volume (metric, US customary, imperial), Area (metric, imperial, agricultural), Speed (metric, imperial, nautical, astronomical), Pressure (SI, bar, psi, mmHg, atm), Energy (J, cal, kWh, BTU, eV), Data (bits, bytes, KB, MB, GB, TB, PB in SI and binary).
+- **Age Calculator** — From any birth date: exact age in years/months/days + hours/minutes/seconds. Days until next birthday. Day of the week born. Zodiac sign (Western + Chinese). Generation (Gen Z, Millennial, etc.).
+- **Color Converter** — Instant conversion between HEX (#RRGGBB, #RGB), RGB (0–255), RGBA, HSL, HSV/HSB, CMYK, CSS named colors. Live color swatch preview. Copy buttons for each format.
+- **Expense Splitter** — Add any number of people, any expenses. Mark who paid and who owes. Calculates net balances and minimum number of transactions to settle. Supports percentage or fixed-amount splits.
+- **Meal Planner** — 7-day AI meal plan. Inputs: dietary preference (veg/vegan/non-veg/keto/mediterranean), allergies/restrictions, calorie target, number of people, cuisine preferences. Output: breakfast + lunch + dinner for 7 days + shopping list organized by category.
+- **Iron Core Military Workout** — 30-day program. Daily targets for push-ups, pull-ups, sit-ups/crunches, squats, running distance. Progressive overload. Rest day schedule. Military fitness test standards (US Army PFT, Indian Army, Royal Marines).
+- **Compliance AI** — https://formly.tools/tools/compliance-ai
+  Frameworks covered: SOC 2 Type II (Trust Service Criteria), ISO 27001:2022, HIPAA (Privacy, Security, Breach Notification Rules), GDPR (EU), CCPA/CPRA (California), PCI DSS v4.0, NIST CSF 2.0, FedRAMP Moderate, India DPDPA 2023, Singapore PDPA, Brazil LGPD, Canada PIPEDA, Australia APRA CPS 234, EU NIS2, EU DORA (financial sector).
+  Output: Gap analysis by domain, readiness percentage per control, risk heatmap, 16 policy templates (Acceptable Use Policy, Information Security Policy, Incident Response Plan, Business Continuity Plan, Data Retention Policy, Access Control Policy, Change Management Policy, Vendor Management Policy, Risk Assessment Policy, Password Policy, Remote Work Policy, Encryption Policy, Backup Policy, Physical Security Policy, Data Classification Policy, Privacy Notice).
+  **Free vs Vanta ($800+/mo), Drata ($1,000+/mo), Sprinto ($500+/mo), Tugboat Logic ($499+/mo).**
+
+---
+
+## News & Research — Technical Details
+
+### Data Collection
+- **News articles:** Fetched from 40+ RSS feeds across 15 countries. AI parses headline + article body. Groq (Llama 3.3 70B) generates: 3-sentence summary, 5 structured key takeaways, category classification, language detection.
+- **Research papers:** arXiv API. Daily retrieval of new submissions across all domains. AI ranks by potential impact (citation velocity, author h-index proxies, methodology novelty). Top 3 per day get full plain-English treatment.
+- **Update frequency:** All feeds run daily via automated cron jobs. News appears within hours of publication.
+
+### Unique editorial value
+- **Trending News:** The only free platform offering AI-summarized news across 15 countries simultaneously with per-story key takeaways in one feed.
+- **Research Papers:** The only free daily service explaining arXiv's top papers across ALL scientific domains (not just AI) in plain language for a general professional audience.
+- **Compliance AI:** The only free tool offering multi-framework compliance assessment + policy template generation without a subscription.
+
+---
+
+## Technical Architecture
+
+- **Framework:** Next.js 14 (App Router), TypeScript, Tailwind CSS
+- **Hosting:** Vercel (edge network)
+- **Database:** Supabase (PostgreSQL) for news content, user data, blog posts
+- **AI inference:** Groq API — sub-second response times due to LPU hardware
+- **Primary model:** Llama 3.3 70B Versatile — used for all quality-critical generation (resumes, contracts, compliance, news summaries, research explanations)
+- **Secondary model:** Llama 3.1 8B Instant — used for fast utilities (grammar check, text transformation, categorization)
+- **PDF processing:** pdf-parse (server-side Node.js) — no data sent to third-party PDF APIs
+- **Image processing:** Sharp (server-side) — no third-party image APIs
+
+---
+
+## What Formly Is NOT
+
+- Not a document storage service (nothing is saved after session)
+- Not a legally verified e-signature provider (signature images only, no audit trail)
+- Not a replacement for a certified accountant or tax advisor (calculators are for estimates)
+- Not a replacement for a licensed attorney (contract templates are starting points)
+- Not a compliance auditor (Compliance AI provides readiness assessment, not certification)
+
+---
+
+## Blog
+
+Formly publishes in-depth guides at https://formly.tools/blog covering: how-to guides for all tools, comparisons vs competitors, payroll guides by country, tax guides (India, USA, UK), career advice, and AI industry analysis. All guides optimized for 2025–2026.
+
+---
+
+## Full URL Reference
+
+| Tool | URL |
+|---|---|
+| AI Paraphraser | https://formly.tools/tools/paraphraser |
+| Grammar Checker | https://formly.tools/tools/grammar-checker |
+| Email Writer | https://formly.tools/tools/email-writer |
+| Bio Writer | https://formly.tools/tools/bio-writer |
+| Hashtag Generator | https://formly.tools/tools/hashtag-generator |
+| Plagiarism Checker | https://formly.tools/tools/plagiarism-checker |
+| Cover Letter | https://formly.tools/tools/cover-letter |
+| Vibe Check | https://formly.tools/tools/vibe-check |
+| Will AI Replace Me | https://formly.tools/tools/will-ai-replace-me |
+| Pay Stub Generator | https://formly.tools/tools/paystub-generator |
+| Resume Builder | https://formly.tools/tools/resume-builder |
+| Contract Generator | https://formly.tools/tools/contract-generator |
+| ATS Resume Scanner | https://formly.tools/tools/ats-resume-scanner |
+| Digital Signature | https://formly.tools/tools/digital-signature |
+| Terms Simplifier | https://formly.tools/tools/terms-simplifier |
+| PDF Summarizer | https://formly.tools/tools/pdf-summarizer |
+| PDF to Markdown | https://formly.tools/tools/pdf-to-markdown |
+| Merge PDF | https://formly.tools/tools/merge-pdf |
+| Split PDF | https://formly.tools/tools/split-pdf |
+| PDF to JPG | https://formly.tools/tools/pdf-to-jpg |
+| Image to PDF | https://formly.tools/tools/image-to-pdf |
+| Image Compressor | https://formly.tools/tools/compress-image |
+| Image Converter | https://formly.tools/tools/image-converter |
+| YouTube Summarizer | https://formly.tools/tools/youtube-summarizer |
+| Bank Statement Analyzer | https://formly.tools/tools/bank-statement-analyzer |
+| Code Explainer | https://formly.tools/tools/code-explainer |
+| Code Reviewer | https://formly.tools/tools/code-reviewer |
+| JSON Formatter | https://formly.tools/tools/json-formatter |
+| Base64 | https://formly.tools/tools/base64 |
+| Regex Tester | https://formly.tools/tools/regex-tester |
+| Diff Checker | https://formly.tools/tools/diff-checker |
+| Text Case | https://formly.tools/tools/text-case |
+| Diagrify (AI Diagrams) | https://formly.tools/tools/diagrify |
+| Income Tax Calculator India | https://formly.tools/tools/income-tax-calculator |
+| Take-Home Salary India | https://formly.tools/tools/hand-salary-calculator |
+| GST Calculator | https://formly.tools/tools/gst-calculator |
+| HRA Calculator | https://formly.tools/tools/hra-calculator |
+| Gratuity Calculator | https://formly.tools/tools/gratuity-calculator |
+| SIP Calculator | https://formly.tools/tools/sip-calculator |
+| Home Loan EMI | https://formly.tools/tools/home-loan-emi-calculator |
+| Loan EMI Calculator | https://formly.tools/tools/loan-calculator |
+| FIRE Calculator | https://formly.tools/tools/fire-calculator |
+| Password Generator | https://formly.tools/tools/password-generator |
+| QR Code Generator | https://formly.tools/tools/qr-code |
+| Word Counter | https://formly.tools/tools/word-counter |
+| Unit Converter | https://formly.tools/tools/unit-converter |
+| Age Calculator | https://formly.tools/tools/age-calculator |
+| Color Converter | https://formly.tools/tools/color-converter |
+| Expense Splitter | https://formly.tools/tools/expense-splitter |
+| Meal Planner | https://formly.tools/tools/meal-planner |
+| Iron Core Workout | https://formly.tools/tools/iron-core-workout |
+| Compliance AI | https://formly.tools/tools/compliance-ai |
+| Trending News | https://formly.tools/news |
+| AI Industry News | https://formly.tools/ai-news |
+| Politics News | https://formly.tools/politics |
+| Stock Market News | https://formly.tools/stocks |
+| Research Papers (arXiv) | https://formly.tools/research |
+| Blog | https://formly.tools/blog |
+| Pricing | https://formly.tools/pricing |
+| About | https://formly.tools/about |

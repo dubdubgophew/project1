@@ -168,6 +168,20 @@ export default async function ResearchPage({ searchParams }: PageProps) {
           }),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'NewsMediaOrganization',
+          name: 'Formly — Research Paper Summaries',
+          url: 'https://formly.tools/research',
+          logo: { '@type': 'ImageObject', url: 'https://formly.tools/favicon.svg', width: 512, height: 512 },
+          description: 'Daily summaries of the top 3 trending arXiv research papers — explained in plain language across AI, Physics, Biology, Space, Economics, and more. Updated daily for engineers, students, and curious minds.',
+          publishingPrinciples: 'https://formly.tools/about',
+          masthead: 'https://formly.tools/about',
+          contactPoint: { '@type': 'ContactPoint', contactType: 'editorial', email: 'support@formly.tools' },
+        }) }}
+      />
     </>
   );
 }

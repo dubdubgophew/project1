@@ -192,6 +192,22 @@ export default async function NewsPage({ searchParams }: PageProps) {
           ],
         }) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'NewsMediaOrganization',
+          name: 'Formly',
+          url: 'https://formly.tools',
+          logo: { '@type': 'ImageObject', url: 'https://formly.tools/favicon.svg', width: 512, height: 512 },
+          description: 'Formly publishes daily AI-summarized news across trending topics, AI industry news, politics, stock markets, and scientific research — sourced from 50+ reputable outlets worldwide.',
+          publishingPrinciples: 'https://formly.tools/about',
+          diversityPolicy: 'https://formly.tools/about',
+          sameAs: ['https://twitter.com/formlytools'],
+          masthead: 'https://formly.tools/about',
+          contactPoint: { '@type': 'ContactPoint', contactType: 'editorial', email: 'support@formly.tools' },
+        }) }}
+      />
     </>
   );
 }

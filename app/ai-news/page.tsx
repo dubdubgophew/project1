@@ -178,6 +178,20 @@ export default async function AINewsPage({ searchParams }: PageProps) {
           ],
         }) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'NewsMediaOrganization',
+          name: 'Formly — Latest in AI',
+          url: 'https://formly.tools/ai-news',
+          logo: { '@type': 'ImageObject', url: 'https://formly.tools/favicon.svg', width: 512, height: 512 },
+          description: 'Daily AI industry news summarized by AI — covering tools, research, companies, hardware, and open-source releases from TechCrunch, VentureBeat, MIT Technology Review, Hugging Face, and more.',
+          publishingPrinciples: 'https://formly.tools/about',
+          masthead: 'https://formly.tools/about',
+          contactPoint: { '@type': 'ContactPoint', contactType: 'editorial', email: 'support@formly.tools' },
+        }) }}
+      />
     </>
   );
 }

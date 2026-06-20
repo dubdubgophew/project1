@@ -184,6 +184,20 @@ export default async function StocksPage({ searchParams }: PageProps) {
           ],
         }) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'NewsMediaOrganization',
+          name: 'Formly — Stock Market News',
+          url: 'https://formly.tools/stocks',
+          logo: { '@type': 'ImageObject', url: 'https://formly.tools/favicon.svg', width: 512, height: 512 },
+          description: 'Daily global stock market news AI-summarized from CNBC, Reuters, MarketWatch, Financial Times, ET Markets, Nikkei Asia, and AFR — covering NYSE, NASDAQ, LSE, NSE, ASX, TSE, and XETRA with earnings, IPO, macro, commodities, and crypto.',
+          publishingPrinciples: 'https://formly.tools/about',
+          masthead: 'https://formly.tools/about',
+          contactPoint: { '@type': 'ContactPoint', contactType: 'editorial', email: 'support@formly.tools' },
+        }) }}
+      />
     </>
   );
 }

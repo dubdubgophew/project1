@@ -162,6 +162,20 @@ export default async function PoliticsPage({ searchParams }: PageProps) {
           ],
         }) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'NewsMediaOrganization',
+          name: 'Formly — Politics News',
+          url: 'https://formly.tools/politics',
+          logo: { '@type': 'ImageObject', url: 'https://formly.tools/favicon.svg', width: 512, height: 512 },
+          description: 'Daily global political news AI-summarized from NPR Politics, BBC Politics, Al Jazeera, Reuters, The Wire, Der Spiegel, Le Monde, and 12 more outlets — covering elections, legislation, and foreign policy from 10+ countries.',
+          publishingPrinciples: 'https://formly.tools/about',
+          masthead: 'https://formly.tools/about',
+          contactPoint: { '@type': 'ContactPoint', contactType: 'editorial', email: 'support@formly.tools' },
+        }) }}
+      />
     </>
   );
 }
