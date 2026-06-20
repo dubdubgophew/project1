@@ -21,6 +21,14 @@ const SUSPICIOUS_PATH_PATTERNS = [
 ];
 
 export async function middleware(request: NextRequest) {
+  // www → apex redirect (fixes GSC "alternate with canonical" for www.formly.tools)
+  const host = request.headers.get('host') ?? '';
+  if (host.startsWith('www.')) {
+    const url = request.nextUrl.clone();
+    url.host = host.slice(4);
+    return NextResponse.redirect(url, { status: 301 });
+  }
+
   const { pathname } = request.nextUrl;
 
   // Block suspicious paths

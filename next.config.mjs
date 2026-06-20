@@ -94,7 +94,38 @@ const nextConfig = {
   async redirects() {
     return [
       { source: '/home', destination: '/', permanent: true },
-      { source: '/tools/aetherboard', destination: '/tools/diagrify', permanent: true },
+
+      // ── Removed / renamed tools → nearest current equivalent ─────────────
+      { source: '/tools/aetherboard',                 destination: '/tools/diagrify',              permanent: true },
+      { source: '/tools/salary-calculator',           destination: '/tools/hand-salary-calculator', permanent: true },
+      { source: '/tools/agreement-generator',         destination: '/tools/contract-generator',    permanent: true },
+      { source: '/tools/summarizer',                  destination: '/tools/pdf-summarizer',        permanent: true },
+      { source: '/tools/e-signature-verification',    destination: '/tools/digital-signature',     permanent: true },
+      { source: '/tools/image-compressor',            destination: '/tools/compress-image',        permanent: true },
+      { source: '/tools/tax-deduction-calculator',    destination: '/tools/income-tax-calculator', permanent: true },
+      { source: '/tools/paraphrasing-tool',           destination: '/tools/paraphraser',           permanent: true },
+      { source: '/tools/article-rewriter',            destination: '/tools/paraphraser',           permanent: true },
+      { source: '/tools/invoice-generator',           destination: '/tools/contract-generator',    permanent: true },
+      { source: '/tools/article-summarizer',          destination: '/tools/pdf-summarizer',        permanent: true },
+      { source: '/tools/text-summarizer',             destination: '/tools/pdf-summarizer',        permanent: true },
+      { source: '/tools/uk-vat-calculator',           destination: '/tools/gst-calculator',        permanent: true },
+      { source: '/tools/data-encryption',             destination: '/tools',                       permanent: true },
+      { source: '/tools/international-tax-comparator',destination: '/tools',                       permanent: true },
+      { source: '/tools/text-generator',              destination: '/tools',                       permanent: true },
+      { source: '/tools/language-translator',         destination: '/tools',                       permanent: true },
+
+      // ── News deep-link path format → section (content expires; path format deprecated) ─
+      { source: '/news/:id',    destination: '/news',    permanent: true },
+      { source: '/ai-news/:id', destination: '/ai-news', permanent: true },
+
+      // ── Stale blog slugs (deleted/renamed posts) → nearest current content ─
+      { source: '/blog/explain-code-in-plain-english-for-free-using-ai-2026', destination: '/blog/teach-code',          permanent: true },
+      { source: '/blog/explain-code-to-beginners-with-ai',                    destination: '/blog/teach-code',          permanent: true },
+      { source: '/blog/use-paraphrase-tool-for-academic-writing',             destination: '/tools/paraphraser',        permanent: true },
+      { source: '/blog/generate-instagram-hashtags-free-with-ai',            destination: '/blog/hashtag-generator',   permanent: true },
+      { source: '/blog/free-mental-health-app-india',                         destination: '/tools/vibe-check',         permanent: true },
+      { source: '/blog/free-mood-tracker-no-signup',                          destination: '/tools/vibe-check',         permanent: true },
+      { source: '/blog/use-groq-llama-ai-tools-free',                        destination: '/tools',                    permanent: true },
     ];
   },
 };
