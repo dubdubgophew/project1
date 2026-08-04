@@ -1,3 +1,4 @@
+// app/api/tools/contract/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { logUsage } from '@/lib/rate-limit';
 import { callAI } from '@/lib/ai';
@@ -45,7 +46,11 @@ The contract must include:
 
 Use clear, professional legal language. This is governed by the laws of ${data.jurisdiction}.
 Format cleanly with proper section numbering and indentation.
-Include today's date: ${today}`,
+Include today's date: ${today}
+
+Please include the following parties in the contract:
+- Party 1 (Service Provider/Discloser): ${data.party1}
+- Party 2 (Client/Recipient): ${data.party2}`,
       },
       {
         role: 'user',
@@ -63,7 +68,7 @@ JURISDICTION: ${data.jurisdiction}
 
 ADDITIONAL TERMS: ${data.additionalTerms || 'Standard terms apply'}`,
       },
-    ], { temperature: 0.2, maxTokens: 3000 });
+    ], { temperature: 0.2, maxTokens: 4000 });
 
     return NextResponse.json({ contract });
   } catch (err) {
