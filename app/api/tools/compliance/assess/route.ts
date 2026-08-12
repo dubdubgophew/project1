@@ -1,3 +1,5 @@
+
+```typescript
 import { NextRequest, NextResponse } from 'next/server';
 import { callAI, sanitizeJsonString } from '@/lib/ai';
 import { checkRateLimit } from '@/lib/rate-limit';
@@ -27,13 +29,6 @@ interface Answer {
 }
 
 export async function POST(req: NextRequest) {
-  const rl = await checkRateLimit(req, 'compliance-assess');
-  if (!rl.allowed) {
-    return NextResponse.json({ error: rl.reason, plan: rl.plan, limit: rl.limit, remaining: 0 }, { status: 429 });
-  }
-
-  const isPremium = rl.plan === 'day_pass' || rl.plan === 'pro' || rl.plan === 'unlimited';
-
   try {
     const body = await req.json();
     const { framework, companyName, industry, size, answers } = body as {
@@ -48,8 +43,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid framework selected.' }, { status: 400 });
     }
     if (!answers || answers.length === 0) {
-      return NextResponse.json({ error: 'No assessment answers provided.' }, { status: 400 });
+      return NextResponse.json({ error: 'No assessment answers provided.' }, { status: 422 });
     }
+
+    const rl = await checkRateLimit(req, 'compliance-assess');
+    if (!rl.allowed) {
+      return NextResponse.json({ error: rl.reason, plan: rl.plan, limit: rl.limit, remaining: 0 }, { status: 429 });
+    }
+
+    const isPremium = rl.plan === 'day_pass' || rl.plan === 'pro' || rl.plan === 'unlimited';
 
     const yesCount = answers.filter(a => a.answer === 'yes').length;
     const partialCount = answers.filter(a => a.answer === 'partial').length;
@@ -68,10 +70,12 @@ Size: ${size || '11-50 employees'}
 Compliance Score: ${score}/100 (${yesCount} compliant, ${partialCount} partial, ${total - yesCount - partialCount} non-compliant out of ${total} controls)
 
 All Answers:
-${answers.map(a => `- [${a.answer.toUpperCase()}] ${a.question}`).join('\n')}
+${answers.map(a => `- [${a.answer.toUpperCase()}] ${a.question}`).join('
+')}
 
 Non-compliant / Partial controls requiring attention:
-${nonCompliantItems.map(a => `- [${a.answer.toUpperCase()}] ${a.question}`).join('\n')}
+${nonCompliantItems.map(a => `- [${a.answer.toUpperCase()}] ${a.question}`).join('
+')}
 
 Respond with exactly this JSON structure:
 {
@@ -85,7 +89,9 @@ Respond with exactly this JSON structure:
       "title": "concise gap title",
       "severity": "Critical|High|Medium|Low",
       "description": "what the gap is and why it matters for ${frameworkName}",
-      "recommendation": "specific, actionable remediation step"${isPremium ? ',\n      "estimatedEffort": "e.g. 1-2 weeks",\n      "costImpact": "Low|Medium|High"' : ''}
+      "recommendation": "specific, actionable remediation step"${isPremium ? ',
+      "estimatedEffort": "e.g. 1-2 weeks",
+      "costImpact": "Low|Medium|High"' : ''}
     }
   ],
   "quickWins": ["immediate action <1 week", "immediate action <1 week", "immediate action <1 week"${isPremium ? ', "immediate action", "immediate action"' : ''}],
@@ -152,3 +158,4 @@ Base gaps on the actual non-compliant items. Be specific to ${frameworkName}, no
     return NextResponse.json({ error: 'Assessment failed. Please try again.' }, { status: 500 });
   }
 }
+```
